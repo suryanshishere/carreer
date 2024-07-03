@@ -1,0 +1,70 @@
+[
+  {
+    "header": "Account",
+    "unique_header": "ACCOUNT",
+    "sub": [
+      {
+        "header": "Account information",
+        "unique_header": "ACCOUNT_INFORMATION"
+      },
+      {
+        "header": "Change your password",
+        "unique_header": "CHANGE_YOUR_PASSWORD"
+      },
+      {
+        "header": "Deactivate your account",
+        "unique_header": "DEACTIVATE_YOUR_ACCOUNT"
+      }
+    ]
+  },
+  {
+    "header": "Privacy & Security",
+    "unique_header": "PRIVACY_&_SECURITY",
+    "sub": [
+      {
+        "header": "Content you see",
+        "unique_header": "CONTENT_YOU_SEE"
+      },
+      {
+        "header": "Privately save content",
+        "unique_header": "PRIVATELY_SAVE_CONTENT"
+      },
+      {
+        "header": "Policies",
+        "unique_header": "POLICIES"
+      }
+    ]
+  },
+  {
+    "header": "Additional Info",
+    "unique_header": "ADDITIONAL_INFO",
+    "sub": [
+      {
+        "header": "Latest Updates",
+        "unique_header": "LATEST_UPDATES"
+      },
+      {
+        "header": "Upcoming feature",
+        "unique_header": "UPCOMING_FEATURE"
+      },
+      {
+        "header": "What got removed",
+        "unique_header": "WHAT_GOT_REMOVED"
+      }
+    ]
+  },
+  {
+    "header": "Help Center",
+    "unique_header": "HELP_CENTER",
+    "sub": [
+      {
+        "header": "Contact us",
+        "unique_header": "CONTACT_US"
+      },
+      {
+        "header": "Feed back",
+        "unique_header": "FEEDBACK"
+      }
+    ]
+  }
+]

@@ -1,0 +1,9 @@
+.detail_topic>h5 {
+    color: var(--color-brown);
+    font-size: var(--font-faint-size);
+    padding-left: 0;
+}
+
+.detail_topic>span{
+    font-size: var(--font-size);
+}

@@ -1,0 +1,296 @@
+[
+  {
+    "_id": 1001,
+    "exam_code": "sample-result",
+    "title": "Sample Result 1",
+    "last_updated": "01/01/2024",
+    "created_at": "10/10/2022",
+    "created_by": "id ref of the user",
+    "category": "results",
+    "detail": "ref id here"
+  },
+  {
+    "id": 1002,
+    "title": "Sample Result 2",
+    "detail_title": "Sample detail for Result 2",
+    "last_updated": "02/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1003,
+    "title": "Sample Result 3",
+    "detail_title": "Sample detail for Result 3",
+    "last_updated": "03/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1004,
+    "title": "Sample Result 4",
+    "detail_title": "Sample detail for Result 4",
+    "last_updated": "04/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1005,
+    "title": "Sample Result 4",
+    "detail_title": "Sample detail for Result 4",
+    "last_updated": "04/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1006,
+    "title": "Sample Result 4",
+    "detail_title": "Sample detail for Result 4",
+    "last_updated": "04/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1007,
+    "title": "Sample Result 4",
+    "detail_title": "Sample detail for Result 4",
+    "last_updated": "04/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1008,
+    "title": "Sample Result 4",
+    "detail_title": "Sample detail for Result 4",
+    "last_updated": "04/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1009,
+    "title": "Sample Result 4",
+    "detail_title": "Sample detail for Result 4",
+    "last_updated": "04/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1010,
+    "title": "Sample Result 4",
+    "detail_title": "Sample detail for Result 4",
+    "last_updated": "04/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1011,
+    "title": "Sample Result 4",
+    "detail_title": "Sample detail for Result 4",
+    "last_updated": "04/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 1012,
+    "title": "Sample Result 4",
+    "detail_title": "Sample detail for Result 4",
+    "last_updated": "04/01/2024",
+    "category": "results",
+    "category_title": "Result"
+  },
+  {
+    "id": 2001,
+    "title": "Sample Admit Card 1",
+    "last_updated": "01/01/2024",
+    "category": "admit_cards",
+    "category_title": "Admit Card"
+  },
+  {
+    "id": 2002,
+    "title": "Sample Admit Card 2",
+    "last_updated": "02/01/2024",
+    "category": "admit_cards",
+    "category_title": "Admit Card"
+  },
+  {
+    "id": 2003,
+    "title": "Sample Admit Card 3",
+    "last_updated": "03/01/2024",
+    "category": "admit_cards",
+    "category_title": "Admit Card"
+  },
+  {
+    "id": 2004,
+    "title": "Sample Admit Card 4",
+    "last_updated": "04/01/2024",
+    "category": "admit_cards",
+    "category_title": "Admit Card"
+  },
+  {
+    "id": 3001,
+    "title": "Sample Job 1",
+    "last_updated": "01/01/2024",
+    "category": "latest_jobs",
+    "category_title": "Latest Job"
+  },
+  {
+    "id": 3002,
+    "title": "Sample Job 2",
+    "last_updated": "02/01/2024",
+    "category": "latest_jobs",
+    "category_title": "Latest Job"
+  },
+  {
+    "id": 3003,
+    "title": "Sample Job 3",
+    "last_updated": "03/01/2024",
+    "category": "latest_jobs",
+    "category_title": "Latest Job"
+  },
+  {
+    "id": 3004,
+    "title": "Sample Job 4",
+    "last_updated": "04/01/2024",
+    "category": "latest_jobs",
+    "category_title": "Latest Job"
+  },
+  {
+    "id": 4001,
+    "title": "Sample Answer Key 1",
+    "last_updated": "01/01/2024",
+    "category": "answer_keys",
+    "category_title": "Answer Key"
+  },
+  {
+    "id": 4002,
+    "title": "Sample Answer Key 2",
+    "last_updated": "02/01/2024",
+    "category": "answer_keys",
+    "category_title": "Answer Key"
+  },
+  {
+    "id": 4003,
+    "title": "Sample Answer Key 3",
+    "last_updated": "03/01/2024",
+    "category": "answer_keys",
+    "category_title": "Answer Key"
+  },
+  {
+    "id": 4004,
+    "title": "Sample Answer Key 4",
+    "last_updated": "04/01/2024",
+    "category": "answer_keys",
+    "category_title": "Answer Key"
+  },
+  {
+    "id": 5001,
+    "title": "Sample Syllabus 1",
+    "last_updated": "01/01/2024",
+    "category": "syllabus",
+    "category_title": "Syllabus"
+  },
+  {
+    "id": 5002,
+    "title": "Sample Syllabus 2",
+    "last_updated": "02/01/2024",
+    "category": "syllabus",
+    "category_title": "Syllabus"
+  },
+  {
+    "id": 5003,
+    "title": "Sample Syllabus 3",
+    "last_updated": "03/01/2024",
+    "category": "syllabus",
+    "category_title": "Syllabus"
+  },
+  {
+    "id": 5004,
+    "title": "Sample Syllabus 4",
+    "last_updated": "04/01/2024",
+    "category": "syllabus",
+    "category_title": "Syllabus"
+  },
+  {
+    "id": 6001,
+    "title": "Sample Important 1",
+    "last_updated": "01/01/2024",
+    "category": "importants",
+    "category_title": "Important"
+  },
+  {
+    "id": 6002,
+    "title": "Sample Important 2",
+    "last_updated": "02/01/2024",
+    "category": "importants",
+    "category_title": "Important"
+  },
+  {
+    "id": 6003,
+    "title": "Sample Important 3",
+    "last_updated": "03/01/2024",
+    "category": "importants",
+    "category_title": "Important"
+  },
+  {
+    "id": 6004,
+    "title": "Sample Important 4",
+    "last_updated": "04/01/2024",
+    "category": "importants",
+    "category_title": "Important"
+  },
+  {
+    "id": 7001,
+    "title": "Sample Admission 1",
+    "last_updated": "01/01/2024",
+    "category": "admission",
+    "category_title": "Admission"
+  },
+  {
+    "id": 7002,
+    "title": "Sample Admission 2",
+    "last_updated": "02/01/2024",
+    "category": "admission",
+    "category_title": "Admission"
+  },
+  {
+    "id": 7003,
+    "title": "Sample Admission 3",
+    "last_updated": "03/01/2024",
+    "category": "admission",
+    "category_title": "Admission"
+  },
+  {
+    "id": 7004,
+    "title": "Sample Admission 4",
+    "last_updated": "04/01/2024",
+    "category": "admission",
+    "category_title": "Admission"
+  },
+  {
+    "id": 8001,
+    "title": "Sample Certificate Verification 1",
+    "last_updated": "01/01/2024",
+    "category": "certificate_verification",
+    "category_title": "Certificate Verification"
+  },
+  {
+    "id": 8002,
+    "title": "Sample Certificate Verification 2",
+    "last_updated": "02/01/2024",
+    "category": "certificate_verification",
+    "category_title": "Certificate Verification"
+  },
+  {
+    "id": 8003,
+    "title": "Sample Certificate Verification 3",
+    "last_updated": "03/01/2024",
+    "category": "certificate_verification",
+    "category_title": "Certificate Verification"
+  },
+  {
+    "id": 8004,
+    "title": "Sample Certificate Verification 4",
+    "last_updated": "04/01/2024",
+    "category": "certificate_verification",
+    "category_title": "Certificate Verification"
+  }
+]

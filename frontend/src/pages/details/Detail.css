@@ -1,0 +1,9 @@
+.detail_page_sec{
+    gap: var(--gap-more);
+}
+
+.detail_author{
+    /* border: 2px solid var(--color-green); */
+    /* border-radius: var(--border-radius-more); */
+    /* padding: .25rem 1rem; */
+}

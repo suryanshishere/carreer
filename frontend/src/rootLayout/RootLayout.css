@@ -1,0 +1,7 @@
+
+
+.outlet {
+  margin: 0 var(--padding-page);
+  margin-top: var(--height-overall-main-nav);
+  margin-bottom: var(--height-footer);
+}

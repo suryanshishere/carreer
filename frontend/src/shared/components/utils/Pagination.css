@@ -1,0 +1,37 @@
+.pagination_ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--gap);
+}
+
+.pagination_ul>section {
+    font-size: var(--font-size);
+    display: flex;
+    gap: var(--gap);
+}
+
+.page_no_sec {
+    padding: var(--padding-button);
+    user-select: none;
+}
+
+.pagination_ul>section>li {
+    list-style: none;
+}
+
+.pagination_ul>li:hover {
+    cursor: pointer;
+}
+
+.pagination_disabled {
+    opacity: 0.25;
+    /* Decrease opacity to indicate disabled state */
+    cursor: not-allowed;
+    /* Change cursor to indicate the element is not clickable */
+    pointer-events: none;
+    /* Disable pointer events on the element */
+}

@@ -1,0 +1,12 @@
+.tag_sec {
+    height: 100%;
+    width: fit-content;
+    font-size: var(--font-min-size);
+    font-weight: bold;
+    margin-left: .5rem;
+    display: inline-block;
+}
+
+.tag_sec>img{
+    height: var(--font-min-size);
+}

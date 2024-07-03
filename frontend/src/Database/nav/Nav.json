@@ -1,0 +1,26 @@
+[
+    {
+        "header": "Home",
+        "link": "/"
+    },
+    {
+        "header": "Latest Jobs",
+        "link": "/category/latest_jobs"
+    },
+    {
+        "header": "Results",
+        "link": "/category/results"
+    },
+    {
+        "header": "Admit Card",
+        "link": "/category/admit_cards"
+    },
+    {
+        "header": "Answer Key",
+        "link": "/category/answer_keys"
+    },
+    {
+        "header": "Syllabus",
+        "link": "/category/syllabus"
+    }
+]

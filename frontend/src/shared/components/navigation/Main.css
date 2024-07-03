@@ -1,0 +1,11 @@
+.main_nav_sec {
+  /* width: calc(100% - var(--padding-page) * 2); */
+  padding: 0 var(--padding-page);
+  height: var(--height-main-nav);
+  background-color: var(--color-white);
+}
+
+.main_nav_sec>img {
+  margin-top: 0.4rem;
+  height: 2rem;
+}

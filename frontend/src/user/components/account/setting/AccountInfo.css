@@ -1,0 +1,25 @@
+.account_info_start {
+    gap: var(--gap);
+}
+
+.account_info {
+    gap: var(--gap);
+    font-size: var(--font-size);
+}
+
+.account_info_li {
+    height: 4.25rem;
+}
+
+.account_info_li>span:last-child {
+    font-size: var(--font-min-size);
+    color: var(--color-gray);
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.account_info_edit {
+    border: 2px solid var(--hover-color);
+    font-size: var(--font-nav-size);
+}

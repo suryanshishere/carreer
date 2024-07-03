@@ -1,0 +1,16 @@
+.button_sec {
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: var(--padding-button);
+  font-size: var(--font-size);
+  border: unset;
+  border-radius: var(--border-radius);
+  background-color: unset;
+  border: 2px solid #C7C8CC;
+}
+
+
+.button_sec:hover{
+  background-color: var(--hover-faint-color);
+}

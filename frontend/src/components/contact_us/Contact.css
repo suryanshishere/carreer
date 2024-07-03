@@ -1,0 +1,12 @@
+  .modal_para>li {
+    gap: var(--gap);
+  }
+  
+  .modal_para>li>h6 {
+    width: 12%;
+    font-size: var(--font-nav-size);
+  }
+  
+  .modal_para>li>p {
+    font-size: var(--font-size);
+  }

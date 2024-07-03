@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Khand:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  --border-radius: 10px;
+  --border-radius-more: 25px;
+  --font-header-size: 1.25rem;
+  --font-nav-size: 1rem;
+  --font-size: 1.15rem;
+  --font-min-size: .8rem;
+  --hover-color: #C7C8CC;
+  --hover-faint-color: rgba(128, 128, 128, 0.211);
+  --color-backdrop: #2C3333;
+  --color-gray: gray;
+  --color-brown: brown;
+  --color-white: white;
+  --color-black: black;
+  --color-green: #7F9F80;
+  --color-blue: #10439F;
+  --color-yellow: #EEEBDD;
+  --color-white-yellow: #FEFAF6;
+  --gap-main-nav: 2rem;
+  --gap-more: 1.5rem;
+  --gap: .5rem;
+  --gap-faint: 0.2rem;
+  --padding-page: 10rem;
+  --padding-button: .25rem .5rem;
+  --height-main-nav: 5rem;
+  --height-feature-nav: 3rem;
+  --height-overall-main-nav: calc(var(--height-main-nav) + var(--height-feature-nav) + 1rem );
+  --height-footer: 5.5rem;
+}
+
+body {
+  margin: 0;
+}
+
+hr {
+  margin: 0;
+  border: none;
+  height: 2px;
+  background: #C7C8CC;
+}
+
+/* commoners for all the main heading in the page  */
+
+button {
+  border: unset;
+  background: unset;
+}
+
+h5 {
+  margin: 0;
+  padding: .3rem;
+  font-size: var(--font-header-size);
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+  text-align: center;
+}
+
+
+/* UI  */
+
+.circle_icon {
+  border-radius: 50%;
+  padding: 0.5rem;
+  font-size: var(--font-size);
+  display: grid;
+  place-items: center;
+  color: black;
+  width: 2rem;
+}
+
+.circle_icon:hover {
+  cursor: pointer;
+  background-color: var(--hover-faint-color);
+}
+
+.circle_icon.active {
+  /* Your active styles here */
+}
+
+.circle_icon>svg {
+  padding: 0;
+  margin: 0;
+}
+
+
+/* table-default-styling */
+
+tr {
+  padding: .25rem .8rem;
+  display: flex;
+  gap: .3rem;
+}
+
+tr>td {
+  font-size: var(--font-header-size);
+}
+
+/* random helpful css classname */
+
+.upper {
+  z-index: 1000;
+}
+
+/* message & error */
+
+
+.message {
+  font-size: var(--font-size);
+  margin-bottom: .25rem;
+  color: var(--color-gray);
+}

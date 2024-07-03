@@ -1,0 +1,29 @@
+.nav_list_sec {
+    /* margin-top: 11rem; */
+    margin-right: -1.9rem;
+}
+
+.nav_li {
+    color: unset;
+    text-decoration: unset;
+    padding: var(--padding-button);
+    border-radius: var(--border-radius);
+    text-align: start;
+    list-style: none;
+}
+
+.nav_li_active,
+.nav_li:hover {
+    background: var(--hover-faint-color);
+    /* color: var(--color-white) !important; */
+    cursor: pointer;
+}
+
+/* sub--nav--list */
+
+.sub_nav_list_sec {
+    /* flex: 100; */
+    position: absolute;
+    margin-left: -12rem;
+    margin-top: -1.85rem;
+}

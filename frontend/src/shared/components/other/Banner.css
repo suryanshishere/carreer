@@ -1,0 +1,11 @@
+.banner_sec{
+    /* display: none; */
+    border-radius: 5px;
+    border: 2px solid gray;
+    height: 10rem;
+}
+
+.banner{
+    height: 100%;
+    width: 100%;
+}
