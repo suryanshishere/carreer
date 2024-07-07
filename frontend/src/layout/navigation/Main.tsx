@@ -1,6 +1,5 @@
 import React from "react";
-import nav_logo from "../../../assets/shared/nav/logo.svg";
-import live from "../../../assets/shared/nav/live.gif";
+import nav_logo from "src/assets/shared/nav/logo.svg";
 import Navlinks from "./Navlinks";
 import "./Main.css";
 

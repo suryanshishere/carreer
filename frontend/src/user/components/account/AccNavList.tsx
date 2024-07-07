@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "src/shared/context/auth-context";
-import NAV_ACCOUNT from "src/Database/nav/NavAccount.json";
+import NAV_ACCOUNT from "src/db/nav/NavAccount.json";
 import UIDropdown from "src/shared/components/uiElements/UIDropdown";
 import "./AccNavList.css";
 

@@ -88,7 +88,7 @@ export const getDetailByExamId = async (
     if (!examWithDetails.detail) {
       return next(new HttpError("This exam does not have any details.", 404));
     }
-
+    
     // Now you have the exam details populated
     res.json(examWithDetails.detail);
   } catch (err) {

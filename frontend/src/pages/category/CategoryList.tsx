@@ -7,7 +7,7 @@ import Filter from "src/shared/components/utils/Filter";
 import { useAuth } from "src/shared/hooks/auth";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "src/shared/store/reponse-ui-slice";
-import NotFound from "src/rootLayout/NotFound";
+import NotFound from "src/shared/pages/NotFound";
 import "./CategoryList.css";
 
 const CategoryList: React.FC = () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import ContactUsForm from "src/components/contact_us/Contact";
+import ContactUsForm from "src/shared/pages/contact_us/Contact";
 import "./Contact.css";
 
 const ContactUs: React.FC = () => {

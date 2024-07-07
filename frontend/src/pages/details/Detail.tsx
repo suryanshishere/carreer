@@ -5,16 +5,13 @@ import DetailItem from "src/components/shared/item/Detail";
 import { useHttpClient } from "src/shared/hooks/http";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "src/shared/store/reponse-ui-slice";
-import NotFound from "src/rootLayout/NotFound";
+import NotFound from "src/shared/pages/NotFound";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import "./Detail.css";
 import Bookmark from "src/shared/components/utils/Bookmark";
-// {
-//     _id: "",
-//     related_detail_page: [],
-//     author: "",
-//   }
+// import DETAIL_PAGE from "src/db/exams/Details.json"
+
 const Detail = () => {
   const { examId = "", category = "" } = useParams<{
     examId: string;
@@ -22,10 +19,7 @@ const Detail = () => {
   }>();
 
   const { error, isLoading, sendRequest } = useHttpClient();
-  const [loadedExamDetail, setLoadedExamDetail] = useState<DetailPage>({
-    author: "",
-    related_detail_page: [],
-  });
+  const [loadedExamDetail, setLoadedExamDetail] = useState<DetailPage>();
 
   const dispatch = useDispatch();
 
@@ -40,7 +34,7 @@ const Detail = () => {
           `${process.env.REACT_APP_BASE_URL}/category/${category}/${examId}`
         );
         const responseData: DetailPage = response.data as unknown as DetailPage;
-
+console.log(responseData)
         setLoadedExamDetail(responseData);
       } catch (err) {}
     };
@@ -48,7 +42,7 @@ const Detail = () => {
     fetchPlaces();
   }, [sendRequest, category, examId]);
 
-  if (loadedExamDetail.related_detail_page.length === 0 && !isLoading) {
+  if (!isLoading && !loadedExamDetail) {
     return (
       <NotFound>
         No exam detail found, might be updating. Try again later!
@@ -62,18 +56,20 @@ const Detail = () => {
         <div className="w-full">
           <hr />
         </div>
-        {loadedExamDetail.author || (
+        {loadedExamDetail?.author || (
           <div className="min-w-fit ml-2 flex items-center gap-1">
             <span className="mb-1">careergram</span>
             <FontAwesomeIcon
               style={{ color: "var(--color-green)" }}
               icon={faCircleCheck}
             />
-            <Bookmark itemId={examId}/>
+            <Bookmark itemId={examId} />
           </div>
         )}
       </div>
-      <DetailItem relatedDetailPage={loadedExamDetail.related_detail_page} />
+      {loadedExamDetail && (
+        <DetailItem relatedDetailPage={loadedExamDetail.related_detail_page} />
+      )}
     </div>
   );
 };

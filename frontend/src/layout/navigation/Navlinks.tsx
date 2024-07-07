@@ -3,10 +3,10 @@ import { NavLink, useLocation } from "react-router-dom";
 import { AuthContext } from "src/shared/context/auth-context";
 import AccNavList from "src/user/components/account/AccNavList";
 import Auth from "src/user/pages/auth/Auth";
-import Modal from "../uiElements/modal/Modal";
+import Modal from "../../shared/components/uiElements/modal/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import NAV from "src/Database/nav/Nav.json";
+import NAV from "src/db/nav/Nav.json";
 import "./Navlinks.css";
 
 const Navlinks: React.FC = () => {

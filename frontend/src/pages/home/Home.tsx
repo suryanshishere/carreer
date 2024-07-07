@@ -6,7 +6,7 @@ import { useAuth } from "src/shared/hooks/auth";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "src/shared/store/reponse-ui-slice";
 import { formatWord } from "src/helpers/FormatWord";
-import { useAdminExamData } from "src/Database/admin/AdminExamData";
+import { useAdminExamData } from "src/db/admin/AdminExamData";
 import "./Home.css";
 
 const Home: React.FC = () => {

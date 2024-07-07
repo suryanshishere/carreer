@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import RootLayout from "./rootLayout/RootLayout";
+import RootLayout from "./layout/RootLayout";
 import HomePage from "./pages/home/Home";
 import Detail from "./pages/details/Detail";
 import LinksList from "./pages/category/CategoryList";
@@ -11,7 +11,7 @@ import Setting from "./user/pages/account/Setting";
 import Profile from "./user/pages/account/Profile";
 import { useAuth } from "./shared/hooks/auth";
 import ActivateModal from "./user/pages/account/ActivateModal";
-import NotFound from "./rootLayout/NotFound";
+import NotFound from "./shared/pages/NotFound";
 import Create from "./user/pages/account/Create";
 
 const App: React.FC = () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Date, Input, TextArea } from "src/shared/components/form/input/Input";
-import { useAdminExamData } from "src/Database/admin/AdminExamData";
+import { useAdminExamData } from "src/db/admin/AdminExamData";
 import Para from "src/shared/components/uiElements/cover/Para";
 import { Dropdown } from "src/shared/components/form/input/Dropdown";
 

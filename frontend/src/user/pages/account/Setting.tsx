@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Box from "src/shared/components/uiElements/cover/Box";
-import ACCOUNT_SETTING from "src/Database/account/AccountSetting.json";
+import ACCOUNT_SETTING from "src/db/account/AccountSetting.json";
 import ChangePassword from "src/user/components/account/setting/ChangePassword";
 import AccountInfo from "src/user/components/account/setting/AccountInfo";
 import Deactivate from "src/user/components/account/setting/Deactivate";

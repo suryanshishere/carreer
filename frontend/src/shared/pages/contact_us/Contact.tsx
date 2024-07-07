@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useHttpClient } from "../../shared/hooks/http";
-import Button from "../../shared/components/form/Button";
-import Modal from "../../shared/components/uiElements/modal/Modal";
+import { useHttpClient } from "../../hooks/http";
+import Button from "../../components/form/Button";
+import Modal from "../../components/uiElements/modal/Modal";
 import Form from "./Form";
 import "./Contact.css";
 
