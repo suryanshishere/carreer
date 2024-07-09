@@ -120,14 +120,6 @@ export const removeExam = async (
   }
 };
 
-interface ObjectItem {
-  key: string;
-  value: string[];
-}
-
-interface ExamData {
-  [key: string]: string;
-}
 
 export const createExam = async (
   req: Request,
@@ -135,7 +127,7 @@ export const createExam = async (
   next: NextFunction
 ) => {
   const { userId } = req.params;
-  const { examFormData }: { examFormData: ObjectItem[] } = req.body;
+  const { examFormData } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -150,19 +142,9 @@ export const createExam = async (
 
     await newDetailPage.save();
 
-    const examData: ExamData = {};
-    examFormData.forEach((field) => {
-      examData[field.key] = field.value[0];
-    });
-
+   
     const newExam = new ExamList({
-      exam_code: examData["exam_code"],
-      title: examData["name_of_the_post"],
-      title_detail: examData["name_of_the_post_(detail)"],
-      category: examData["category"],
-      created_by: userId,
-      last_updated: Date.now(),
-      detail: newDetailPage._id,
+   
     });
 
     await newExam.save();

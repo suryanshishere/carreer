@@ -7,7 +7,9 @@ import {
   ageCriteriaSchema,
   applicationFeeSchema,
   vacancyItemSchema,
-} from "./detail/subDetail";
+  examImportanceSchema,
+  applicantsSchema
+} from "./subDetail";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -62,6 +64,20 @@ const relatedDetailPageSchema = new Schema(
       {
         type: valueItemSchema,
         vacancyItemSchema,
+      },
+    ],
+    applicants: [
+      { type: Schema.Types.Mixed },
+      {
+        type: valueItemSchema,
+        applicantsSchema,
+      },
+    ],
+    exam_importance: [
+      { type: Schema.Types.Mixed },
+      {
+        type: valueItemSchema,
+        examImportanceSchema,
       },
     ],
   },

@@ -104,6 +104,17 @@
           ]
         }
       ]
+    ],
+    "applicants":[
+      {
+        "number_of_applicant_each_year": 200000,
+        "number_of_applicant_selected": 1200
+      }
+    ],
+    "exam_importance":[
+      {
+        "toughness_ranking": 4
+      }
     ]
   }
 }
