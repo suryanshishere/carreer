@@ -1,92 +1,66 @@
 import { Request, Response, NextFunction } from "express";
 import HttpError from "../../../util/http-errors";
-import User from "../../../models/user/user";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
-import sendEmail from "./SendEmail";
-import Token, { IToken } from "../../../models/user/token";
-import {
-  checkValidationResult,
-  handleUnknownServerError,
-  handleUserNotFound,
-  handleUserSignupRequired,
-} from "../../helper-controllers";
+import sendEmail from "./send-email";
+import User from "../../../models/user/user-model";
+import { generateUniqueVerificationToken } from "./auth-helpers";
 
-let JWT_KEY: string = process.env.JWT_KEY || "";
+const { JWT_KEY, JWT_KEY_EXPIRY, BASE_URL } = process.env;
 
-export const login = async (
+export const verifyEmail = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  checkValidationResult(req, res, next);
-
-  const { email, password } = req.body;
-
+  const { verificationToken } = req.params;
+  const [email, emailVerificationToken] = verificationToken.split("-");
+  console.log(email, emailVerificationToken);
   try {
-    let existingUser = await User.findOne({ email: email });
-    if (!existingUser) return handleUserNotFound(next);
-    if (!existingUser.token) return handleUserSignupRequired(next);
-    if (existingUser.deactivated_at !== null) {
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const existingUser = await User.findOne({ email });
 
-      if (!(existingUser.deactivated_at >= thirtyDaysAgo)) {
-        return next(
-          new HttpError(
-            "Your account has been deleted due to 30 days of inactivity after deactivation. Please sign up again or proceed to the account recovery section for assistance.",
-            404
-          )
-        );
+    if (existingUser) {
+      if (
+        existingUser.emailVerificationToken === emailVerificationToken &&
+        existingUser.emailVerificationTokenCreatedAt instanceof Date
+      ) {
+        // Check if token is still valid (within 3 minutes)
+        const tokenExpirationTime = new Date(
+          existingUser.emailVerificationTokenCreatedAt.getTime() + 3 * 60 * 1000
+        ); // 3 minutes in milliseconds
+        const currentTime = new Date();
+
+        if (currentTime < tokenExpirationTime) {
+          existingUser.isEmailVerified = true;
+          existingUser.emailVerificationToken = undefined;
+          existingUser.emailVerificationTokenCreatedAt = undefined;
+
+          await existingUser.save();
+          return res
+            .status(200)
+            .json({ message: "Email successfully verified." });
+        } else {
+          return next(
+            new HttpError(
+              "Expired verification token. Please request a new verification email.",
+              400
+            )
+          );
+        }
+      } else {
+        return next(new HttpError("Invalid verification credentials.", 400));
       }
+    } else {
+      return next(new HttpError("User not found. Please sign up again.", 404));
     }
-
-    let isValidPassword: boolean;
-    try {
-      isValidPassword = await bcrypt.compare(
-        password,
-        existingUser.password as string
-      );
-    } catch (err) {
-      return next(
-        new HttpError(
-          "Could not log you in, please check your credentials and try again.",
-          500
-        )
-      );
-    }
-
-    // If the password is not valid, return an error
-    if (!isValidPassword) {
-      return next(
-        new HttpError("Invalid credentials, could not log you in.", 401)
-      );
-    }
-
-    let token: string;
-    try {
-      token = jwt.sign(
-        { userId: existingUser.id, email: existingUser.email },
-        JWT_KEY,
-        { expiresIn: "1h" }
-      );
-    } catch (err) {
-      return next(
-        new HttpError("Logging in failed, please try again later.", 500)
-      );
-    }
-
-    // Send the token and user details in the response
-    res.status(200).json({
-      userId: existingUser.id,
-      email: existingUser.email,
-      token: token,
-    });
-  } catch (err) {
+  } catch (error) {
     return next(
-      new HttpError("Logging in failed, please try again later.", 500)
+      new HttpError(
+        "Internal server error. Please try again later using the same link before it expires.",
+        500
+      )
     );
   }
 };
@@ -96,7 +70,12 @@ export const signup = async (
   res: Response,
   next: NextFunction
 ) => {
-  checkValidationResult(req, res, next);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError("Invalid inputs passed, please check your data", 422)
+    );
+  }
 
   const { name, email, password } = req.body;
 
@@ -105,9 +84,9 @@ export const signup = async (
     let existingUser = await User.findOne({ email: email });
 
     // If the user exists and has a token, return an error
-    if (existingUser && existingUser.token) {
+    if (existingUser) {
       return next(
-        new HttpError("User exists already, please login instead.", 422)
+        new HttpError("User already exists, please login instead.", 409)
       );
     }
 
@@ -120,182 +99,189 @@ export const signup = async (
       );
     }
 
-    // If the user exists but doesn't have a token, update the user with new data
-    if (existingUser) {
-      existingUser.name = name;
-      existingUser.password = hashedPassword;
-      await existingUser.save();
-    } else {
-      // If the user doesn't exist, create a new user
-      const username = uuidv4();
-
-      const createdUser = new User({
-        name,
-        username,
-        email,
-        password: hashedPassword,
-        saved: [],
-        account_info: {
-          username,
-          email,
-          phone: "",
-          country: "",
-          language: "",
-          gender: "",
-          birth_day: "",
-          tag: [],
-        },
-      });
-
-      await createdUser.save();
-    }
-
-    // Call sendOTP function and pass the entire request body
-    await sendOTP(req, res, next);
-
-    // Do not send a response here
-  } catch (err) {
-    console.log(err);
-    return next(new HttpError("Signing up failed, please try again.", 500));
-  }
-};
-
-// logic related to forgot password and reset
-
-export const sendOTP = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    checkValidationResult(req, res, next);
-
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      return next(new HttpError("User with given email doesn't exist", 400));
-    }
-
-    let OTPtoken = await Token.findOne({ userId: user._id });
-
-    // Generate a random 6-digit OTP
-    const generateOTP = () => {
-      const otp = Math.floor(100000 + Math.random() * 900000);
-      return otp.toString(); // Convert to string
-    };
-
-    // Check if token exists
-    if (!OTPtoken) {
-      // Create a new token document
-      OTPtoken = await Token.create({
-        userId: user._id,
-        token: generateOTP(),
-      });
-    } else {
-      // Update existing token with a new OTP
-      OTPtoken.token = generateOTP();
-      await OTPtoken.save(); // Save the updated token document
-    }
-
-    const subject = user.token ? "Password Reset" : "Signup OTP Verification";
-
-    const msg = `Your OTP for the given ${
-      user.token ? "password reset" : "signup verification"
-    } is: ${OTPtoken.token}`;
-
-    await sendEmail(user.email, subject, msg);
-
-    if (req.body.name) {
-      res.status(200).json({
-        userId: user._id,
-        email: req.body.email,
-        message: "OTP send to your entered email, please verify!",
-      });
-    } else {
-      res.status(200).json("Password reset OTP sent to your email account");
-    }
-  } catch (error) {
-    handleUnknownServerError(next);
-  }
-};
-
-export const resetPasswordAndVerifyOTP = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    checkValidationResult(req, res, next);
-
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      return res.status(400).json({ message: "Invalid OTP or expired" });
-    }
-
-    const OTPtoken = await Token.findOne({
-      userId: user._id,
-      token: req.body.otp,
+    const createdUser = new User({
+      name,
+      username: uuidv4(),
+      email,
+      password: hashedPassword,
     });
-    if (!OTPtoken) {
-      return res.status(400).json({ message: "Invalid link or expired" });
+
+    const generateUniqueToken = generateUniqueVerificationToken();
+    const verificationToken = `${email}-${generateUniqueToken}`;
+    createdUser.emailVerificationToken = generateUniqueToken;
+    createdUser.emailVerificationTokenCreatedAt = new Date();
+
+    await createdUser.save();
+
+    //Email verification
+    try {
+      await sendEmail(
+        createdUser.email,
+        "Verify your email through OTP",
+        `${BASE_URL}/users/auth/verify_email/${verificationToken}`
+      );
+    } catch (err) {
+      // Handle email sending errors
+      return next(
+        new HttpError(
+          "Error sending verification email, try signing up again later.",
+          500
+        )
+      );
     }
 
-    if (req.body.password) {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      user.password = hashedPassword;
-      await user.save();
-      await OTPtoken.deleteOne();
-      return res.status(200).json({ message: "Password reset successfully" });
-    } else {
-      user.token = true;
-      await user.save();
-      await OTPtoken.deleteOne();
+    // if (createdUser.isEmailVerified) {
+    //   // Generate a JWT token
+    //   let helper_message: string = "";
+    //   let token: string;
+    //   try {
+    //     if (JWT_KEY) {
+    //       token = jwt.sign(
+    //         { userId: createdUser.id, email: createdUser.email },
+    //         JWT_KEY,
+    //         { expiresIn: JWT_KEY_EXPIRY || "900s" }
+    //       );
+    //     } else {
+    //       helper_message =
+    //         "Internal server error; please re-login later as features are temporarily limited";
+    //       throw new HttpError("Internal server error", 500);
+    //     }
+    //   } catch (err) {
+    //     helper_message =
+    //       "Internal server error; please re-login later as features are temporarily limited";
+    //     // not returning instead throwing, so that i can tell user for now, you logged in but need re-login for jwt generation.
+    //     throw new HttpError("Internal server error", 500);
+    //   }
 
-      let token: string;
-      try {
-        token = jwt.sign({ userId: user._id, email: user.email }, JWT_KEY, {
-          expiresIn: process.env.JWT_KEY_EXPIRE,
+    //   // Send a response on successful creation
+    //   res.status(201).json({
+    //     helper_message,
+    //     userId: createdUser.id,
+    //     token,
+    //   });
+    // }else{
+    res.status(201).json({
+      message:
+        "Account created successfully. Verification link sent to your email.",
+      userId: createdUser.id,
+    });
+    // }
+  } catch (err) {
+    return next(new HttpError("Signing up failed, please try again", 500));
+  }
+};
+
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // Validate incoming request body
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError("Invalid inputs passed, please check your data", 422)
+    );
+  }
+
+  const { email, password } = req.body;
+
+  try {
+    // Check if user exists
+    let existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      return next(new HttpError("User not found, please signup instead.", 404));
+    }
+
+    let isValidPassword: boolean;
+    try {
+      // Compare hashed password with provided password
+      isValidPassword = await bcrypt.compare(
+        password,
+        existingUser.password as string
+      );
+    } catch (err) {
+      return next(
+        new HttpError(
+          "Could not log you in right now, please try again later.",
+          500
+        )
+      );
+    }
+
+    // Handle invalid password scenarios
+    if (!isValidPassword) {
+      // If user is not verified, send verification email and restrict features temporarily
+      if (!existingUser.isEmailVerified) {
+        const generateUniqueToken = generateUniqueVerificationToken();
+        const verificationToken = `${email}-${generateUniqueToken}`;
+        existingUser.emailVerificationToken = generateUniqueToken;
+        existingUser.emailVerificationTokenCreatedAt = new Date();
+
+        await existingUser.save();
+
+        // Send verification email
+        try {
+          await sendEmail(
+            existingUser.email,
+            "Verify your email through OTP",
+            `${BASE_URL}/users/auth/verify_email/${verificationToken}`
+          );
+        } catch (err) {
+          return next(
+            new HttpError(
+              "Error sending verification email, try again later.",
+              500
+            )
+          );
+        }
+
+        return res.status(401).json({
+          message: "Something seem messy. Verify your email first.",
         });
-        return res.status(201).json({ userId: user._id, token: token });
-      } catch (err) {
+      } else {
+        // Handle case where user is verified but password is incorrect
         return next(
-          new HttpError("Signing up failed, please try again later.", 500)
+          new HttpError("Invalid credentials, could not log you in.", 401)
         );
       }
     }
-  } catch (error) {
-    handleUnknownServerError(next);
-  }
-};
 
-export const getResetTimer = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const user = await User.findOne({ email: req.body.email });
+    // If user is verified, generate JWT token
+    if (existingUser.isEmailVerified) {
+      let token: string;
+      try {
+        token = jwt.sign(
+          { userId: existingUser.id, email: existingUser.email },
+          JWT_KEY as string,
+          { expiresIn: JWT_KEY_EXPIRY || "900s" }
+        );
+      } catch (err) {
+        // Handle JWT token generation error
+        return next(
+          new HttpError(
+            "Internal server error; please re-login later as features are temporarily limited",
+            500
+          )
+        );
+      }
 
-    if (!user) {
-      // If user not found, handle the case appropriately
-      return res.status(404).json({ message: "User not found" });
+      // Respond with success message, user ID, and token
+      res.status(200).json({
+        message: "Login successful.",
+        userId: existingUser.id,
+        token,
+      });
+    } else {
+      res.status(401).json({
+        message: "Features are temporarily limited. Verify your email first.",
+        userId: existingUser.id,
+      });
     }
-
-    // Find the token associated with the user's _id
-    const token: IToken | null = await Token.findOne({ userId: user._id });
-
-    if (!token) {
-      return res.status(404).json({ message: "Token not found" });
-    }
-
-    // Assuming you have access to the Mongoose schema definition
-    const expirationDurationInSeconds =
-      Token.schema.path("createdAt").options.expires;
-
-    // Convert expiration duration to milliseconds
-    const expirationTime = expirationDurationInSeconds * 1000;
-
-    res.status(200).json(expirationTime);
-  } catch (error) {
-    handleUnknownServerError(next);
+  } catch (err) {
+    // Handle generic login error
+    return next(
+      new HttpError("Logging you in failed, please try again later.", 500)
+    );
   }
 };

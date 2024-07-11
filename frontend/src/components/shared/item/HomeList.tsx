@@ -2,9 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ExamListItem } from "src/models/exam/ListProps";
 import Card from "src/shared/components/uiElements/cover/Card";
-import Bookmark from "src/shared/components/utils/Bookmark";
+// import Bookmark from "src/shared/components/utils/Bookmark";
 import SampleLoad from "src/shared/components/uiElements/common/SampleLoad";
 import "./HomeList.css";
+import { formatWord } from "src/helpers/FormatWord";
 // import Tag from "src/shared/components/uiElements/common/Tag";
 
 interface HomeListItemProps {
@@ -37,12 +38,12 @@ const HomeListItem: React.FC<HomeListItemProps> = ({
                 <li>
                   <Link
                     className="links_ul_a no-underline"
-                    to={`/category/${category}/${item._id}`}
+                    to={`/category/${category}/${item.name_of_the_post}`}
                   >
-                    {item.title}
+                    {formatWord(item.name_of_the_post)}
                   </Link>
                   {/* <Tag last_updated={item.last_updated } /> */}
-                  <Bookmark itemId={item._id} bookmarked={item.bookmarked} />
+                  {/* <Bookmark itemId={item._id} bookmarked={item.bookmarked} /> */}
                 </li>
                 {index !== ListItemData.length - 1 && <hr />}
               </React.Fragment>

@@ -1,5 +1,5 @@
 import React from "react";
-import Bookmark from "../utils/Bookmark";
+// import Bookmark from "../utils/Bookmark";
 import { Link } from "react-router-dom";
 import { ExamListItem } from "src/models/exam/ListProps";
 import Delete from "../utils/Delete";
@@ -48,11 +48,11 @@ const List: React.FC<ListProps> = ({
                 </h6>
                 <div className="list_link flex items-center gap-1" >
                   <Link to={`/category/${item.category}/${item._id}`}>
-                    {item.detail_title || item.title}
+                    {item.name_of_the_post}
                   </Link>
-                  {showBookmark && (
+                  {/* {showBookmark && (
                     <Bookmark bookmarked={item.bookmarked} itemId={item._id} />
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="list_li_util flex content-center">

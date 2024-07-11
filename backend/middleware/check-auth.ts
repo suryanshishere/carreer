@@ -22,17 +22,16 @@ const checkAuth = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const token: string | undefined = req.headers.authorization?.split(" ")[1]; // Splitting and getting the token part
+    const token: string | undefined = req.headers.authorization?.split(" ")[1]; // Get the token part from Authorization header
     if (!token) {
       throw new Error("Authentication failed!");
     }
-    const decodedToken: DecodedToken | undefined = jwt.verify(
-      token,
-      JWT_KEY
-    ) as DecodedToken | undefined;
+    
+    const decodedToken = jwt.verify(token, JWT_KEY) as DecodedToken;
     if (!decodedToken || typeof decodedToken.userId !== "string") {
       throw new Error("Invalid token payload!");
     }
+    
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (err) {

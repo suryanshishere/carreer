@@ -1,56 +1,14 @@
-[
-    {
-        "id": 1,
-        "name": "th1nkers",
-        "username": "th1nkers",
-        "email": "th1nker@gmail.com",
-        "password": "121!@sdfasdf121231241231SFDAafsdafs!@",
-        "saved_exam": [
-            {
-                "id": 1012,
-                "title": "Sample Result 4",
-                "detail_title": "Sample detail for Result 4",
-                "last_updated": "04/01/2024",
-                "category": "results",
-                "category_title": "Result"
-            },
-            {
-                "id": 2001,
-                "title": "Sample Admit Card 1",
-                "last_updated": "01/01/2024",
-                "category": "admit_cards",
-                "category_title": "Admit Card"
-            },
-            {
-                "id": 3003,
-                "title": "Sample Job 3",
-                "last_updated": "03/01/2024",
-                "category": "latest_jobs",
-                "category_title": "Latest Job"
-            },
-            {
-                "id": 4001,
-                "title": "Sample Answer Key 1",
-                "last_updated": "01/01/2024",
-                "category": "answer_keys",
-                "category_title": "Answer Key"
-            }
-        ],
-        "created_exam": [
-            {
-                "exam_id": "id of the exam, the user created"
-            }
-        ]
+{
+    "_id": {
+        "$oid": "66856e5b694c262e9ac9ac4f"
     },
-    {
-        "id": 2,
-        "name": "pri",
-        "username": "pri",
-        "email": "pri@gmail.com",
-        "password": "121!@sdfasdf121231241231SFDAafsdafs!@",
-        "saved_exam": [],
-        "created_exam": [
-            {}
-        ]
+    "name": "Suryansh",
+    "username": "suryansh",
+    "email": "heresuryanshsingh@gmail.com",
+    "password": "$2a$10$PEVO3XRjbVx8XoCwZ2exMunSskxmUfieizRjIiwt2lKOGTTryaeCu",
+    "created_at": {
+        "$date": {
+            "$numberLong": "1720020571941"
+        }
     }
-]
+}

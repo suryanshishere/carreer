@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import ExamDetail from "../../models/exam/detail";
-import ExamList, { IExamListDocument } from "../../models/exam/list";
+import ExamDetail from "../../models/exam/examDetail";
+import ExamList, { IExamListDocument } from "../../models/exam/examModel";
 import HttpError from "../../util/http-errors";
 import { Types } from "mongoose";
+import { getCategoryData, getExcludedData, hashStringToObjectId } from "./exams-helpers";
 
 export const getExam = async (
   req: Request,
@@ -17,15 +18,7 @@ export const getExam = async (
       const error = "No data found!";
       return next(new HttpError(error, 404));
     }
-
-    if (userid) {
-      const responseDataWithBookmark = responseData.map(
-        (exam: IExamListDocument) => addBookmarkToExam(exam, userid as string)
-      );
-      res.status(200).json(responseDataWithBookmark);
-    } else {
-      res.status(200).json(responseData);
-    }
+    res.status(200).json(responseData);
   } catch (err) {
     const error = new HttpError(
       "Fetching exams failed, please try again later.",
@@ -54,14 +47,7 @@ export const getCategoryExam = async (
         .json({ message: "No exams found for the specified category" });
     }
 
-    if (userid) {
-      const responseDataWithBookmark = responseData.map(
-        (exam: IExamListDocument) => addBookmarkToExam(exam, userid as string)
-      );
-      res.status(200).json(responseDataWithBookmark);
-    } else {
-      res.status(200).json(responseData);
-    }
+    res.status(200).json(responseData);
   } catch (err) {
     const error = new HttpError(
       "Fetching exam category failed, please try again later.",
@@ -76,21 +62,23 @@ export const getDetailByExamId = async (
   res: Response,
   next: NextFunction
 ) => {
-  const examId = req.params.examId;
+
+  // string is hash, taken first 24 of it's digit and search over the details
+  const examId = hashStringToObjectId(req.params.examId);
 
   try {
-    const examWithDetails = await ExamList.findById(examId).populate("detail");
+    const examWithDetails = await ExamDetail.findById(examId);
 
     if (!examWithDetails) {
       return next(new HttpError("Could not find an exam!", 404));
     }
 
-    if (!examWithDetails.detail) {
+    if (!examWithDetails) {
       return next(new HttpError("This exam does not have any details.", 404));
     }
-    
+
     // Now you have the exam details populated
-    res.json(examWithDetails.detail);
+    res.json(examWithDetails);
   } catch (err) {
     const error = new HttpError(
       "Fetching exam details failed, please try again later.",
@@ -98,29 +86,4 @@ export const getDetailByExamId = async (
     );
     return next(error);
   }
-};
-
-// helper function -----------------------------------
-
-const getExcludedData = (includeSavedUsers: boolean) => {
-  return includeSavedUsers
-    ? { detail_title: 0, detail: 0 }
-    : { detail_title: 0, detail: 0, saved_users: 0 };
-};
-
-const getCategoryData = (includeSavedUsers: boolean) => {
-  return includeSavedUsers
-    ? { category_title: 0 }
-    : { category_title: 0, saved_users: 0 };
-};
-
-const addBookmarkToExam = (exam: IExamListDocument, userid: string) => {
-  const objectId = new Types.ObjectId(userid);
-  const isSavedByUser = exam.saved_users.includes(objectId);
-  const examWithBookmark = {
-    ...exam.toObject(),
-    bookmarked: isSavedByUser,
-  };
-  delete examWithBookmark.saved_users;
-  return examWithBookmark;
 };

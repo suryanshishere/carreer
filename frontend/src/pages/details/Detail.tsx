@@ -9,7 +9,8 @@ import NotFound from "src/shared/pages/NotFound";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import "./Detail.css";
-import Bookmark from "src/shared/components/utils/Bookmark";
+import { formatWord } from "src/helpers/FormatWord";
+// import Bookmark from "src/shared/components/utils/Bookmark";
 // import DETAIL_PAGE from "src/db/exams/Details.json"
 
 const Detail = () => {
@@ -34,7 +35,6 @@ const Detail = () => {
           `${process.env.REACT_APP_BASE_URL}/category/${category}/${examId}`
         );
         const responseData: DetailPage = response.data as unknown as DetailPage;
-console.log(responseData)
         setLoadedExamDetail(responseData);
       } catch (err) {}
     };
@@ -56,17 +56,18 @@ console.log(responseData)
         <div className="w-full">
           <hr />
         </div>
-        {loadedExamDetail?.author || (
+        {loadedExamDetail?.created_by || (
           <div className="min-w-fit ml-2 flex items-center gap-1">
             <span className="mb-1">careergram</span>
             <FontAwesomeIcon
               style={{ color: "var(--color-green)" }}
               icon={faCircleCheck}
             />
-            <Bookmark itemId={examId} />
+            {/* <Bookmark itemId={examId} /> */}
           </div>
         )}
       </div>
+      <h3>{formatWord(examId)}</h3>
       {loadedExamDetail && (
         <DetailItem relatedDetailPage={loadedExamDetail.related_detail_page} />
       )}

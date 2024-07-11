@@ -9,12 +9,12 @@ const router = express.Router();
 
 router.use("/auth", authRoutes);
 
-router.use("/auth", verifyCheckAuthRoutes);
+// router.use("/auth", verifyCheckAuthRoutes);
 
 router.use(checkAuth);
 
-router.use("/", settingRoutes);
+// router.use("/", settingRoutes);
 
-router.use("/", accountExamsRoutes);
+// router.use("/", accountExamsRoutes);
 
 export default router;

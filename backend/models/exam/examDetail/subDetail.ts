@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import dateHandler from "../../helper/date-handler";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -16,13 +17,6 @@ export const valueItemSchema = new Schema(
   { _id: false }
 );
 
-// Helper function to normalize dates to midnight
-function normalizeToMidnight(date: Date) {
-  if (date instanceof Date) {
-    date.setHours(0, 0, 0, 0);
-  }
-  return date;
-}
 
 export const eligibilitySchema = new Schema(
   {
@@ -37,51 +31,51 @@ export const importantDatesSchema = new Schema(
     application_begin: {
       current_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
       previous_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
     },
     application_end: {
       current_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
       previous_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
     },
     form_fee_last_submission_date: {
       current_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
       previous_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
     },
     exam_date: {
       current_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
       previous_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
     },
     admit_card_availability: {
       current_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
       previous_year: {
         type: Date,
-        set: normalizeToMidnight,
+        set: dateHandler,
       },
     },
   },

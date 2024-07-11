@@ -1,29 +1,55 @@
 {
-  "_id": "66508a26e58afbff784536c1",
-  "author": "cool",
+  "_id": {
+    "$oid": "9b2764e1c7cf278d408fee55"
+  },
+  "created_by": {
+    "$oid": "662cb92afb29222f795f665e"
+  },
+  "created_at": {
+    "$date": {
+      "$numberLong": "1717053302015"
+    }
+  },
+  "last_updated": {
+    "$date": {
+      "$numberLong": "1717053302013"
+    }
+  },
   "related_detail_page": {
-    "name_of_the_post": ["value of the name_of_the_post detail"],
-    "last_updated": ["14 March 2024 | 01:00 AM"],
     "short_information": [
       "Bihar Public Service Commission (BPSC) Simultala Residential School, Jamui Secondary and Higher Secondary Teacher Recruitment 2024"
     ],
-    "job_type": ["Cool"],
-    "state_and_union_territory": ["state and union territory"],
-    "department": ["department"],
+    "job_type": [
+      "Cool"
+    ],
+    "state_and_union_territory": [
+      "state and union territory"
+    ],
+    "department": [
+      "department"
+    ],
     "eligibility": [
-      "value1", 
+      "value1",
       "value2",
       {
-        "minimum_qualification": ["graduate"],
+        "minimum_qualification": [
+          "graduate"
+        ],
         "other_qualification": [
           "Teachers appointed and working in Primary / Middle / Secondary / Higher Secondary schools of the state by Bihar."
         ]
       }
     ],
-    "syllabus": ["Science", "Mathematics", "Chemistry"],
-    "exam_duration": [3],
+    "syllabus": [
+      "Science",
+      "Mathematics",
+      "Chemistry"
+    ],
+    "exam_duration": [
+      3
+    ],
     "important_dates": [
-      "value1", 
+      "value1",
       "value2",
       {
         "application_begin": {
@@ -49,7 +75,7 @@
       }
     ],
     "application_fee": [
-      "value1", 
+      "value1",
       "value2",
       {
         "male": {
@@ -67,33 +93,45 @@
       }
     ],
     "age_criteria": [
-      "value1", 
+      "value1",
       "value2",
       {
         "minimum_age": 21,
         "maximum_age": 28,
-        "age_relaxation": ["As per rules"],
-        "other_age_limits": ["some other age limit"]
+        "age_relaxation": [
+          "As per rules"
+        ],
+        "other_age_limits": [
+          "some other age limit"
+        ]
       }
     ],
     "important_links": [
-      "value1", 
+      "value1",
       "value2",
       {
-        "apply_online": ["Link Activate 2024-03-20", "cool array"],
-        "download_notification": ["http://example.com/download_notification"],
-        "official_website": ["http://example.com/official_website"]
+        "apply_online": [
+          "Link Activate 2024-03-20",
+          "cool array"
+        ],
+        "download_notification": [
+          "http://example.com/download_notification"
+        ],
+        "official_website": [
+          "http://example.com/official_website"
+        ]
       }
     ],
     "vacancy": [
-      "value1", 
+      "value1",
       "value2",
       [
         {
           "post_name": "Assistant Manager (Electrical)",
           "total_post": 11,
           "post_eligibility": [
-            "BE / B.Tech Degree in Electrical OR Electrical & Electronics Engineering with Minimum 60% Marks"," For SC Candidates: 50% Marks."
+            "BE / B.Tech Degree in Electrical OR Electrical & Electronics Engineering with Minimum 60% Marks",
+            " For SC Candidates: 50% Marks."
           ]
         },
         {
@@ -105,13 +143,13 @@
         }
       ]
     ],
-    "applicants":[
+    "applicants": [
       {
         "number_of_applicant_each_year": 200000,
         "number_of_applicant_selected": 1200
       }
     ],
-    "exam_importance":[
+    "exam_importance": [
       {
         "toughness_ranking": 4
       }

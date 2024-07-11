@@ -63,8 +63,6 @@ export interface VacancyItem {
 }
 
 export interface RelatedDetailPage {
-  name_of_the_post: ValueItem[];
-  last_updated: ValueItem[];
   short_information: ValueItem[];
   job_type: ValueItem[];
   state_and_union_territory: ValueItem[];
@@ -80,7 +78,9 @@ export interface RelatedDetailPage {
 }
 
 export interface DetailPage {
-  _id?: string;
-  author: string;
+  _id: string;
+  created_by: string;
+  created_at: string;
+  last_updated: string;
   related_detail_page: RelatedDetailPage;
 }

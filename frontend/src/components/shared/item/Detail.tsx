@@ -9,6 +9,7 @@ interface DetailItemProps {
 }
 
 const DetailItem: React.FC<DetailItemProps> = ({ relatedDetailPage }) => {
+
   const renderValue = (value: any, key?: string) => {
     if (
       typeof value === "string" ||

@@ -1,9 +1,11 @@
 export interface ExamListItem {
   _id: string;
-  title: string;
-  detail_title?: string;
-  last_updated: string; 
+  name_of_the_post: string;
   category: string;
-  category_title: string;
-  bookmarked?: boolean;
+  application_begin: {
+    current_year: string;
+    previous_year: string;
+  };
 }
+
+//remember: name_of_the_post (exam_code treated) is hashed and treated as _id for the detail
