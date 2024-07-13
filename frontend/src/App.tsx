@@ -9,7 +9,7 @@ import { AuthContextProvider } from "./shared/context/auth-context";
 import Saved from "./user/pages/Saved";
 import Setting from "./user/pages/account/Setting";
 import Profile from "./user/pages/account/Profile";
-import { useAuth } from "./shared/hooks/auth";
+import  useAuth  from "./shared/hooks/auth";
 import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
 import Create from "./user/pages/account/Create";

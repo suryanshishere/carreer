@@ -1,16 +1,20 @@
 import React, { createContext, FC, useState } from "react";
-import { useAuth } from "../hooks/auth";
+import useAuth from "../hooks/auth";
 
 interface AuthContextValue {
   showAuth: boolean;
   isLoggedIn: boolean;
   userId: string | null;
   token: string | null;
-  login: (token: string, userId: string) => void;
+  login: (userId: string, token: string, tokenExpiration: string) => void;
   logout: () => void;
   showAuthHandler: (value: boolean) => void;
   logoutAndRefresh: () => void;
-  loginAndRefresh: (token: string, userId: string) => void;
+  loginAndRefresh: (
+    userId: string,
+    token: string,
+    tokenExpiration: string
+  ) => void;
 }
 
 export const AuthContext = createContext<AuthContextValue>({
@@ -39,22 +43,30 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
     setShowAuth(value);
   };
 
-  const loginHandler = (token: string, userId: string) => {
-    login(token, userId);
+  const loginHandler = (
+    userId: string,
+    token: string,
+    tokenExpiration: string
+  ) => {
+    login(userId, token, tokenExpiration);
   };
 
   const logoutHandler = () => {
     logout();
   };
 
-  const loginAndRefresh = (token: string, userId: string) => {
-    login(token, userId);
+  const loginAndRefresh = (
+    userId: string,
+    token: string,
+    tokenExpiration: string
+  ) => {
+    login(userId, token, tokenExpiration);
     window.location.reload();
   };
 
   const logoutAndRefresh = () => {
     logout();
-    window.location.reload(); 
+    window.location.reload();
   };
 
   const ctxValue: AuthContextValue = {

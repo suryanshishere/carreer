@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import HttpError from "../../../util/http-errors";
+import HttpError from "../../../utils/http-errors";
 
 const sendEmail = async (email: string, subject: string, text: string) => {
   try {

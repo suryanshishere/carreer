@@ -1,7 +1,7 @@
 import { IconButton } from "@mui/material";
 import React, { useEffect } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { useAuth } from "src/shared/hooks/auth";
+import useAuth  from "src/shared/hooks/auth";
 import { useHttpClient } from "src/shared/hooks/http";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "src/shared/store/reponse-ui-slice";

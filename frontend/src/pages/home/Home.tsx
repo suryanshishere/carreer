@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ExamListItem } from "../../models/exam/ListProps";
 import HomeListItem from "src/components/shared/item/HomeList";
 import { useHttpClient } from "src/shared/hooks/http";
-import { useAuth } from "src/shared/hooks/auth";
+import  useAuth  from "src/shared/hooks/auth";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "src/shared/store/reponse-ui-slice";
 import { formatWord } from "src/helpers/FormatWord";

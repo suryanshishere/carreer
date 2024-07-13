@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import HttpError from "../util/http-errors";
+import HttpError from "../utils/http-errors";
 
 let JWT_KEY: string = process.env.JWT_KEY || "";
 

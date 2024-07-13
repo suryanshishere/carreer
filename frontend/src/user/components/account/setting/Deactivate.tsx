@@ -6,7 +6,7 @@ import Error from "src/shared/components/uiElements/common/response/Response&Err
 import Loading from "src/shared/components/uiElements/common/response/Loading";
 import Para from "src/shared/components/uiElements/cover/Para";
 import { AuthContext } from "src/shared/context/auth-context";
-import { useAuth } from "src/shared/hooks/auth";
+import  useAuth  from "src/shared/hooks/auth";
 import { useHttpClient } from "src/shared/hooks/http";
 
 interface DeactivateProps {

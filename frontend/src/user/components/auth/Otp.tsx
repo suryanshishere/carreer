@@ -31,9 +31,9 @@ const Otp: React.FC<AuthProps> = ({
       );
       const responseData = response.data as unknown as {
         userId: string;
-        token: string;
+        token: string;tokenExpiration:string
       };
-      auth.login(responseData.userId, responseData.token);
+      auth.loginAndRefresh(responseData.userId, responseData.token, responseData.tokenExpiration);
       if (onClose) {
         onClose();
       }

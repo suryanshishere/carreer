@@ -4,7 +4,7 @@ import { ExamListItem } from "src/models/exam/ListProps";
 import CategoryItem from "src/components/shared/item/Category";
 import { useHttpClient } from "src/shared/hooks/http";
 import Filter from "src/shared/components/utils/Filter";
-import { useAuth } from "src/shared/hooks/auth";
+import  useAuth  from "src/shared/hooks/auth";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "src/shared/store/reponse-ui-slice";
 import NotFound from "src/shared/pages/NotFound";

@@ -3,7 +3,7 @@ import { AccountInfoData } from "../AccountInfo";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "src/shared/components/form/Button";
 import { useHttpClient } from "src/shared/hooks/http";
-import { useAuth } from "src/shared/hooks/auth";
+import  useAuth  from "src/shared/hooks/auth";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "src/shared/store/reponse-ui-slice";
 import AddIcon from "@mui/icons-material/Add";

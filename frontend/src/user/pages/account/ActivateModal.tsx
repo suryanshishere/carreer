@@ -6,7 +6,7 @@ import Loading from "src/shared/components/uiElements/common/response/Loading";
 import Para from "src/shared/components/uiElements/cover/Para";
 import Modal from "src/shared/components/uiElements/modal/Modal";
 import { AuthContext } from "src/shared/context/auth-context";
-import { useAuth } from "src/shared/hooks/auth";
+import  useAuth  from "src/shared/hooks/auth";
 import { useHttpClient } from "src/shared/hooks/http";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "src/shared/store/reponse-ui-slice";

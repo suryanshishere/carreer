@@ -37,8 +37,10 @@ const AuthComponent: React.FC<AuthProps> = ({
         responseData = response.data as unknown as {
           userId: string;
           token: string;
+          message: string;
+          tokenExpiration:string;
         };
-        auth.loginAndRefresh(responseData.userId, responseData.token);
+        auth.loginAndRefresh(responseData.userId, responseData.token, responseData.tokenExpiration);
         if (onClose) {
           onClose();
         }
@@ -60,16 +62,14 @@ const AuthComponent: React.FC<AuthProps> = ({
           userId: string;
           token: string;
           message: string;
+          tokenExpiration:string;
         };
 
-        if (signupOTP && signupDataForwardHandler) {
-          signupDataForwardHandler(formState.email.value, responseData.message);
-          signupOTP();
-        }
-        // auth.login(, responseData.token);
+        auth.loginAndRefresh(responseData.userId, responseData.token, responseData.tokenExpiration);
       }
     } catch (error) {}
   };
+
 
   return (
     <div className="authentication">

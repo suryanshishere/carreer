@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import HttpError from "../../util/http-errors";
+import HttpError from "../../utils/http-errors";
 import Admin from "../../models/admin/admin";
 
 // sending other data for form creation

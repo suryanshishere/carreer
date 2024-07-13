@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import ExamDetail from "../../models/exam/examDetail";
-import ExamList, { IExamListDocument } from "../../models/exam/examModel";
-import HttpError from "../../util/http-errors";
-import { Types } from "mongoose";
+import ExamDetail from "@models/exam/examDetail";
+import ExamList from "@models/exam/examModel";
+import HttpError from "../../utils/http-errors";
 import { getCategoryData, getExcludedData, hashStringToObjectId } from "./exams-helpers";
 
 export const getExam = async (

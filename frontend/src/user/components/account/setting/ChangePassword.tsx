@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loading from "src/shared/components/uiElements/common/response/Loading";
 import Error from "src/shared/components/uiElements/common/response/Response&Error";
 import Form, { FormSubmitHandler } from "../../auth/Form";
-import { useAuth } from "src/shared/hooks/auth";
+import useAuth  from "src/shared/hooks/auth";
 import { useHttpClient } from "src/shared/hooks/http";
 import "./ChangePassword.css";
 import { useDispatch } from "react-redux";
