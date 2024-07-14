@@ -1,4 +1,4 @@
-import 'module-alias/register';
+import "module-alias/register";
 import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -13,6 +13,7 @@ import ExamDetail from "./models/exam/examDetail";
 
 // Declare the type of MONGO_URL explicitly
 const MONGO_URL: string = process.env.DB || "";
+const LOCAL_HOST = process.env.LOCAL_HOST;
 
 const app = express();
 
@@ -30,7 +31,6 @@ app.use((req, res, next) => {
   throw error;
 });
 
-
 //httperror middleware use here to return a valid json error instead any html error page
 app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
   const statusCode = error.code || 500;
@@ -41,8 +41,8 @@ app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
 mongoose
   .connect(MONGO_URL)
   .then(() => {
-    app.listen(5050, () => {
-      console.log("Server is running on port 5050");
+    app.listen(Number(LOCAL_HOST), () => {
+      console.log(`Server is running on port ${LOCAL_HOST}`);
     });
   })
   .catch((err) => console.log(err));

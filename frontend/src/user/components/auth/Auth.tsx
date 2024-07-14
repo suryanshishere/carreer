@@ -38,7 +38,7 @@ const AuthComponent: React.FC<AuthProps> = ({
           message: string;
           tokenExpiration: string;
         };
-        
+
         auth.loginAndRefresh(
           responseData.userId,
           responseData.token,

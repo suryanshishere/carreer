@@ -40,7 +40,6 @@ const Home: React.FC = () => {
     fetchPlaces();
   }, [sendRequest, userId]);
 
-  console.log(loadedExam)
 
   // Define an object to map categories to their respective filtered data and titles
   const filteredData: {

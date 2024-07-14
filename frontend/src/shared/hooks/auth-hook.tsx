@@ -7,6 +7,7 @@ interface AuthData {
 }
 
 const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
+const EXPIRE_MESSAGE = "Your session has expired. Please log in again.";
 
 const useAuth = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -14,7 +15,6 @@ const useAuth = () => {
   const [tokenExpirationDate, setTokenExpirationDate] = useState<Date | null>(
     null
   );
-
   let logoutTimer: ReturnType<typeof setTimeout>;
 
   const login = useCallback(
@@ -25,14 +25,7 @@ const useAuth = () => {
         ? new Date(expirationDate)
         : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY));
       setTokenExpirationDate(newTokenExpirationDate);
-      localStorage.setItem(
-        "userData",
-        JSON.stringify({
-          userId: uid,
-          token: token,
-          expiration: newTokenExpirationDate.toISOString(),
-        })
-      );
+      userDataHandler(uid, token, newTokenExpirationDate.toISOString());
       localStorage.removeItem("logoutMessage");
     },
     []
@@ -43,27 +36,45 @@ const useAuth = () => {
     setTokenExpirationDate(null);
     setUserId(null);
     localStorage.removeItem("userData");
-    localStorage.setItem(
-      "logoutMessage",
-      "Session expired, re-login to continue"
-    );
+    removeSessionExpireMsg();
     clearTimeout(logoutTimer);
   }, []);
 
+  // if time expire, logout automatically
   useEffect(() => {
-    if (token && tokenExpirationDate) {
+    // Get expiration date directly from localStorage
+    const expirationData = localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData") || "{}").expiration
+      : null;
+
+    const localExpirationDate = expirationData
+      ? new Date(expirationData)
+      : null;
+
+    let logoutTimer: NodeJS.Timeout | null = null;
+    const handleLogout = () => {
+      logout();
+      setSessionExpireMsg(EXPIRE_MESSAGE);
+    };
+
+    if (
+      localExpirationDate instanceof Date &&
+      !isNaN(localExpirationDate.getTime())
+    ) {
       const remainingTime =
-        tokenExpirationDate.getTime() - new Date().getTime();
+        localExpirationDate.getTime() - new Date().getTime();
+
       if (remainingTime <= 0) {
-        logout();
+        handleLogout();
       } else {
-        logoutTimer = setTimeout(logout, remainingTime);
+        logoutTimer = setTimeout(handleLogout, remainingTime);
       }
     } else {
-      clearTimeout(logoutTimer);
+      clearTimeout(logoutTimer as unknown as NodeJS.Timeout);
     }
   }, [token, logout, tokenExpirationDate]);
 
+  // after login, the immediate effect seen
   useEffect(() => {
     const storedDataJSON = localStorage.getItem("userData");
     if (storedDataJSON) {
@@ -73,16 +84,9 @@ const useAuth = () => {
         storedData.token &&
         new Date(storedData.expiration) > new Date()
       ) {
-        login(
-          storedData.userId,
-          storedData.token,
-          storedData.expiration // Pass expiration string as-is
-        );
+        login(storedData.userId, storedData.token, storedData.expiration);
       } else if (new Date(storedData.expiration) <= new Date()) {
-        localStorage.setItem(
-          "logoutMessage",
-          "Session expired, re-login to continue"
-        );
+        setSessionExpireMsg(EXPIRE_MESSAGE);
         logout();
       }
     }
@@ -92,3 +96,37 @@ const useAuth = () => {
 };
 
 export default useAuth;
+
+//local storage handling for the above purpose
+
+function setSessionExpireMsg(sessionExpireMsg: string) {
+  const workerDataJSON = localStorage.getItem("workerData");
+  let workerData: { [key: string]: any } = {};
+
+  if (workerDataJSON) {
+    workerData = JSON.parse(workerDataJSON);
+  }
+
+  workerData.sessionExpireMsg = sessionExpireMsg;
+  localStorage.setItem("workerData", JSON.stringify(workerData));
+}
+
+const removeSessionExpireMsg = () => {
+  const workerDataJSON = localStorage.getItem("workerData");
+  if (workerDataJSON) {
+    const workerData = JSON.parse(workerDataJSON);
+    delete workerData.sessionExpireMsg; // Remove the specific key-value pair
+    localStorage.setItem("workerData", JSON.stringify(workerData));
+  }
+};
+
+function userDataHandler(userId: string, token: string, expiration: string) {
+  localStorage.setItem(
+    "userData",
+    JSON.stringify({
+      userId,
+      token,
+      expiration,
+    })
+  );
+}
