@@ -1,7 +1,7 @@
 import React from "react";
-import { Date, Input, TextArea } from "src/shared/components/form/input/Input";
-import { useAdminExamData } from "src/db/admin/AdminExamData";
-import { Dropdown } from "src/shared/components/form/input/Dropdown";
+import { Date, Input, TextArea } from "shared/components/form/input/Input";
+import { useAdminExamData } from "db/admin/AdminExamData";
+import { Dropdown } from "shared/components/form/input/Dropdown";
 
 const DirectForm = () => {
   const {

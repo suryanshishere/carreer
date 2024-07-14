@@ -2,9 +2,9 @@
   "compilerOptions": {
     "target": "es5",
     "downlevelIteration": true,
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "@mui/*": ["node_modules/@mui/*"]
+      // "@general/*": ["general/*"],
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -21,5 +21,11 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "postcss.config.js"]
+  "include": ["src", "postcss.config.js"],
+  "paths": {
+    "@models/*": ["models/*"],
+    "@controllers/*": ["controllers/*"],
+    "@routes/*": ["routes/*"],
+    "@utils/*": ["utils/*"]
+  }
 }

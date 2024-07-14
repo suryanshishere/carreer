@@ -1,9 +1,9 @@
 import React from "react";
-import Error from "src/shared/components/uiElements/common/response/Response&Error";
-import Loading from "src/shared/components/uiElements/common/response/Loading";
-import { useHttpClient } from "src/shared/hooks/http";
-import Form, { FormSubmitHandler } from "src/user/components/auth/Form";
-import { AuthProps } from "src/user/pages/auth/Auth";
+import Error from "shared/components/uiElements/common/response/Response&Error";
+import Loading from "shared/components/uiElements/common/response/Loading";
+import { useHttpClient } from "shared/hooks/http-hook";
+import Form, { FormSubmitHandler } from "user/components/auth/Form";
+import { AuthProps } from "user/pages/auth/Auth";
 
 const ForgotPassword: React.FC<AuthProps> = ({
   resetPasswordClicked,

@@ -1,17 +1,15 @@
 import React, { useContext } from "react";
-import { AuthContext } from "src/shared/context/auth-context";
-import { useHttpClient } from "src/shared/hooks/http";
+import { AuthContext } from "shared/context/auth-context";
+import { useHttpClient } from "shared/hooks/http-hook";
 import Form, { FormSubmitHandler } from "./Form";
-import Loading from "src/shared/components/uiElements/common/response/Loading";
-import Error from "src/shared/components/uiElements/common/response/Response&Error";
-import { AuthProps } from "src/user/pages/auth/Auth";
+import Loading from "shared/components/uiElements/common/response/Loading";
+import Error from "shared/components/uiElements/common/response/Response&Error";
+import { AuthProps } from "user/pages/auth/Auth";
 import "./Auth.css";
 
 const AuthComponent: React.FC<AuthProps> = ({
   forgotPasswordClicked,
-  signupOTP,
   onClose,
-  signupDataForwardHandler,
 }) => {
   const auth = useContext(AuthContext);
 
@@ -38,9 +36,14 @@ const AuthComponent: React.FC<AuthProps> = ({
           userId: string;
           token: string;
           message: string;
-          tokenExpiration:string;
+          tokenExpiration: string;
         };
-        auth.loginAndRefresh(responseData.userId, responseData.token, responseData.tokenExpiration);
+        
+        auth.loginAndRefresh(
+          responseData.userId,
+          responseData.token,
+          responseData.tokenExpiration
+        );
         if (onClose) {
           onClose();
         }
@@ -62,14 +65,17 @@ const AuthComponent: React.FC<AuthProps> = ({
           userId: string;
           token: string;
           message: string;
-          tokenExpiration:string;
+          tokenExpiration: string;
         };
 
-        auth.loginAndRefresh(responseData.userId, responseData.token, responseData.tokenExpiration);
+        auth.loginAndRefresh(
+          responseData.userId,
+          responseData.token,
+          responseData.tokenExpiration
+        );
       }
     } catch (error) {}
   };
-
 
   return (
     <div className="authentication">

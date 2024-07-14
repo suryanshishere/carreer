@@ -1,8 +1,8 @@
 import React from "react";
-import { RelatedDetailPage } from "src/models/exam/DetailProps";
-import { formatWord } from "src/helpers/FormatWord";
+import { RelatedDetailPage } from "models/exam/DetailProps";
+import { formatWord } from "shared/utils/FormatWord";
 import "./Detail.css";
-import Table from "src/shared/components/dataVisualization/Table";
+import Table from "shared/components/dataVisualization/Table";
 
 interface DetailItemProps {
   relatedDetailPage: RelatedDetailPage;

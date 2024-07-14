@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { AuthContext } from "src/shared/context/auth-context";
-import AccNavList from "src/user/components/account/AccNavList";
-import Auth from "src/user/pages/auth/Auth";
+import { AuthContext } from "shared/context/auth-context";
+import AccNavList from "user/components/account/AccNavList";
+import Auth from "user/pages/auth/Auth";
 import Modal from "../../shared/components/uiElements/modal/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import NAV from "src/db/nav/Nav.json";
+import NAV from "db/nav/Nav.json";
 import "./Navlinks.css";
 
 const Navlinks: React.FC = () => {

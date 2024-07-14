@@ -1,13 +1,13 @@
 import React, { useState, ChangeEvent } from "react";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { formatWord } from "src/helpers/FormatWord";
+import { formatWord } from "shared/utils/FormatWord";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { IconButton, TextField } from "@mui/material";
-import { CodeItem } from "src/models/admin/AdminExamProps";
+import { CodeItem } from "models/admin/AdminExamProps";
 import Button from "../Button";
 import "./Input.css";
 

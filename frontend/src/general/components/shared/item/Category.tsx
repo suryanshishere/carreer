@@ -1,8 +1,8 @@
 import React from "react";
-import { ExamListItem } from "../../../models/exam/ListProps";
-import Pagination from "src/shared/components/utils/Pagination";
-import { usePagination } from "src/shared/hooks/pagination";
-import List from "src/shared/components/uiElements/List";
+import { ExamListItem } from "models/exam/ListProps";
+import Pagination from "shared/components/utils/Pagination";
+import { usePagination } from "shared/hooks/pagination-hook";
+import List from "shared/components/uiElements/List";
 import "./Category.css";
 
 interface CategoryItemProps {

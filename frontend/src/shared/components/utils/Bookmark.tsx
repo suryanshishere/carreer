@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { useHttpClient } from "../../hooks/http";
-import  useAuth from "../../hooks/auth";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
+import { useHttpClient } from "../../hooks/http-hook";
+import  useAuth from "../../hooks/auth-hook";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { IconButton } from "@mui/material";

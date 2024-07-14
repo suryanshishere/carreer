@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import Button from "src/shared/components/form/Button";
-import { Input } from "src/shared/components/form/input/Input";
-import Error from "src/shared/components/uiElements/common/response/Response&Error";
-import Loading from "src/shared/components/uiElements/common/response/Loading";
-import Para from "src/shared/components/uiElements/cover/Para";
-import Modal from "src/shared/components/uiElements/modal/Modal";
-import { AuthContext } from "src/shared/context/auth-context";
-import  useAuth  from "src/shared/hooks/auth";
-import { useHttpClient } from "src/shared/hooks/http";
+import Button from "shared/components/form/Button";
+import { Input } from "shared/components/form/input/Input";
+import Error from "shared/components/uiElements/common/response/Response&Error";
+import Loading from "shared/components/uiElements/common/response/Loading";
+import Para from "shared/components/uiElements/cover/Para";
+import Modal from "shared/components/uiElements/modal/Modal";
+import { AuthContext } from "shared/context/auth-context";
+import  useAuth  from "shared/hooks/auth-hook";
+import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
 
 const ActivateModal = () => {
   const { token, userId } = useAuth();

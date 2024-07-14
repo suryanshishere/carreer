@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 interface AuthData {
   userId: string;
   token: string;
-  expiration: string; // Keep expiration as string for initial storage
+  expiration: string;
 }
+
+const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
 
 const useAuth = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -19,18 +21,19 @@ const useAuth = () => {
     (uid: string, token: string, expirationDate?: string) => {
       setToken(token);
       setUserId(uid);
-      const newTokenExpirationDate =
-        expirationDate ? new Date(expirationDate) : new Date(new Date().getTime() + 1000 * 60 * 60);
+      const newTokenExpirationDate = expirationDate
+        ? new Date(expirationDate)
+        : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY));
       setTokenExpirationDate(newTokenExpirationDate);
       localStorage.setItem(
-        'userData',
+        "userData",
         JSON.stringify({
           userId: uid,
           token: token,
           expiration: newTokenExpirationDate.toISOString(),
         })
       );
-      localStorage.removeItem('logoutMessage');
+      localStorage.removeItem("logoutMessage");
     },
     []
   );
@@ -39,10 +42,10 @@ const useAuth = () => {
     setToken(null);
     setTokenExpirationDate(null);
     setUserId(null);
-    localStorage.removeItem('userData');
+    localStorage.removeItem("userData");
     localStorage.setItem(
-      'logoutMessage',
-      'Session expired, re-login to continue'
+      "logoutMessage",
+      "Session expired, re-login to continue"
     );
     clearTimeout(logoutTimer);
   }, []);
@@ -62,7 +65,7 @@ const useAuth = () => {
   }, [token, logout, tokenExpirationDate]);
 
   useEffect(() => {
-    const storedDataJSON = localStorage.getItem('userData');
+    const storedDataJSON = localStorage.getItem("userData");
     if (storedDataJSON) {
       const storedData: AuthData = JSON.parse(storedDataJSON);
       if (
@@ -77,8 +80,8 @@ const useAuth = () => {
         );
       } else if (new Date(storedData.expiration) <= new Date()) {
         localStorage.setItem(
-          'logoutMessage',
-          'Session expired, re-login to continue'
+          "logoutMessage",
+          "Session expired, re-login to continue"
         );
         logout();
       }

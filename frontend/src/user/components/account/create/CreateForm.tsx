@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "src/shared/components/form/Button";
+import Button from "shared/components/form/Button";
 import CreateFormOther, {
   AgeCriteria,
   ApplicationFormFee,

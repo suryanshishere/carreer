@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Input } from "src/shared/components/form/input/Input";
-import Button from "src/shared/components/form/Button";
+import { Input } from "shared/components/form/input/Input";
+import Button from "shared/components/form/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import "./Form.css";

@@ -1,4 +1,4 @@
-import { ExamListItem } from "src/models/exam/ListProps";
+import { ExamListItem } from "models/exam/ListProps";
 import { useEffect, useState } from "react";
 
 export const usePagination = (data: ExamListItem[]) => {

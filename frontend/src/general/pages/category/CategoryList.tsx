@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ExamListItem } from "src/models/exam/ListProps";
-import CategoryItem from "src/components/shared/item/Category";
-import { useHttpClient } from "src/shared/hooks/http";
-import Filter from "src/shared/components/utils/Filter";
-import  useAuth  from "src/shared/hooks/auth";
+import { ExamListItem } from "models/exam/ListProps";
+import CategoryItem from "general/components/shared/item/Category";
+import { useHttpClient } from "shared/hooks/http-hook";
+import Filter from "shared/components/utils/Filter";
+import  useAuth  from "shared/hooks/auth-hook";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
-import NotFound from "src/shared/pages/NotFound";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
+import NotFound from "shared/pages/NotFound";
 import "./CategoryList.css";
 
 const CategoryList: React.FC = () => {

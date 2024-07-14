@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { DetailPage } from "src/models/exam/DetailProps";
-import DetailItem from "src/components/shared/item/Detail";
-import { useHttpClient } from "src/shared/hooks/http";
+import { DetailPage } from "models/exam/DetailProps";
+import DetailItem from "general/components/shared/item/Detail";
+import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
-import NotFound from "src/shared/pages/NotFound";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
+import NotFound from "shared/pages/NotFound";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import "./Detail.css";
-import { formatWord } from "src/helpers/FormatWord";
+import { formatWord } from "shared/utils/FormatWord";
 // import Bookmark from "src/shared/components/utils/Bookmark";
 // import DETAIL_PAGE from "src/db/exams/Details.json"
 

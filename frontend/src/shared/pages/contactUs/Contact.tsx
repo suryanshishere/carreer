@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useHttpClient } from "../../hooks/http";
+import { useHttpClient } from "../../hooks/http-hook";
 import Button from "../../components/form/Button";
 import Modal from "../../components/uiElements/modal/Modal";
 import Form from "./Form";

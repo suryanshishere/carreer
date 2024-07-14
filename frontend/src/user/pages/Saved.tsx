@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import SavedItem from "../components/item/SavedItem";
-import { useHttpClient } from "src/shared/hooks/http";
-import { ExamListItem } from "src/models/exam/ListProps";
-import  useAuth  from "src/shared/hooks/auth";
+import { useHttpClient } from "shared/hooks/http-hook";
+import { ExamListItem } from "models/exam/ListProps";
+import  useAuth  from "shared/hooks/auth-hook";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
 import "./Saved.css";
-import Filter from "src/shared/components/utils/Filter";
+import Filter from "shared/components/utils/Filter";
 
 const Saved = () => {
   const { sendRequest, clearError, isLoading, error } = useHttpClient();

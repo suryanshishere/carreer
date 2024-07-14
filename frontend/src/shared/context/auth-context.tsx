@@ -1,5 +1,5 @@
 import React, { createContext, FC, useState } from "react";
-import useAuth from "../hooks/auth";
+import useAuth from "../hooks/auth-hook";
 
 interface AuthContextValue {
   showAuth: boolean;

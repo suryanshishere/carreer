@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ExamListItem } from "src/models/exam/ListProps";
-import Card from "src/shared/components/uiElements/cover/Card";
+import { ExamListItem } from "models/exam/ListProps";
+import Card from "shared/components/uiElements/cover/Card";
 // import Bookmark from "src/shared/components/utils/Bookmark";
-import SampleLoad from "src/shared/components/uiElements/common/SampleLoad";
+import SampleLoad from "shared/components/uiElements/common/SampleLoad";
 import "./HomeList.css";
-import { formatWord } from "src/helpers/FormatWord";
+import { formatWord } from "shared/utils/FormatWord";
 // import Tag from "src/shared/components/uiElements/common/Tag";
 
 interface HomeListItemProps {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { ExamListItem } from "src/models/exam/ListProps";
-import List from "src/shared/components/uiElements/List";
-import Pagination from "src/shared/components/utils/Pagination";
-import { usePagination } from "src/shared/hooks/pagination";
-import Para from "src/shared/components/uiElements/cover/Para";
+import { ExamListItem } from "models/exam/ListProps";
+import List from "shared/components/uiElements/List";
+import Pagination from "shared/components/utils/Pagination";
+import { usePagination } from "shared/hooks/pagination-hook";
+import Para from "shared/components/uiElements/cover/Para";
 import "./SavedItem.css";
 
 interface SavedProps {

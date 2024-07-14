@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { ExamListItem } from "src/models/exam/ListProps";
+import { ExamListItem } from "models/exam/ListProps";
 import { Skeleton } from "@mui/material";
 import "./Filter.css";
 

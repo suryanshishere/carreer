@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Para from "src/shared/components/uiElements/cover/Para";
+import Para from "shared/components/uiElements/cover/Para";
 import "./NotFound.css";
 
 interface NotFoundProps {

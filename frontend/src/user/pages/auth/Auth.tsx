@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import ForgotPassword from "../../components/auth/ForgotPassword";
 import ResetPassword from "../../components/auth/ResetPassword";
-import Otp from "src/user/components/auth/Otp";
-import AuthComponent from "src/user/components/auth/Auth";
+import Otp from "user/components/auth/Otp";
+import AuthComponent from "user/components/auth/Auth";
 
 enum AuthState {
   LOGIN,

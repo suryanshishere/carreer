@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { AccountInfoData } from "../AccountInfo";
 import EditIcon from "@mui/icons-material/Edit";
-import Button from "src/shared/components/form/Button";
-import { useHttpClient } from "src/shared/hooks/http";
-import  useAuth  from "src/shared/hooks/auth";
+import Button from "shared/components/form/Button";
+import { useHttpClient } from "shared/hooks/http-hook";
+import  useAuth  from "shared/hooks/auth-hook";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
-import { formatWord } from "src/helpers/FormatWord";
+import { formatWord } from "shared/utils/FormatWord";
 
 interface AccountInfoFormProps {
   accountInfoData: AccountInfoData;

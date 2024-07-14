@@ -3,7 +3,7 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
 import Para from "../../cover/Para";
 import "./Response&Error.css";
 

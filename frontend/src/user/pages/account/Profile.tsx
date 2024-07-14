@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Box from "src/shared/components/uiElements/cover/Box";
-import ACCOUNT_PROFILE from "src/db/account/AccountProfile.json";
+import Box from "shared/components/uiElements/cover/Box";
+import ACCOUNT_PROFILE from "db/account/AccountProfile.json";
 import "./Profile.css";
 
 const Profile = () => {

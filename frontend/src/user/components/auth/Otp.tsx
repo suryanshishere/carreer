@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { useHttpClient } from "src/shared/hooks/http";
+import { useHttpClient } from "shared/hooks/http-hook";
 import Form, { FormSubmitHandler } from "./Form";
-import Loading from "src/shared/components/uiElements/common/response/Loading";
-import Error from "src/shared/components/uiElements/common/response/Response&Error";
-import { AuthProps } from "src/user/pages/auth/Auth";
-import { AuthContext } from "src/shared/context/auth-context";
-import Para from "src/shared/components/uiElements/cover/Para";
+import Loading from "shared/components/uiElements/common/response/Loading";
+import Error from "shared/components/uiElements/common/response/Response&Error";
+import { AuthProps } from "user/pages/auth/Auth";
+import { AuthContext } from "shared/context/auth-context";
+import Para from "shared/components/uiElements/cover/Para";
 
 const Otp: React.FC<AuthProps> = ({
   signupData,

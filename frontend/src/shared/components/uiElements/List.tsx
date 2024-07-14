@@ -1,11 +1,11 @@
 import React from "react";
 // import Bookmark from "../utils/Bookmark";
 import { Link } from "react-router-dom";
-import { ExamListItem } from "src/models/exam/ListProps";
+import { ExamListItem } from "models/exam/ListProps";
 import Delete from "../utils/Delete";
 import SampleLoad from "./common/SampleLoad";
 import "./List.css";
-import { formatWord } from "src/helpers/FormatWord";
+import { formatWord } from "shared/utils/FormatWord";
 
 interface ListProps {
   currentRecords: ExamListItem[];

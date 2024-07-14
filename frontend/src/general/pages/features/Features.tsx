@@ -1,8 +1,8 @@
 import React from "react";
 import "./Features.css";
-import Response from "src/shared/components/uiElements/common/response/Response";
+import Response from "shared/components/uiElements/common/response/Response";
 import { useSelector } from "react-redux";
-import { RootState } from "src/shared/store";
+import { RootState } from "shared/store";
 
 const Features = () => {
   const error = useSelector((state: RootState) => state.response.error);

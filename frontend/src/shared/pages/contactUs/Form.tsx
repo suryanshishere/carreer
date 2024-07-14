@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
-import Button from "src/shared/components/form/Button";
-import { Input, TextArea } from "src/shared/components/form/input/Input";
+import Button from "shared/components/form/Button";
+import { Input, TextArea } from "shared/components/form/input/Input";
 import "./Form.css";
 
 interface FormProps {

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { AdminExamProps } from "src/models/admin/AdminExamProps";
-import  useAuth  from "src/shared/hooks/auth";
-import { useHttpClient } from "src/shared/hooks/http";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
+import { AdminExamProps } from "models/admin/AdminExamProps";
+import  useAuth  from "shared/hooks/auth-hook";
+import { useHttpClient } from "shared/hooks/http-hook";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
 
 export const useAdminExamData = () => {
   const { sendRequest, error, isLoading } = useHttpClient();

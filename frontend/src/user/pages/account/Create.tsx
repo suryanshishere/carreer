@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { DetailPage, RelatedDetailPage } from "src/models/exam/DetailProps";
-import  useAuth  from "src/shared/hooks/auth";
-import { useHttpClient } from "src/shared/hooks/http";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
-import CreateForm from "src/user/components/account/create/CreateForm";
+import { DetailPage, RelatedDetailPage } from "models/exam/DetailProps";
+import  useAuth  from "shared/hooks/auth-hook";
+import { useHttpClient } from "shared/hooks/http-hook";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
+import CreateForm from "user/components/account/create/CreateForm";
 
 const Create: React.FC = () => {
   const { userId, token } = useAuth();

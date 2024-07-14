@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Loading from "src/shared/components/uiElements/common/response/Loading";
-import Error from "src/shared/components/uiElements/common/response/Response&Error";
+import Loading from "shared/components/uiElements/common/response/Loading";
+import Error from "shared/components/uiElements/common/response/Response&Error";
 import Form, { FormSubmitHandler } from "../../auth/Form";
-import useAuth  from "src/shared/hooks/auth";
-import { useHttpClient } from "src/shared/hooks/http";
+import useAuth  from "shared/hooks/auth-hook";
+import { useHttpClient } from "shared/hooks/http-hook";
 import "./ChangePassword.css";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
 
 interface ChangePasswordProps {
   onMsg: (msg: string) => void;

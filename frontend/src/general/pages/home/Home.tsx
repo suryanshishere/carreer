@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ExamListItem } from "../../models/exam/ListProps";
-import HomeListItem from "src/components/shared/item/HomeList";
-import { useHttpClient } from "src/shared/hooks/http";
-import  useAuth  from "src/shared/hooks/auth";
+import { ExamListItem } from "models/exam/ListProps";
+import HomeListItem from "general/components/shared/item/HomeList";
+import { useHttpClient } from "shared/hooks/http-hook";
+import  useAuth  from "shared/hooks/auth-hook";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "src/shared/store/reponse-ui-slice";
-import { formatWord } from "src/helpers/FormatWord";
-import { useAdminExamData } from "src/db/admin/AdminExamData";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { formatWord } from "shared/utils/FormatWord";
+import { useAdminExamData } from "db/admin/AdminExamData";
 import "./Home.css";
 
 const Home: React.FC = () => {

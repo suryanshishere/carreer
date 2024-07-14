@@ -1,5 +1,5 @@
 import React from "react";
-import nav_logo from "src/assets/shared/nav/logo.svg";
+import nav_logo from "db/assets/shared/nav/logo.svg";
 import Navlinks from "./Navlinks";
 import "./Main.css";
 

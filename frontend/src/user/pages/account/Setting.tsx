@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Box from "src/shared/components/uiElements/cover/Box";
-import ACCOUNT_SETTING from "src/db/account/AccountSetting.json";
-import ChangePassword from "src/user/components/account/setting/ChangePassword";
-import AccountInfo from "src/user/components/account/setting/AccountInfo";
-import Deactivate from "src/user/components/account/setting/Deactivate";
-import Para from "src/shared/components/uiElements/cover/Para";
+import Box from "shared/components/uiElements/cover/Box";
+import ACCOUNT_SETTING from "db/account/AccountSetting.json";
+import ChangePassword from "user/components/account/setting/ChangePassword";
+import AccountInfo from "user/components/account/setting/AccountInfo";
+import Deactivate from "user/components/account/setting/Deactivate";
+import Para from "shared/components/uiElements/cover/Para";
 import "./Setting.css";
 
 const Setting = () => {
