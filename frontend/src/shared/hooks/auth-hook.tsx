@@ -26,7 +26,7 @@ const useAuth = () => {
         : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY));
       setTokenExpirationDate(newTokenExpirationDate);
       userDataHandler(uid, token, newTokenExpirationDate.toISOString());
-      localStorage.removeItem("logoutMessage");
+      removeSessionExpireMsg();
     },
     []
   );
@@ -36,12 +36,27 @@ const useAuth = () => {
     setTokenExpirationDate(null);
     setUserId(null);
     localStorage.removeItem("userData");
-    removeSessionExpireMsg();
+    removeSessionExpireMsg(); //coz, no need if you log out manually
     clearTimeout(logoutTimer);
   }, []);
 
-  // if time expire, logout automatically
+  // Effect to handle automatic logout when the token expires
   useEffect(() => {
+    const storedDataJSON = localStorage.getItem("userData");
+    if (storedDataJSON) {
+      const storedData: AuthData = JSON.parse(storedDataJSON);
+      if (
+        storedData &&
+        storedData.token &&
+        new Date(storedData.expiration) > new Date()
+      ) {
+        login(storedData.userId, storedData.token, storedData.expiration);
+      } else if (new Date(storedData.expiration) <= new Date()) {
+        setSessionExpireMsg(EXPIRE_MESSAGE);
+        logout();
+      }
+    }
+
     // Get expiration date directly from localStorage
     const expirationData = localStorage.getItem("userData")
       ? JSON.parse(localStorage.getItem("userData") || "{}").expiration
@@ -72,25 +87,7 @@ const useAuth = () => {
     } else {
       clearTimeout(logoutTimer as unknown as NodeJS.Timeout);
     }
-  }, [token, logout, tokenExpirationDate]);
-
-  // after login, the immediate effect seen
-  useEffect(() => {
-    const storedDataJSON = localStorage.getItem("userData");
-    if (storedDataJSON) {
-      const storedData: AuthData = JSON.parse(storedDataJSON);
-      if (
-        storedData &&
-        storedData.token &&
-        new Date(storedData.expiration) > new Date()
-      ) {
-        login(storedData.userId, storedData.token, storedData.expiration);
-      } else if (new Date(storedData.expiration) <= new Date()) {
-        setSessionExpireMsg(EXPIRE_MESSAGE);
-        logout();
-      }
-    }
-  }, [login, logout]);
+  }, []);
 
   return { token, userId, login, logout };
 };

@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { useHttpClient } from "shared/hooks/http-hook";
 import Form, { FormSubmitHandler } from "./Form";
-import Loading from "shared/components/uiElements/common/response/Loading";
-import Error from "shared/components/uiElements/common/response/Response&Error";
+import Loading from "shared/components/feedback/response/Loading";
+import Error from "shared/components/feedback/response/Response";
 import { AuthProps } from "user/pages/auth/Auth";
 import { AuthContext } from "shared/context/auth-context";
 import Para from "shared/components/uiElements/cover/Para";

@@ -42,7 +42,6 @@ export const useAdminExamData = () => {
         );
         const responseData: AdminExamProps =
           response.data as unknown as AdminExamProps;
-          console.log(responseData)
         setExamData(responseData);
       } catch (err) {}
     };

@@ -20,11 +20,11 @@ const responseUISlice = createSlice({
       state.isLoading = action.payload;
     },
 
-    clearResponse(state){
+    clearResponse(state) {
       state.isLoading = false;
       state.error = null;
       state.responseMsg = null;
-    }
+    },
   },
 });
 

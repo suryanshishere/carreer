@@ -14,6 +14,7 @@ const Loading: React.FC<LoadingProps> = ({
 }) => {
   const [delayed, setDelayed] = useState(true);
 
+  // not immediately starting loading if the load time got to less than 1sec.
   useEffect(() => {
     const timer = setTimeout(() => {
       setDelayed(false);

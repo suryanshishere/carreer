@@ -159,8 +159,6 @@ export const signup = async (
     }
 
     return res.status(201).json({
-      message:
-        "Account created successfully. Verification link sent to your email.",
       email: user.email,
       userId: user.id,
       token,
@@ -262,7 +260,6 @@ export const login = async (
     }
 
     res.status(200).json({
-      message: "Login successful.",
       userId: existingUser.id,
       token,
       emailVerified: existingUser.isEmailVerified,

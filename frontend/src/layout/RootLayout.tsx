@@ -4,11 +4,11 @@ import MainNavigation from "./navigation/Main";
 import Footer from "./footer/Footer";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import Loading from "shared/components/uiElements/common/response/Loading";
+import Loading from "shared/components/feedback/response/Loading";
 import Features from "general/pages/features/Features";
 import "./RootLayout.css";
 
-const Layout: React.FC = () => {
+const RootLayout: React.FC = () => {
   const isLoading = useSelector((state: RootState) => state.response.isLoading);
 
   return (
@@ -26,4 +26,4 @@ const Layout: React.FC = () => {
   );
 };
 
-export default Layout;
+export default RootLayout;

@@ -1,6 +1,6 @@
 import React from "react";
-import Error from "shared/components/uiElements/common/response/Response&Error";
-import Loading from "shared/components/uiElements/common/response/Loading";
+import Error from "shared/components/feedback/response/Response";
+import Loading from "shared/components/feedback/response/Loading";
 import { useHttpClient } from "shared/hooks/http-hook";
 import Form, { FormSubmitHandler } from "user/components/auth/Form";
 import { AuthProps } from "user/pages/auth/Auth";
