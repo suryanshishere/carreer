@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { DetailPage, RelatedDetailPage } from "models/exam/DetailProps";
-import  useAuth  from "shared/hooks/auth-hook";
+import { DetailPage, RelatedDetailPage } from "models/exam/IDetail";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
 import CreateForm from "user/components/account/create/CreateForm";
+import { getUserData } from "shared/localStorageConfig/auth-local-storage";
 
 const Create: React.FC = () => {
-  const { userId, token } = useAuth();
+  const userData = getUserData();
+  const { userId, token } = userData;
   const { sendRequest, isLoading, error } = useHttpClient();
 
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const Create: React.FC = () => {
   }, [error, isLoading, dispatch]);
 
   const submitHandler = async (convertedJson: RelatedDetailPage[]) => {
-    console.log(convertedJson)
+    console.log(convertedJson);
     try {
       const responseData = await sendRequest(
         `${process.env.REACT_APP_BASE_URL}/users/${userId}/create_exam`,

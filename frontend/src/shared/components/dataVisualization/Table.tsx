@@ -1,6 +1,6 @@
 import React from "react";
 import "./Table.css";
-import { formatWord } from "shared/utils/FormatWord";
+import { formatWord } from "shared/helpers/format-word";
 
 interface TableProps {
   tableObject?: Record<string, any>;

@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useHttpClient } from "shared/hooks/http-hook";
-import  useAuth  from "shared/hooks/auth-hook";
 import { Input } from "shared/components/form/input/Input";
 import Button from "shared/components/form/Button";
 import Para from "shared/components/uiElements/cover/Para";
-import Loading from "shared/components/feedback/response/Loading";
-import Error from "shared/components/feedback/response/Response";
-import AccountInfoForm from "./forms/AccountInfoForm";
 import "./AccountInfo.css";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
 import { useDispatch } from "react-redux";
+import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import AccountInfoForm from "./forms/AccountInfoForm";
 
 export interface AccountInfoData {
   username: string;
@@ -24,7 +22,8 @@ export interface AccountInfoData {
 
 const AccountInfo = () => {
   const { sendRequest, error, isLoading, clearError } = useHttpClient();
-  const { userId, token } = useAuth();
+  const userData = getUserData();
+  const { userId, token } = userData;
   const [contentState, setContentState] = useState(false);
   const [responseData, setResponseData] = useState<AccountInfoData>(
     () => ({} as AccountInfoData)
@@ -76,7 +75,7 @@ const AccountInfo = () => {
             togglePassword
             required
           />
-          <Button  type="submit" tick />
+          <Button type="submit" tick />
         </form>
         <Para>Verify first, in-order to get access to your account info.</Para>
       </div>

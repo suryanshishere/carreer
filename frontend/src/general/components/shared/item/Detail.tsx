@@ -1,6 +1,6 @@
 import React from "react";
-import { RelatedDetailPage } from "models/exam/DetailProps";
-import { formatWord } from "shared/utils/FormatWord";
+import { RelatedDetailPage } from "models/exam/IDetail";
+import { formatWord } from "shared/helpers/format-word";
 import "./Detail.css";
 import Table from "shared/components/dataVisualization/Table";
 

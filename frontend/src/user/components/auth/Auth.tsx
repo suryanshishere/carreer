@@ -49,10 +49,13 @@ const AuthComponent: React.FC<AuthProps> = ({
           emailVerified: boolean;
         };
 
+        //no response.message use till now
+
         auth.login(
           responseData.userId,
           responseData.token,
-          responseData.tokenExpiration
+          responseData.tokenExpiration,
+          responseData.emailVerified
         );
 
         if (!responseData.emailVerified) {
@@ -86,15 +89,15 @@ const AuthComponent: React.FC<AuthProps> = ({
           emailVerified: boolean;
         };
 
-        console.log(responseData)
-
         auth.login(
           responseData.userId,
           responseData.token,
-          responseData.tokenExpiration
+          responseData.tokenExpiration,
+          responseData.emailVerified
         );
 
         if (!responseData.emailVerified) {
+          //here in the workerData, make a emailVerified: false (booloean)
           dispatch(
             responseUIAction.setResponseHandler(
               "Verification link sent to your email."

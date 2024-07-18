@@ -1,14 +1,14 @@
 import React from "react";
 // import Bookmark from "../utils/Bookmark";
 import { Link } from "react-router-dom";
-import { ExamListItem } from "models/exam/ListProps";
+import { IList } from "models/exam/IList";
 import Delete from "../utils/Delete";
 import SampleLoad from "./common/SampleLoad";
 import "./List.css";
-import { formatWord } from "shared/utils/FormatWord";
+import { formatWord } from "shared/helpers/format-word";
 
 interface ListProps {
-  currentRecords: ExamListItem[];
+  currentRecords: IList[];
   showBookmark?: boolean;
   showCategory?: boolean;
   showDelete?: boolean;

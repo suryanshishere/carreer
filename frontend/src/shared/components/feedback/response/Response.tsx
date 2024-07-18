@@ -22,27 +22,29 @@ const Response: React.FC<ResponseProps> = ({
   const [modalShow, setModalShow] = useState(true); //True, as I it's knows already that being called.
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   setModalShow(true);
+  useEffect(() => {
+    setModalShow(true);
 
-  //   const timer = setTimeout(() => {
-  //     if (clearError) {
-  //       clearError();
-  //     }
-  //     dispatch(responseUIAction.clearResponse());
-  //     setModalShow(false);
-  //   }, 3000);
+    const timer = setTimeout(() => {
+      if (clearError) {
+        clearError();
+      }
+      dispatch(responseUIAction.clearResponse());
+      setModalShow(false);
+    }, 10000);
 
-  //   return () => clearTimeout(timer);
-  // }, [clearError, dispatch]);
+    return () => clearTimeout(timer);
+  }, [clearError, dispatch]);
 
-  // const cancelHandler = () => {
-  //   if (clearError) {
-  //     clearError();
-  //   }
-  //   dispatch(responseUIAction.clearResponse());
-  //   setModalShow(false);
-  // };
+  const cancelHandler = () => {
+    if (clearError) {
+      clearError();
+    }
+    dispatch(responseUIAction.clearResponse());
+    setModalShow(false);
+  };
+
+  console.log(modalShow);
 
   if (!modalShow) return null;
 

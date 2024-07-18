@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { ExamListItem } from "models/exam/ListProps";
+import { IList } from "models/exam/IList";
 import HomeListItem from "general/components/shared/item/HomeList";
 import { useHttpClient } from "shared/hooks/http-hook";
-import  useAuth  from "shared/hooks/auth-hook";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
-import { formatWord } from "shared/utils/FormatWord";
+import { formatWord } from "shared/helpers/format-word";
 import { useAdminExamData } from "db/admin/AdminExamData";
 import "./Home.css";
+import { getUserData } from "shared/localStorageConfig/auth-local-storage";
 
 const Home: React.FC = () => {
   const { category } = useAdminExamData();
 
   const { sendRequest, error, isLoading } = useHttpClient();
-  const [loadedExam, setLoadedExam] = useState<ExamListItem[]>([]);
-  const { userId } = useAuth();
+  const [loadedExam, setLoadedExam] = useState<IList[]>([]);
+  const userData = getUserData();
+  const { userId, token } = userData;
 
   const dispatch = useDispatch();
 
@@ -32,18 +33,16 @@ const Home: React.FC = () => {
           null,
           { userid: userId || "" }
         );
-        const responseData: ExamListItem[] =
-          response.data as unknown as ExamListItem[];
+        const responseData: IList[] = response.data as unknown as IList[];
         setLoadedExam(responseData);
       } catch (err) {}
     };
     fetchPlaces();
   }, [sendRequest, userId]);
 
-
   // Define an object to map categories to their respective filtered data and titles
   const filteredData: {
-    [key: string]: { data: ExamListItem[] };
+    [key: string]: { data: IList[] };
   } = {};
 
   category.forEach((item) => {

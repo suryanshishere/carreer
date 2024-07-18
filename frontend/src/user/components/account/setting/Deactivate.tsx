@@ -6,8 +6,8 @@ import Error from "shared/components/feedback/response/Response";
 import Loading from "shared/components/feedback/response/Loading";
 import Para from "shared/components/uiElements/cover/Para";
 import { AuthContext } from "shared/context/auth-context";
-import  useAuth  from "shared/hooks/auth-hook";
 import { useHttpClient } from "shared/hooks/http-hook";
+import { getUserData } from "shared/localStorageConfig/auth-local-storage";
 
 interface DeactivateProps {
   onMsg: (value: string) => void;
@@ -16,8 +16,8 @@ interface DeactivateProps {
 const Deactivate: React.FC<DeactivateProps> = ({ onMsg }) => {
   const [contentState, setContentState] = useState(false);
   const { error, sendRequest, isLoading } = useHttpClient();
-  const { userId, token } = useAuth();
-  const auth = useContext(AuthContext);
+  const userData = getUserData();
+  const { userId, token } = userData;  const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {

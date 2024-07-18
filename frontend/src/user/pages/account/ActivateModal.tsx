@@ -6,13 +6,14 @@ import Loading from "shared/components/feedback/response/Loading";
 import Para from "shared/components/uiElements/cover/Para";
 import Modal from "shared/components/uiElements/modal/Modal";
 import { AuthContext } from "shared/context/auth-context";
-import  useAuth  from "shared/hooks/auth-hook";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { getUserData } from "shared/localStorageConfig/auth-local-storage";
 
 const ActivateModal = () => {
-  const { token, userId } = useAuth();
+  const userData = getUserData();
+  const { userId, token } = userData;
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [responseMsg, setResponseMsg] = useState("");
@@ -47,7 +48,6 @@ const ActivateModal = () => {
 
     fetchData();
   }, [sendRequest, userId, token]);
-
 
   const noHandler = () => {
     auth.logout();

@@ -10,7 +10,7 @@ const Features = () => {
     (state: RootState) => state.response.responseMsg
   );
 
-  if (error && responseMsg) {
+  if (error || responseMsg) {
     return (
       <div className="features_sec overflow-hidden fixed flex items-center justify-end">
         <Response error={error} responseMsg={responseMsg} />

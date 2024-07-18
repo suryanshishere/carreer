@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ExamListItem } from "models/exam/ListProps";
+import { IList } from "models/exam/IList";
 import CategoryItem from "general/components/shared/item/Category";
 import { useHttpClient } from "shared/hooks/http-hook";
 import Filter from "shared/components/utils/Filter";
-import  useAuth  from "shared/hooks/auth-hook";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
 import NotFound from "shared/pages/NotFound";
 import "./CategoryList.css";
+import { getUserData } from "shared/localStorageConfig/auth-local-storage";
 
 const CategoryList: React.FC = () => {
   const { category = "" } = useParams();
   const { error, sendRequest, isLoading } = useHttpClient();
-  const [loadedExam, setLoadedExam] = useState<ExamListItem[]>([]);
-  const { userId } = useAuth();
-  const dispatch = useDispatch();
+  const [loadedExam, setLoadedExam] = useState<IList[]>([]);
+  const userData = getUserData();
+  const { userId } = userData;  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(responseUIAction.isLoadingHandler(isLoading));
@@ -33,8 +33,8 @@ const CategoryList: React.FC = () => {
             userid: userId || "",
           }
         );
-        const responseData: ExamListItem[] =
-          response.data as unknown as ExamListItem[];
+        const responseData: IList[] =
+          response.data as unknown as IList[];
         setLoadedExam(responseData);
       } catch (err) {}
     };

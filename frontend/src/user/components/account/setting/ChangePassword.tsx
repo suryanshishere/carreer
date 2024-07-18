@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Loading from "shared/components/feedback/response/Loading";
-import Error from "shared/components/feedback/response/Response";
 import Form, { FormSubmitHandler } from "../../auth/Form";
-import useAuth  from "shared/hooks/auth-hook";
 import { useHttpClient } from "shared/hooks/http-hook";
 import "./ChangePassword.css";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { getUserData } from "shared/localStorageConfig/auth-local-storage";
 
 interface ChangePasswordProps {
   onMsg: (msg: string) => void;
@@ -14,9 +12,8 @@ interface ChangePasswordProps {
 
 const ChangePassword: React.FC<ChangePasswordProps> = ({ onMsg }) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [errorMsg, setErrorMsg] = useState<string>("");
-  const { token } = useAuth();
-
+  const userData = getUserData();
+  const { userId, token } = userData;
   const dispatch = useDispatch();
 
   useEffect(() => {

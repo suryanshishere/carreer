@@ -9,14 +9,14 @@ import { AuthContextProvider } from "./shared/context/auth-context";
 import Saved from "./user/pages/Saved";
 import Setting from "./user/pages/account/Setting";
 import Profile from "./user/pages/account/Profile";
-import  useAuth  from "./shared/hooks/auth-hook";
 import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
 import Create from "./user/pages/account/Create";
+import { getUserData } from "shared/localStorageConfig/auth-local-storage";
 
 const App: React.FC = () => {
-  const { token, userId } = useAuth();
-
+  const userData = getUserData();
+  const { userId, token } = userData;
   const authRoutes =
     token && userId
       ? [
@@ -50,6 +50,8 @@ const App: React.FC = () => {
       ],
     },
   ]);
+
+  
 
   return (
     <AuthContextProvider>

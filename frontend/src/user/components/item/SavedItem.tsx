@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ExamListItem } from "models/exam/ListProps";
+import { IList } from "models/exam/IList";
 import List from "shared/components/uiElements/List";
 import Pagination from "shared/components/utils/Pagination";
 import { usePagination } from "shared/hooks/pagination-hook";
@@ -7,11 +7,11 @@ import Para from "shared/components/uiElements/cover/Para";
 import "./SavedItem.css";
 
 interface SavedProps {
-  savedExamData: ExamListItem[];
+  savedExamData: IList[];
 }
 
 const SavedItem: React.FC<SavedProps> = ({ savedExamData }) => {
-  const [filteredData, setFilteredData] = useState<ExamListItem[]>([]);
+  const [filteredData, setFilteredData] = useState<IList[]>([]);
 
   useEffect(() => {
     // Set filteredData initially

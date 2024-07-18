@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { DetailPage } from "models/exam/DetailProps";
+import { DetailPage } from "models/exam/IDetail";
 import DetailItem from "general/components/shared/item/Detail";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
@@ -9,7 +9,7 @@ import NotFound from "shared/pages/NotFound";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import "./Detail.css";
-import { formatWord } from "shared/utils/FormatWord";
+import { formatWord } from "shared/helpers/format-word";
 // import Bookmark from "src/shared/components/utils/Bookmark";
 // import DETAIL_PAGE from "src/db/exams/Details.json"
 

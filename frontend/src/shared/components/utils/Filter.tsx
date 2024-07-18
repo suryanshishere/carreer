@@ -1,12 +1,12 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { ExamListItem } from "models/exam/ListProps";
+import { IList } from "models/exam/IList";
 import { Skeleton } from "@mui/material";
 import "./Filter.css";
 
 interface BannerProps {
   className?: string;
   children?: ReactNode;
-  data: number | ExamListItem[];
+  data: number | IList[];
   noAnimation?: boolean;
 }
 

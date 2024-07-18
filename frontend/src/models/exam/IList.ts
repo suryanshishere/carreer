@@ -1,4 +1,4 @@
-export interface ExamListItem {
+export interface IList {
   _id: string;
   name_of_the_post: string;
   category: string;

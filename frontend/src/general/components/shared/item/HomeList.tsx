@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ExamListItem } from "models/exam/ListProps";
+import { IList } from "models/exam/IList";
 import Card from "shared/components/uiElements/cover/Card";
 // import Bookmark from "src/shared/components/utils/Bookmark";
 import SampleLoad from "shared/components/uiElements/common/SampleLoad";
 import "./HomeList.css";
-import { formatWord } from "shared/utils/FormatWord";
+import { formatWord } from "shared/helpers/format-word";
 // import Tag from "src/shared/components/uiElements/common/Tag";
 
 interface HomeListItemProps {
-  ListItemData: ExamListItem[];
+  ListItemData: IList[];
   category?: string;
   categoryTitle?: string;
   height?: string;

@@ -1,12 +1,12 @@
 import React from "react";
-import { ExamListItem } from "models/exam/ListProps";
+import { IList } from "models/exam/IList";
 import Pagination from "shared/components/utils/Pagination";
 import { usePagination } from "shared/hooks/pagination-hook";
 import List from "shared/components/uiElements/List";
 import "./Category.css";
 
 interface CategoryItemProps {
-  CategoryListData: ExamListItem[];
+  CategoryListData: IList[];
 }
 
 const CategoryItem: React.FC<CategoryItemProps> = ({ CategoryListData }) => {

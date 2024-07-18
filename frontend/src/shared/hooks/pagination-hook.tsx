@@ -1,7 +1,7 @@
-import { ExamListItem } from "models/exam/ListProps";
+import { IList } from "models/exam/IList";
 import { useEffect, useState } from "react";
 
-export const usePagination = (data: ExamListItem[]) => {
+export const usePagination = (data: IList[]) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(parseInt(process.env.REACT_APP_RECORDS_PER_PAGE ?? '10', 10));
   const [dataChanged, setDataChanged] = useState(false); // Track data changes
