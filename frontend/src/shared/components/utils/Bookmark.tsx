@@ -5,7 +5,7 @@ import { responseUIAction } from "shared/store/reponse-ui-slice";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { IconButton } from "@mui/material";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 interface BookmarkProps {
   itemId: string | number;
@@ -14,8 +14,7 @@ interface BookmarkProps {
 
 const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
   const { sendRequest, error, isLoading } = useHttpClient();
-  const userData = getUserData();
-  const { userId, token, emailVerified, sessionExpireMsg } = userData;
+  const { token, userId } = useUserData();
   const [isBookmarked, setIsBookmarked] = useState<boolean | undefined>(
     bookmarked
   );

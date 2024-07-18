@@ -1,6 +1,9 @@
 import React, { createContext, FC, useCallback, useState } from "react";
+import { isLoggedIn as checkIsLoggedIn } from "shared/helpers/auth-check";
+import { useDispatch } from "react-redux";
+import { responseUIAction } from "shared/store/reponse-ui-slice";
+import useUserData from "shared/localStorageConfig/userData-hook";
 import { userDataHandler } from "shared/localStorageConfig/auth-local-storage";
-import { isLoggedIn } from "shared/helpers/auth-check";
 
 const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
 
@@ -28,6 +31,14 @@ interface AuthContextProviderProps {
 export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   children,
 }) => {
+  const { sessionExpireMsg } = useUserData();
+  const [loggedIn, setLoggedIn] = useState<boolean>(checkIsLoggedIn());
+  const dispatch = useDispatch();
+
+  if (sessionExpireMsg) {
+    dispatch(responseUIAction.setResponseHandler(sessionExpireMsg));
+  }
+
   const login = useCallback(
     (
       uid: string | undefined,
@@ -35,12 +46,10 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
       expirationDate?: string | undefined,
       emailVerified?: boolean | undefined
     ) => {
-      //Just checking if it's undefined (so that we not need to elsewhere everytime)
       if (
         token === undefined ||
         expirationDate === undefined ||
-        uid === undefined ||
-        expirationDate === undefined
+        uid === undefined
       )
         return;
 
@@ -54,17 +63,19 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
         newTokenExpirationDate.toISOString(),
         localEmailVerified
       );
+
+      setLoggedIn(true);
     },
     []
   );
 
   const logout = useCallback(() => {
-    //completely remove data related to user for the better user experience.
     localStorage.removeItem("userData");
+    setLoggedIn(false);
   }, []);
 
   const ctxValue: AuthContextValue = {
-    isLoggedIn: isLoggedIn(),
+    isLoggedIn: loggedIn,
     login,
     logout,
   };

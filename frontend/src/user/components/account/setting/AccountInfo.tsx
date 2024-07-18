@@ -6,8 +6,8 @@ import Para from "shared/components/uiElements/cover/Para";
 import "./AccountInfo.css";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
 import { useDispatch } from "react-redux";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
 import AccountInfoForm from "./forms/AccountInfoForm";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 export interface AccountInfoData {
   username: string;
@@ -22,8 +22,7 @@ export interface AccountInfoData {
 
 const AccountInfo = () => {
   const { sendRequest, error, isLoading, clearError } = useHttpClient();
-  const userData = getUserData();
-  const { userId, token } = userData;
+  const { token, userId } = useUserData();
   const [contentState, setContentState] = useState(false);
   const [responseData, setResponseData] = useState<AccountInfoData>(
     () => ({} as AccountInfoData)

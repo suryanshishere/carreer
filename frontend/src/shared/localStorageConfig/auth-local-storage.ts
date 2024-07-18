@@ -1,10 +1,4 @@
-interface UserData {
-  userId: string | undefined;
-  token: string | undefined;
-  expiration: string | undefined;
-  emailVerified: string | undefined;
-  sessionExpireMsg?: string | undefined;
-}
+import { IUserData } from "models/user/IUserData";
 
 export function userDataHandler(
   userId: string,
@@ -13,7 +7,7 @@ export function userDataHandler(
   emailVerified: string,
   sessionExpireMsg?: string
 ): void {
-  const data: UserData = {
+  const data: IUserData = {
     userId,
     token,
     expiration,
@@ -31,41 +25,4 @@ export function userDataHandler(
   }
 
   localStorage.setItem("userData", JSON.stringify(data));
-}
-
-export function getUserData(): UserData {
-  const userDataString = localStorage.getItem("userData");
-  if (!userDataString) {
-    return {
-      userId: undefined,
-      token: undefined,
-      expiration: undefined,
-      emailVerified: undefined,
-      sessionExpireMsg: undefined,
-    };
-  }
-
-  try {
-    const userData: UserData = JSON.parse(userDataString);
-    const { userId, token, expiration, emailVerified, sessionExpireMsg } =
-      userData;
-
-    // Return specific fields if available
-    return {
-      userId,
-      token,
-      expiration,
-      emailVerified,
-      sessionExpireMsg,
-    };
-  } catch (error) {
-    console.error("Error parsing userData from localStorage:", error);
-    return {
-      userId: undefined,
-      token: undefined,
-      expiration: undefined,
-      emailVerified: undefined,
-      sessionExpireMsg: undefined,
-    };
-  }
 }

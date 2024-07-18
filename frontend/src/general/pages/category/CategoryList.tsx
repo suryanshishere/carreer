@@ -8,14 +8,14 @@ import { useDispatch } from "react-redux";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
 import NotFound from "shared/pages/NotFound";
 import "./CategoryList.css";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 const CategoryList: React.FC = () => {
   const { category = "" } = useParams();
   const { error, sendRequest, isLoading } = useHttpClient();
   const [loadedExam, setLoadedExam] = useState<IList[]>([]);
-  const userData = getUserData();
-  const { userId } = userData;  const dispatch = useDispatch();
+  const { token, userId } = useUserData();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(responseUIAction.isLoadingHandler(isLoading));
@@ -33,8 +33,7 @@ const CategoryList: React.FC = () => {
             userid: userId || "",
           }
         );
-        const responseData: IList[] =
-          response.data as unknown as IList[];
+        const responseData: IList[] = response.data as unknown as IList[];
         setLoadedExam(responseData);
       } catch (err) {}
     };

@@ -7,7 +7,6 @@ import { RootState } from "shared/store";
 import Loading from "shared/feedback/response/Loading";
 import Features from "general/pages/features/Features";
 import "./RootLayout.css";
-import AutoAuthCheck from "shared/feedback/emergency/AutoAuthCheck";
 
 const RootLayout: React.FC = () => {
   const isLoading = useSelector((state: RootState) => state.response.isLoading);
@@ -17,7 +16,6 @@ const RootLayout: React.FC = () => {
     <div className="w-full flex flex-col min-h-screen relative pb-20">
       {isLoading && <Loading loadingOnTop />}
 
-      <AutoAuthCheck />;
       <MainNavigation />
       <Features />
 

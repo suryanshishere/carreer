@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { AdminExamProps } from "models/admin/AdminExamProps";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 export const useAdminExamData = () => {
   const { sendRequest, error, isLoading } = useHttpClient();
@@ -19,8 +19,7 @@ export const useAdminExamData = () => {
     eligibility__minimun_qualification: [],
     vacancy__gender_applicant: [],
   });
-  const userData = getUserData();
-  const { userId, token } = userData;
+  const { userId } = useUserData();
   const dispatch = useDispatch();
 
   useEffect(() => {

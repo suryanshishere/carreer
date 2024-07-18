@@ -4,7 +4,7 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 interface DeleteProps {
   itemId: string | number; // Accept itemId
@@ -13,8 +13,7 @@ interface DeleteProps {
 
 const Delete: React.FC<DeleteProps> = ({ itemId, onDelete }) => {
   const { sendRequest, error, isLoading, clearError } = useHttpClient();
-  const userData = getUserData();
-  const { userId, token } = userData;
+  const { token, userId } = useUserData();
   const dispatch = useDispatch();
 
   useEffect(() => {

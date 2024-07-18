@@ -4,11 +4,11 @@ import { DetailPage, RelatedDetailPage } from "models/exam/IDetail";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
 import CreateForm from "user/components/account/create/CreateForm";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 const Create: React.FC = () => {
-  const userData = getUserData();
-  const { userId, token } = userData;
+  const { token, userId } = useUserData();
+
   const { sendRequest, isLoading, error } = useHttpClient();
 
   const dispatch = useDispatch();

@@ -6,13 +6,12 @@ import { useDispatch } from "react-redux";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
 import "./Saved.css";
 import Filter from "shared/components/utils/Filter";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 const Saved = () => {
   const { sendRequest, clearError, isLoading, error } = useHttpClient();
   const [savedExam, setSavedExam] = useState<IList[]>([]);
-  const userData = getUserData();
-  const { userId, token} = userData;
+  const { token,userId } = useUserData();
 
   const dispatch = useDispatch();
 

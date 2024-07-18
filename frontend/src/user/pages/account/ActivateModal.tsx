@@ -1,19 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import Button from "shared/components/form/Button";
-import { Input } from "shared/components/form/input/Input";
 import Error from "shared/feedback/response/Response";
 import Loading from "shared/feedback/response/Loading";
-import Para from "shared/components/uiElements/cover/Para";
 import Modal from "shared/components/uiElements/modal/Modal";
 import { AuthContext } from "shared/context/auth-context";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 const ActivateModal = () => {
-  const userData = getUserData();
-  const { userId, token } = userData;
+  const { token, userId } = useUserData();
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [responseMsg, setResponseMsg] = useState("");

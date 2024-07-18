@@ -8,7 +8,7 @@ import { responseUIAction } from "shared/store/reponse-ui-slice";
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
 import { formatWord } from "shared/helpers/format-word";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 interface AccountInfoFormProps {
   accountInfoData: AccountInfoData;
@@ -21,8 +21,7 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
     useState<AccountInfoData>(accountInfoData);
   const [editState, setEditState] = useState<string>("");
   const { error, isLoading, sendRequest, clearError } = useHttpClient();
-  const userData = getUserData();
-  const { userId, token } = userData;
+  const { token, userId } = useUserData();
   const dispatch = useDispatch();
 
   useEffect(() => {

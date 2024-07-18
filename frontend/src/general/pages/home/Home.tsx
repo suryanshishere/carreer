@@ -7,15 +7,14 @@ import { responseUIAction } from "shared/store/reponse-ui-slice";
 import { formatWord } from "shared/helpers/format-word";
 import { useAdminExamData } from "db/admin/AdminExamData";
 import "./Home.css";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 const Home: React.FC = () => {
   const { category } = useAdminExamData();
 
   const { sendRequest, error, isLoading } = useHttpClient();
   const [loadedExam, setLoadedExam] = useState<IList[]>([]);
-  const userData = getUserData();
-  const { userId, token } = userData;
+  const { token, userId } = useUserData();
 
   const dispatch = useDispatch();
 

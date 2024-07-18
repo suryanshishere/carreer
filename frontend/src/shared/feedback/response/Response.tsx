@@ -44,7 +44,6 @@ const Response: React.FC<ResponseProps> = ({
     setModalShow(false);
   };
 
-  console.log(modalShow);
 
   if (!modalShow) return null;
 
