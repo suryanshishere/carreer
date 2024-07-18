@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AuthContext } from "shared/context/auth-context";
-import { isLoggedIn } from "shared/helpers/auth-check";
 import {
   getUserData,
   userDataHandler,
@@ -15,10 +14,9 @@ const AutoAuthCheck = () => {
   const dispatch = useDispatch();
   const userData = getUserData();
   const { userId, token, expiration } = userData;
-  const checkIsLoggedIn: boolean = isLoggedIn();
 
   useEffect(() => {
-    if (checkIsLoggedIn) {
+    if (auth.isLoggedIn) {
       auth.login(userId, token, expiration);
     } else {
       auth.logout();

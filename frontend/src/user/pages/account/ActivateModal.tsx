@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import Button from "shared/components/form/Button";
 import { Input } from "shared/components/form/input/Input";
-import Error from "shared/components/feedback/response/Response";
-import Loading from "shared/components/feedback/response/Loading";
+import Error from "shared/feedback/response/Response";
+import Loading from "shared/feedback/response/Loading";
 import Para from "shared/components/uiElements/cover/Para";
 import Modal from "shared/components/uiElements/modal/Modal";
 import { AuthContext } from "shared/context/auth-context";

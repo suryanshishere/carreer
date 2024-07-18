@@ -1,32 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import HomePage from "general/pages/home/Home";
 import Detail from "general/pages/details/Detail";
 import LinksList from "general/pages/category/CategoryList";
 import ContactUs from "general/pages/contact_us/Contact";
-import { AuthContextProvider } from "./shared/context/auth-context";
+import {
+  AuthContext,
+  AuthContextProvider,
+} from "./shared/context/auth-context";
 import Saved from "./user/pages/Saved";
 import Setting from "./user/pages/account/Setting";
 import Profile from "./user/pages/account/Profile";
 import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
 import Create from "./user/pages/account/Create";
-import { getUserData } from "shared/localStorageConfig/auth-local-storage";
 
 const App: React.FC = () => {
-  const userData = getUserData();
-  const { userId, token } = userData;
-  const authRoutes =
-    token && userId
-      ? [
-          { path: "saved_exam", element: <Saved /> },
-          { path: "profile", element: <Profile /> },
-          { path: "setting", element: <Setting /> },
-          { path: "create", element: <Create /> },
-          { path: "*", element: <NotFound /> },
-        ]
-      : [];
+  const auth = useContext(AuthContext);
+  const authRoutes = auth.isLoggedIn
+    ? [
+        { path: "saved_exam", element: <Saved /> },
+        { path: "profile", element: <Profile /> },
+        { path: "setting", element: <Setting /> },
+        { path: "create", element: <Create /> },
+        { path: "*", element: <NotFound /> },
+      ]
+    : [];
 
   const router = createBrowserRouter([
     {
@@ -50,8 +50,6 @@ const App: React.FC = () => {
       ],
     },
   ]);
-
-  
 
   return (
     <AuthContextProvider>

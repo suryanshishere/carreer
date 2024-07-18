@@ -3,8 +3,8 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { responseUIAction } from "shared/store/reponse-ui-slice";
-import Para from "../../uiElements/cover/Para";
 import "./Response.css";
+import Para from "shared/components/uiElements/cover/Para";
 
 interface ResponseProps {
   error?: string | null;

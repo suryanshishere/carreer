@@ -4,10 +4,10 @@ import MainNavigation from "./navigation/Main";
 import Footer from "./footer/Footer";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import Loading from "shared/components/feedback/response/Loading";
+import Loading from "shared/feedback/response/Loading";
 import Features from "general/pages/features/Features";
 import "./RootLayout.css";
-import AutoAuthCheck from "shared/components/feedback/emergency/AutoAuthCheck";
+import AutoAuthCheck from "shared/feedback/emergency/AutoAuthCheck";
 
 const RootLayout: React.FC = () => {
   const isLoading = useSelector((state: RootState) => state.response.isLoading);
