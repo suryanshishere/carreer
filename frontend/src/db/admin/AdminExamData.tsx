@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AdminExamProps } from "models/admin/AdminExamProps";
 import { useHttpClient } from "shared/hooks/http-hook";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import useUserData from "shared/localStorageConfig/userData-hook";
 
 export const useAdminExamData = () => {
@@ -23,8 +23,8 @@ export const useAdminExamData = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, dispatch]);
 
   useEffect(() => {

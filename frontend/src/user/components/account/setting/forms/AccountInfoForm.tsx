@@ -4,7 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Button from "shared/components/form/Button";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
 import { formatWord } from "shared/helpers/format-word";
@@ -25,8 +25,8 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, clearError, dispatch]);
 
   const editHandler = (value: string) => {
@@ -68,7 +68,7 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
         }
       );
       const responseData = response.data;
-      dispatch(responseUIAction.setResponseHandler(responseData.message));
+      dispatch(dataStatusUIAction.setResponseHandler(responseData.message));
 
       const updatedAccountInfo = {
         ...accountInfoData,

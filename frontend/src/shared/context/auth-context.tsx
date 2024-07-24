@@ -1,7 +1,7 @@
 import React, { createContext, FC, useCallback, useState } from "react";
 import { isLoggedIn as checkIsLoggedIn } from "shared/helpers/auth-check";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import useUserData from "shared/localStorageConfig/userData-hook";
 import { userDataHandler } from "shared/localStorageConfig/auth-local-storage";
 
@@ -36,7 +36,7 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   const dispatch = useDispatch();
 
   if (sessionExpireMsg) {
-    dispatch(responseUIAction.setResponseHandler(sessionExpireMsg));
+    dispatch(dataStatusUIAction.setResponseHandler(sessionExpireMsg));
   }
 
   const login = useCallback(

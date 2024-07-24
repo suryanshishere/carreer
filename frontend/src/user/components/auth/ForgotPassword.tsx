@@ -1,6 +1,6 @@
 import React from "react";
-import Error from "shared/feedback/response/Response";
-import Loading from "shared/feedback/response/Loading";
+import Error from "shared/feedback/dataStatus/DataStatus";
+import Loading from "shared/feedback/dataStatus/Loading";
 import { useHttpClient } from "shared/hooks/http-hook";
 import Form, { FormSubmitHandler } from "user/components/auth/Form";
 import { AuthProps } from "user/pages/auth/Auth";

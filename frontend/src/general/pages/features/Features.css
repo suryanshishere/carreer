@@ -1,7 +1,4 @@
 .features_sec {
-    margin:  0 var(--padding-page);
-    margin-top: calc(var(--height-main-nav));
-    width: calc(100% - var(--padding-page) * 2);
     height: var(--height-feature-nav);
     background-color: var(--color-white);
     z-index: 2;

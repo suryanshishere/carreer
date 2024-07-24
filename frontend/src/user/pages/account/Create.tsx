@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { DetailPage, RelatedDetailPage } from "models/exam/IDetail";
 import { useHttpClient } from "shared/hooks/http-hook";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import CreateForm from "user/components/account/create/CreateForm";
 import useUserData from "shared/localStorageConfig/userData-hook";
 
@@ -14,8 +14,8 @@ const Create: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, dispatch]);
 
   const submitHandler = async (convertedJson: RelatedDetailPage[]) => {

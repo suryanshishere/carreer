@@ -4,7 +4,7 @@ import { Input } from "shared/components/form/input/Input";
 import Button from "shared/components/form/Button";
 import Para from "shared/components/uiElements/cover/Para";
 import "./AccountInfo.css";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import { useDispatch } from "react-redux";
 import AccountInfoForm from "./forms/AccountInfoForm";
 import useUserData from "shared/localStorageConfig/userData-hook";
@@ -31,8 +31,8 @@ const AccountInfo = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, clearError, dispatch]);
 
   const passwordSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {

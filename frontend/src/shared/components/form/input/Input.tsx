@@ -79,7 +79,6 @@ export const Input: React.FC<InputProps> = ({
             onChange={onChange}
             required={required}
             label={formatWord(name)}
-            id="outlined-basic"
             variant="outlined"
             inputProps={{
               sx: {

@@ -5,7 +5,7 @@ import CategoryItem from "general/components/shared/item/Category";
 import { useHttpClient } from "shared/hooks/http-hook";
 import Filter from "shared/components/utils/Filter";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import NotFound from "shared/pages/NotFound";
 import "./CategoryList.css";
 import useUserData from "shared/localStorageConfig/userData-hook";
@@ -18,8 +18,8 @@ const CategoryList: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
-    dispatch(responseUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
   }, [error, isLoading, dispatch]);
 
   useEffect(() => {

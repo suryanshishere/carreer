@@ -3,7 +3,7 @@ import { IList } from "models/exam/IList";
 import HomeListItem from "general/components/shared/item/HomeList";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import { formatWord } from "shared/helpers/format-word";
 import { useAdminExamData } from "db/admin/AdminExamData";
 import "./Home.css";
@@ -19,8 +19,8 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, dispatch]);
 
   useEffect(() => {

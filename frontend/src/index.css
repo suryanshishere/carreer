@@ -19,7 +19,7 @@
   --color-white: white;
   --color-black: black;
   --color-green: #7F9F80;
-  --color-blue: #10439F;
+  --color-dark-blue: #131921;
   --color-yellow: #EEEBDD;
   --color-white-yellow: #FEFAF6;
   --gap-main-nav: 2rem;
@@ -28,9 +28,9 @@
   --gap-faint: 0.2rem;
   --padding-page: 10rem;
   --padding-button: .25rem .5rem;
-  --height-main-nav: 5rem;
+  /* --height-main-nav: 5rem;
   --height-feature-nav: 3rem;
-  --height-overall-main-nav: calc(var(--height-main-nav) + var(--height-feature-nav) + 1rem );
+  --height-overall-main-nav: calc(var(--height-main-nav) + var(--height-feature-nav) + 1rem ); */
   --height-footer: 5.5rem;
 }
 

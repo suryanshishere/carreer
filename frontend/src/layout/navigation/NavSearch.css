@@ -1,0 +1,13 @@
+.nav_search {
+    color: var(--color-black);
+}
+
+.main_nav_search_sec>input {
+    padding: .6rem;
+    padding-left: 1rem;
+    width: 30rem;
+    height: 2.5rem;
+    border-radius: 25px;
+    border: 2px solid var(--hover-color);
+    font-weight: bold;
+}

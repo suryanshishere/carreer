@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useHttpClient } from "../../hooks/http-hook";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { IconButton } from "@mui/material";
@@ -21,8 +21,8 @@ const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, dispatch]);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
         setIsBookmarked(false);
 
         dispatch(
-          responseUIAction.setErrorHandler(
+          dataStatusUIAction.setErrorHandler(
             "Please sign up or log in to save this exam to your account."
           )
         );
@@ -51,7 +51,7 @@ const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
             }
           );
           dispatch(
-            responseUIAction.setResponseHandler(responseData.data.message)
+            dataStatusUIAction.setResponseHandler(responseData.data.message)
           );
         } catch (err) {
           setIsBookmarked(false);

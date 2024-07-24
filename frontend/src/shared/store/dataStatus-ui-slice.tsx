@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const responseUISlice = createSlice({
+const dataStatusUISlice = createSlice({
   name: "response",
   initialState: {
     error: null,
     responseMsg: null,
+    jsxResponseMsg: null,
     isLoading: false,
   },
   reducers: {
@@ -16,18 +17,20 @@ const responseUISlice = createSlice({
       state.responseMsg = action.payload;
     },
 
+    setJsxResponseHandler(state, action) {
+      state.jsxResponseMsg = action.payload;
+    },
+
     isLoadingHandler(state, action) {
       state.isLoading = action.payload;
     },
 
     clearResponse(state) {
-      state.isLoading = false;
-      state.error = null;
       state.responseMsg = null;
     },
   },
 });
 
-export const responseUIAction = responseUISlice.actions;
+export const dataStatusUIAction = dataStatusUISlice.actions;
 
-export default responseUISlice;
+export default dataStatusUISlice;

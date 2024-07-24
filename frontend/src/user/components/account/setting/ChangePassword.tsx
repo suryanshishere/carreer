@@ -3,7 +3,7 @@ import Form, { FormSubmitHandler } from "../../auth/Form";
 import { useHttpClient } from "shared/hooks/http-hook";
 import "./ChangePassword.css";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import useUserData from "shared/localStorageConfig/userData-hook";
 
 interface ChangePasswordProps {
@@ -16,8 +16,8 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ onMsg }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, clearError, dispatch]);
 
   const authSubmitHandler: FormSubmitHandler = async (formState) => {
@@ -26,7 +26,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ onMsg }) => {
       formState.password.value === formState.newPassword?.value
     ) {
       return dispatch(
-        responseUIAction.setErrorHandler("Password seem exactly same")
+        dataStatusUIAction.setErrorHandler("Password seem exactly same")
       );
     }
     try {

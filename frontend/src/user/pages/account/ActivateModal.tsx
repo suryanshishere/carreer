@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import Button from "shared/components/form/Button";
-import Error from "shared/feedback/response/Response";
-import Loading from "shared/feedback/response/Loading";
+import Error from "shared/feedback/dataStatus/DataStatus";
+import Loading from "shared/feedback/dataStatus/Loading";
 import Modal from "shared/components/uiElements/modal/Modal";
 import { AuthContext } from "shared/context/auth-context";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import useUserData from "shared/localStorageConfig/userData-hook";
 
 const ActivateModal = () => {
@@ -18,8 +18,8 @@ const ActivateModal = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, clearError, dispatch]);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const ActivateModal = () => {
 
       const responseData = response.data as unknown as { message: string };
       setShowModal(false);
-      dispatch(responseUIAction.setResponseHandler(responseData.message));
+      dispatch(dataStatusUIAction.setResponseHandler(responseData.message));
     } catch (err) {}
   };
 

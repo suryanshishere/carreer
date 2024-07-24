@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { AuthContext } from "shared/context/auth-context";
 import { useHttpClient } from "shared/hooks/http-hook";
 import Form, { FormSubmitHandler } from "./Form";
-import Loading from "shared/feedback/response/Loading";
-import Error from "shared/feedback/response/Response";
+import Loading from "shared/feedback/dataStatus/Loading";
+import Error from "shared/feedback/dataStatus/DataStatus";
 import { AuthProps } from "user/pages/auth/Auth";
 import "./Auth.css";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 
 const AuthComponent: React.FC<AuthProps> = ({
   forgotPasswordClicked,
@@ -20,8 +20,8 @@ const AuthComponent: React.FC<AuthProps> = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, clearError, dispatch]);
 
   const authSubmitHandler: FormSubmitHandler = async (formState) => {
@@ -58,12 +58,6 @@ const AuthComponent: React.FC<AuthProps> = ({
           responseData.emailVerified
         );
 
-        if (!responseData.emailVerified) {
-          dispatch(
-            responseUIAction.setResponseHandler("Verify your your email.")
-          );
-        }
-
         if (onClose) {
           onClose();
         }
@@ -99,7 +93,7 @@ const AuthComponent: React.FC<AuthProps> = ({
         if (!responseData.emailVerified) {
           //here in the workerData, make a emailVerified: false (booloean)
           dispatch(
-            responseUIAction.setResponseHandler(
+            dataStatusUIAction.setJsxResponseHandler(
               "Verification link sent to your email."
             )
           );

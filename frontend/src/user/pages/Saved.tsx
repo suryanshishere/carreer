@@ -3,7 +3,7 @@ import SavedItem from "../components/item/SavedItem";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { IList } from "models/exam/IList";
 import { useDispatch } from "react-redux";
-import { responseUIAction } from "shared/store/reponse-ui-slice";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import "./Saved.css";
 import Filter from "shared/components/utils/Filter";
 import useUserData from "shared/localStorageConfig/userData-hook";
@@ -16,8 +16,8 @@ const Saved = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(responseUIAction.setErrorHandler(error));
-    dispatch(responseUIAction.isLoadingHandler(isLoading));
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
   }, [error, isLoading, clearError, dispatch]);
 
   useEffect(() => {
