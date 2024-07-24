@@ -20,14 +20,13 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
   const [accountInfo, setAccountInfo] =
     useState<AccountInfoData>(accountInfoData);
   const [editState, setEditState] = useState<string>("");
-  const { error, isLoading, sendRequest, clearError } = useHttpClient();
+  const { error,  sendRequest, clearError } = useHttpClient();
   const { token, userId } = useUserData();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [error, isLoading, clearError, dispatch]);
+  }, [error,  clearError, dispatch]);
 
   const editHandler = (value: string) => {
     setEditState(value);
@@ -68,7 +67,7 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
         }
       );
       const responseData = response.data;
-      dispatch(dataStatusUIAction.setResponseHandler(responseData.message));
+      dispatch(dataStatusUIAction.setResMsg(responseData.message));
 
       const updatedAccountInfo = {
         ...accountInfoData,

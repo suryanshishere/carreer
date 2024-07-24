@@ -12,14 +12,13 @@ interface DeleteProps {
 }
 
 const Delete: React.FC<DeleteProps> = ({ itemId, onDelete }) => {
-  const { sendRequest, error, isLoading, clearError } = useHttpClient();
+  const { sendRequest, error,  clearError } = useHttpClient();
   const { token, userId } = useUserData();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [error, isLoading, clearError, dispatch]);
+  }, [error,  clearError, dispatch]);
 
   const deleteHandler = async () => {
     try {
@@ -36,7 +35,7 @@ const Delete: React.FC<DeleteProps> = ({ itemId, onDelete }) => {
       );
 
       onDelete(itemId);
-      dispatch(dataStatusUIAction.setResponseHandler(response.data.message));
+      dispatch(dataStatusUIAction.setResMsg(response.data.message));
     } catch (err) {}
   };
 

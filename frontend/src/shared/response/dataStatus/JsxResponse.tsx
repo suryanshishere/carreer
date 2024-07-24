@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
 const JsxResponse = () => {
-  const jsxResponseMsg = useSelector(
-    (state: RootState) => state.dataStatus.jsxResponseMsg
+  const permanentResMsg = useSelector(
+    (state: RootState) => state.dataStatus.permanentResMsg
   );
 
-  return <div>{jsxResponseMsg}</div>;
+  return <div>{permanentResMsg}</div>;
 };
 
 export default JsxResponse;

@@ -13,7 +13,7 @@ interface BookmarkProps {
 }
 
 const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
-  const { sendRequest, error, isLoading } = useHttpClient();
+  const { sendRequest, error } = useHttpClient();
   const { token, userId } = useUserData();
   const [isBookmarked, setIsBookmarked] = useState<boolean | undefined>(
     bookmarked
@@ -22,8 +22,7 @@ const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [error, isLoading, dispatch]);
+  }, [error,  dispatch]);
 
   useEffect(() => {
     setIsBookmarked(bookmarked);
@@ -51,7 +50,7 @@ const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
             }
           );
           dispatch(
-            dataStatusUIAction.setResponseHandler(responseData.data.message)
+            dataStatusUIAction.setResMsg(responseData.data.message)
           );
         } catch (err) {
           setIsBookmarked(false);

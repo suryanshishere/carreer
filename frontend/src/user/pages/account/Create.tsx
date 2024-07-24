@@ -9,14 +9,13 @@ import useUserData from "shared/localStorageConfig/userData-hook";
 const Create: React.FC = () => {
   const { token, userId } = useUserData();
 
-  const { sendRequest, isLoading, error } = useHttpClient();
+  const { sendRequest,  error } = useHttpClient();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [error, isLoading, dispatch]);
+  }, [error,  dispatch]);
 
   const submitHandler = async (convertedJson: RelatedDetailPage[]) => {
     console.log(convertedJson);

@@ -14,11 +14,11 @@ const Loading: React.FC<LoadingProps> = ({
 }) => {
   const [delayed, setDelayed] = useState(true);
 
-  // not immediately starting loading if the load time got to less than 1sec.
+  // not immediately starting loading if the load time got to less than 1.5sec.
   useEffect(() => {
     const timer = setTimeout(() => {
       setDelayed(false);
-    }, 1000);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -29,7 +29,10 @@ const Loading: React.FC<LoadingProps> = ({
 
   if (loadingOnTop) {
     return (
-      <div className="w-screen fixed top-0 z-50">
+      <div
+        className="w-full z-50"
+        // style={{ ...style, top: "var(--height-main-nav)" }}
+      >
         <LinearProgress
           sx={{
             backgroundColor: "var(--color-black)",
@@ -38,7 +41,6 @@ const Loading: React.FC<LoadingProps> = ({
             },
             borderRadius: 15,
             height: 3,
-            flex: 1,
           }}
         />
       </div>

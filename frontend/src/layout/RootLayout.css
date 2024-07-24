@@ -1,5 +1,5 @@
 .outlet {
   margin: 0 var(--padding-page);
-  margin-top: var(--height-overall-main-nav);
+  margin-top: var(--height-main-nav-sec);
   margin-bottom: var(--height-footer);
 }

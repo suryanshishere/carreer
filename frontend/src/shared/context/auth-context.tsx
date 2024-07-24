@@ -36,7 +36,7 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   const dispatch = useDispatch();
 
   if (sessionExpireMsg) {
-    dispatch(dataStatusUIAction.setResponseHandler(sessionExpireMsg));
+    dispatch(dataStatusUIAction.setResMsg(sessionExpireMsg));
   }
 
   const login = useCallback(

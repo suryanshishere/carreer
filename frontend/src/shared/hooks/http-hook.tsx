@@ -1,4 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 
 // Define an interface for response data
 interface ResponseData {
@@ -13,10 +15,15 @@ interface HttpClientResponse<T> {
 }
 
 export const useHttpClient = () => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const activeHttpRequests = useRef<Map<number, AbortController>>(new Map());
+  const requestCounter = useRef(0);
 
-  const activeHttpRequests = useRef<AbortController[]>([]);
+  useEffect(() => {
+    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
+  }, [isLoading, dispatch]);
 
   const sendRequest = useCallback(
     async <T extends ResponseData>(
@@ -25,9 +32,16 @@ export const useHttpClient = () => {
       body: any = null,
       headers: Record<string, string> = {}
     ): Promise<HttpClientResponse<T>> => {
-      setIsLoading(true);
+      setError(null);
+
+      const requestId = requestCounter.current++;
       const httpAbortCtrl = new AbortController();
-      activeHttpRequests.current.push(httpAbortCtrl);
+      activeHttpRequests.current.set(requestId, httpAbortCtrl);
+      
+      // Set isLoading to true when starting a new request
+      if (activeHttpRequests.current.size === 1) {
+        setIsLoading(true);
+      }
 
       try {
         const response = await fetch(url, {
@@ -39,25 +53,32 @@ export const useHttpClient = () => {
 
         const responseData: T = await response.json();
 
-        activeHttpRequests.current = activeHttpRequests.current.filter(
-          (reqCtrl) => reqCtrl !== httpAbortCtrl
-        );
+        activeHttpRequests.current.delete(requestId);
+        
+        // Set isLoading to false if no active requests remain
+        if (activeHttpRequests.current.size === 0) {
+          setIsLoading(false);
+        }
 
         if (!response.ok) {
           throw new Error(responseData.message || "Something went wrong");
         }
 
-        setIsLoading(false);
         return { data: responseData, status: response.status };
       } catch (err: any) {
         if (err.name === "AbortError") {
           console.log("Fetch aborted");
-          return Promise.reject(err);
         } else {
           setError(err.message || "Something went wrong");
-          setIsLoading(false);
-          throw err;
         }
+        activeHttpRequests.current.delete(requestId);
+
+        // Set isLoading to false if no active requests remain
+        if (activeHttpRequests.current.size === 0) {
+          setIsLoading(false);
+        }
+
+        throw err;
       }
     },
     []
@@ -70,6 +91,8 @@ export const useHttpClient = () => {
   useEffect(() => {
     return () => {
       activeHttpRequests.current.forEach((abortCtrl) => abortCtrl.abort());
+      activeHttpRequests.current.clear();
+      setIsLoading(false); // Ensure loading state is reset on component unmount
     };
   }, []);
 

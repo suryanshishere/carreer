@@ -19,14 +19,14 @@ const Detail = () => {
     category: string;
   }>();
 
-  const { error, isLoading, sendRequest } = useHttpClient();
+  const { error,  sendRequest } = useHttpClient();
   const [loadedExamDetail, setLoadedExamDetail] = useState<DetailPage>();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [error, isLoading, dispatch]);
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+  }, [error,  dispatch]);
 
   useEffect(() => {
     const fetchPlaces = async () => {
@@ -42,7 +42,7 @@ const Detail = () => {
     fetchPlaces();
   }, [sendRequest, category, examId]);
 
-  if (!isLoading && !loadedExamDetail) {
+  if (!loadedExamDetail) {
     return (
       <NotFound>
         No exam detail found, might be updating. Try again later!

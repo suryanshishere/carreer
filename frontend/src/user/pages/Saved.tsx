@@ -9,7 +9,7 @@ import Filter from "shared/components/utils/Filter";
 import useUserData from "shared/localStorageConfig/userData-hook";
 
 const Saved = () => {
-  const { sendRequest, clearError, isLoading, error } = useHttpClient();
+  const { sendRequest, clearError,  error } = useHttpClient();
   const [savedExam, setSavedExam] = useState<IList[]>([]);
   const { token,userId } = useUserData();
 
@@ -17,8 +17,7 @@ const Saved = () => {
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [error, isLoading, clearError, dispatch]);
+  }, [error,  clearError, dispatch]);
 
   useEffect(() => {
     const fetchPlaces = async () => {

@@ -6,21 +6,20 @@ import { useHttpClient } from "shared/hooks/http-hook";
 import Filter from "shared/components/utils/Filter";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import NotFound from "shared/pages/NotFound";
-import "./CategoryList.css";
 import useUserData from "shared/localStorageConfig/userData-hook";
+import "./CategoryList.css";
 
 const CategoryList: React.FC = () => {
   const { category = "" } = useParams();
-  const { error, sendRequest, isLoading } = useHttpClient();
+  const { error, sendRequest } = useHttpClient();
   const [loadedExam, setLoadedExam] = useState<IList[]>([]);
   const { token, userId } = useUserData();
   const dispatch = useDispatch();
 
+
   useEffect(() => {
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
     dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error, isLoading, dispatch]);
+  }, [error,  dispatch]);
 
   useEffect(() => {
     const fetchPlaces = async () => {

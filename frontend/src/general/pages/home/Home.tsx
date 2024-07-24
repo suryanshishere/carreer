@@ -12,7 +12,7 @@ import useUserData from "shared/localStorageConfig/userData-hook";
 const Home: React.FC = () => {
   const { category } = useAdminExamData();
 
-  const { sendRequest, error, isLoading } = useHttpClient();
+  const { sendRequest, error } = useHttpClient();
   const [loadedExam, setLoadedExam] = useState<IList[]>([]);
   const { token, userId } = useUserData();
 
@@ -20,8 +20,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [error, isLoading, dispatch]);
+  }, [error, dispatch]);
 
   useEffect(() => {
     const fetchPlaces = async () => {

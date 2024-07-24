@@ -12,7 +12,8 @@
 }
 
 .nav_link_active {
-    color: var(--color-white) !important;
-    background-color: var(--color-dark-blue) !important;
+    /* color: var(--color-white) !important; */
+    font-weight: 700;
+    /* background-color: var(--color-dark-blue) !important; */
 }
 

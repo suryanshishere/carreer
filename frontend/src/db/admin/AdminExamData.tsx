@@ -6,7 +6,7 @@ import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import useUserData from "shared/localStorageConfig/userData-hook";
 
 export const useAdminExamData = () => {
-  const { sendRequest, error, isLoading } = useHttpClient();
+  const { sendRequest, error } = useHttpClient();
   const [examData, setExamData] = useState<AdminExamProps>({
     exam_conducting_body: [],
     exam_code: [],
@@ -24,8 +24,7 @@ export const useAdminExamData = () => {
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [error, isLoading, dispatch]);
+  }, [error, dispatch]);
 
   useEffect(() => {
     let fetchExamData = () => {};

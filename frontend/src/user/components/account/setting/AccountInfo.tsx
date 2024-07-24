@@ -21,7 +21,7 @@ export interface AccountInfoData {
 }
 
 const AccountInfo = () => {
-  const { sendRequest, error, isLoading, clearError } = useHttpClient();
+  const { sendRequest, error,  clearError } = useHttpClient();
   const { token, userId } = useUserData();
   const [contentState, setContentState] = useState(false);
   const [responseData, setResponseData] = useState<AccountInfoData>(
@@ -32,8 +32,7 @@ const AccountInfo = () => {
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [error, isLoading, clearError, dispatch]);
+  }, [error,  clearError, dispatch]);
 
   const passwordSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
