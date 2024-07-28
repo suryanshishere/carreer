@@ -9,7 +9,10 @@ import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import "./Auth.css";
 
-const AuthComponent: React.FC<AuthProps> = ({ forgotPasswordClicked, onClose }) => {
+const AuthComponent: React.FC<AuthProps> = ({
+  forgotPasswordClicked,
+  onClose,
+}) => {
   const auth = useContext(AuthContext);
   const { isLoading, error, clearError, sendRequest } = useHttpClient();
   const dispatch = useDispatch();
@@ -20,48 +23,56 @@ const AuthComponent: React.FC<AuthProps> = ({ forgotPasswordClicked, onClose }) 
     }
   }, [error, dispatch]);
 
-  const authSubmitHandler: FormSubmitHandler = useCallback(async (formState) => {
-    try {
-      const url = formState.isLoginMode
-        ? `${process.env.REACT_APP_BASE_URL}/users/auth/login`
-        : `${process.env.REACT_APP_BASE_URL}/users/auth/signup`;
+  const authSubmitHandler: FormSubmitHandler = useCallback(
+    async (formState) => {
+      try {
+        const url = formState.isLoginMode
+          ? `${process.env.REACT_APP_BASE_URL}/users/auth/login`
+          : `${process.env.REACT_APP_BASE_URL}/users/auth/signup`;
 
-      const body = JSON.stringify(
-        formState.isLoginMode
-          ? { email: formState.email.value, password: formState.password.value }
-          : {
-              name: formState.name!.value,
-              email: formState.email.value,
-              password: formState.password.value,
-            }
-      );
+        const body = JSON.stringify(
+          formState.isLoginMode
+            ? {
+                email: formState.email.value,
+                password: formState.password.value,
+              }
+            : {
+                name: formState.name!.value,
+                email: formState.email.value,
+                password: formState.password.value,
+              }
+        );
 
-      const response = await sendRequest(url, "POST", body, {
-        "Content-Type": "application/json",
-      });
+        const response = await sendRequest(url, "POST", body, {
+          "Content-Type": "application/json",
+        });
 
-      const responseData = response.data as {
-        userId: string;
-        token: string;
-        message: string;
-        tokenExpiration: string;
-        emailVerified: boolean;
-      };
+        const responseData = response.data as {
+          email: string;
+          userId: string;
+          token: string;
+          message: string;
+          tokenExpiration: string;
+          emailVerified: boolean;
+        };
 
-      auth.login(
-        responseData.userId,
-        responseData.token,
-        responseData.tokenExpiration,
-        responseData.emailVerified
-      );
+        auth.login(
+          responseData.email,
+          responseData.userId,
+          responseData.token,
+          responseData.tokenExpiration,
+          responseData.emailVerified
+        );
 
-      if (onClose) {
-        onClose();
+        if (onClose) {
+          onClose();
+        }
+      } catch (error) {
+        // Optionally handle specific errors here
       }
-    } catch (error) {
-      // Optionally handle specific errors here
-    }
-  }, [auth, sendRequest, onClose]);
+    },
+    [auth, sendRequest, onClose]
+  );
 
   return (
     <div className="authentication">

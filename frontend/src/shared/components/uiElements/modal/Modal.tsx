@@ -3,11 +3,11 @@ import ReactDOM from "react-dom";
 import Backdrop from "../Backdrop";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CloseIcon from "@mui/icons-material/Close";
-import "./Modal.css";
 import { IconButton } from "@mui/material";
+import "./Modal.css";
 
 interface ModalProps {
-  show: boolean;
+  backdropShow: boolean;
   onCancel?: () => void;
   onCancelBackdrop?: () => void;
   className?: string;
@@ -20,6 +20,8 @@ interface ModalProps {
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
   children?: React.ReactNode;
   otherModal?: boolean;
+  responseModal?: boolean;
+  onClose?: () => void;
 }
 
 const ModalOverlay: React.FC<ModalProps> = (props) => {
@@ -95,7 +97,7 @@ const ModalOverlay: React.FC<ModalProps> = (props) => {
 const Modal: React.FC<ModalProps> = (props) => {
   return (
     <>
-      {props.show && <Backdrop onClick={props.onCancelBackdrop} />}
+      {props.backdropShow && <Backdrop onClick={props.onCancelBackdrop} />}
       <ModalOverlay {...props} />
     </>
   );

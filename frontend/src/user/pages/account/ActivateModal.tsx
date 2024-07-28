@@ -68,7 +68,7 @@ const ActivateModal = () => {
     <>
       {showModal && (
         <Modal
-          show={showModal}
+          backdropShow={showModal}
           onSubmit={submitHandler}
           contentClass="flex flex-col items-center"
         >

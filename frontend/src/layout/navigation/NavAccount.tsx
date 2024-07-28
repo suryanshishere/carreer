@@ -57,7 +57,7 @@ const NavAccount = () => {
           {showModal && (
             <Modal
               header="Authentication"
-              show={showModal}
+              backdropShow={showModal}
               onCancel={() => setShowModal(false)}
               onCancelBackdrop={() => setShowModal(true)}
               otherModal

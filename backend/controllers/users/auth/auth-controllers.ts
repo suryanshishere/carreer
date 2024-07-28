@@ -9,20 +9,70 @@ import User, { IUser } from "@models/user/user-model";
 import { generateUniqueVerificationToken } from "./auth-helpers";
 import ms from "ms";
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
+const FRONTEND_URL = "http://localhost:3000/user/email_verification";
 const JWT_KEY = process.env.JWT_KEY;
 const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "900s";
-const EMAIL_TOKEN_EXPIRY = process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY || "900s";
+const EMAIL_TOKEN_EXPIRY =
+  process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY || "900s";
+
+export const sendVerificationEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  checkValidationResult(req, res, next);
+  const { userId, email } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return next(new HttpError("User not found", 404));
+    }
+
+    if (user.email !== email) {
+      return next(new HttpError("Email does not match the user's email", 400));
+    }
+
+    const generateUniqueToken = generateUniqueVerificationToken();
+    const verificationToken = `${userId}${generateUniqueToken}`;
+
+    user.emailVerificationToken = generateUniqueToken;
+    user.emailVerificationTokenCreatedAt = new Date();
+
+    await user.save();
+
+    try {
+      await sendEmail(
+        email,
+        "Verify your email through OTP",
+        `${FRONTEND_URL}/${verificationToken}`
+      );
+    } catch (err) {
+      return next(
+        new HttpError("Error sending verification email, try again later.", 500)
+      );
+    }
+
+    res.status(200).json({ message: "Verification email sent successfully" });
+  } catch (err) {
+    console.error("Send verification email error:", err);
+    return next(
+      new HttpError("Sending verification email failed, please try again", 500)
+    );
+  }
+};
 
 export const verifyEmail = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { verificationToken } = req.params;
-  const [email, emailVerificationToken] = verificationToken.split("-");
+  const { verificationToken } = req.body;
+  const userId = verificationToken.slice(0, -6);
+  const emailVerificationToken = verificationToken.slice(-6);
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ _id: userId });
 
     if (existingUser) {
       if (
@@ -31,7 +81,8 @@ export const verifyEmail = async (
       ) {
         // Check if token is still valid (within 3 minutes)
         const tokenExpirationTime = new Date(
-          existingUser.emailVerificationTokenCreatedAt.getTime() + Number(EMAIL_TOKEN_EXPIRY) * 1000
+          existingUser.emailVerificationTokenCreatedAt.getTime() +
+            Number(EMAIL_TOKEN_EXPIRY) * 1000
         ); // 3 minutes in milliseconds
         const currentTime = new Date();
 
@@ -101,8 +152,8 @@ export const signup = async (
 
     let user: IUser;
     const generateUniqueToken = generateUniqueVerificationToken();
-    const verificationToken = `${email}-${generateUniqueToken}`;
 
+    // if existinguser and email not verified, we will overide the user identity with other one.
     if (existingUser && !existingUser.isEmailVerified) {
       existingUser.name = name;
       existingUser.password = hashedPassword;
@@ -122,12 +173,14 @@ export const signup = async (
 
     await user.save();
 
+    const verificationToken = `${user.id}${generateUniqueToken}`;
+
     // Email verification
     try {
       await sendEmail(
         user.email,
         "Verify your email through OTP",
-        `${BASE_URL}/users/auth/verify_email/${verificationToken}`
+        `${FRONTEND_URL}/${verificationToken}`
       );
     } catch (err) {
       return next(
@@ -202,7 +255,7 @@ export const login = async (
       );
     }
 
-    // Handle invalid password scenarios
+    // Handle invalid password scenarios, email verified -- invalid credential, else: first verify your email
     if (!isValidPassword) {
       // If user is not verified, send verification email and restrict features temporarily
       if (!existingUser.isEmailVerified) {
@@ -218,7 +271,7 @@ export const login = async (
           await sendEmail(
             existingUser.email,
             "Verify your email through OTP",
-            `${BASE_URL}/users/auth/verify_email/${verificationToken}`
+            `${FRONTEND_URL}/users/auth/verify_email/${verificationToken}`
           );
         } catch (err) {
           return next(
@@ -260,6 +313,7 @@ export const login = async (
     }
 
     res.status(200).json({
+      email: existingUser.email,
       userId: existingUser.id,
       token,
       emailVerified: existingUser.isEmailVerified,
@@ -286,4 +340,3 @@ const checkValidationResult = (
     );
   }
 };
-

@@ -64,6 +64,7 @@ export const useHttpClient = () => {
           throw new Error(responseData.message || "Something went wrong");
         }
 
+        //data and status is seperated
         return { data: responseData, status: response.status };
       } catch (err: any) {
         if (err.name === "AbortError") {

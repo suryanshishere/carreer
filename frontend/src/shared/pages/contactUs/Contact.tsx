@@ -42,7 +42,7 @@ const ContactUsForm = () => {
       {showModal && (
         <Modal
           header="Review your info and confirm for submission"
-          show={showModal}
+          backdropShow={showModal}
           onCancel={onCancelModalHandler}
           onCancelBackdrop={onCancelModalHandler}
           footer={<Button onClick={okayModalHandler}>Confirm</Button>}

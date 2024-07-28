@@ -32,7 +32,7 @@ const AccountInfo = () => {
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error,  clearError, dispatch]);
+  }, [error,   dispatch]);
 
   const passwordSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

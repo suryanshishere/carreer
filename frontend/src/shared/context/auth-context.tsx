@@ -10,6 +10,7 @@ const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
 interface AuthContextValue {
   isLoggedIn: boolean;
   login: (
+    email: string | undefined,
     userId: string | undefined,
     token: string | undefined,
     tokenExpiration?: string | undefined,
@@ -41,12 +42,14 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
 
   const login = useCallback(
     (
+      email: string | undefined,
       uid: string | undefined,
       token: string | undefined,
       expirationDate?: string | undefined,
       emailVerified?: boolean | undefined
     ) => {
       if (
+        email=== undefined ||
         token === undefined ||
         expirationDate === undefined ||
         uid === undefined
@@ -58,6 +61,7 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
         ? new Date(expirationDate)
         : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY));
       userDataHandler(
+        email,
         uid,
         token,
         newTokenExpirationDate.toISOString(),

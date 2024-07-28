@@ -15,18 +15,23 @@ import Profile from "./user/pages/account/Profile";
 import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
 import Create from "./user/pages/account/Create";
+import EmailVerification from "user/pages/auth/EmailVerification";
+import useUserData from "shared/localStorageConfig/userData-hook";
 
 const App: React.FC = () => {
-  const auth = useContext(AuthContext);
-  const authRoutes = auth.isLoggedIn
+  //context won't work here
+  const {token} = useUserData()
+
+  const authRoutes = token
     ? [
         { path: "saved_exam", element: <Saved /> },
         { path: "profile", element: <Profile /> },
         { path: "setting", element: <Setting /> },
         { path: "create", element: <Create /> },
+        { path: "email_verification/:verificationToken", element: <EmailVerification /> },
         { path: "*", element: <NotFound /> },
       ]
-    : [];
+    : [{ path: "email_verification/:verificationToken", element: <EmailVerification /> }];
 
   const router = createBrowserRouter([
     {

@@ -1,6 +1,7 @@
 import { IUserData } from "models/user/IUserData";
 
 export function userDataHandler(
+  email: string,
   userId: string,
   token: string,
   expiration: string,
@@ -8,6 +9,7 @@ export function userDataHandler(
   sessionExpireMsg?: string
 ): void {
   const data: IUserData = {
+    email,
     userId,
     token,
     expiration,
@@ -16,6 +18,7 @@ export function userDataHandler(
 
   if (sessionExpireMsg) {
     data.sessionExpireMsg = sessionExpireMsg;
+    data.email = undefined;
     data.userId = undefined;
     data.token = undefined;
     data.expiration = undefined;

@@ -1,6 +1,7 @@
 import { IUserData } from "models/user/IUserData";
 
 const defaultUserData: IUserData = {
+  email: undefined,
   userId: undefined,
   token: undefined,
   expiration: undefined,
