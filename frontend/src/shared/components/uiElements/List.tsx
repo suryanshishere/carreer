@@ -5,7 +5,7 @@ import { IList } from "models/exam/IList";
 import Delete from "../utils/Delete";
 import SampleLoad from "./common/SampleLoad";
 import "./List.css";
-import { formatWord } from "shared/helpers/format-word";
+import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
 
 interface ListProps {
   currentRecords: IList[];

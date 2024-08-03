@@ -9,7 +9,7 @@ import NotFound from "shared/pages/NotFound";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import "./Detail.css";
-import { formatWord } from "shared/helpers/format-word";
+import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
 // import Bookmark from "src/shared/components/utils/Bookmark";
 // import DETAIL_PAGE from "src/db/exams/Details.json"
 

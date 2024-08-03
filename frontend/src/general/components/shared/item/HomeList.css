@@ -13,7 +13,7 @@
 }
 
 .links_ul>li:hover {
-    color: var(--color-brown);
+    color: var(--color-red);
 }
 
 .links_ul_a {

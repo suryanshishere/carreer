@@ -15,26 +15,26 @@ const Loading: React.FC<LoadingProps> = ({
   className,
   loadingOnTop,
 }) => {
-  const [delayed, setDelayed] = useState(true);
+  // const [delayed, setDelayed] = useState(true);
   const showSubNav = useHandleScroll();
 
   // not immediately starting loading if the load time got to less than 1.5sec.
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDelayed(false);
-    }, 1500);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setDelayed(false);
+  //   }, 1500);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-  if (delayed) {
-    return null;
-  }
+  // if (delayed) {
+  //   return null;
+  // }
 
   if (loadingOnTop) {
     return (
       <div
-        className="fixed w-full z-50"
+        className="fixed w-full z-0"
         style={{
           ...style,
           top: !showSubNav

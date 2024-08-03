@@ -9,7 +9,7 @@ interface BackdropProps {
 const Backdrop: React.FC<BackdropProps> = (props) => {
   return (
     <div
-      className="backdrop top-0 left-0 w-full h-screen opacity-80 fixed z-20"
+      className="backdrop top-0 left-0 w-full h-screen opacity-80 fixed z-30"
       onClick={props.onClick}
     ></div>
   );

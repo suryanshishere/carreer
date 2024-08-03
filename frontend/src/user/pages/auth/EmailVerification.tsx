@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
+import { userDataHandler } from "shared/localStorageConfig/userDataHandler";
 
 const EmailVerification = () => {
   const { verificationToken } = useParams();
@@ -27,6 +29,7 @@ const EmailVerification = () => {
           }
         );
         dispatch(dataStatusUIAction.setResMsg(response.data.message as string));
+        userDataHandler({ emailVerified: "0" });
       } catch (err) {
         // Handle error if needed
       }

@@ -16,7 +16,7 @@ import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
 import Create from "./user/pages/account/Create";
 import EmailVerification from "user/pages/auth/EmailVerification";
-import useUserData from "shared/localStorageConfig/userData-hook";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 const App: React.FC = () => {
   //context won't work here

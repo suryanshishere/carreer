@@ -5,7 +5,7 @@ import Card from "shared/components/uiElements/cover/Card";
 // import Bookmark from "src/shared/components/utils/Bookmark";
 import SampleLoad from "shared/components/uiElements/common/SampleLoad";
 import "./HomeList.css";
-import { formatWord } from "shared/helpers/format-word";
+import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
 // import Tag from "src/shared/components/uiElements/common/Tag";
 
 interface HomeListItemProps {
@@ -22,14 +22,14 @@ const HomeListItem: React.FC<HomeListItemProps> = ({
   height,
 }) => {
   return (
-    <Card
+    <div
       className="w-auto flex flex-col justify-between overflow-hidden max-h-260"
       style={{ height }}
     >
       <div className="overflow-hidden links_list_sec">
-        <h5 className="text-center capitalize p-3 ">{categoryTitle}</h5>
+        <h5 style={{}} className="text-center capitalize p-3 ">{categoryTitle}</h5>
         <hr />
-        <ul className="links_ul flex flex-col gap-1 ml-2">
+        <ul className="links_ul flex flex-col gap-1 ml-0 pr-0">
           {ListItemData.length === 0 ? (
             <SampleLoad />
           ) : (
@@ -57,7 +57,7 @@ const HomeListItem: React.FC<HomeListItemProps> = ({
       >
         Read More
       </Link>
-    </Card>
+    </div>
   );
 };
 

@@ -1,9 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useHttpClient } from "../../hooks/http-hook";
 import Button from "../../components/form/Button";
 import Modal from "../../components/uiElements/modal/Modal";
 import Form from "./Form";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import UIFormData from "shared/components/uiElements/uihelpers/UIFormData";
 import "./Contact.css";
 
 const ContactUsForm = () => {
@@ -13,9 +16,9 @@ const ContactUsForm = () => {
   const { isLoading, error } = useHttpClient();
 
   const onFormDataChange = (data: { [key: string]: string }) => {
-    console.log(data)
+    console.log(data);
     setFormData(data);
-    setShowModal(true); // Receive formData from Form component
+    setShowModal(true);
   };
 
   const okayModalHandler = async () => {
@@ -23,10 +26,12 @@ const ContactUsForm = () => {
     try {
       console.log(formData);
       navigate("/");
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const onCancelModalHandler = () => {
+  const onCloseModalHandler = () => {
     setShowModal(false);
   };
 
@@ -42,25 +47,17 @@ const ContactUsForm = () => {
       {showModal && (
         <Modal
           header="Review your info and confirm for submission"
-          backdropShow={showModal}
-          onCancel={onCancelModalHandler}
-          onCancelBackdrop={onCancelModalHandler}
-          footer={<Button onClick={okayModalHandler}>Confirm</Button>}
+          onCloseBackdrop={onCloseModalHandler}
+          className="z-50 flex flex-col fixed top-1/2 left-1/2 h-auto contact_modal w-50"
         >
-          {formData && Object.keys(formData).length > 0 && (
-            <div className="modal_para w-full pt-2 flex flex-col flex-wrap gap-2">
-              {Object.entries(formData).map(([key, value]) => (
-                <li className="flex items-center list-none">
-                  <h6 className="self-start m-0 pt-1 capitalize">{key}:</h6>
-                  <p className="m-0 font-bold">
-                    {Array.isArray(value)
-                      ? (value as string[]).join(", ")
-                      : value}
-                  </p>
-                </li>
-              ))}
-            </div>
-          )}
+          <UIFormData formData={formData} className="pt-2 pr-2 pl-4"/>
+
+          <div className="p-1 flex justify-end items-center gap-2 self-end">
+            <IconButton onClick={onCloseModalHandler}>
+              <ArrowBackIcon />
+            </IconButton>
+            <Button onClick={okayModalHandler}>Confirm</Button>
+          </div>
         </Modal>
       )}
     </>

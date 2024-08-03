@@ -11,7 +11,7 @@ const MainNavigation: React.FC = () => {
   const showSubNav = useHandleScroll();
 
   return (
-    <div className="main_nav_sec fixed w-full flex flex-col gap-2 pb-1 z-50">
+    <div className="main_nav_sec fixed w-full flex flex-col gap-2 pb-1 z-20">
       <div className="main_nav flex items-center justify-between gap-2">
         <header className="text-center">careerbag.in</header>
         <NavSearch />

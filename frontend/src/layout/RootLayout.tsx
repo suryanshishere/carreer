@@ -2,13 +2,13 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import MainNavigation from "./navigation/Main";
 import Footer from "./footer/Footer";
-import "./RootLayout.css";
 import AutoUserCheck from "shared/response/emergency/auto-user-check";
 import { RootState } from "shared/store";
 import Response from "shared/response/Response";
 import Loading from "shared/response/dataStatus/Loading";
 import { useSelector } from "react-redux";
-import JsxResponse from "shared/response/dataStatus/JsxResponse";
+import SendEmailVerification from "user/components/auth/SendEmailVerification";
+import "./RootLayout.css";
 
 const RootLayout: React.FC = () => {
   const loading = useSelector((state: RootState) => state.dataStatus.isLoading);
@@ -22,8 +22,8 @@ const RootLayout: React.FC = () => {
       <div className="outlet flex flex-col">
         <Outlet />
       </div>
+      <SendEmailVerification />
       <Footer />
-      <JsxResponse />
     </div>
   );
 };

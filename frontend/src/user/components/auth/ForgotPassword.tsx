@@ -2,7 +2,7 @@ import React from "react";
 import Error from "shared/response/dataStatus/DataStatus";
 import Loading from "shared/response/dataStatus/Loading";
 import { useHttpClient } from "shared/hooks/http-hook";
-import Form, { FormSubmitHandler } from "user/components/auth/Form";
+import Form, { FormSubmitHandler } from "user/components/auth/AuthForm";
 import { AuthProps } from "user/pages/auth/Auth";
 
 const ForgotPassword: React.FC<AuthProps> = ({

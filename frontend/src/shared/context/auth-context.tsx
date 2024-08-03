@@ -2,8 +2,8 @@ import React, { createContext, FC, useCallback, useState } from "react";
 import { isLoggedIn as checkIsLoggedIn } from "shared/helpers/auth-check";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import useUserData from "shared/localStorageConfig/userData-hook";
-import { userDataHandler } from "shared/localStorageConfig/auth-local-storage";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
+import { userDataHandler } from "shared/localStorageConfig/userDataHandler";
 
 const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
 
@@ -49,7 +49,7 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
       emailVerified?: boolean | undefined
     ) => {
       if (
-        email=== undefined ||
+        email === undefined ||
         token === undefined ||
         expirationDate === undefined ||
         uid === undefined
@@ -60,13 +60,14 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
       const newTokenExpirationDate = expirationDate
         ? new Date(expirationDate)
         : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY));
-      userDataHandler(
+      userDataHandler({
         email,
-        uid,
+        userId: uid,
         token,
-        newTokenExpirationDate.toISOString(),
-        localEmailVerified
-      );
+        expiration: newTokenExpirationDate.toISOString(),
+        emailVerified: localEmailVerified,
+        sessionExpireMsg: undefined,
+      });
 
       setLoggedIn(true);
     },

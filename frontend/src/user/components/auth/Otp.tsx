@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useHttpClient } from "shared/hooks/http-hook";
-import Form, { FormSubmitHandler } from "./Form";
+import Form, { FormSubmitHandler } from "./AuthForm";
 import Loading from "shared/response/dataStatus/Loading";
 import Error from "shared/response/dataStatus/DataStatus";
 import { AuthProps } from "user/pages/auth/Auth";

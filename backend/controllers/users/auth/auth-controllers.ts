@@ -9,7 +9,7 @@ import User, { IUser } from "@models/user/user-model";
 import { generateUniqueVerificationToken } from "./auth-helpers";
 import ms from "ms";
 
-const FRONTEND_URL = "http://localhost:3000/user/email_verification";
+// const FRONTEND_URL = "http://localhost:3000/user/email_verification";
 const JWT_KEY = process.env.JWT_KEY;
 const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "900s";
 const EMAIL_TOKEN_EXPIRY =
@@ -31,11 +31,10 @@ export const sendVerificationEmail = async (
     }
 
     if (user.email !== email) {
-      return next(new HttpError("Email does not match the user's email", 400));
+      return next(new HttpError("Email does not match the user's email, change it in setting first if needed!", 400));
     }
 
     const generateUniqueToken = generateUniqueVerificationToken();
-    const verificationToken = `${userId}${generateUniqueToken}`;
 
     user.emailVerificationToken = generateUniqueToken;
     user.emailVerificationTokenCreatedAt = new Date();
@@ -46,7 +45,7 @@ export const sendVerificationEmail = async (
       await sendEmail(
         email,
         "Verify your email through OTP",
-        `${FRONTEND_URL}/${verificationToken}`
+        `${generateUniqueToken}`
       );
     } catch (err) {
       return next(
@@ -54,7 +53,7 @@ export const sendVerificationEmail = async (
       );
     }
 
-    res.status(200).json({ message: "Verification email sent successfully" });
+    res.status(200).json({ message: "OTP send to your email successfully" });
   } catch (err) {
     console.error("Send verification email error:", err);
     return next(
@@ -69,6 +68,11 @@ export const verifyEmail = async (
   next: NextFunction
 ) => {
   const { verificationToken } = req.body;
+
+  if (verificationToken.length != 30) {
+    return next(new HttpError("Invalid verification credentials.", 400));
+  }
+
   const userId = verificationToken.slice(0, -6);
   const emailVerificationToken = verificationToken.slice(-6);
   try {
@@ -76,6 +80,7 @@ export const verifyEmail = async (
 
     if (existingUser) {
       if (
+        emailVerificationToken != null &&
         existingUser.emailVerificationToken === emailVerificationToken &&
         existingUser.emailVerificationTokenCreatedAt instanceof Date
       ) {
@@ -173,14 +178,12 @@ export const signup = async (
 
     await user.save();
 
-    const verificationToken = `${user.id}${generateUniqueToken}`;
-
     // Email verification
     try {
       await sendEmail(
         user.email,
         "Verify your email through OTP",
-        `${FRONTEND_URL}/${verificationToken}`
+        `${generateUniqueToken}`
       );
     } catch (err) {
       return next(
@@ -255,43 +258,10 @@ export const login = async (
       );
     }
 
-    // Handle invalid password scenarios, email verified -- invalid credential, else: first verify your email
     if (!isValidPassword) {
-      // If user is not verified, send verification email and restrict features temporarily
-      if (!existingUser.isEmailVerified) {
-        const generateUniqueToken = generateUniqueVerificationToken();
-        const verificationToken = `${email}-${generateUniqueToken}`;
-        existingUser.emailVerificationToken = generateUniqueToken;
-        existingUser.emailVerificationTokenCreatedAt = new Date();
-
-        await existingUser.save();
-
-        // Send verification email
-        try {
-          await sendEmail(
-            existingUser.email,
-            "Verify your email through OTP",
-            `${FRONTEND_URL}/users/auth/verify_email/${verificationToken}`
-          );
-        } catch (err) {
-          return next(
-            new HttpError(
-              "Error sending verification email, try again later.",
-              500
-            )
-          );
-        }
-
-        return res.status(401).json({
-          message:
-            "Something seem messy. Verify your email first or do signup again.",
-        });
-      } else {
-        // Handle case where user is verified but password is incorrect
-        return next(
-          new HttpError("Invalid credentials, could not log you in.", 401)
-        );
-      }
+      return next(
+        new HttpError("Invalid credentials, could not log you in.", 401)
+      );
     }
 
     let token: string;

@@ -4,10 +4,10 @@ import HomeListItem from "general/components/shared/item/HomeList";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import { formatWord } from "shared/helpers/format-word";
+import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
 import { useAdminExamData } from "db/admin/AdminExamData";
 import "./Home.css";
-import useUserData from "shared/localStorageConfig/userData-hook";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 const Home: React.FC = () => {
   const { category } = useAdminExamData();

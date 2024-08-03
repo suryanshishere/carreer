@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
-import { formatWord } from "shared/helpers/format-word";
-import useUserData from "shared/localStorageConfig/userData-hook";
+import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 interface AccountInfoFormProps {
   accountInfoData: AccountInfoData;

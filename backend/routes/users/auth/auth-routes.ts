@@ -5,17 +5,13 @@ import {
   sendVerificationEmail,
   signup,
   verifyEmail,
-} from "../../../controllers/users/auth/auth-controllers";
+} from "@controllers/users/auth/auth-controllers";
+import checkAuth from "@middleware/check-auth";
 
 const router = express.Router();
 
 const { NAME_LENGTH, PWD_LENGTH } = process.env;
 
-router.post(
-  "/send_verification_email",
-  [check("userId").trim().isLength({ min: 24, max: 24 })],
-  sendVerificationEmail
-);
 router.post(
   "/verify_email",
   check("verificationToken").trim().isLength({ min: 30, max: 30 }),
@@ -47,6 +43,14 @@ router.post(
       .isLength({ min: Number(PWD_LENGTH) }),
   ],
   login
+);
+
+router.use(checkAuth);
+
+router.post(
+  "/send_verification_email",
+  [check("userId").trim().isLength({ min: 24, max: 24 })],
+  sendVerificationEmail
 );
 
 // router.post(

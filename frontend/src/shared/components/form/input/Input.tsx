@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { formatWord } from "shared/helpers/format-word";
+import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -39,6 +39,7 @@ export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   name: string;
+  placeholder?: string;
   togglePassword?: boolean;
   value?: string | number;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -55,6 +56,7 @@ export interface InputProps
 
 export const Input: React.FC<InputProps> = ({
   name,
+  placeholder,
   togglePassword,
   value,
   onChange,
@@ -78,7 +80,7 @@ export const Input: React.FC<InputProps> = ({
             value={value}
             onChange={onChange}
             required={required}
-            label={formatWord(name)}
+            label={placeholder || formatWord(name)}
             variant="outlined"
             inputProps={{
               sx: {
@@ -118,7 +120,7 @@ export const Input: React.FC<InputProps> = ({
           value={value}
           onChange={onChange}
           required={required}
-          label={formatWord(name)}
+          label={placeholder || formatWord(name)}
           id="outlined-basic"
           variant="outlined"
           inputProps={{
@@ -141,12 +143,12 @@ export const TextArea: React.FC<InputProps> = ({
   value,
   onChange,
   row,
-  minHeight,
+  minHeight,placeholder
 }) => {
   return (
     <TextField
       id="outlined-multiline-flexible"
-      label={formatWord(name)}
+      label={placeholder || formatWord(name)}
       multiline
       maxRows={row}
       name={name}
@@ -175,6 +177,7 @@ export const Date: React.FC<InputProps> = ({ name, required }) => {
         <DatePicker
           label={formatWord(name)}
           name={name}
+          
           slotProps={{
             textField: {
               required: required,
@@ -195,41 +198,41 @@ export const Date: React.FC<InputProps> = ({ name, required }) => {
 };
 
 // Todo
-export const AddInput: React.FC<InputProps> = ({ name, required }) => {
-  const [inputList, setInputList] = useState<string[]>([]);
-  const [newInputName, setNewInputName] = useState<string>("");
+// export const AddInput: React.FC<InputProps> = ({ name, required }) => {
+//   const [inputList, setInputList] = useState<string[]>([]);
+//   const [newInputName, setNewInputName] = useState<string>("");
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewInputName(event.target.value);
-  };
+//   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     setNewInputName(event.target.value);
+//   };
 
-  const handleAddInput = () => {
-    if (newInputName.trim() !== "") {
-      setInputList([...inputList, newInputName]);
-      setNewInputName("");
-    }
-  };
+//   const handleAddInput = () => {
+//     if (newInputName.trim() !== "") {
+//       setInputList([...inputList, newInputName]);
+//       setNewInputName("");
+//     }
+//   };
 
-  return (
-    <div>
-      <div>
-        <input
-          type="text"
-          value={newInputName}
-          onChange={handleInputChange}
-          placeholder="Enter input name"
-        />
-        <Button type="button" onClick={handleAddInput}>
-          Add Input
-        </Button>
-      </div>
-      <div>
-        {inputList.map((inputName, index) => (
-          <div key={index}>
-            <input type="text" name={inputName} required={required} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       <div>
+//         <input
+//           type="text"
+//           value={newInputName}
+//           onChange={handleInputChange}
+//           placeholder="Enter input name"
+//         />
+//         <Button type="button" onClick={handleAddInput}>
+//           Add Input
+//         </Button>
+//       </div>
+//       <div>
+//         {inputList.map((inputName, index) => (
+//           <div key={index}>
+//             <input type="text" name={inputName} required={required} />
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };

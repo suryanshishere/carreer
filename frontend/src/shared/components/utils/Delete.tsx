@@ -4,7 +4,7 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import useUserData from "shared/localStorageConfig/userData-hook";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 interface DeleteProps {
   itemId: string | number; // Accept itemId

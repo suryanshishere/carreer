@@ -7,7 +7,7 @@ import Loading from "shared/response/dataStatus/Loading";
 import Para from "shared/components/uiElements/cover/Para";
 import { AuthContext } from "shared/context/auth-context";
 import { useHttpClient } from "shared/hooks/http-hook";
-import useUserData from "shared/localStorageConfig/userData-hook";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 interface DeactivateProps {
   onMsg: (value: string) => void;

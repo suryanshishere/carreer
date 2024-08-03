@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { AdminExamProps } from "models/admin/AdminExamProps";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import useUserData from "shared/localStorageConfig/userData-hook";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 export const useAdminExamData = () => {
   const { sendRequest, error } = useHttpClient();

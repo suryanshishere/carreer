@@ -7,7 +7,7 @@ import { AuthContext } from "shared/context/auth-context";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import useUserData from "shared/localStorageConfig/userData-hook";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 const ActivateModal = () => {
   const { token, userId } = useUserData();
@@ -68,9 +68,8 @@ const ActivateModal = () => {
     <>
       {showModal && (
         <Modal
-          backdropShow={showModal}
-          onSubmit={submitHandler}
-          contentClass="flex flex-col items-center"
+          // onSubmit={submitHandler}
+          // contentClass="flex flex-col items-center"
         >
           {isLoading && <Loading />}
           {error && <Error error={error} />}

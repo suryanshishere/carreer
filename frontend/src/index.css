@@ -20,6 +20,7 @@
   --color-black: black;
   --color-green: #7F9F80;
   --color-dark-blue: #131921;
+  --color-blue: #1679AB ;
   --color-yellow: #EEEBDD;
   --color-white-yellow: #FEFAF6;
   --gap-main-nav: 2rem;
@@ -52,13 +53,13 @@ button {
   background: unset;
 }
 
-h5 {
+/* h5 {
   margin: 0;
   padding: .3rem;
   font-size: var(--font-header-size);
   font-weight: bold;
   text-transform: capitalize;
-}
+} */
 
 .center {
   position: absolute;

@@ -57,10 +57,8 @@ const NavAccount = () => {
           {showModal && (
             <Modal
               header="Authentication"
-              backdropShow={showModal}
-              onCancel={() => setShowModal(false)}
-              onCancelBackdrop={() => setShowModal(true)}
-              otherModal
+              onClose={() => setShowModal(false)}
+              className="auth_modal fixed top-1/2 left-1/2 h-auto w-50 z-50"
             >
               <Auth onClose={() => setShowModal(false)} />
             </Modal>

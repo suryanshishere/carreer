@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { Input } from "shared/components/form/input/Input";
 import Button from "shared/components/form/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import "./Form.css";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { IconButton } from "@mui/material";
+import "./AuthForm.css";
 
 export interface FormState {
   email: {
@@ -116,8 +116,19 @@ const Form: React.FC<FormProps> = ({
     onFormSubmit(formState);
   };
 
+  let backButton: ReactNode = (
+    <>
+      <IconButton onClick={onBackLogin || onBack}>
+      <ArrowBackIcon />
+      </IconButton>
+    </>
+  );
+
   return (
-    <form className="auth_form w-full flex flex-col gap-3" onSubmit={submitHandler}>
+    <form
+      className="auth_form w-full flex flex-col gap-3"
+      onSubmit={submitHandler}
+    >
       {!formState.isLoginMode && !forgotPassword && !resetPassword && !otp && (
         <Input
           type="text"
@@ -170,9 +181,7 @@ const Form: React.FC<FormProps> = ({
       <div className="auth_form_button w-full flex justify-between items-center">
         {resetPassword && (
           <div>
-            <div className="circle_icon" onClick={onBack}>
-              <FontAwesomeIcon icon={faArrowLeft} />
-            </div>
+            {backButton}
             <Button onClick={resetPasswordClicked}> Reset Password</Button>
           </div>
         )}
@@ -184,20 +193,16 @@ const Form: React.FC<FormProps> = ({
         )}
 
         {((forgotPassword && !changePassword) || otp) && (
-          <>
-            <div>
-              <div className="circle_icon" onClick={onBackLogin || onBack}>
-                <FontAwesomeIcon icon={faArrowLeft} />
-              </div>
-              <Button>
-                {changePassword
-                  ? "Confirm password change"
-                  : otp
-                  ? "Confirm OTP"
-                  : "Send OTP"}
-              </Button>
-            </div>
-          </>
+          <div>
+            {backButton}{" "}
+            <Button>
+              {changePassword
+                ? "Confirm password change"
+                : otp
+                ? "Confirm OTP"
+                : "Send OTP"}
+            </Button>
+          </div>
         )}
 
         {!forgotPassword && !changePassword && !otp && !resetPassword && (

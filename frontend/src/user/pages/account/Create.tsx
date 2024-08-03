@@ -4,7 +4,7 @@ import { DetailPage, RelatedDetailPage } from "models/exam/IDetail";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import CreateForm from "user/components/account/create/CreateForm";
-import useUserData from "shared/localStorageConfig/userData-hook";
+import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 const Create: React.FC = () => {
   const { token, userId } = useUserData();
