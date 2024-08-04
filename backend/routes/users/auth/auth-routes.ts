@@ -4,7 +4,7 @@ import {
   login,
   sendVerificationEmail,
   signup,
-  verifyEmail,
+  verifyEmail,resetPassword
 } from "@controllers/users/auth/auth-controllers";
 import checkAuth from "@middleware/check-auth";
 
@@ -43,6 +43,23 @@ router.post(
       .isLength({ min: Number(PWD_LENGTH) }),
   ],
   login
+);
+
+router.post(
+  "/forgot_password",
+  [check("email").trim().normalizeEmail().isEmail()],
+  sendVerificationEmail
+);
+
+router.post(
+  "/reset_password",
+  [
+    check("resetToken").trim().isLength({ min: 30, max: 30 }),
+    check("password")
+      .trim()
+      .isLength({ min: Number(PWD_LENGTH) }),
+  ],
+  resetPassword
 );
 
 router.use(checkAuth);

@@ -17,10 +17,11 @@ import NotFound from "./shared/pages/NotFound";
 import Create from "./user/pages/account/Create";
 import EmailVerification from "user/pages/auth/EmailVerification";
 import useUserData from "shared/localStorageConfig/use-userData-hook";
+import ResetPassword from "user/components/auth/ResetPassword";
 
 const App: React.FC = () => {
   //context won't work here
-  const {token} = useUserData()
+  const { token } = useUserData();
 
   const authRoutes = token
     ? [
@@ -28,10 +29,20 @@ const App: React.FC = () => {
         { path: "profile", element: <Profile /> },
         { path: "setting", element: <Setting /> },
         { path: "create", element: <Create /> },
-        { path: "email_verification/:verificationToken", element: <EmailVerification /> },
+        {
+          path: "email_verification/:verificationToken",
+          element: <EmailVerification />,
+        },
+        { path: "reset_password/:resetToken", element: <ResetPassword /> },
         { path: "*", element: <NotFound /> },
       ]
-    : [{ path: "email_verification/:verificationToken", element: <EmailVerification /> }];
+    : [
+        {
+          path: "email_verification/:verificationToken",
+          element: <EmailVerification />,
+        },
+        { path: "reset_password/:resetToken", element: <ResetPassword /> },
+      ];
 
   const router = createBrowserRouter([
     {

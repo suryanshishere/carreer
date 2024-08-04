@@ -22,16 +22,8 @@ export interface FormState {
     value: string;
     isValid: boolean;
   };
-  image?: {
-    value: File | null;
-    isValid: boolean;
-  };
   isLoginMode?: boolean;
   userId?: {
-    value: string;
-    isValid: boolean;
-  };
-  otp?: {
     value: string;
     isValid: boolean;
   };
@@ -55,13 +47,10 @@ interface FormProps {
 const Form: React.FC<FormProps> = ({
   onFormSubmit,
   forgotPasswordClicked,
-  resetPasswordClicked,
   forgotPassword,
   resetPassword,
-  otp,
   onBack,
   onBackLogin,
-  changePassword,
 }) => {
   const [formState, setFormState] = useState<FormState>({
     email: {
@@ -77,10 +66,6 @@ const Form: React.FC<FormProps> = ({
       isValid: false,
     },
     userId: {
-      value: "",
-      isValid: false,
-    },
-    otp: {
       value: "",
       isValid: false,
     },
@@ -119,7 +104,7 @@ const Form: React.FC<FormProps> = ({
   let backButton: ReactNode = (
     <>
       <IconButton onClick={onBackLogin || onBack}>
-      <ArrowBackIcon />
+        <ArrowBackIcon />
       </IconButton>
     </>
   );
@@ -129,7 +114,7 @@ const Form: React.FC<FormProps> = ({
       className="auth_form w-full flex flex-col gap-3"
       onSubmit={submitHandler}
     >
-      {!formState.isLoginMode && !forgotPassword && !resetPassword && !otp && (
+      {!formState.isLoginMode && !forgotPassword && (
         <Input
           type="text"
           name="name"
@@ -139,27 +124,17 @@ const Form: React.FC<FormProps> = ({
           required
         />
       )}
-      {!otp && (
-        <Input
-          type="email"
-          name="email"
-          placeholder="Your email id"
-          value={formState.email?.value || ""}
-          onChange={handleInputChange}
-          required
-        />
-      )}
-      {(resetPassword || otp) && (
-        <Input
-          type="text"
-          name="otp"
-          placeholder="Your OTP"
-          value={formState.otp?.value || ""}
-          onChange={handleInputChange}
-          required
-        />
-      )}
-      {(!forgotPassword || resetPassword || changePassword) && !otp && (
+
+      <Input
+        type="email"
+        name="email"
+        placeholder="Your email id"
+        value={formState.email?.value || ""}
+        onChange={handleInputChange}
+        required
+      />
+
+      {!forgotPassword && (
         <Input
           togglePassword
           name="password"
@@ -169,43 +144,14 @@ const Form: React.FC<FormProps> = ({
           required
         />
       )}
-      {changePassword && (
-        <Input
-          togglePassword
-          name="newPassword"
-          placeholder="New Password"
-          onChange={handleInputChange}
-          required
-        />
-      )}
       <div className="auth_form_button w-full flex justify-between items-center">
-        {resetPassword && (
+        {forgotPassword && (
           <div>
-            {backButton}
-            <Button onClick={resetPasswordClicked}> Reset Password</Button>
+            {backButton} <Button>Send reset link</Button>
           </div>
         )}
 
-        {changePassword && !resetPassword && (
-          <div>
-            <Button>Confirm password change</Button>
-          </div>
-        )}
-
-        {((forgotPassword && !changePassword) || otp) && (
-          <div>
-            {backButton}{" "}
-            <Button>
-              {changePassword
-                ? "Confirm password change"
-                : otp
-                ? "Confirm OTP"
-                : "Send OTP"}
-            </Button>
-          </div>
-        )}
-
-        {!forgotPassword && !changePassword && !otp && !resetPassword && (
+        {!forgotPassword && (
           <>
             <Button
               noOutline

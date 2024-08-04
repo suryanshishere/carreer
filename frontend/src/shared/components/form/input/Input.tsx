@@ -121,7 +121,6 @@ export const Input: React.FC<InputProps> = ({
           onChange={onChange}
           required={required}
           label={placeholder || formatWord(name)}
-          id="outlined-basic"
           variant="outlined"
           inputProps={{
             sx: {

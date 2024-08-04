@@ -74,8 +74,6 @@ const SendEmailVerification = () => {
     const formData = new FormData(event.currentTarget);
     const otp = formData.get("email_verification_otp") as string;
 
-    console.log(userId + otp);
-
     try {
       const response = await sendRequest(
         `${process.env.REACT_APP_BASE_URL}/users/auth/verify_email`,

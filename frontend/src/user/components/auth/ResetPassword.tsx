@@ -1,86 +1,52 @@
-import React, { useEffect, useState } from "react";
-import Error from "shared/response/dataStatus/DataStatus";
-import Loading from "shared/response/dataStatus/Loading";
+import React, { useEffect } from "react";
 import { useHttpClient } from "shared/hooks/http-hook";
-import Form, { FormSubmitHandler } from "user/components/auth/AuthForm";
-import { AuthProps } from "user/pages/auth/Auth";
-import Para from "shared/components/uiElements/cover/Para";
+import { Input } from "shared/components/form/input/Input";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 
-const ResetPassword: React.FC<AuthProps> = ({ onBackLogin, onBack, timer }) => {
-  const { isLoading, error, sendRequest } = useHttpClient();
-  const [timeLeft, setTimeLeft] = useState<number | undefined>(timer);
+const ResetPassword: React.FC = () => {
+  const { resetToken } = useParams<{ resetToken: string }>();
+  const { sendRequest, error } = useHttpClient();
+  const dispatch = useDispatch();
 
-  const authSubmitHandler: FormSubmitHandler = async (formState) => {
+  useEffect(() => {
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+  }, [error, dispatch]);
+
+  const resetPasswordHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const password = formData.get("confirm_new_password") as string;
+
     try {
-      await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/users/auth/reset-password`,
+      const response = await sendRequest(
+        `${process.env.REACT_APP_BASE_URL}/users/auth/reset_password`,
         "POST",
-        JSON.stringify({
-          email: formState.email!.value,
-          otp: formState.otp!.value,
-          password: formState.password.value,
-        }),
-        {
-          "Content-Type": "application/json",
-        }
+        JSON.stringify({ resetToken, password }),
+        { "Content-Type": "application/json" }
       );
 
-      if (onBackLogin) {
-        onBackLogin();
-      }
+      dispatch(dataStatusUIAction.setResMsg(response.data.message));
     } catch (err) {
       // Handle error
     }
   };
 
-  useEffect(() => {
-    if (timer === undefined || timer <= 0) {
-      return;
-    }
+  if (resetToken?.length != 30) return <div>NOT VALID RESET</div>;
 
-    const interval = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime === undefined || prevTime <= 0) {
-          clearInterval(interval);
-          if (onBack) {
-            onBack();
-          }
-          return 0;
-        }
-        return prevTime - 1000;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [onBack, timer]);
-
-  // Convert milliseconds to minutes and seconds
-  let minutes,
-    seconds: number = 0;
-  if (timeLeft !== undefined) {
-    minutes = Math.floor(timeLeft / (1000 * 60)); // Convert milliseconds to minutes
-    seconds = Math.floor((timeLeft % (1000 * 60)) / 1000); // Convert remaining milliseconds to seconds
-  }
+  //password and input form validation left.
 
   return (
-    <div className="authentication">
-      {isLoading && <Loading />}
-      {error && !isLoading && <Error error={error} />}
-
-      {timeLeft !== undefined ? (
-        <div className="w-full flex justify-end">
-          <Para
-            className="text-center text-sm mr-3 mb-3"
-            style={{ color: "var(--color-brown)" }}
-          >
-            Time left: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-          </Para>
-        </div>
-      ) : (
-        <p>Timer expired or not set</p>
-      )}
-
-      <Form onFormSubmit={authSubmitHandler} onBack={onBack} resetPassword />
+    <div className="w-30">
+      <form onSubmit={resetPasswordHandler}>
+        <Input name="new_password" type="password" required />
+        // match both password validation
+        <Input name="confirm_new_password" type="password" required />
+        <button type="submit">Reset Password</button>
+      </form>
     </div>
   );
 };

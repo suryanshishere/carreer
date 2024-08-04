@@ -9,12 +9,13 @@ import User, { IUser } from "@models/user/user-model";
 import { generateUniqueVerificationToken } from "./auth-helpers";
 import ms from "ms";
 
-// const FRONTEND_URL = "http://localhost:3000/user/email_verification";
+const FRONTEND_URL = "http://localhost:3000/user/reset_password";
 const JWT_KEY = process.env.JWT_KEY;
 const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "900s";
 const EMAIL_TOKEN_EXPIRY =
   process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY || "900s";
 
+// sendVerification is reuse for sending token when forgot password
 export const sendVerificationEmail = async (
   req: Request,
   res: Response,
@@ -22,16 +23,29 @@ export const sendVerificationEmail = async (
 ) => {
   checkValidationResult(req, res, next);
   const { userId, email } = req.body;
+  //assuming that if userId is null, then it's for forgot password.
 
   try {
-    const user = await User.findById(userId);
+    let user: IUser | null = null;
+
+    if (userId) {
+      user = await User.findById(userId);
+    } else {
+      const users = await User.find({ email });
+      user = users.length > 0 ? users[0] : null;
+    }
 
     if (!user) {
       return next(new HttpError("User not found", 404));
     }
 
     if (user.email !== email) {
-      return next(new HttpError("Email does not match the user's email, change it in setting first if needed!", 400));
+      return next(
+        new HttpError(
+          "Email does not match the user's email, change it in settings first if needed!",
+          400
+        )
+      );
     }
 
     const generateUniqueToken = generateUniqueVerificationToken();
@@ -44,8 +58,10 @@ export const sendVerificationEmail = async (
     try {
       await sendEmail(
         email,
-        "Verify your email through OTP",
-        `${generateUniqueToken}`
+        userId ? "Verify your email through OTP" : "Forgot password and reset",
+        userId
+          ? `${generateUniqueToken}`
+          : `${FRONTEND_URL}/${user.id}${generateUniqueToken}`
       );
     } catch (err) {
       return next(
@@ -53,7 +69,11 @@ export const sendVerificationEmail = async (
       );
     }
 
-    res.status(200).json({ message: "OTP send to your email successfully" });
+    res.status(200).json({
+      message: userId
+        ? "OTP send to your email successfully."
+        : "Password reset link send successfully.",
+    });
   } catch (err) {
     console.error("Send verification email error:", err);
     return next(
@@ -178,22 +198,6 @@ export const signup = async (
 
     await user.save();
 
-    // Email verification
-    try {
-      await sendEmail(
-        user.email,
-        "Verify your email through OTP",
-        `${generateUniqueToken}`
-      );
-    } catch (err) {
-      return next(
-        new HttpError(
-          "Error sending verification email, try signing up again later.",
-          500
-        )
-      );
-    }
-
     // Generate JWT token
     let token: string;
     let tokenExpiry: number;
@@ -293,6 +297,84 @@ export const login = async (
     // Handle generic login error
     return next(
       new HttpError("Logging you in failed, please try again later.", 500)
+    );
+  }
+};
+
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  checkValidationResult(req, res, next);
+
+  const { resetToken, password } = req.body;
+
+  if (resetToken.length != 30) {
+    return next(new HttpError("Invalid verification credentials.", 400));
+  }
+
+  const userId = resetToken.slice(0, -6);
+  const emailVerificationToken = resetToken.slice(-6);
+  try {
+    const existingUser = await User.findOne({ _id: userId });
+
+    if (existingUser) {
+      if (
+        emailVerificationToken != null &&
+        existingUser.emailVerificationToken === emailVerificationToken &&
+        existingUser.emailVerificationTokenCreatedAt instanceof Date
+      ) {
+        // Check if token is still valid (within 3 minutes)
+        const tokenExpirationTime = new Date(
+          existingUser.emailVerificationTokenCreatedAt.getTime() +
+            Number(EMAIL_TOKEN_EXPIRY) * 1000
+        ); // 3 minutes in milliseconds
+        const currentTime = new Date();
+
+        if (currentTime <= tokenExpirationTime) {
+          let hashedPassword: string;
+          try {
+            hashedPassword = await bcrypt.hash(password, 12);
+          } catch (err) {
+            return next(
+              new HttpError(
+                "Could not create account right now, please try again.",
+                500
+              )
+            );
+          }
+
+          existingUser.password = hashedPassword;
+          existingUser.passwordResetAt = currentTime;
+          existingUser.isEmailVerified = true;
+          existingUser.emailVerificationToken = undefined;
+          existingUser.emailVerificationTokenCreatedAt = undefined;
+
+          await existingUser.save();
+          return res
+            .status(200)
+            .json({ message: "Password changed successfully." });
+        } else {
+          return next(
+            new HttpError(
+              "Expired reset link. Please request a new password link on your email.",
+              400
+            )
+          );
+        }
+      } else {
+        return next(new HttpError("Invalid verification credentials.", 400));
+      }
+    } else {
+      return next(new HttpError("User not found. Please sign up again.", 404));
+    }
+  } catch (error) {
+    return next(
+      new HttpError(
+        "Internal server error. Please try again later using the same link before it expires.",
+        500
+      )
     );
   }
 };
