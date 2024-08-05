@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import ExamDetail from "@models/exam/examDetail";
-import ExamList from "@models/exam/examModel";
+import PostDetail from "@models/post/postDetail";
+import PostList from "@models/post/postModel";
 import HttpError from "../../utils/http-errors";
-import { getCategoryData, getExcludedData, hashStringToObjectId } from "./exams-helpers";
+import { getCategoryData, getExcludedData, hashStringToObjectId } from "./posts-helpers";
 
 export const getExam = async (
   req: Request,
@@ -11,7 +11,7 @@ export const getExam = async (
 ) => {
   try {
     const { userid } = req.headers;
-    const responseData = await ExamList.find({}, getExcludedData(!!userid));
+    const responseData = await PostList.find({}, getExcludedData(!!userid));
 
     if (!responseData) {
       const error = "No data found!";
@@ -35,7 +35,7 @@ export const getCategoryExam = async (
   const category = req.params.category;
   try {
     const { userid } = req.headers;
-    const responseData = await ExamList.find(
+    const responseData = await PostList.find(
       { category: category },
       getCategoryData(!!userid)
     );
@@ -66,7 +66,7 @@ export const getDetailByExamId = async (
   const examId = hashStringToObjectId(req.params.examId);
 
   try {
-    const examWithDetails = await ExamDetail.findById(examId);
+    const examWithDetails = await PostDetail.findById(examId);
 
     if (!examWithDetails) {
       return next(new HttpError("Could not find an exam!", 404));

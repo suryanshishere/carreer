@@ -5,11 +5,11 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-import examsRoutes from "./routes/exams/exams-routes";
+import postsRoutes from "./routes/posts/posts-routes";
 import adminRoutes from "./routes/admin/admin-routes";
 import usersRoutes from "./routes/users/user-routes";
 import HttpError from "./utils/http-errors";
-import ExamDetail from "./models/exam/examDetail";
+import PostDetail from "@models/post/postDetail";
 
 // Declare the type of MONGO_URL explicitly
 const MONGO_URL: string = process.env.DB || "";
@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
-app.use("/api", examsRoutes);
+app.use("/api", postsRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/users", usersRoutes);
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { getExam, getDetailByExamId, getCategoryExam } from "@controllers/exams/exams-controllers";
+import { getExam, getDetailByExamId, getCategoryExam } from "@controllers/posts/posts-controllers";
 
 const router = express.Router();
 

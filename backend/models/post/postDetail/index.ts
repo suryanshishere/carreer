@@ -84,11 +84,11 @@ const relatedDetailPageSchema = new Schema(
   { _id: false }
 );
 
-const examDetailSchema = new Schema({
+const postDetailSchema = new Schema({
   author: { type: ObjectId, ref: "User" },
   related_detail_page: relatedDetailPageSchema,
 });
 
-const ExamDetail = mongoose.model("ExamDetail", examDetailSchema);
+const PostDetail = mongoose.model("PostDetail", postDetailSchema);
 
-export default ExamDetail;
+export default PostDetail;
