@@ -1,0 +1,37 @@
+{
+  "_id": {
+    "$oid": "66b49905c6edd690ce815439"
+  },
+  "post_code": "JEE2024",
+  "name_of_the_post": "jee syllabus",
+  "last_updated": "2023-12-25T00:00:00.000Z",
+  "syllabus_data": [
+    {
+      "section": "Mathematics",
+      "topics": [
+        "Algebra",
+        "Calculus",
+        "Statistics"
+      ]
+    },
+    {
+      "section": "Programming",
+      "topics": [
+        "Python",
+        "R",
+        "SQL"
+      ]
+    },
+    {
+      "section": "Machine Learning",
+      "topics": [
+        "Supervised Learning",
+        "Unsupervised Learning",
+        "Reinforcement Learning"
+      ]
+    }
+  ],
+  "important_links": {
+    "$oid": "66b4975ec6edd690ce7f9660"
+  }
+}

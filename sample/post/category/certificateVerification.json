@@ -1,0 +1,24 @@
+{
+    "_id": {
+        "$oid": "66b49be3c6edd690ce843456"
+    },
+    "post_code": "JEE2024",
+    "name_of_the_post": "JEE Main: caste and category certification",
+    "last_updated": "2023-12-25T00:00:00.000Z",
+    "how_to_fill_the_form": [
+        "Visit the official website.",
+        "Navigate to the certificate verification section.",
+        "Enter your registration number.",
+        "Upload the required documents.",
+        "Submit the form."
+    ],
+    "post_common": {
+        "$oid": "66b4964ac6edd690ce7e8011"
+    },
+    "important_dates": {
+        "$oid": "66b4969dc6edd690ce7ed041"
+    },
+    "important_links": {
+        "$oid": "66b4975ec6edd690ce7f9660"
+    }
+}

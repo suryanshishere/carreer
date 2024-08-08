@@ -9,7 +9,6 @@ import postsRoutes from "./routes/posts/posts-routes";
 import adminRoutes from "./routes/admin/admin-routes";
 import usersRoutes from "./routes/users/user-routes";
 import HttpError from "./utils/http-errors";
-import PostDetail from "@models/post/postDetail";
 
 // Declare the type of MONGO_URL explicitly
 const MONGO_URL: string = process.env.DB || "";

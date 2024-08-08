@@ -22,5 +22,17 @@
     {
         "header": "Syllabus",
         "link": "/category/syllabus"
+    },
+    {
+        "header": "Certificate Verification",
+        "link": "/category/certificate_verification"
+    },
+    {
+        "header": "Admission",
+        "link": "/category/admission"
+    },
+    {
+        "header": "Important",
+        "link": "/category/important"
     }
 ]

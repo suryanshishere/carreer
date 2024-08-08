@@ -1,22 +1,28 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-export interface IPostListDocument extends Document {
-  approved: boolean;
-  name_of_the_post: string;
-  category: string;
-  detail: mongoose.Types.ObjectId;
-}
-
-const postListSchema = new Schema<IPostListDocument>({
-  approved: { type: Boolean, default: false, required: true },
-  name_of_the_post: { type: String, required: true, unique: true },
-  category: { type: String, required: true },
-  detail: { type: ObjectId, ref: "ExamDetail" },
+const detailPageSchema = new Schema({
+  post_code: { type: String, unique: true, require: true },
+  short_information: [{ type: String}],
+  last_updated: { type: Date },
+  post_common:{type:ObjectId, ref:"PostCommon"},
+  result: { type: ObjectId, ref: "Result" },
+  admit_card: { type: ObjectId, ref: "AdmitCard" },
+  latest_job: { type: ObjectId, ref: "LatestJob" },
+  syllabus: { type: ObjectId, ref: "Syllabus" },
+  answer_key: { type: ObjectId, ref: "AnswerKey" },
+  admission: { type: ObjectId, ref: "Syllabus" },
+  certificate_verification: { type: ObjectId, ref: "CertificateVerification" },
+  important: { type: ObjectId, ref: "PostImportant" },
 });
 
-const PostList = mongoose.model<IPostListDocument>("PostList", postListSchema);
+const postDetailSchema = new Schema({
+  author: { type: ObjectId, ref: "User" },
+  detailPage: detailPageSchema,
+});
 
-export default PostList;
+const PostModal = mongoose.model("Post", postDetailSchema);
+
+export default PostModal;

@@ -1,0 +1,36 @@
+{
+    "post_code": "JEE2024",
+    "department": "National Testing Agency",
+    "stage_level": "National",
+    "applicants": {
+      "number_of_applicants_each_year": 500000,
+      "number_of_applicants_selected": 15000
+    },
+    "post_importance": "Government colleges and major private colleges take admission on the bases of it's result.",
+    "post_exam_toughness_ranking": 4,
+    "job_type": "none",
+    "post_exam_duration": 120,  
+    "age_criteria": {
+      "minimum_age": 25,
+      "maximum_age": 35,
+      "age_relaxation": "5 years for SC/ST candidates",
+      "other_age_limits": "No additional age limits"
+    },
+    "vacancy": [
+      {
+        "post_name": "HR Manager",
+        "total_post": 10,
+        "post_eligibility": "Postgraduate degree in HR or related field"
+      },
+      {
+        "post_name": "Recruitment Officer",
+        "total_post": 5,
+        "post_eligibility": "Bachelor's degree in HR or related field"
+      }
+    ],
+    "eligibility": {
+      "minimum_qualification": "12 or equalivalent passed or appearing.",
+      "other_qualification": "Experience in HR management preferred"
+    }
+  }
+  

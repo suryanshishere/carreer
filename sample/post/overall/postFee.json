@@ -1,0 +1,19 @@
+{
+  "_id": {
+    "$oid": "66b496ebc6edd690ce7f255c"
+  },
+  "post_code": "JEE2024",
+  "custom_fees": {
+    "general_category": {
+      "exam_fee": {
+        "$numberInt": "1300"
+      }
+    },
+    "sc_st_category": {
+      "exam_fee": {
+        "$numberInt": "650"
+      }
+    },
+    "additional_information": "Fee details for other categories and payment modes can be found on the official website."
+  }
+}

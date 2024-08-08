@@ -1,0 +1,14 @@
+{
+    "_id": {
+        "$oid": "66b49ce2c6edd690ce854278"
+    },
+    "post_code": "JEE2024",
+    "name_of_the_post": "JEE counselling and admission",
+    "last_updated": "2023-12-25T00:00:00.000Z",
+    "post_common": {
+        "$oid": "66b4964ac6edd690ce7e8011"
+    },
+    "important_dates": {
+        "$oid": "66b4969dc6edd690ce7ed041"
+    }
+}

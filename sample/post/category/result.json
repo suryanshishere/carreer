@@ -1,0 +1,34 @@
+{
+  "_id": {
+    "$oid": "66b497d1c6edd690ce800792"
+  },
+  "post_code": "JEE2024",
+  "name_of_the_post": "Jee result",
+  "last_updated": "2023-12-25T00:00:00.000Z",
+  "how_to_download_result": [
+    "Visit the official website.",
+    "Navigate to the results section.",
+    "Enter your registration number.",
+    "Click on the download button."
+  ],
+  "result_data": [
+    {
+      "category": "General",
+      "cutoff": {
+        "$numberDouble": "93.2362181"
+      }
+    },
+    {
+      "category": "EWS",
+      "cutoff": {
+        "$numberDouble": "81.3266412"
+      }
+    }
+  ],
+  "post_common": {
+    "$oid": "66b4964ac6edd690ce7e8011"
+  },
+  "important_links": {
+    "$oid": "66b4975ec6edd690ce7f9660"
+  }
+}

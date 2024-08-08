@@ -1,0 +1,49 @@
+{
+  "_id": {
+    "$oid": "66b4969dc6edd690ce7ed041"
+  },
+  "post_code": "JEE2024",
+  "application_begin": {
+    "current_year": "2024-01-01T00:00:00.000Z",
+    "previous_year": "2023-01-01T00:00:00.000Z"
+  },
+  "last_date_for_apply_online": {
+    "current_year": "2024-03-15T23:59:59.000Z",
+    "previous_year": "2023-03-15T23:59:59.000Z"
+  },
+  "pay_exam_fee_last_date": {
+    "current_year": "2024-03-20T23:59:59.000Z",
+    "previous_year": "2023-03-20T23:59:59.000Z"
+  },
+  "form_correction_date_begin": {
+    "current_year": "2024-04-01T00:00:00.000Z",
+    "previous_year": "2023-04-01T00:00:00.000Z"
+  },
+  "form_correction_date_end": {
+    "current_year": "2024-04-07T23:59:59.000Z",
+    "previous_year": "2023-04-07T23:59:59.000Z"
+  },
+  "exam_date": {
+    "current_year": "2024-05-15T00:00:00.000Z",
+    "previous_year": "2023-05-15T00:00:00.000Z"
+  },
+  "admit_card_available": {
+    "current_year": "2024-05-01T00:00:00.000Z",
+    "previous_year": "2023-05-01T00:00:00.000Z"
+  },
+  "exam_city_details_available": {
+    "current_year": "2024-05-10T00:00:00.000Z",
+    "previous_year": "2023-05-10T00:00:00.000Z"
+  },
+  "answer_key_available": {
+    "current_year": "2024-06-01T00:00:00.000Z",
+    "previous_year": "2023-06-01T00:00:00.000Z"
+  },
+  "result_declared": {
+    "current_year": "2024-07-01T00:00:00.000Z",
+    "previous_year": "2023-07-01T00:00:00.000Z"
+  },
+  "custom_dates": {
+    "additional_information": "https://jeemain.nta.nic.in/important-dates"
+  }
+}
