@@ -11,7 +11,7 @@ import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 const Home: React.FC = () => {
   const { category } = useAdminExamData();
-  
+
   const { sendRequest, error } = useHttpClient();
   const [data, setData] = useState<IPostList>({});
   const { token, userId } = useUserData();
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
           null,
           { userid: userId || "" }
         );
-        const responseData: IPostList = response.data as unknown as IPostList;
+        const responseData = response.data as unknown as IPostList;
         setData(responseData);
       } catch (err) {}
     };
@@ -47,9 +47,7 @@ const Home: React.FC = () => {
           category={key}
           categoryTitle={formatWord(key)}
           height={
-            key === "result" || 
-            key === "admit_card" || 
-            key === "latest_job"
+            key === "result" || key === "admit_card" || key === "latest_job"
               ? "55rem"
               : "30rem"
           }

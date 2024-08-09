@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import HomePage from "general/pages/home/Home";
 import Detail from "general/pages/details/Detail";
-import LinksList from "general/pages/category/CategoryList";
+import LinksList from "general/pages/category/Category";
 import ContactUs from "general/pages/contact_us/Contact";
 import {
   AuthContext,

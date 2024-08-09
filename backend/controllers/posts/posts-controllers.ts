@@ -15,6 +15,8 @@ import AnswerKey from "@models/post/category/postAnswerKey";
 import { Model } from "mongoose";
 import HttpError from "@utils/http-errors";
 
+//no. of the item (.env)
+
 export const getPostHomeList = async (
   req: Request,
   res: Response,
@@ -25,9 +27,10 @@ export const getPostHomeList = async (
       const model = models[key];
       const posts = await fetchPosts(model);
       return {
-        [key]: posts.map(({ name_of_the_post, post_code }) => ({
+        [key]: posts.map(({ name_of_the_post, post_code, _id }) => ({
           name_of_the_post,
           post_code,
+          _id,
         })),
       };
     });
@@ -38,7 +41,7 @@ export const getPostHomeList = async (
       return { ...acc, ...curr };
     }, {});
 
-    res.status(200).json(response);
+    return res.status(200).json(response);
   } catch (err) {
     return next(new HttpError("An error occurred while fetching posts", 500));
   }
@@ -48,7 +51,16 @@ export const getPostCategoryList = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  const { category } = req.params;
+  try {
+    const response = await fetchPosts(models[category], 30);
+    const responseData = {category: response}
+    return res.status(200).json(responseData);
+  } catch (err) {
+    return next(new HttpError("An error occurred while fetching posts", 500));
+  }
+};
 
 export const getPostDetail = async (
   req: Request,
@@ -83,5 +95,5 @@ const models: Models = {
   answer_key: AnswerKey,
   certificate_verification: CertificateVerification,
   important: PostImportant,
-  admission: PostImportant,
+  admission: Admission,
 };

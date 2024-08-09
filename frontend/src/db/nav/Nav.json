@@ -5,19 +5,19 @@
     },
     {
         "header": "Latest Jobs",
-        "link": "/category/latest_jobs"
+        "link": "/category/latest_job"
     },
     {
         "header": "Results",
-        "link": "/category/results"
+        "link": "/category/result"
     },
     {
         "header": "Admit Card",
-        "link": "/category/admit_cards"
+        "link": "/category/admit_card"
     },
     {
         "header": "Answer Key",
-        "link": "/category/answer_keys"
+        "link": "/category/answer_key"
     },
     {
         "header": "Syllabus",

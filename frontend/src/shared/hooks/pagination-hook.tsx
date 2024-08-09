@@ -1,26 +1,31 @@
-import { PostData } from "models/post/IPostList";
+import { IPostListData } from "models/post/IPostList";
 import { useEffect, useState } from "react";
 
-export const usePagination = (data: PostData[]) => {
+export const usePagination = (data: IPostListData[]) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(parseInt(process.env.REACT_APP_RECORDS_PER_PAGE ?? '10', 10));
-  const [dataChanged, setDataChanged] = useState(false); // Track data changes
+  const [dataChanged, setDataChanged] = useState(false); 
 
   useEffect(() => {
     setCurrentPage(1);
     setDataChanged(false);
   }, [data]);
 
-  // Calculate nPages, defaulting to 1 if no data is available
-  const nPages = Math.max(Math.ceil(data.length / recordsPerPage), 1);
+  // Ensure data is an array and calculate nPages
+  const validData = Array.isArray(data) ? data : [];
+  const nPages = Math.max(Math.ceil(validData.length / recordsPerPage), 1);
 
-  const indexOfLastRecord = currentPage * recordsPerPage;
-  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = data.slice(indexOfFirstRecord, indexOfLastRecord);
+  // Ensure the currentPage is within the valid range
+  const safeCurrentPage = Math.min(currentPage, nPages);
+
+  // Calculate the indices for slicing the data
+  const indexOfLastRecord = Math.min(safeCurrentPage * recordsPerPage, validData.length);
+  const indexOfFirstRecord = Math.max(indexOfLastRecord - recordsPerPage, 0);
+  const currentRecords = validData.slice(indexOfFirstRecord, indexOfLastRecord);
 
   return {
     nPages,
-    currentPage,
+    currentPage: safeCurrentPage,
     setCurrentPage,
     currentRecords,
     dataChanged,
