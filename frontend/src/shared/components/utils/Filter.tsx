@@ -1,12 +1,12 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { IList } from "models/exam/IList";
+import { PostData } from "models/post/IPostList";
 import { Skeleton } from "@mui/material";
 import "./Filter.css";
 
 interface BannerProps {
   className?: string;
   children?: ReactNode;
-  data: number | IList[];
+  data: number | PostData[];
   noAnimation?: boolean;
 }
 

@@ -1,12 +1,12 @@
 import React from "react";
-import { IList } from "models/exam/IList";
+import { PostData } from "models/post/IPostList";
 import Pagination from "shared/components/utils/Pagination";
 import { usePagination } from "shared/hooks/pagination-hook";
 import List from "shared/components/uiElements/List";
 import "./Category.css";
 
 interface CategoryItemProps {
-  CategoryListData: IList[];
+  CategoryListData: PostData[];
 }
 
 const CategoryItem: React.FC<CategoryItemProps> = ({ CategoryListData }) => {

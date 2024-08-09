@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SavedItem from "../components/item/SavedItem";
 import { useHttpClient } from "shared/hooks/http-hook";
-import { IList } from "models/exam/IList";
+import { PostData } from "models/post/IPostList";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import "./Saved.css";
@@ -10,7 +10,7 @@ import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 const Saved = () => {
   const { sendRequest, clearError,  error } = useHttpClient();
-  const [savedExam, setSavedExam] = useState<IList[]>([]);
+  const [savedExam, setSavedExam] = useState<PostData[]>([]);
   const { token,userId } = useUserData();
 
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const Saved = () => {
             Authorization: "bearer " + token,
           }
         );
-        const responseData = response.data as unknown as IList[];
+        const responseData = response.data as unknown as PostData[];
         setSavedExam(responseData);
       } catch (err) {}
     };

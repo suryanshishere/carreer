@@ -12,30 +12,76 @@ import PostLink from "@models/post/overall/postLink";
 import PostCommon from "@models/post/postCommon";
 import Post from "@models/post/postModel";
 import AnswerKey from "@models/post/category/postAnswerKey";
+import { Model } from "mongoose";
+import HttpError from "@utils/http-errors";
 
-
-export const getExam = async (
+export const getPostHomeList = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  CertificateVerification.find({})
-  Admission.find({})
-  AdmitCard.find({})
+  try {
+    const dataPromises = Object.keys(models).map(async (key) => {
+      const model = models[key];
+      const posts = await fetchPosts(model);
+      return {
+        [key]: posts.map(({ name_of_the_post, post_code }) => ({
+          name_of_the_post,
+          post_code,
+        })),
+      };
+    });
+
+    const dataArray = await Promise.all(dataPromises);
+
+    const response = dataArray.reduce((acc, curr) => {
+      return { ...acc, ...curr };
+    }, {});
+
+    res.status(200).json(response);
+  } catch (err) {
+    return next(new HttpError("An error occurred while fetching posts", 500));
+  }
 };
 
-export const getCategoryExam = async (
+export const getPostCategoryList = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  
+) => {};
+
+export const getPostDetail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {};
+
+// -------------------------------------- helper
+
+// Define the PostModel interface
+interface PostModel extends Model<any> {}
+
+// Define the type for models
+type Models = {
+  [key: string]: PostModel;
 };
 
-export const getDetailByExamId = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+// Fetch posts function
+const fetchPosts = async (Model: PostModel, limit: number = 15) => {
+  return Model.find({})
+    .sort({ last_updated: -1 })
+    .limit(limit)
+    .select("name_of_the_post post_code _id")
+    .exec();
+};
 
+const models: Models = {
+  result: Result,
+  admit_card: AdmitCard,
+  latest_job: LatestJob,
+  syllabus: Syllabus,
+  answer_key: AnswerKey,
+  certificate_verification: CertificateVerification,
+  important: PostImportant,
+  admission: PostImportant,
 };

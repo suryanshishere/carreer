@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { DetailPage } from "models/exam/IDetail";
+import { DetailPage } from "models/post/IDetail";
 import DetailItem from "general/components/shared/item/Detail";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";

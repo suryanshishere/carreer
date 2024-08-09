@@ -6,7 +6,7 @@ const { ObjectId } = Schema.Types;
 export const resultSchema = new Schema({
   post_code: { type: String, unique: true, require: true },
   name_of_the_post: { type: String, require: true },
-  last_updated: { type: Date },
+  last_updated: { type: Date, require: true  },
   how_to_download_result: [{ type: String }],
   result_data: [{ type: Schema.Types.Mixed }],
   post_common: { type: ObjectId, ref: "PostCommon" },

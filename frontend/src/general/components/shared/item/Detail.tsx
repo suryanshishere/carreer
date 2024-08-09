@@ -1,5 +1,5 @@
 import React from "react";
-import { RelatedDetailPage } from "models/exam/IDetail";
+import { RelatedDetailPage } from "models/post/IDetail";
 import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
 import "./Detail.css";
 import Table from "shared/components/dataVisualization/Table";

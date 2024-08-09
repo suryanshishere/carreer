@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IList } from "models/exam/IList";
+import { PostData } from "models/post/IPostList";
 import List from "shared/components/uiElements/List";
 import Pagination from "shared/components/utils/Pagination";
 import { usePagination } from "shared/hooks/pagination-hook";
@@ -7,11 +7,11 @@ import Para from "shared/components/uiElements/cover/Para";
 import "./SavedItem.css";
 
 interface SavedProps {
-  savedExamData: IList[];
+  savedExamData: PostData[];
 }
 
 const SavedItem: React.FC<SavedProps> = ({ savedExamData }) => {
-  const [filteredData, setFilteredData] = useState<IList[]>([]);
+  const [filteredData, setFilteredData] = useState<PostData[]>([]);
 
   useEffect(() => {
     // Set filteredData initially
@@ -23,10 +23,10 @@ const SavedItem: React.FC<SavedProps> = ({ savedExamData }) => {
     usePagination(filteredData);
 
   // Handler to delete an item by id
-  const savedDeleteHandler = (id: string | number) => {
-    const updatedData = filteredData.filter((item) => item._id !== id);
-    setFilteredData(updatedData);
-  };
+  // const savedDeleteHandler = (id: string | number) => {
+  //   const updatedData = filteredData.filter((item) => item._id !== id);
+  //   setFilteredData(updatedData);
+  // };
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -42,7 +42,7 @@ const SavedItem: React.FC<SavedProps> = ({ savedExamData }) => {
             showBookmark={false}
             showCategory={true}
             showDelete={true}
-            onSavedDelete={savedDeleteHandler}
+            // onSavedDelete={savedDeleteHandler}
           />
           {filteredData.length !== 0 && (
             <Pagination

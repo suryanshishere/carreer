@@ -1,12 +1,12 @@
 import express from "express";
-import { getExam, getDetailByExamId, getCategoryExam } from "@controllers/posts/posts-controllers";
+import { getPostHomeList, getPostDetail, getPostCategoryList } from "@controllers/posts/posts-controllers";
 
 const router = express.Router();
 
-router.get("/", getExam);
-router.get("/home", getExam);
-router.get("/category/:category", getCategoryExam);
-router.get('/category/:category/:examId', getDetailByExamId);
+router.get("/", getPostHomeList);
+router.get("/home", getPostHomeList);
+router.get("/category/:category", getPostCategoryList);
+router.get('/category/:category/:postId', getPostDetail);
 
 
 export default router;

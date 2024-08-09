@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { DetailPage, RelatedDetailPage } from "models/exam/IDetail";
+import { DetailPage, RelatedDetailPage } from "models/post/IDetail";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
 import CreateForm from "user/components/account/create/CreateForm";

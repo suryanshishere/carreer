@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IList } from "models/exam/IList";
+import { PostData } from "models/post/IPostList";
 import Card from "shared/components/uiElements/cover/Card";
 // import Bookmark from "src/shared/components/utils/Bookmark";
 import SampleLoad from "shared/components/uiElements/common/SampleLoad";
@@ -9,7 +9,7 @@ import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
 // import Tag from "src/shared/components/uiElements/common/Tag";
 
 interface HomeListItemProps {
-  ListItemData: IList[];
+  ListItemData: PostData[];
   category?: string;
   categoryTitle?: string;
   height?: string;
@@ -34,7 +34,7 @@ const HomeListItem: React.FC<HomeListItemProps> = ({
             <SampleLoad />
           ) : (
             ListItemData?.slice(0, 10).map((item, index) => (
-              <React.Fragment key={item._id}>
+              <React.Fragment key={index}>
                 <li>
                   <Link
                     className="links_ul_a no-underline"

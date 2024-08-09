@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IList } from "models/exam/IList";
+import { IPostList } from "models/post/IPostList";
 import HomeListItem from "general/components/shared/item/HomeList";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
@@ -11,9 +11,9 @@ import useUserData from "shared/localStorageConfig/use-userData-hook";
 
 const Home: React.FC = () => {
   const { category } = useAdminExamData();
-
+  
   const { sendRequest, error } = useHttpClient();
-  const [loadedExam, setLoadedExam] = useState<IList[]>([]);
+  const [data, setData] = useState<IPostList>({});
   const { token, userId } = useUserData();
 
   const dispatch = useDispatch();
@@ -31,36 +31,25 @@ const Home: React.FC = () => {
           null,
           { userid: userId || "" }
         );
-        const responseData: IList[] = response.data as unknown as IList[];
-        setLoadedExam(responseData);
+        const responseData: IPostList = response.data as unknown as IPostList;
+        setData(responseData);
       } catch (err) {}
     };
     fetchPlaces();
   }, [sendRequest, userId]);
 
-  // Define an object to map categories to their respective filtered data and titles
-  const filteredData: {
-    [key: string]: { data: IList[] };
-  } = {};
-
-  category.forEach((item) => {
-    filteredData[item.code] = {
-      data: loadedExam.filter((subItem) => subItem.category === item.code),
-    };
-  });
-
   return (
     <div className="grid grid-cols-3 gap-3">
-      {category.map((category) => (
+      {Object.keys(data).map((key) => (
         <HomeListItem
-          key={category.code}
-          ListItemData={filteredData[category.code]?.data || []}
-          category={category.code}
-          categoryTitle={formatWord(category.code)}
+          key={key}
+          ListItemData={data[key] || []}
+          category={key}
+          categoryTitle={formatWord(key)}
           height={
-            category.code === "results" ||
-            category.code === "admit_cards" ||
-            category.code === "latest_jobs"
+            key === "result" || 
+            key === "admit_card" || 
+            key === "latest_job"
               ? "55rem"
               : "30rem"
           }

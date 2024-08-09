@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IList } from "models/exam/IList";
+import {  PostData } from "models/post/IPostList";
 import CategoryItem from "general/components/shared/item/Category";
 import { useHttpClient } from "shared/hooks/http-hook";
 import Filter from "shared/components/utils/Filter";
@@ -12,7 +12,7 @@ import "./CategoryList.css";
 const CategoryList: React.FC = () => {
   const { category = "" } = useParams();
   const { error, sendRequest } = useHttpClient();
-  const [loadedExam, setLoadedExam] = useState<IList[]>([]);
+  const [loadedExam, setLoadedExam] = useState<PostData[]>([]);
   const { token, userId } = useUserData();
   const dispatch = useDispatch();
 
@@ -32,7 +32,7 @@ const CategoryList: React.FC = () => {
             userid: userId || "",
           }
         );
-        const responseData: IList[] = response.data as unknown as IList[];
+        const responseData = response.data as unknown as PostData[];
         setLoadedExam(responseData);
       } catch (err) {}
     };
