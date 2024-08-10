@@ -1,38 +1,11 @@
 [
-    {
-        "header": "Home",
-        "link": "/"
-    },
-    {
-        "header": "Latest Jobs",
-        "link": "/category/latest_job"
-    },
-    {
-        "header": "Results",
-        "link": "/category/result"
-    },
-    {
-        "header": "Admit Card",
-        "link": "/category/admit_card"
-    },
-    {
-        "header": "Answer Key",
-        "link": "/category/answer_key"
-    },
-    {
-        "header": "Syllabus",
-        "link": "/category/syllabus"
-    },
-    {
-        "header": "Certificate Verification",
-        "link": "/category/certificate_verification"
-    },
-    {
-        "header": "Admission",
-        "link": "/category/admission"
-    },
-    {
-        "header": "Important",
-        "link": "/category/important"
-    }
+    "home",
+    "result",
+    "admit_card",
+    "latest_job",
+    "answer_key",
+    "syllabus",
+    "certificate_verification",
+    "admission",
+    "important"
 ]

@@ -1,37 +1,44 @@
 import { Request, Response, NextFunction } from "express";
-import Admission from "@models/post/category/postAdmission";
-import AdmitCard from "@models/post/category/postAdmitCard";
-import CertificateVerification from "@models/post/category/postCertificateVerification";
-import PostImportant from "@models/post/category/postImportant";
-import LatestJob from "@models/post/category/postLatestJob";
-import Result from "@models/post/category/postResult";
-import Syllabus from "@models/post/category/postSyllabus";
 import PostDate from "@models/post/overall/postDate";
 import PostFee from "@models/post/overall/postFee";
 import PostLink from "@models/post/overall/postLink";
 import PostCommon from "@models/post/postCommon";
 import Post from "@models/post/postModel";
-import AnswerKey from "@models/post/category/postAnswerKey";
-import { Model } from "mongoose";
 import HttpError from "@utils/http-errors";
+import { models } from "mongoose";
+import { fetchPosts, populateModels, MODEL_DATA } from "./posts-helpers";
+import { camelToSnake } from "@controllers/helper-controllers";
 
-//no. of the item (.env)
+const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
+const CATEGORY_LIMIT =
+  Number(process.env.NUMBER_OF_POST_SEND_CATEGORYLIST) || 25;
 
+// Example utility function (unused)
+export const helpless = () => {
+  const cool = PostLink.find({});
+  const cool1 = PostDate.find({});
+  const cool2 = PostFee.find({});
+  const cool3 = PostCommon.find({});
+};
+
+// Get the list of posts for the home page
 export const getPostHomeList = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const dataPromises = Object.keys(models).map(async (key) => {
-      const model = models[key];
-      const posts = await fetchPosts(model);
+    const dataPromises = Object.keys(MODEL_DATA).map(async (key) => {
+      const model = MODEL_DATA[key];
+      const posts = await fetchPosts(model, HOME_LIMIT);
       return {
-        [key]: posts.map(({ name_of_the_post, post_code, _id }) => ({
-          name_of_the_post,
-          post_code,
-          _id,
-        })),
+        [camelToSnake(key)]: posts.map(
+          ({ name_of_the_post, post_code, _id }) => ({
+            name_of_the_post,
+            post_code,
+            _id,
+          })
+        ),
       };
     });
 
@@ -43,10 +50,12 @@ export const getPostHomeList = async (
 
     return res.status(200).json(response);
   } catch (err) {
+    console.error("Error fetching posts for home list:", err);
     return next(new HttpError("An error occurred while fetching posts", 500));
   }
 };
 
+// Get the list of posts for a specific category
 export const getPostCategoryList = async (
   req: Request,
   res: Response,
@@ -54,46 +63,50 @@ export const getPostCategoryList = async (
 ) => {
   const { category } = req.params;
   try {
-    const response = await fetchPosts(models[category], 30);
-    const responseData = {category: response}
+    const model = MODEL_DATA[category];
+    if (!model) {
+      return next(new HttpError("Invalid category specified", 400));
+    }
+
+    const response = await fetchPosts(model, CATEGORY_LIMIT);
+    const responseData = { [category]: response };
+
     return res.status(200).json(responseData);
   } catch (err) {
+    console.error(`Error fetching posts for category ${category}:`, err);
     return next(new HttpError("An error occurred while fetching posts", 500));
   }
 };
 
+// Get the detailed information of a specific post
 export const getPostDetail = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  const { category, postId } = req.params;
+  try {
+    const model = MODEL_DATA[category];
+    if (!model) {
+      return next(new HttpError("Invalid category specified", 400));
+    }
 
-// -------------------------------------- helper
+    const response = await model
+      .findById(postId)
+      .populate(populateModels[category]);
 
-// Define the PostModel interface
-interface PostModel extends Model<any> {}
+    if (!response) {
+      return next(new HttpError("Post not found", 404));
+    }
 
-// Define the type for models
-type Models = {
-  [key: string]: PostModel;
-};
-
-// Fetch posts function
-const fetchPosts = async (Model: PostModel, limit: number = 15) => {
-  return Model.find({})
-    .sort({ last_updated: -1 })
-    .limit(limit)
-    .select("name_of_the_post post_code _id")
-    .exec();
-};
-
-const models: Models = {
-  result: Result,
-  admit_card: AdmitCard,
-  latest_job: LatestJob,
-  syllabus: Syllabus,
-  answer_key: AnswerKey,
-  certificate_verification: CertificateVerification,
-  important: PostImportant,
-  admission: Admission,
+    return res.status(200).json(response);
+  } catch (err) {
+    console.error(
+      `Error fetching post detail for postId ${postId} in category ${category}:`,
+      err
+    );
+    return next(
+      new HttpError("An error occurred while fetching the post", 500)
+    );
+  }
 };

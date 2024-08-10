@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { DetailPage } from "models/post/IDetail";
 import DetailItem from "general/components/shared/item/Detail";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
@@ -10,45 +9,38 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import "./Detail.css";
 import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
+import { IPostDetail } from "models/post/IPostDetail";
 // import Bookmark from "src/shared/components/utils/Bookmark";
 // import DETAIL_PAGE from "src/db/exams/Details.json"
 
 const Detail = () => {
-  const { examId = "", category = "" } = useParams<{
-    examId: string;
+  const { postId = "", category = "" } = useParams<{
+    postId: string;
     category: string;
   }>();
 
-  const { error,  sendRequest } = useHttpClient();
-  const [loadedExamDetail, setLoadedExamDetail] = useState<DetailPage>();
+  const { error, sendRequest } = useHttpClient();
+  const [data, setData] = useState<IPostDetail>({});
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error,  dispatch]);
+  }, [error, dispatch]);
 
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
         const response = await sendRequest(
-          `${process.env.REACT_APP_BASE_URL}/category/${category}/${examId}`
+          `${process.env.REACT_APP_BASE_URL}/category/${category}/${postId}`
         );
-        const responseData: DetailPage = response.data as unknown as DetailPage;
-        setLoadedExamDetail(responseData);
+        const responseData = response.data as unknown as IPostDetail;
+        setData(responseData);
       } catch (err) {}
     };
 
     fetchPlaces();
-  }, [sendRequest, category, examId]);
-
-  if (!loadedExamDetail) {
-    return (
-      <NotFound>
-        No exam detail found, might be updating. Try again later!
-      </NotFound>
-    );
-  }
+  }, [sendRequest, category, postId]);
 
   return (
     <div className="detail_page_sec flex flex-col items-center">
@@ -56,7 +48,7 @@ const Detail = () => {
         <div className="w-full">
           <hr />
         </div>
-        {loadedExamDetail?.created_by || (
+        {
           <div className="min-w-fit ml-2 flex items-center gap-1">
             <span className="mb-1">careergram</span>
             <FontAwesomeIcon
@@ -65,11 +57,11 @@ const Detail = () => {
             />
             {/* <Bookmark itemId={examId} /> */}
           </div>
-        )}
+        }
       </div>
-      <h3>{formatWord(examId)}</h3>
-      {loadedExamDetail && (
-        <DetailItem relatedDetailPage={loadedExamDetail.related_detail_page} />
+      <h3>postId</h3>
+      {data && (
+        <DetailItem detailPageData={data} />
       )}
     </div>
   );

@@ -1,24 +1,25 @@
 import React from "react";
-import { NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import NAV from "db/nav/Nav.json";
 import "./Navlinks.css";
+import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
 
 const Navlinks: React.FC = () => {
   return (
     <ul className="nav_links m-0 p-0 flex gap-2">
       {NAV.map((item) =>
-        item.link ? (
+        item ? (
           <NavLink
-            key={item.header}
-            to={item.link}
+            key={item}
+            to={item === "home" ? `/`: `/category/${item}`}
             className={({ isActive }) =>
               isActive ? "nav_link_active nav_link" : "nav_link"
             }
           >
-            {item.header}
+            {formatWord(item)}
           </NavLink>
         ) : (
-          <React.Fragment key={item.header}></React.Fragment>
+          <React.Fragment key={item}></React.Fragment>
         )
       )}
     </ul>

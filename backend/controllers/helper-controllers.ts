@@ -18,5 +18,15 @@ import { validationResult } from "express-validator";
 // export default checkValidationResult;
 
 export const snakeToCamel = (snake: string): string =>
-  snake.split('').reduce((prev: string, cur: string) =>
-    cur === '_' ? prev : prev + (prev && cur.toUpperCase() || cur.toLowerCase()), '');
+  snake
+    .split("")
+    .reduce(
+      (prev: string, cur: string) =>
+        cur === "_"
+          ? prev
+          : prev + ((prev && cur.toUpperCase()) || cur.toLowerCase()),
+      ""
+    );
+
+export const camelToSnake = (str: string) =>
+  str.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();

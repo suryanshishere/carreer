@@ -16,6 +16,8 @@ interface ListProps {
   onSavedDelete?: (id: string | number) => void;
 }
 
+const CATEGORY_LIMIT = Number(process.env.REACT_APP_NUMBER_OF_POST_CATEGORYLIST) || 25
+
 const List: React.FC<ListProps> = ({
   currentRecords,
   category,
@@ -35,37 +37,36 @@ const List: React.FC<ListProps> = ({
       {currentRecords.length === 0 ? (
         <SampleLoad />
       ) : (
-        currentRecords.map((item, index) => (
+        currentRecords?.slice(0, CATEGORY_LIMIT).map((item, index) => (
           <React.Fragment key={index}>
-            {Object.keys(item).map((key) => (
-              <li className="flex items-center justify-between gap-4">
-                <div className="flex gap-2 p-2">
-                  <h6
-                    className="m-0 mt-1 p-1"
-                    style={{
-                      color: "var(--color-brown)",
-                      fontSize: "var(--font-faint-size)",
-                    }}
-                  >
-                    11/11/2003
-                  </h6>
-                  <div className="list_link flex items-center gap-1">
-                    <Link to={`/category/${category}/${item["_id"]}`}>
-                      {item["name_of_the_post"]}
-                    </Link>
-                    {/* {showBookmark && (
+            <li className="flex items-center justify-between gap-4">
+              <div className="flex gap-2 p-2">
+                <h6
+                  className="m-0 mt-1 p-1"
+                  style={{
+                    color: "var(--color-brown)",
+                    fontSize: "var(--font-faint-size)",
+                  }}
+                >
+                  11/11/2003
+                </h6>
+                <div className="list_link flex items-center gap-1">
+                  <Link to={`/category/${category}/${item._id}`}>
+                    {item.name_of_the_post}
+                  </Link>
+                  {/* {showBookmark && (
                     <Bookmark bookmarked={item.bookmarked} itemId={item._id} />
                   )} */}
-                  </div>
                 </div>
-                <div className="list_li_util flex content-center">
-                  {/* {showCategory && <header>{formatWord(item.category)}</header>}
+              </div>
+              <div className="list_li_util flex content-center">
+                {/* {showCategory && <header>{formatWord(item.category)}</header>}
                 {showDelete && (
                   <Delete itemId={item._id} onDelete={handleDelete} />
                 )} */}
-                </div>
-              </li>
-            ))}
+              </div>
+            </li>
+
             {index !== currentRecords.length - 1 && <hr />}
           </React.Fragment>
         ))

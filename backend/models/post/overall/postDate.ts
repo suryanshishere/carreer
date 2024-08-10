@@ -45,6 +45,18 @@ export const postDateSchema = new Schema({
     current_year: { type: Date },
     previous_year: { type: Date },
   },
+  counseling_start_date: {
+    current_year: { type: Date },
+    previous_year: { type: Date },
+  },
+  counseling_deadline: {
+    current_year: { type: Date },
+    previous_year: { type: Date },
+  },
+  counseling_result_release_date: {
+    current_year: { type: Date },
+    previous_year: { type: Date },
+  },
   custom_dates: { type: Mixed },
 });
 

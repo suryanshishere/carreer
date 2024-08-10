@@ -17,7 +17,6 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
   const { nPages, currentPage, setCurrentPage, currentRecords } =
     usePagination(categoryListData);
 
-    const [data, setData] = useState([])
 
   return (
     <div className="w-full flex flex-col gap-4">

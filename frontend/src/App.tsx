@@ -54,7 +54,7 @@ const App: React.FC = () => {
           path: "category/:category",
           children: [
             { index: true, element: <LinksList /> },
-            { path: ":examId", element: <Detail /> },
+            { path: ":postId", element: <Detail /> },
           ],
         },
         {
