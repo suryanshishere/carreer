@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-export const resultSchema = new Schema({
+export const resultSchema = new Schema({  createdAt: { type: Date },
+  creadedBy: { type: ObjectId, ref: "User" },
   post_code: { type: String, unique: true, require: true },
   name_of_the_post: { type: String, require: true },
   last_updated: { type: Date, require: true  },

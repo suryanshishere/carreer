@@ -8,6 +8,7 @@ import HttpError from "@utils/http-errors";
 import { models } from "mongoose";
 import { fetchPosts, populateModels, MODEL_DATA } from "./posts-helpers";
 import { camelToSnake } from "@controllers/helper-controllers";
+import PostAdmin from "@models/admin/postAdmin";
 
 const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 const CATEGORY_LIMIT =
@@ -19,6 +20,7 @@ export const helpless = () => {
   const cool1 = PostDate.find({});
   const cool2 = PostFee.find({});
   const cool3 = PostCommon.find({});
+  const cool4 = PostAdmin.find({});
 };
 
 // Get the list of posts for the home page

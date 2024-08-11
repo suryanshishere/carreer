@@ -1,6 +1,9 @@
 {
     "_id": {
         "$oid": "66b49be3c6edd690ce843456"
+    },  "createdAt": "2024-08-08T12:00:00Z",
+    "creadedBy": {
+        "$oid": "66afaaf24d8bd472905fcf7e"
     },
     "post_code": "JEE2024",
     "name_of_the_post": "JEE Main: caste and category certification",

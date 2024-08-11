@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 export const postCommonSchema = new Schema({
+  short_information: [{type:String}],
   post_code: { type: String, unique: true, require: true },
   department: { type: String },
   stage_level: { type: String },
@@ -31,6 +32,15 @@ export const postCommonSchema = new Schema({
   eligibility: {
     minimum_qualification: { type: String },
     other_qualification: { type: String },
+  },
+  post_exam_mode: {
+    type: String,
+    enum: ["online", "offine_paper_based", "offline_computer_based"],
+  },
+  applicants_gender: {
+    type: String,
+    enum: ["male", "female", "both"],
+    default: "both",
   },
 });
 

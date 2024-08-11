@@ -38,7 +38,7 @@ const List: React.FC<ListProps> = ({
         <SampleLoad />
       ) : (
         currentRecords?.slice(0, CATEGORY_LIMIT).map((item, index) => (
-          <React.Fragment key={index}>
+          <React.Fragment key={item._id}>
             <li className="flex items-center justify-between gap-4">
               <div className="flex gap-2 p-2">
                 <h6

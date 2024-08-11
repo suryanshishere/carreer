@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { IPostList, IPostListData } from "models/post/IPostList";
+import { IPostList } from "models/post/IPostList";
 import HomeListItem from "general/components/shared/item/HomeList";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import { useAdminExamData } from "db/admin/AdminExamData";
 import useUserData from "shared/localStorageConfig/use-userData-hook";
 import NAV from "db/nav/Nav.json";
-import "./Home.css";
 import { camelToSnake } from "shared/helpers/case-convert";
+import "./Home.css";
 
 const Home: React.FC = () => {
-  const { category } = useAdminExamData();
   const { sendRequest, error } = useHttpClient();
   const [data, setData] = useState<IPostList>({});
   const { token, userId } = useUserData();
@@ -33,7 +31,7 @@ const Home: React.FC = () => {
           { userid: userId || "" }
         );
         const responseData = response.data as unknown as IPostList;
-        console.log(responseData)
+        console.log(responseData);
         setData(filterDataByAllowedKeys(responseData));
       } catch (err) {
         dispatch(dataStatusUIAction.setErrorHandler("Failed to fetch posts"));
@@ -45,16 +43,14 @@ const Home: React.FC = () => {
   // Extra filter for protecting from unwanted data
   const filterDataByAllowedKeys = (data: IPostList) => {
     const filteredData: IPostList = {};
-  
-    Object.keys(data).forEach((key) => {
 
+    Object.keys(data).forEach((key) => {
       const snakeCaseKey = camelToSnake(key);
       if (NAV.includes(snakeCaseKey)) {
         filteredData[snakeCaseKey] = data[key];
       }
     });
-  
-    console.log(filteredData);
+
     return filteredData;
   };
 
@@ -63,7 +59,7 @@ const Home: React.FC = () => {
       {Object.keys(data).map((key) => (
         <HomeListItem
           key={key}
-          ListItemData={data[key] || []} // Use filteredData instead of data
+          ListItemData={data[key] || []}
           category={key}
           height={
             key === "result" || key === "admit_card" || key === "latest_job"

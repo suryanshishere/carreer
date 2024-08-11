@@ -1,49 +1,33 @@
 {
-    "author": {
-        "$oid": "66afaaf24d8bd472905fcf7e"
+    "_id": {
+        "$oid": "66b86fe14d528c942de38c3a"
     },
-    "detailPage": {
-        "post_code": "JEE2024",
-        "short_information": [
-            "Joint Entrance Examination (JEE) is a national-level engineering entrance exam in India.",
-            "JEE Main is the first stage, followed by JEE Advanced for admission to IITs."
-        ],
-        "last_updated": "2024-08-08T12:00:00Z",
-        "post_date": {
-            "$oid": "66b4969dc6edd690ce7ed041"
-        },
-        "post_link": {
-            "$oid": "66b4975ec6edd690ce7f9660"
-        },
-        "post_fee": {
-            "$oid": "66b496ebc6edd690ce7f255c"
-        },
-        "post_common": {
-            "$oid": "66b4964ac6edd690ce7e8011"
-        },
-        "result": {
-            "$oid": "66b497d1c6edd690ce800792"
-        },
-        "admit_card": {
-            "$oid": "66b49b69c6edd690ce83b7f9"
-        },
-        "latest_job": {
-            "$oid": "66b495cbc6edd690ce7e0012"
-        },
-        "syllabus": {
-            "$oid": "66b49905c6edd690ce815439"
-        },
-        "answer_key": {
-            "$oid": "66b49f89c6edd690ce87eae3"
-        },
-        "admission": {
-            "$oid": "66b49ce2c6edd690ce854278"
-        },
-        "certificate_verification": {
-            "$oid": "66b49be3c6edd690ce843456"
-        },
-        "important": {
-            "$oid": "66b499e1c6edd690ce822eb8"
-        }
+    "post_code": "JEE2024",
+    "post_common": {
+        "$oid": "66b4964ac6edd690ce7e8011"
+    },
+    "result": {
+        "$oid": "66b497d1c6edd690ce800792"
+    },
+    "admit_card": {
+        "$oid": "66b49b69c6edd690ce83b7f9"
+    },
+    "latest_job": {
+        "$oid": "66b495cbc6edd690ce7e0012"
+    },
+    "syllabus": {
+        "$oid": "66b49905c6edd690ce815439"
+    },
+    "answer_key": {
+        "$oid": "66b49f89c6edd690ce87eae3"
+    },
+    "admission": {
+        "$oid": "66b49ce2c6edd690ce854278"
+    },
+    "certificate_verification": {
+        "$oid": "66b49be3c6edd690ce843456"
+    },
+    "important": {
+        "$oid": "66b499e1c6edd690ce822eb8"
     }
 }

@@ -1,0 +1,16 @@
+{
+    "postId": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "post_code": "JEE2024",
+    "result": true,
+    "admit_card": true,
+    "latest_job": true,
+    "syllabus": true,
+    "answer_key": true,
+    "admission": true,
+    "certificate_verification": true,
+    "important": true,
+    "post_common": true
+  }
+  
