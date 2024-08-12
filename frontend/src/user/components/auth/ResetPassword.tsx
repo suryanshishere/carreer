@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { useHttpClient } from "shared/hooks/http-hook";
-import { Input } from "shared/components/form/input/Input";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import { Input } from "shared/utilComponents/form/input/Input";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
 
 const ResetPassword: React.FC = () => {
   const { resetToken } = useParams<{ resetToken: string }>();
@@ -35,7 +35,7 @@ const ResetPassword: React.FC = () => {
     }
   };
 
-  if (resetToken?.length != 30) return <div>NOT VALID RESET</div>;
+  if (resetToken?.length !== 30) return <div>NOT VALID RESET</div>;
 
   //password and input form validation left.
 

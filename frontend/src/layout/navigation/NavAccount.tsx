@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { AuthContext } from "shared/context/auth-context";
+import { AuthContext } from "shared/utilComponents/context/auth-context";
 import AccNavList from "user/components/account/AccNavList";
 import Auth from "user/pages/auth/Auth";
-import Modal from "../../shared/components/uiElements/modal/Modal";
+import Modal from "shared/uiComponents/modal/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { NavLink, useLocation } from "react-router-dom";

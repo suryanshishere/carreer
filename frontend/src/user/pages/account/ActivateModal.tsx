@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import Button from "shared/components/form/Button";
-import Error from "shared/response/dataStatus/DataStatus";
-import Loading from "shared/response/dataStatus/Loading";
-import Modal from "shared/components/uiElements/modal/Modal";
-import { AuthContext } from "shared/context/auth-context";
-import { useHttpClient } from "shared/hooks/http-hook";
+import Button from "shared/utilComponents/form/Button";
+import Error from "shared/utilComponents/response/dataStatus/DataStatus";
+import Loading from "shared/utilComponents/response/dataStatus/Loading";
+import Modal from "shared/uiComponents/modal/Modal";
+import { AuthContext } from "shared/utilComponents/context/auth-context";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import useUserData from "shared/localStorageConfig/use-userData-hook";
+import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 const ActivateModal = () => {
   const { token, userId } = useUserData();

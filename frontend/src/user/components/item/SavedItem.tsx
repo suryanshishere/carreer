@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { IPostListData } from "models/post/IPostList";
-import List from "shared/components/uiElements/List";
-import Pagination from "shared/components/utils/Pagination";
-import { usePagination } from "shared/hooks/pagination-hook";
-import Para from "shared/components/uiElements/cover/Para";
+import List from "shared/uiComponents/List";
+import Pagination from "shared/utilComponents/Pagination";
+import { usePagination } from "shared/utilComponents/hooks/pagination-hook";
+import Para from "shared/uiComponents/cover/Para";
 import "./SavedItem.css";
 
 interface SavedProps {

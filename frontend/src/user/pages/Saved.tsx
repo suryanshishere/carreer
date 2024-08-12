@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import SavedItem from "../components/item/SavedItem";
-import { useHttpClient } from "shared/hooks/http-hook";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { IPostListData } from "models/post/IPostList";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
 import "./Saved.css";
-import Filter from "shared/components/utils/Filter";
-import useUserData from "shared/localStorageConfig/use-userData-hook";
+import Filter from "shared/utilComponents/Filter";
+import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 const Saved = () => {
-  const { sendRequest, clearError,  error } = useHttpClient();
+  const { sendRequest, clearError, error } = useHttpClient();
   const [savedExam, setSavedExam] = useState<IPostListData[]>([]);
-  const { token,userId } = useUserData();
+  const { token, userId } = useUserData();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error,  clearError, dispatch]);
+  }, [error, clearError, dispatch]);
 
   useEffect(() => {
     const fetchPlaces = async () => {
@@ -37,6 +37,8 @@ const Saved = () => {
 
     fetchPlaces();
   }, [sendRequest, token, userId]);
+
+  if (savedExam.length === 0) return null;
 
   return (
     <div className="flex gap-3">

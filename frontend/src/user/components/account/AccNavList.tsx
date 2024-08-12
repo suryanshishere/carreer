@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "shared/context/auth-context";
+import { AuthContext } from "shared/utilComponents/context/auth-context";
 import NAV_ACCOUNT from "db/nav/NavAccount.json";
-import UIDropdown from "shared/components/uiElements/UIDropdown";
+import UIDropdown from "shared/uiComponents/UIDropdown";
 import "./AccNavList.css";
 
 interface NavListProps {

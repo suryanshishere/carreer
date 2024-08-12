@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import NAV from "db/nav/Nav.json";
 import "./Navlinks.css";
-import { formatWord } from "shared/components/uiElements/uihelpers/format-word";
+import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 
 const Navlinks: React.FC = () => {
   return (

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useHttpClient } from "shared/hooks/http-hook";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import useUserData from "shared/localStorageConfig/use-userData-hook";
-import { userDataHandler } from "shared/localStorageConfig/userDataHandler";
+import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
 
 const EmailVerification = () => {
   const { verificationToken } = useParams();

@@ -1,0 +1,23 @@
+{
+    "_id": {
+        "$oid": "66afaaf24d8bd472905fcf7e"
+    },
+    "isEmailVerified": true,
+    "name": "Suryansh",
+    "username": "f8b213b8-1e2a-4996-ab7a-e64a32957c8f",
+    "email": "heresuryanshsingh@gmail.com",
+    "password": "$2a$12$1MSFgAipANHrwHI/k7rmjOyExwd7/R2LgmX3p9pc4CHMlqixkmyaW",
+    "created_at": {
+        "$date": {
+            "$numberLong": "1722788594531"
+        }
+    },
+    "__v": {
+        "$numberInt": "0"
+    },
+    "passwordResetAt": {
+        "$date": {
+            "$numberLong": "1722788689502"
+        }
+    }
+}

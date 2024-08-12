@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useCallback } from "react";
-import { AuthContext } from "shared/context/auth-context";
-import { useHttpClient } from "shared/hooks/http-hook";
+import { AuthContext } from "shared/utilComponents/context/auth-context";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import Form, { FormSubmitHandler } from "./AuthForm";
-import Loading from "shared/response/dataStatus/Loading";
-import Error from "shared/response/dataStatus/DataStatus";
+import Loading from "shared/utilComponents/response/dataStatus/Loading";
+import Error from "shared/utilComponents/response/dataStatus/DataStatus";
 import { AuthProps } from "user/pages/auth/Auth";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
 import "./Auth.css";
 
 const AuthComponent: React.FC<AuthProps> = ({

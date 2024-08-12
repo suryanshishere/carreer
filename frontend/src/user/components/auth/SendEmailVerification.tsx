@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Button from "shared/components/form/Button";
-import { Input } from "shared/components/form/input/Input";
-import { useHttpClient } from "shared/hooks/http-hook";
-import useUserData from "shared/localStorageConfig/use-userData-hook";
-import { userDataHandler } from "shared/localStorageConfig/userDataHandler";
-import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
+import Button from "shared/utilComponents/form/Button";
+import { Input } from "shared/utilComponents/form/input/Input";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
+import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
 
 const SendEmailVerification = () => {
   const { error, sendRequest } = useHttpClient();

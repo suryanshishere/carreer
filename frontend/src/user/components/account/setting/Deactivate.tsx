@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "shared/components/form/Button";
-import { Input, TextArea } from "shared/components/form/input/Input";
-import Error from "shared/response/dataStatus/DataStatus";
-import Loading from "shared/response/dataStatus/Loading";
-import Para from "shared/components/uiElements/cover/Para";
-import { AuthContext } from "shared/context/auth-context";
-import { useHttpClient } from "shared/hooks/http-hook";
-import useUserData from "shared/localStorageConfig/use-userData-hook";
+import Button from "shared/utilComponents/form/Button";
+import { Input, TextArea } from "shared/utilComponents/form/input/Input";
+import Error from "shared/utilComponents/response/dataStatus/DataStatus";
+import Loading from "shared/utilComponents/response/dataStatus/Loading";
+import Para from "shared/uiComponents/cover/Para";
+import { AuthContext } from "shared/utilComponents/context/auth-context";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 interface DeactivateProps {
   onMsg: (value: string) => void;

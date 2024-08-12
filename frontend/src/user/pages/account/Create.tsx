@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 // import { DetailPage, RelatedDetailPage } from "models/post/IDetail";
-import { useHttpClient } from "shared/hooks/http-hook";
-import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
 import CreateForm from "user/components/account/create/CreateForm";
-import useUserData from "shared/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 const Create: React.FC = () => {
   const { token, userId } = useUserData();

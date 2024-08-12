@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Box from "shared/components/uiElements/cover/Box";
-import ACCOUNT_SETTING from "db/account/AccountSetting.json";
+import Box from "shared/uiComponents/cover/Box";
+import ACCOUNT_SETTING from "db/userDb/AccountSetting.json";
 import ChangePassword from "user/components/account/setting/ChangePassword";
 import AccountInfo from "user/components/account/setting/AccountInfo";
 import Deactivate from "user/components/account/setting/Deactivate";
-import Para from "shared/components/uiElements/cover/Para";
+import Para from "shared/uiComponents/cover/Para";
 import "./Setting.css";
 
 const Setting = () => {

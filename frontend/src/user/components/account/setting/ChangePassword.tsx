@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Form, { FormSubmitHandler } from "../../auth/AuthForm";
-import { useHttpClient } from "shared/hooks/http-hook";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import "./ChangePassword.css";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
-import useUserData from "shared/localStorageConfig/use-userData-hook";
+import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 interface ChangePasswordProps {
   onMsg: (msg: string) => void;

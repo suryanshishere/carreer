@@ -2,9 +2,9 @@ import React from "react";
 import Navlinks from "./Navlinks";
 import NavSearch from "./NavSearch";
 import NavAccount from "./NavAccount";
-import Features from "general/pages/features/Features";
-import Response from "shared/response/Response";
-import useHandleScroll from "shared/hooks/sub-nav-scroll-hook";
+import Features from "features/Features";
+import Response from "shared/utilComponents/response/Response";
+import useHandleScroll from "shared/utilComponents/hooks/sub-nav-scroll-hook";
 import "./Main.css";
 
 const MainNavigation: React.FC = () => {

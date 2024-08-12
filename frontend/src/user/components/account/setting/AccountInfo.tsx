@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useHttpClient } from "shared/hooks/http-hook";
-import { Input } from "shared/components/form/input/Input";
-import Button from "shared/components/form/Button";
-import Para from "shared/components/uiElements/cover/Para";
+import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import { Input } from "shared/utilComponents/form/input/Input";
+import Button from "shared/utilComponents/form/Button";
+import Para from "shared/uiComponents/cover/Para";
 import "./AccountInfo.css";
-import { dataStatusUIAction } from "shared/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
 import { useDispatch } from "react-redux";
 import AccountInfoForm from "./forms/AccountInfoForm";
-import useUserData from "shared/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 export interface AccountInfoData {
   username: string;
