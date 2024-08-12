@@ -7,7 +7,7 @@ import Post from "@models/post/postModel";
 import HttpError from "@utils/http-errors";
 import { models } from "mongoose";
 import { fetchPosts, populateModels, MODEL_DATA } from "./posts-helpers";
-import { camelToSnake } from "@controllers/helper-controllers";
+import { convertToSnakeCase } from "@controllers/helper-controllers";
 import PostAdmin from "@models/admin/postAdmin";
 
 const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
@@ -21,6 +21,7 @@ export const helpless = () => {
   const cool2 = PostFee.find({});
   const cool3 = PostCommon.find({});
   const cool4 = PostAdmin.find({});
+  const cool5 = Post.find({});
 };
 
 // Get the list of posts for the home page
@@ -34,7 +35,7 @@ export const getPostHomeList = async (
       const model = MODEL_DATA[key];
       const posts = await fetchPosts(model, HOME_LIMIT);
       return {
-        [camelToSnake(key)]: posts.map(
+        [convertToSnakeCase(key)]: posts.map(
           ({ name_of_the_post, post_code, _id }) => ({
             name_of_the_post,
             post_code,

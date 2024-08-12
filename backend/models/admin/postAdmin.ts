@@ -6,7 +6,6 @@ const { ObjectId } = Schema.Types;
 //TODO: management of dates, link and other with dynamics.
 
 const postAdminSchema = new Schema({
-  postId: { type: ObjectId, ref: "Post" },
   post_code: { type: String, required: true, unique: true },
   result: { type: Boolean, default: false },
   admit_card: { type: Boolean, default: false },

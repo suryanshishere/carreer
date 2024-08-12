@@ -28,5 +28,12 @@ export const snakeToCamel = (snake: string): string =>
       ""
     );
 
-export const camelToSnake = (str: string) =>
-  str.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();
+    export const convertToSnakeCase = (str: string): string => {
+      // Convert camelCase, PascalCase, and other common cases to snake_case
+      return str
+        .replace(/([a-z])([A-Z])/g, "$1_$2")        // camelCase to snake_case
+        .replace(/([A-Z])([A-Z][a-z])/g, "$1_$2")   // PascalCase to snake_case
+        .replace(/[\s\-]+/g, '_')                   // Replace spaces and dashes with underscores
+        .toLowerCase();                             // Convert to lowercase
+    };
+    

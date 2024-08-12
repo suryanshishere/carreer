@@ -1,5 +1,5 @@
 import express from "express";
-import adminPublicRoutes from "./public/admin-public-routes";
+import adminPublicRoutes from "./adminPublic/admin-public-routes";
 
 const router = express.Router();
 

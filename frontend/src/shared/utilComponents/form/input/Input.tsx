@@ -7,7 +7,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { IconButton, TextField } from "@mui/material";
-import { CodeItem } from "models/admin/AdminExamProps";
 import Button from "../Button";
 import "./Input.css";
 
@@ -51,7 +50,7 @@ export interface InputProps
   minHeight?: string;
   customInput?: boolean;
   multiple?: boolean;
-  dropdownData?: CodeItem[];
+  // dropdownData?: CodeItem[];
 }
 
 export const Input: React.FC<InputProps> = ({

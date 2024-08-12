@@ -1,6 +1,6 @@
 import React from "react";
 import { Date, Input, TextArea } from "shared/utilComponents/form/input/Input";
-import { useAdminExamData } from "db/adminDb/AdminExamData";
+import { usePostAdminData } from "db/adminDb/post-admin-data";
 import Para from "shared/uiComponents/cover/Para";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
 
@@ -103,7 +103,7 @@ export const ApplicationFormFee = () => (
 );
 
 export const Vacancy = () => {
-  const { vacancy__gender_applicant } = useAdminExamData();
+  const { postId, post_code } = usePostAdminData();
 
   return (
     <>
@@ -118,7 +118,7 @@ export const Vacancy = () => {
           <Dropdown
             name="vacancy__gender_applicant"
             placeholder="Applicants"
-            dropdownData={vacancy__gender_applicant}
+            // dropdownData={vacancy__gender_applicant}
             required
           />
           <Input
@@ -159,7 +159,6 @@ export const AgeCriteria = () => (
 );
 
 export const Eligibility = () => {
-  const { eligibility__minimun_qualification } = useAdminExamData();
   return (
     <>
       <Para
@@ -172,7 +171,7 @@ export const Eligibility = () => {
         <div className="w-2/5">
           <Dropdown
             name="eligibility__minimun_qualification"
-            dropdownData={eligibility__minimun_qualification}
+            // dropdownData={eligibility__minimun_qualification}
             required
           />
         </div>

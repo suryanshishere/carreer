@@ -86,7 +86,9 @@ export const verifyEmail = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+) => { 
+
+  checkValidationResult(req, res, next);
   const { verificationToken } = req.body;
 
   if (verificationToken.length != 30) {
