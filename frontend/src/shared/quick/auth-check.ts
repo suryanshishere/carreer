@@ -1,5 +1,5 @@
 import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
-import { IUserData } from "models/user/IUserData";
+import { IUserData } from "models/userModel/IUserData";
 
 const EXPIRE_MESSAGE = "Your session has expired. Please log in again.";
 

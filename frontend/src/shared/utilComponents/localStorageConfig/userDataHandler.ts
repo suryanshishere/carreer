@@ -1,4 +1,4 @@
-import { IUserData } from "models/user/IUserData";
+import { IUserData } from "models/userModel/IUserData";
 
 interface PartialUserData extends Partial<IUserData> {}
 

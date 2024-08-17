@@ -8,6 +8,17 @@ import POST_SECTION from "db/postDb/postSection.json";
 import Button from "shared/utilComponents/form/Button";
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import PostCommonForm from "user/components/account/createForm/PostCommonForm";
+import AdmissionForm from "user/components/account/createForm/createFormSection/AdmissionForm";
+import AdmitCardForm from "user/components/account/createForm/createFormSection/AdmitCardForm";
+import AnswerKeyForm from "user/components/account/createForm/createFormSection/AnswerKeyForm";
+import LatestJobForm from "user/components/account/createForm/createFormSection/LatestJobForm";
+import ResultForm from "user/components/account/createForm/createFormSection/ResultForm";
+import SyllabusForm from "user/components/account/createForm/createFormSection/SyllabusForm";
+import CertificateVerificationForm from "user/components/account/createForm/createFormSection/CertificateVerificationForm";
+import PostImportantForm from "user/components/account/createForm/createFormSection/PostImportantForm";
+import PostDatesForm from "user/components/account/createForm/createFormOverall/PostDatesForm";
+import PostFeesForm from "user/components/account/createForm/createFormOverall/PostFeesForm";
+import PostLinksForm from "user/components/account/createForm/createFormOverall/PostLinksForm";
 
 enum SectionState {
   post_common = "post_common",
@@ -90,7 +101,31 @@ const Create: React.FC = () => {
   let component;
   switch (section) {
     case SectionState.post_common:
-      component = <PostCommonForm data={data} />;
+      component = <PostCommonForm idData={data} />;
+      break;
+    case SectionState.admission:
+      component = <AdmissionForm idData={data} />;
+      break;
+    case SectionState.admit_card:
+      component = <AdmitCardForm idData={data} />;
+      break;
+    case SectionState.answer_key:
+      component = <AnswerKeyForm idData={data} />;
+      break;
+    case SectionState.latest_job:
+      component = <LatestJobForm idData={data} />;
+      break;
+    case SectionState.result:
+      component = <ResultForm idData={data} />;
+      break;
+    case SectionState.syllabus:
+      component = <SyllabusForm idData={data} />;
+      break;
+    case SectionState.certificate_verification:
+      component = <CertificateVerificationForm idData={data} />;
+      break;
+    case SectionState.important:
+      component = <PostImportantForm idData={data} />;
       break;
     default:
       component = (

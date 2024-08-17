@@ -1,12 +1,12 @@
 import React, { useState } from "react";
+import { ICreateForm } from "../createFormHelper/interfaceHelper";
+import { ITableFormData,TableForm } from "../createFormHelper/tableHelper";
 import POST_COMMON_FORM from "db/userDb/createDb/postCommonFormDb.json";
-import { renderFormFields, structureOverallFormData  } from "./createFormHelper/helper";
+import { renderFormFields, structureOverallFormData  } from "../createFormHelper/helper";
 import Button from "shared/utilComponents/form/Button";
-import {ITableFormData, TableForm} from "./createFormHelper/tableHelper";
-import { ICreateForm } from "./createFormHelper/interfaceHelper";
 
 
-const PostCommonForm:React.FC<ICreateForm> = ({ idData }) => {
+const SyllabusForm:React.FC<ICreateForm> = ({ idData }) => {
   const [tableFormData, setTableFormData] = useState<ITableFormData>({});
 
   const tableInputData = (data: Record<string, any>) => {
@@ -32,4 +32,4 @@ const PostCommonForm:React.FC<ICreateForm> = ({ idData }) => {
   );
 };
 
-export default PostCommonForm;
+export default SyllabusForm;

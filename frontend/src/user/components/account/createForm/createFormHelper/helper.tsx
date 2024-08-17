@@ -1,8 +1,9 @@
 import { IPostAdminData } from "models/admin/IPostAdminData";
+import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
 import { Input } from "shared/utilComponents/form/input/Input";
-import DynamicForm from "./tableHelper";
+import { ITableFormData } from "./tableHelper";
 
 export const structureFormData = (
   formData: Record<string, any>,
@@ -29,17 +30,13 @@ export const structureFormData = (
 };
 
 export const renderFormFields = (
-  formFields: any[],
-  idData?: IPostAdminData[],
-  onOtherData?: (data: Record<string, any>) => void
+  data: ICreateInputForm[],
+  idData?: IPostAdminData[]
 ) => {
-  return formFields.map((item, index) => {
-    if (item.type === "array" && onOtherData !== undefined){
-      return(
-        <DynamicForm name={item.name} data={item.subItem} inputData={onOtherData}/>
-      )
-    }
-    else if (item.type === "object" ) {
+  return data.map((item, index) => {
+    if (item.type === "array") {
+      return null;
+    } else if (item.type === "object" && item.subItem !== undefined) {
       return (
         <div key={index} className="flex flex-col gap-2">
           <h3>{formatWord(item.name)}</h3>
@@ -57,13 +54,9 @@ export const renderFormFields = (
       );
     } else if (item.value !== undefined) {
       return (
-        <Dropdown
-          key={index}
-          name={item.name}
-          dropdownData={item.value}
-        />
+        <Dropdown key={index} name={item.name} dropdownData={item.value} />
       );
-    }  else {
+    } else {
       return (
         <Input
           key={index}
@@ -73,4 +66,37 @@ export const renderFormFields = (
       );
     }
   });
+};
+
+export const structureOverallFormData = (
+  e: React.FormEvent,
+  tableFormData: ITableFormData,
+  data: ICreateInputForm[]
+) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.currentTarget as HTMLFormElement);
+  const formValues: Record<string, any> = {};
+
+  formData.forEach((value, key) => {
+    if (formValues[key]) {
+      if (Array.isArray(formValues[key])) {
+        formValues[key].push(value);
+      } else {
+        formValues[key] = [formValues[key], value];
+      }
+    } else {
+      formValues[key] = value;
+    }
+  });
+
+  const structuredData = structureFormData(formValues, data);
+
+  // Merge the dynamic form data with the structured data
+  const finalStructuredData = {
+    ...structuredData,
+    ...tableFormData,
+  };
+
+  return finalStructuredData;
 };
