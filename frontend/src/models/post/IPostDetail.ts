@@ -73,7 +73,7 @@ interface Eligibility {
   other_qualification?: string;
 }
 
-interface IPostCommon {
+export interface IPostCommon {
   post_code?: string;
   department?: string;
   stage_level?: string;

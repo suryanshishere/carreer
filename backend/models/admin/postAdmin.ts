@@ -7,6 +7,7 @@ const { ObjectId } = Schema.Types;
 
 const postAdminSchema = new Schema({
   post_code: { type: String, required: true, unique: true },
+  title: { type: String, required: true}, //Just tell about the context of the post
   result: { type: Boolean, default: false },
   admit_card: { type: Boolean, default: false },
   latest_job: { type: Boolean, default: false },

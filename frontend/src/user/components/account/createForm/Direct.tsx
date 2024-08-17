@@ -4,9 +4,9 @@ import { usePostAdminData } from "db/adminDb/post-admin-data";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
 
 const DirectForm = () => {
-  const {
-    post_code, postId
-  } = usePostAdminData();
+  // const {
+  //   post_code, postId
+  // } = usePostAdminData();
 
   return (
     <>

@@ -1,0 +1,119 @@
+[
+    {
+        "name": "_id"
+    },
+    {
+        "name": "short_information",
+        "type": "textarea"
+    },
+    {
+        "name": "department",
+        "type": "text"
+    },
+    {
+        "name": "stage_level",
+        "type": "text"
+    },
+    {
+        "name": "applicants",
+        "type": "object",
+        "subItem": [
+            {
+                "name": "number_of_applicants_each_year",
+                "type": "number"
+            },
+            {
+                "name": "number_of_applicants_selected",
+                "type": "number"
+            }
+        ]
+    },
+    {
+        "name": "post_importance",
+        "type": "textarea"
+    },
+    {
+        "name": "post_exam_toughness_ranking",
+        "type": "number"
+    },
+    {
+        "name": "job_type",
+        "type": "text"
+    },
+    {
+        "name": "post_exam_duration",
+        "type": "number"
+    },
+    {
+        "name": "age_criteria",
+        "type": "object",
+        "subItem": [
+            {
+                "name": "minimum_age",
+                "type": "number"
+            },
+            {
+                "name": "maximum_age",
+                "type": "number"
+            },
+            {
+                "name": "age_relaxation",
+                "type": "text"
+            },
+            {
+                "name": "other_age_limits",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "eligibility",
+        "type": "object",
+        "subItem": [
+            {
+                "name": "minimum_qualification",
+                "type": "text"
+            },
+            {
+                "name": "other_qualification",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "vacancy",
+        "type": "array",
+        "subItem": [
+            {
+                "name": "post_name",
+                "type": "text"
+            },
+            {
+                "name": "total_post",
+                "type": "number"
+            },
+            {
+                "name": "post_eligibility",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "post_exam_mode",
+        "type": "text",
+        "value": [
+            "online",
+            "offline_paper_based",
+            "offline_computer_based"
+        ]
+    },
+    {
+        "name": "applicants_gender",
+        "type": "text",
+        "value": [
+            "male",
+            "female",
+            "both"
+        ]
+    }
+]

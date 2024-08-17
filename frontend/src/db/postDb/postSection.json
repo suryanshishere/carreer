@@ -1,4 +1,4 @@
-export const POST_SECTION_DATA = [
+[
     "post_common",
     "result",
     "admit_card",

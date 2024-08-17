@@ -3,42 +3,42 @@ import { useDispatch } from "react-redux";
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
-export const usePostAdminData = () => {
+interface UsePostAdminDataProps {
+  postSection: string | null;
+}
+
+export const usePostAdminData = ({ postSection }: UsePostAdminDataProps) => {
   const { sendRequest, error } = useHttpClient();
   const [data, setData] = useState<IPostAdminData>({
-    postId: "",
-    post_code: ""
+    _id: "",
+    title:"",
   });
-  const { userId } = useUserData();
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(dataStatusUIAction.setErrorHandler(error));
-  // }, [error, dispatch]);
+  useEffect(() => {
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+  }, [error]);
 
-  // useEffect(() => {
-  //   let fetchExamData = () => {};
+  useEffect(() => {
+    const fetchExamData = async () => {
+      try {
+        const response = await sendRequest(
+          `${process.env.REACT_APP_BASE_URL}/admin/public/post_admin_data`,
+          "POST",
+          JSON.stringify({ post_section: postSection }),
+          {
+            "Content-Type": "application/json",
+          }
+        );
+        const responseData = response.data as unknown as IPostAdminData;
+        setData(responseData);
+      } catch (err) {}
+    };
 
-  //   fetchExamData = async () => {
-  //     try {
-  //       const response = await sendRequest(
-  //         `${process.env.REACT_APP_BASE_URL}/admin/public/admin_exam_data`,
-  //         "GET",
-  //         null,
-  //         {
-  //           userid: userId || "",
-  //         }
-  //       );
-  //       const responseData: AdminExamProps =
-  //         response.data as unknown as AdminExamProps;
-  //       setExamData(responseData);
-  //     } catch (err) {}
-  //   };
+    fetchExamData();
+  }, []);
 
-  //   fetchExamData();
-  // }, [sendRequest, userId]);
-
+  if (postSection === null) return null;
   return data;
 };

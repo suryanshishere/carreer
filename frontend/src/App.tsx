@@ -38,7 +38,7 @@ const App: React.FC = () => {
           path: "email_verification/:verificationToken",
           element: <EmailVerification />,
         },
-        { path: "reset_password/:resetToken", element: <ResetPassword /> },
+        { path: "reset_password/:resetToken", element: <ResetPassword /> },{ path: "create", element: <Create /> },
       ];
 
   const router = createBrowserRouter([

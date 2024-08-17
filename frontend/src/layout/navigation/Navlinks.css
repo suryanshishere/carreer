@@ -1,6 +1,5 @@
 .nav_links>button,
 .nav_link {
-    font-size: var(--font-nav-size);
     font-weight: 500;
     text-decoration: none;
     color: unset;

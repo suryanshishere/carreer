@@ -103,7 +103,7 @@ export const ApplicationFormFee = () => (
 );
 
 export const Vacancy = () => {
-  const { postId, post_code } = usePostAdminData();
+  // const { postId, post_code } = usePostAdminData();
 
   return (
     <>
@@ -115,12 +115,12 @@ export const Vacancy = () => {
       </Para>
       <div className="flex flex-col gap-3">
         <div className="flex gap-3">
-          <Dropdown
+          {/* <Dropdown
             name="vacancy__gender_applicant"
             placeholder="Applicants"
             // dropdownData={vacancy__gender_applicant}
             required
-          />
+          /> */}
           <Input
             placeholder="Number of Applicant"
             name="vacancy__number_of_applicant"
@@ -169,11 +169,11 @@ export const Eligibility = () => {
       </Para>
       <div className="flex gap-3">
         <div className="w-2/5">
-          <Dropdown
+          {/* <Dropdown
             name="eligibility__minimun_qualification"
             // dropdownData={eligibility__minimun_qualification}
             required
-          />
+          /> */}
         </div>
         <Input
           name="eligibility__other_qualification"

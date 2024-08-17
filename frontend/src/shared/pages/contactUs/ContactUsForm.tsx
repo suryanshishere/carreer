@@ -42,7 +42,7 @@ const ContactUsForm: React.FC = () => {
     setShowModal(false);
   };
 
-  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const fd = new FormData(e.currentTarget); // Change e.target to e.currentTarget

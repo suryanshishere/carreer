@@ -6,7 +6,7 @@ const { ObjectId } = Schema.Types;
 export const postCommonSchema = new Schema({
   createdAt: { type: Date },
   creadedBy: { type: ObjectId, ref: "User" },
-  short_information: [{type:String}],
+  short_information: {type:String},
   post_code: { type: String, unique: true, require: true },
   department: { type: String },
   stage_level: { type: String },

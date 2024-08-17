@@ -1,4 +1,4 @@
 export interface IPostAdminData {
-  postId: string;
-  post_code: string;
+  _id: string;
+  title: string;
 }

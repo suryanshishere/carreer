@@ -50,7 +50,7 @@ export interface InputProps
   minHeight?: string;
   customInput?: boolean;
   multiple?: boolean;
-  // dropdownData?: CodeItem[];
+  dropdownData?: string[];
 }
 
 export const Input: React.FC<InputProps> = ({

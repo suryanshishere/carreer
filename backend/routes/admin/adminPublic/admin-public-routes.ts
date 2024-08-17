@@ -4,9 +4,9 @@ import { check } from "express-validator";
 
 const router = express.Router();
 
-router.get(
+router.post(
   "/post_admin_data",
-  [check("post_category").trim().not().isEmpty()],
+  [check("post_section").trim().not().isEmpty()],
   postAdminData
 );
 
