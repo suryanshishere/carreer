@@ -1,25 +1,17 @@
 import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
 import React, { useEffect, useState } from "react";
+import { RowData } from "./interfaceHelper";
 
 // Define the type for the props
 interface TableFormProps {
   data: ICreateInputForm[];
   onTableInputData: (data: Record<string, any>) => void;
 }
-interface RowData {
-  [key: string]: string | number | boolean;
-}
-
-export interface ITableFormData {
-  [key: string]: RowData[];
-}
 
 export const TableForm: React.FC<TableFormProps> = ({
   data,
   onTableInputData,
 }) => {
-  // Define RowData type
-
   // Initialize state with an empty object for each table
   const initializeRow = (subItems: ICreateInputForm[]) =>
     subItems.reduce(
@@ -97,6 +89,9 @@ export const TableForm: React.FC<TableFormProps> = ({
   return (
     <>
       {data
+        .filter((item) => item.type === "customArray")
+        && <div>cool</div> }
+      {data
         .filter((item) => item.type === "array" && item.subItem)
         .map((item, itemIndex) => (
           <div key={itemIndex} className="table-section">
@@ -105,7 +100,6 @@ export const TableForm: React.FC<TableFormProps> = ({
               <div key={rowIndex} className="row">
                 {item.subItem!.map((field) => {
                   const fieldValue = row[field.name];
-                  // Determine the value for the input based on its type
                   const displayValue =
                     field.type === "checkbox"
                       ? Boolean(fieldValue)

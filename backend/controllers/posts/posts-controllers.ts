@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import PostDate from "@models/post/overall/postDate";
 import PostFee from "@models/post/overall/postFee";
 import PostLink from "@models/post/overall/postLink";
-import PostCommon from "@models/post/postCommon";
+import PostCommon from "@models/post/section/postCommon";
 import Post from "@models/post/postModel";
 import HttpError from "@utils/http-errors";
 import { models } from "mongoose";

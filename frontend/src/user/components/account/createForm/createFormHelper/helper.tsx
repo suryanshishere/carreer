@@ -3,7 +3,7 @@ import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
 import { Input } from "shared/utilComponents/form/input/Input";
-import { ITableFormData } from "./tableHelper";
+import { ITableFormData } from "./interfaceHelper";
 
 export const structureFormData = (
   formData: Record<string, any>,
@@ -36,6 +36,8 @@ export const renderFormFields = (
   return data.map((item, index) => {
     if (item.type === "array") {
       return null;
+    } else if (item.type === "customArray") {
+      return null;
     } else if (item.type === "object" && item.subItem !== undefined) {
       return (
         <div key={index} className="flex flex-col gap-2">
@@ -57,13 +59,7 @@ export const renderFormFields = (
         <Dropdown key={index} name={item.name} dropdownData={item.value} />
       );
     } else {
-      return (
-        <Input
-          key={index}
-          name={item.name}
-          type={item.type === "number" ? "number" : "text"}
-        />
-      );
+      return <Input key={index} name={item.name} type={item.type} />;
     }
   });
 };

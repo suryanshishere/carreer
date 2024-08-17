@@ -1,12 +1,12 @@
 import * as crypto from "crypto";
-import Admission from "@models/post/category/postAdmission";
-import AdmitCard from "@models/post/category/postAdmitCard";
-import CertificateVerification from "@models/post/category/postCertificateVerification";
-import PostImportant from "@models/post/category/postImportant";
-import LatestJob from "@models/post/category/postLatestJob";
-import Result from "@models/post/category/postResult";
-import Syllabus from "@models/post/category/postSyllabus";
-import AnswerKey from "@models/post/category/postAnswerKey";
+import Admission from "@models/post/section/postAdmission";
+import AdmitCard from "@models/post/section/postAdmitCard";
+import CertificateVerification from "@models/post/section/postCertificateVerification";
+import PostImportant from "@models/post/section/postImportant";
+import LatestJob from "@models/post/section/postLatestJob";
+import Result from "@models/post/section/postResult";
+import Syllabus from "@models/post/section/postSyllabus";
+import AnswerKey from "@models/post/section/postAnswerKey";
 import { Model } from "mongoose";
 
 // Function to hash a string with SHA-256 and take the first 24 characters

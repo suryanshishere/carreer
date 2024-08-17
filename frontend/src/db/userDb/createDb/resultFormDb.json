@@ -8,11 +8,11 @@
         "type": "text"
     },
     {
-        "name": "how_to_do_registration",
+        "name": "how_to_download_result",
         "type": "textarea"
     },
     {
-        "name": "how_to_apply",
-        "type": "textarea"
+        "name": "result_data",
+        "type": "customArray"
     }
 ]

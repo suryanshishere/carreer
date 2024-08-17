@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import POST_COMMON_FORM from "db/userDb/createDb/postCommonFormDb.json";
 import { renderFormFields, structureOverallFormData  } from "./createFormHelper/helper";
 import Button from "shared/utilComponents/form/Button";
-import {ITableFormData, TableForm} from "./createFormHelper/tableHelper";
-import { ICreateForm } from "./createFormHelper/interfaceHelper";
+import { TableForm} from "./createFormHelper/tableHelper";
+import { ICreateForm, ITableFormData } from "./createFormHelper/interfaceHelper";
 
 
 const PostCommonForm:React.FC<ICreateForm> = ({ idData }) => {

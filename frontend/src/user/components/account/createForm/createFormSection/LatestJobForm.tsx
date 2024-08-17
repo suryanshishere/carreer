@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { ICreateForm } from "../createFormHelper/interfaceHelper";
-import { ITableFormData,TableForm } from "../createFormHelper/tableHelper";
+import { ICreateForm, ITableFormData } from "../createFormHelper/interfaceHelper";
+import { TableForm } from "../createFormHelper/tableHelper";
 import LATEST_JOB_FORM from "db/userDb/createDb/latestJobFormDb.json";
 import { renderFormFields, structureOverallFormData  } from "../createFormHelper/helper";
 import Button from "shared/utilComponents/form/Button";
