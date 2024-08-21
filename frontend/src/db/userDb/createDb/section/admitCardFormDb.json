@@ -1,0 +1,10 @@
+[
+    {
+        "name":"name_of_the_post",
+        "type": "text"
+    },
+    {
+        "name":"how_to_download_admit_card",
+        "type":"textarea"
+    }
+]

@@ -1,0 +1,10 @@
+[
+    {
+        "name": "name_of_the_post",
+        "type":"text"
+    },
+    {
+        "name": "how_to_fill_the_form",
+        "type": "textarea"
+    }
+]

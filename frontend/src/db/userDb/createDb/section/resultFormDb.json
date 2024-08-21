@@ -14,5 +14,13 @@
     {
         "name": "result_data",
         "type": "customArray"
+    },
+    {
+        "name":"cool_data",
+        "type":"customArray"
+    },
+    {
+        "name":"cool_array_data",
+        "type":"array"
     }
 ]

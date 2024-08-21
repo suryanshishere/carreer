@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import POST_COMMON_FORM from "db/userDb/createDb/postCommonFormDb.json";
 import { renderFormFields, structureOverallFormData  } from "./createFormHelper/helper";
 import Button from "shared/utilComponents/form/Button";
-import { TableForm} from "./createFormHelper/tableHelper";
-import { ICreateForm, ITableFormData } from "./createFormHelper/interfaceHelper";
+import { TableForm} from "./createFormHelper/tableHelper/TableForm";
+import { ICreateSection, ITableFormData } from "./createFormHelper/interfaceHelper";
 
 
-const PostCommonForm:React.FC<ICreateForm> = ({ idData }) => {
+const PostSectionForm:React.FC<ICreateSection> = ({ postformData }) => {
   const [tableFormData, setTableFormData] = useState<ITableFormData>({});
 
   const tableInputData = (data: Record<string, any>) => {
@@ -17,7 +16,7 @@ const PostCommonForm:React.FC<ICreateForm> = ({ idData }) => {
     const structuredObject = structureOverallFormData (
       e,
       tableFormData,
-      POST_COMMON_FORM
+      postformData
     );
     console.log(structuredObject);
   };
@@ -25,11 +24,11 @@ const PostCommonForm:React.FC<ICreateForm> = ({ idData }) => {
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-2">
       <h2>Post Common Section</h2>
-      {renderFormFields(POST_COMMON_FORM, idData)}
-      <TableForm data={POST_COMMON_FORM} onTableInputData={tableInputData} />
+      {renderFormFields(postformData)}
+      <TableForm data={postformData} onTableInputData={tableInputData} />
       <Button>Submit</Button>
     </form>
   );
 };
 
-export default PostCommonForm;
+export default PostSectionForm;

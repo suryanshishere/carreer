@@ -1,9 +1,5 @@
 [
     {
-        "name": "_id",
-        "type": "text"
-    },
-    {
         "name": "short_information",
         "type": "textarea"
     },

@@ -1,19 +1,14 @@
 {
   "_id": {
     "$oid": "66b86fe14d528c942de38c3a"
-},  "createdAt": "2024-08-08T12:00:00Z",
+  },
+  "createdAt": "2024-08-08T12:00:00Z",
   "creadedBy": {
-      "$oid": "66afaaf24d8bd472905fcf7e"
+    "$oid": "66afaaf24d8bd472905fcf7e"
   },
   "post_code": "JEE2024",
   "name_of_the_post": "Jee Important Question Bank",
-  "how_to_fill_the_form": [
-    "Visit the official website.",
-    "Navigate to the application form.",
-    "Enter your personal details.",
-    "Upload the required documents.",
-    "Submit the form."
-  ],
+  "how_to_fill_the_form": "Visit the official website.Navigate to the application form.Enter your personal details. Upload the required documents. Submit the form.",
   "last_updated": "2023-12-25T00:00:00.000Z",
   "important_links": {
     "$oid": "66b86fe14d528c942de38c3a"

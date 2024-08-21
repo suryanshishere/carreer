@@ -1,7 +1,9 @@
 import { IPostAdminData } from "models/admin/IPostAdminData";
+import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
 
-export interface ICreateForm {
-  idData: IPostAdminData[];
+
+export interface ICreateSection{
+  postformData: ICreateInputForm[]
 }
 
 export interface RowData {

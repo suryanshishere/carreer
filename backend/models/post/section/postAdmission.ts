@@ -10,6 +10,7 @@ export const admissionSchema = new Schema({  createdAt: { type: Date },
   last_updated: { type: Date, require: true  },
   post_common: { type: ObjectId, ref: "PostCommon" },
   important_dates: { type: ObjectId, ref: "PostDate" },
+  important_links: { type: ObjectId, ref: "PostLink" },
 });
 
 const Admission = mongoose.model("Admission", admissionSchema);

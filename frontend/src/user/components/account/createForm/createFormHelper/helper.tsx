@@ -2,7 +2,7 @@ import { IPostAdminData } from "models/admin/IPostAdminData";
 import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
-import { Input } from "shared/utilComponents/form/input/Input";
+import { Input, TextArea } from "shared/utilComponents/form/input/Input";
 import { ITableFormData } from "./interfaceHelper";
 
 export const structureFormData = (
@@ -29,10 +29,7 @@ export const structureFormData = (
   return structuredData;
 };
 
-export const renderFormFields = (
-  data: ICreateInputForm[],
-  idData?: IPostAdminData[]
-) => {
+export const renderFormFields = (data: ICreateInputForm[]) => {
   return data.map((item, index) => {
     if (item.type === "array") {
       return null;
@@ -45,19 +42,21 @@ export const renderFormFields = (
           {renderFormFields(item.subItem)}
         </div>
       );
-    } else if (item.name === "_id") {
+    } else if (item.name === "_id" && item.value !== undefined) {
       return (
         <Dropdown
           key={index}
           label="Post"
           name={item.name}
-          dropdownData={idData || []}
+          dropdownData={item.value}
         />
       );
     } else if (item.value !== undefined) {
       return (
         <Dropdown key={index} name={item.name} dropdownData={item.value} />
       );
+    } else if (item.type === "textarea") {
+      return <TextArea key={index} name={item.name} />;
     } else {
       return <Input key={index} name={item.name} type={item.type} />;
     }

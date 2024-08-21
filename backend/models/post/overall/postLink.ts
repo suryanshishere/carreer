@@ -8,6 +8,7 @@ export const postLinkSchema = new Schema({
   official_website: { type: String },
   registration_link: { type: String },
   application_link: { type: String },
+  admission_application_link: { type: String },
   sample_paper_download_link: { type: String },
   admit_card_download_link: { type: String },
   result_download_link: { type: String },

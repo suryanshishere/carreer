@@ -1,9 +1,10 @@
 import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
 import React, { useEffect, useState } from "react";
-import { RowData } from "./interfaceHelper";
+import { RowData } from "../interfaceHelper";
+import { Input, TextArea } from "shared/utilComponents/form/input/Input";
 
 // Define the type for the props
-interface TableFormProps {
+export interface TableFormProps {
   data: ICreateInputForm[];
   onTableInputData: (data: Record<string, any>) => void;
 }
@@ -48,7 +49,6 @@ export const TableForm: React.FC<TableFormProps> = ({
       case "checkbox":
         parsedValue = event.target.checked;
         break;
-      case "text":
       default:
         parsedValue = value;
         break;
@@ -88,13 +88,11 @@ export const TableForm: React.FC<TableFormProps> = ({
 
   return (
     <>
-      {data
-        .filter((item) => item.type === "customArray")
-        && <div>cool</div> }
+      {data.filter((item) => item.type === "customArray") && <div>cool</div>}
       {data
         .filter((item) => item.type === "array" && item.subItem)
         .map((item, itemIndex) => (
-          <div key={itemIndex} className="table-section">
+          <div key={itemIndex} className="flex flex-col gap-2">
             <h3>{item.name}</h3>
             {tablesData[item.name]?.map((row, rowIndex) => (
               <div key={rowIndex} className="row">
@@ -106,12 +104,11 @@ export const TableForm: React.FC<TableFormProps> = ({
                       : fieldValue || "";
 
                   return (
-                    <div key={field.name}>
+                    <div key={field.name} >
                       {field.type === "number" || field.type === "text" ? (
-                        <input
-                          key={field.name}
-                          type={field.type}
-                          name={field.name}
+                        <Input
+                        name={field.name}
+                        type={field.type}
                           value={
                             typeof displayValue === "string" ||
                             typeof displayValue === "number"
@@ -121,14 +118,20 @@ export const TableForm: React.FC<TableFormProps> = ({
                           onChange={(e) =>
                             handleInputChange(item.name, rowIndex, e)
                           }
-                          placeholder={field.name}
+        
                         />
                       ) : field.type === "checkbox" ? (
-                        <input
-                          key={field.name}
+                        <Input
                           type="checkbox"
                           name={field.name}
                           checked={Boolean(displayValue)}
+                          onChange={(e) =>
+                            handleInputChange(item.name, rowIndex, e)
+                          }
+                        />
+                      ) : field.type === "textarea" ? (
+                        <TextArea
+                          name={field.name}
                           onChange={(e) =>
                             handleInputChange(item.name, rowIndex, e)
                           }
