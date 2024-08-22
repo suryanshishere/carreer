@@ -1,9 +1,5 @@
 [
     {
-        "name": "_id",
-        "type": "text"
-    },
-    {
         "name": "name_of_the_post",
         "type": "text"
     },
@@ -14,13 +10,5 @@
     {
         "name": "result_data",
         "type": "customArray"
-    },
-    {
-        "name":"cool_data",
-        "type":"customArray"
-    },
-    {
-        "name":"cool_array_data",
-        "type":"array"
     }
 ]
