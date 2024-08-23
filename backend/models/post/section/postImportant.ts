@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-export const importantSchema = new Schema({  createdAt: { type: Date },
+export const postImportantSchema = new Schema({  createdAt: { type: Date },
   creadedBy: { type: ObjectId, ref: "User" },
   post_code: { type: String, unique: true, require: true },
   name_of_the_post: { type: String, require: true },
@@ -14,6 +14,6 @@ export const importantSchema = new Schema({  createdAt: { type: Date },
   important_dates: { type: ObjectId, ref: "PostDate" },
 });
 
-const PostImportant = mongoose.model("PostImportant", importantSchema);
+const PostImportant = mongoose.model("PostImportant", postImportantSchema);
 
 export default PostImportant;

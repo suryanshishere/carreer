@@ -8,6 +8,7 @@ import sendEmail from "./send-email";
 import User, { IUser } from "@models/user/user-model";
 import { generateUniqueVerificationToken } from "./auth-helpers";
 import ms from "ms";
+import validationError from "../validation-error";
 
 const FRONTEND_URL = "http://localhost:3000/user/reset_password";
 const JWT_KEY = process.env.JWT_KEY;
@@ -21,7 +22,7 @@ export const sendVerificationEmail = async (
   res: Response,
   next: NextFunction
 ) => {
-  checkValidationResult(req, res, next);
+  validationError(req, res, next);
   const { userId, email } = req.body;
   //assuming that if userId is null, then it's for forgot password.
 
@@ -86,9 +87,8 @@ export const verifyEmail = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => { 
-
-  checkValidationResult(req, res, next);
+) => {
+  validationError(req, res, next);
   const { verificationToken } = req.body;
 
   if (verificationToken.length != 30) {
@@ -151,7 +151,7 @@ export const signup = async (
   res: Response,
   next: NextFunction
 ) => {
-  checkValidationResult(req, res, next);
+  validationError(req, res, next);
 
   const { name, email, password } = req.body;
 
@@ -238,7 +238,7 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
-  checkValidationResult(req, res, next);
+  validationError(req, res, next);
 
   const { email, password } = req.body;
 
@@ -308,7 +308,7 @@ export const resetPassword = async (
   res: Response,
   next: NextFunction
 ) => {
-  checkValidationResult(req, res, next);
+  validationError(req, res, next);
 
   const { resetToken, password } = req.body;
 
@@ -377,20 +377,6 @@ export const resetPassword = async (
         "Internal server error. Please try again later using the same link before it expires.",
         500
       )
-    );
-  }
-};
-
-//locally helper function
-const checkValidationResult = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data", 422)
     );
   }
 };

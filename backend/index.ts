@@ -22,7 +22,7 @@ app.use(cors());
 
 app.use("/api", postsRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api/users", usersRoutes);
+app.use("/api/user", usersRoutes);
 
 //Error showign if none of the routes found!
 app.use((req, res, next) => {

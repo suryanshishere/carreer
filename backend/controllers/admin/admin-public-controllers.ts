@@ -28,11 +28,11 @@ export const postAdminData = async (
     }
 
     const response = await PostAdmin.find(
-      { [sectionData]: false },
-      "_id title"
-    );
+      { [`${sectionData}`]: { $exists: true } }, // Ensure sectionData exists
+      `_id title ${sectionData}`
+    ).exec();
 
-    return res.status(200).json({[sectionData]: response});
+    return res.status(200).json( response);
   } catch (error) {
     return next(
       new HttpError(

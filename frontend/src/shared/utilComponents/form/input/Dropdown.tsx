@@ -1,9 +1,11 @@
 import {
+  Autocomplete,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
+  TextField,
 } from "@mui/material";
 import { InputProps } from "./Input";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
@@ -17,7 +19,7 @@ interface DropdownProps {
   multiple?: boolean;
   customInput?: boolean;
   placeholder?: string;
-  label?:string;
+  label?: string;
 }
 
 export const Dropdown: React.FC<DropdownProps> = ({
@@ -25,7 +27,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
   name,
   dropdownData,
   multiple,
-  customInput,label
+  customInput,
+  label,
 }) => {
   // if (!dropdownData) return <p>No dropdown data available</p>;
 
@@ -50,7 +53,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   // Default search and select
   return (
     <FormControl fullWidth>
-      <InputLabel id={`${name}-select-label`}>{formatWord(label || name)}</InputLabel>
+      {/* <InputLabel id={`${name}-select-label`}>{formatWord(label || name)}</InputLabel>
       <Select
         labelId={`${name}-select-label`}
         name={name}
@@ -80,7 +83,23 @@ export const Dropdown: React.FC<DropdownProps> = ({
               return null;
             }
           })}
-      </Select>
+      </Select> */}
+      <Autocomplete
+        disablePortal
+        options={dropdownData as (string | IPostAdminData)[]}
+        getOptionLabel={(option) =>
+          typeof option === "string"
+            ? formatWord(option)
+            : formatWord(option.title)
+        }
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={label ? formatWord(label) : formatWord(name)}
+            name={name}
+          />
+        )}
+      />
     </FormControl>
   );
 };

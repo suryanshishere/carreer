@@ -25,7 +25,7 @@ const App: React.FC = () => {
         { path: "saved_exam", element: <Saved /> },
         { path: "profile", element: <Profile /> },
         { path: "setting", element: <Setting /> },
-        { path: "create_post", element: <CreatePost /> },
+        { path: "account/create_post", element: <CreatePost /> },
         {
           path: "email_verification/:verificationToken",
           element: <EmailVerification />,
@@ -38,7 +38,8 @@ const App: React.FC = () => {
           path: "email_verification/:verificationToken",
           element: <EmailVerification />,
         },
-        { path: "reset_password/:resetToken", element: <ResetPassword /> },{ path: "create_post", element: <CreatePost /> },
+        { path: "reset_password/:resetToken", element: <ResetPassword /> },
+        { path: "account/create_post", element: <CreatePost /> },
       ];
 
   const router = createBrowserRouter([

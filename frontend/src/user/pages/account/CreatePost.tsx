@@ -48,6 +48,25 @@ const sectionMap: Record<string, SectionState> = {
   important: SectionState.important,
 };
 
+const getFirstKeyExcluding = (
+  data: IPostAdminData[],
+  excludedKeys: string[]
+): string | null => {
+  if (data.length === 0) return null; // Return null if data array is empty
+
+  // Get the first object from the array
+  const firstItem = data[0];
+
+  // Get all keys of the first item
+  const keys = Object.keys(firstItem);
+
+  // Filter out excluded keys
+  const filteredKeys = keys.filter((key) => !excludedKeys.includes(key));
+
+  // Return the first key from the filtered keys, or null if none are found
+  return filteredKeys.length > 0 ? filteredKeys[0] : null;
+};
+
 const Create: React.FC = () => {
   // const { token, userId } = useUserData();
   const { sendRequest, error } = useHttpClient();
@@ -77,12 +96,11 @@ const Create: React.FC = () => {
         }
       );
 
-      const responseObject = response.data as unknown as Record<string, IPostAdminData[]>;
-      const firstKey = Object.keys(responseObject)[0];
-      const responseData = responseObject[firstKey];
+      const responseData = response.data as unknown as IPostAdminData[];
+      const firstKey = getFirstKeyExcluding(responseData, ["title", "_id"]);
 
       setPostIdItem({ name: "_id", type: "text", value: responseData });
-      setSection(sectionMap[firstKey] || SectionState.default);
+      setSection(firstKey ? sectionMap[firstKey] : SectionState.default);
     } catch (err) {
       console.error(err);
     }

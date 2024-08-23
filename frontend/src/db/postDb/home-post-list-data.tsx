@@ -5,7 +5,7 @@ import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-sl
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import { IPostList } from "models/post/IPostList";
 import NAV from "db/nav/Nav.json";
-import { camelToSnake } from "shared/quick/case-convert";
+import { convertToSnakeCase } from "shared/quick/case-convert";
 
 export const useHomePostListData = () => {
   const { sendRequest, error } = useHttpClient();
@@ -43,7 +43,7 @@ export const useHomePostListData = () => {
     const filteredData: IPostList = {};
 
     Object.keys(data).forEach((key) => {
-      const snakeCaseKey = camelToSnake(key);
+      const snakeCaseKey = convertToSnakeCase(key);
       if (NAV.includes(snakeCaseKey)) {
         filteredData[snakeCaseKey] = data[key];
       }
