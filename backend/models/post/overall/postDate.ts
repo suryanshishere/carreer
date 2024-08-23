@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const { Mixed } = Schema.Types;
 
 export const postDateSchema = new Schema({
-  post_code: { type: String, unique: true, require: true },
   application_start_date: {
     current_year: { type: Date },
     previous_year: { type: Date },

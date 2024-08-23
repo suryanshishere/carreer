@@ -12,7 +12,9 @@ export const usePostAdminData = ({ postSection }: UsePostAdminDataProps) => {
   const { sendRequest, error } = useHttpClient();
   const [data, setData] = useState<IPostAdminData>({
     _id: "",
-    title:"",
+    data: {
+      name_of_the_post: "",
+    },
   });
   const dispatch = useDispatch();
 

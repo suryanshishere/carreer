@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const { Mixed } = Schema.Types;
 
 export const postLinkSchema = new Schema({
-  post_code: { type: String, unique: true, require: true },
   official_website: { type: String },
   registration_link: { type: String },
   application_link: { type: String },

@@ -90,7 +90,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         getOptionLabel={(option) =>
           typeof option === "string"
             ? formatWord(option)
-            : formatWord(option.title)
+            : formatWord(option.data.name_of_the_post)
         }
         renderInput={(params) => (
           <TextField

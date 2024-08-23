@@ -1,4 +1,6 @@
 export interface IPostAdminData {
   _id: string;
-  title: string;
+  data: {
+    name_of_the_post: string;
+  };
 }

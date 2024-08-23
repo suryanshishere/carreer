@@ -5,7 +5,6 @@ const { ObjectId } = Schema.Types;
 
 export const admitCardSchema = new Schema({  createdAt: { type: Date },
   creadedBy: { type: ObjectId, ref: "User" },
-  post_code: { type: String, unique: true, require: true },
   name_of_the_post: { type: String, require: true },
   last_updated: { type: Date, require: true  },
   how_to_download_admit_card: { type: String },

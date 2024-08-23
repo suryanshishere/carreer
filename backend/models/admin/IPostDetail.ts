@@ -124,8 +124,7 @@ interface ISyllabus {
 
 export interface IPostDetail {
   _id?: string;
-  post_code?: string;
-  name_of_the_post?: string;
+  name_of_the_post: string;
   last_updated?: string;
   syllabus_data?: ISyllabusTopic[] | any;
   important_links?: IImportantLinks;

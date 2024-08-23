@@ -1,0 +1,34 @@
+{
+    "_id": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "result": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "admit_card": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "latest_job": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "syllabus": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "answer_key": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "admission": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "certificate_verification": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "important": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "post_common": {
+        "$oid": "66b86fe14d528c942de38c3a"
+    },
+    "title": "JEE (Joint Entrance Examination)",
+    "post_code":"cool"
+}

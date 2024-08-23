@@ -96,13 +96,15 @@ const Create: React.FC = () => {
         }
       );
 
-      const responseData = response.data as unknown as IPostAdminData[];
-      const firstKey = getFirstKeyExcluding(responseData, ["title", "_id"]);
+      const responseData = response.data as unknown as {
+        [key: string]: IPostAdminData[];
+      };
+      const firstKey = Object.keys(responseData)[0];
+      const responseDataValue = responseData[firstKey] || [];
 
-      setPostIdItem({ name: "_id", type: "text", value: responseData });
+      setPostIdItem({ name: "_id", type: "text", value: responseDataValue });
       setSection(firstKey ? sectionMap[firstKey] : SectionState.default);
     } catch (err) {
-      console.error(err);
     }
   };
 
