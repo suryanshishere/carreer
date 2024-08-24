@@ -5,7 +5,7 @@ const { ObjectId } = Schema.Types;
 
 export const postCommonSchema = new Schema({
   createdAt: { type: Date },
-  creadedBy: { type: ObjectId, ref: "User" },
+  contributors: [{ type: ObjectId, ref: "User" }],
   name_of_the_post: { type: String, require: true },
   short_information: { type: String },
   department: { type: String },
@@ -37,7 +37,7 @@ export const postCommonSchema = new Schema({
   },
   post_exam_mode: {
     type: String,
-    enum: ["online", "offine_paper_based", "offline_computer_based"],
+    enum: ["online", "offline_paper_based", "offline_computer_based"],
   },
   applicants_gender: {
     type: String,

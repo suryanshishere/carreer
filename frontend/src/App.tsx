@@ -11,7 +11,7 @@ import Setting from "./user/pages/account/Setting";
 import Profile from "./user/pages/account/Profile";
 import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
-import CreatePost from "./user/pages/account/CreatePost";
+import ContributeToPost from "./user/pages/account/ContributeToPost";
 import EmailVerification from "user/pages/auth/EmailVerification";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import ResetPassword from "user/components/auth/ResetPassword";
@@ -25,7 +25,7 @@ const App: React.FC = () => {
         { path: "saved_exam", element: <Saved /> },
         { path: "profile", element: <Profile /> },
         { path: "setting", element: <Setting /> },
-        { path: "account/create_post", element: <CreatePost /> },
+        { path: "account/create_post", element: <ContributeToPost /> },
         {
           path: "email_verification/:verificationToken",
           element: <EmailVerification />,
@@ -39,7 +39,7 @@ const App: React.FC = () => {
           element: <EmailVerification />,
         },
         { path: "reset_password/:resetToken", element: <ResetPassword /> },
-        { path: "account/create_post", element: <CreatePost /> },
+        { path: "account/create_post", element: <ContributeToPost /> },
       ];
 
   const router = createBrowserRouter([

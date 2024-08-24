@@ -10,7 +10,7 @@ import PostSectionForm from "user/components/account/createForm/PostSectionForm"
 // import PostDatesForm from "user/components/account/createForm/createFormOverall/PostDatesForm";
 // import PostFeesForm from "user/components/account/createForm/createFormOverall/PostFeesForm";
 // import PostLinksForm from "user/components/account/createForm/createFormOverall/PostLinksForm";
-import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
+import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 import {
   POST_COMMON_FORM,
   SYLLABUS_FORM,
@@ -48,30 +48,12 @@ const sectionMap: Record<string, SectionState> = {
   important: SectionState.important,
 };
 
-const getFirstKeyExcluding = (
-  data: IPostAdminData[],
-  excludedKeys: string[]
-): string | null => {
-  if (data.length === 0) return null; // Return null if data array is empty
 
-  // Get the first object from the array
-  const firstItem = data[0];
-
-  // Get all keys of the first item
-  const keys = Object.keys(firstItem);
-
-  // Filter out excluded keys
-  const filteredKeys = keys.filter((key) => !excludedKeys.includes(key));
-
-  // Return the first key from the filtered keys, or null if none are found
-  return filteredKeys.length > 0 ? filteredKeys[0] : null;
-};
-
-const Create: React.FC = () => {
+const ContributeToPost: React.FC = () => {
   // const { token, userId } = useUserData();
   const { sendRequest, error } = useHttpClient();
   const dispatch = useDispatch();
-  const [postIdItem, setPostIdItem] = useState<ICreateInputForm | null>(null);
+  const [postIdItem, setPostIdItem] = useState<IContributeInputForm | null>(null);
   const [section, setSection] = useState(SectionState.default);
 
   useEffect(() => {
@@ -102,13 +84,15 @@ const Create: React.FC = () => {
       const firstKey = Object.keys(responseData)[0];
       const responseDataValue = responseData[firstKey] || [];
 
+      // console.log(post_section)
+
       setPostIdItem({ name: "_id", type: "text", value: responseDataValue });
       setSection(firstKey ? sectionMap[firstKey] : SectionState.default);
     } catch (err) {
     }
   };
 
-  const getComponentBySection = (section: SectionState): ICreateInputForm[] => {
+  const getComponentBySection = (section: SectionState): IContributeInputForm[] => {
     switch (section) {
       case SectionState.post_common:
         return POST_COMMON_FORM;
@@ -133,7 +117,7 @@ const Create: React.FC = () => {
     }
   };
 
-  const component: ICreateInputForm[] = getComponentBySection(section);
+  const component: IContributeInputForm[] = getComponentBySection(section);
 
   // Add postIdItem to the component array if it exists
   if (postIdItem && component.length > 0) {
@@ -149,4 +133,4 @@ const Create: React.FC = () => {
   );
 };
 
-export default Create;
+export default ContributeToPost;

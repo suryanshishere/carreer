@@ -1,5 +1,5 @@
 import { IPostAdminData } from "models/admin/IPostAdminData";
-import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
+import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
 import { Input, TextArea } from "shared/utilComponents/form/input/Input";
@@ -29,7 +29,7 @@ export const structureFormData = (
   return structuredData;
 };
 
-export const renderFormFields = (data: ICreateInputForm[]) => {
+export const renderFormFields = (data: IContributeInputForm[]) => {
   return data.map((item, index) => {
     if (item.type === "array") {
       return null;
@@ -66,7 +66,7 @@ export const renderFormFields = (data: ICreateInputForm[]) => {
 export const structureOverallFormData = (
   e: React.FormEvent,
   tableFormData: ITableFormData,
-  data: ICreateInputForm[]
+  data: IContributeInputForm[]
 ) => {
   e.preventDefault();
 

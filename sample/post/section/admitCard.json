@@ -3,13 +3,9 @@
     "$oid": "66b86fe14d528c942de38c3a"
   },
   "createdAt": "2024-08-08T12:00:00Z",
-  "creadedBy": {
-    "$oid": "66afaaf24d8bd472905fcf7e"
-  },
-  "post_code": "JEE2024",
   "name_of_the_post": "JEE Admit Card: 1st Shift, 2024",
   "last_updated": "2023-12-25T00:00:00.000Z",
-  "how_to_download_admit_card": "Visit the official website. Go to the admit card section. Enter your registration number and date of birth.      Download and print your admit card.",
+  "how_to_download_admit_card": "Visit the official website.,Go to the admit card section.,Enter your registration number and date of birth.,Download and print your admit card.",
   "syllabus": {
     "$oid": "66b86fe14d528c942de38c3a"
   },
@@ -24,5 +20,10 @@
   },
   "result_data": {
     "$oid": "66b86fe14d528c942de38c3a"
-  }
+  },
+  "contributors": [
+    {
+      "$oid": "66afaaf24d8bd472905fcf7e"
+    }
+  ]
 }

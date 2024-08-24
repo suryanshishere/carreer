@@ -1,10 +1,10 @@
-import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
+import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 import React, { useEffect, useState } from "react";
 import { RowData } from "../../../../user/components/account/createForm/createFormHelper/interfaceHelper";
 import { Input, TextArea } from "shared/utilComponents/form/input/Input";
 
 export interface TableFormProps {
-  data: ICreateInputForm[];
+  data: IContributeInputForm[];
   onTableInputData: (data: Record<string, any>) => void;
 }
 
@@ -13,13 +13,13 @@ export const TableForm: React.FC<TableFormProps> = ({
   onTableInputData,
 }) => {
   // Initialize state with an empty object for each table
-  const initializeRow = (subItems: ICreateInputForm[]) =>
+  const initializeRow = (subItems: IContributeInputForm[]) =>
     subItems.reduce(
       (acc, field) => ({ ...acc, [field.name]: "" }),
       {} as RowData
     );
 
-  const initializeTable = (data: ICreateInputForm[]) =>
+  const initializeTable = (data: IContributeInputForm[]) =>
     data.reduce((acc, item) => {
       if (item.type === "array" && item.subItem) {
         acc[item.name] = [initializeRow(item.subItem)];
@@ -69,7 +69,7 @@ export const TableForm: React.FC<TableFormProps> = ({
     });
   };
 
-  const addRow = (tableName: string, subItems: ICreateInputForm[]) => {
+  const addRow = (tableName: string, subItems: IContributeInputForm[]) => {
     setTablesData({
       ...tablesData,
       [tableName]: [...tablesData[tableName], initializeRow(subItems)],

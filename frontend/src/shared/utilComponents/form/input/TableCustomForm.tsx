@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TableForm, TableFormProps } from "./TableForm";
-import { ICreateInputForm } from "models/userModel/create/ICreateInputForm";
+import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 
 const TableCustomForm: React.FC<TableFormProps> = ({
   data,
@@ -61,7 +61,7 @@ const TableCustomForm: React.FC<TableFormProps> = ({
     setFilteredData((prevData) =>
       prevData.map((item) => {
         if (item.name === itemName) {
-          const newSubItem: ICreateInputForm = {
+          const newSubItem: IContributeInputForm = {
             name: inputValues[itemName][index] || "",
             type: selectValues[itemName][index] || "text",
           };

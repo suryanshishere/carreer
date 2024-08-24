@@ -7,7 +7,7 @@ import Post from "@models/post/postModel";
 import HttpError from "@utils/http-errors";
 import { models } from "mongoose";
 import { fetchPosts, populateModels, MODEL_DATA } from "./posts-helpers";
-import { convertToSnakeCase } from "@controllers/helper-controllers";
+import { convertToSnakeCase } from "@controllers/controllersHelpers/case-convert";
 
 const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 const CATEGORY_LIMIT =

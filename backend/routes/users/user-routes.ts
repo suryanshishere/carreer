@@ -4,7 +4,7 @@ import authRoutes from "./auth/auth-routes";
 // import verifyCheckAuthRoutes from "./auth/verify-check-routes";
 // import accountExamsRoutes from "./account/account-exams-routes";
 // import settingRoutes from "./account/setting-routes";
-import createPostRoutes from "./account/create-post-routes";
+import createPostRoutes from "./account/contribute-to-post-routes";
 
 const router = express.Router();
 

@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-export const admissionSchema = new Schema({  createdAt: { type: Date },
-  creadedBy: { type: ObjectId, ref: "User" },
+export const admissionSchema = new Schema({
+  createdAt: { type: Date },
+  contributors: [{ type: ObjectId, ref: "User" }],
   name_of_the_post: { type: String, require: true },
-  last_updated: { type: Date, require: true  },
+  last_updated: { type: Date, require: true },
   post_common: { type: ObjectId, ref: "PostCommon" },
   important_dates: { type: ObjectId, ref: "PostDate" },
   important_links: { type: ObjectId, ref: "PostLink" },

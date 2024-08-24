@@ -1,24 +1,11 @@
 {
   "_id": {
     "$oid": "66b86fe14d528c942de38c3a"
-},  "createdAt": "2024-08-08T12:00:00Z",
-  "creadedBy": {
-      "$oid": "66afaaf24d8bd472905fcf7e"
   },
-  "post_code": "JEE2024",
+  "createdAt": "2024-08-08T12:00:00Z",
   "name_of_the_post": "Jee Main Application",
-  "how_to_do_registration": [
-    "Visit the official website.",
-    "Click on the registration link.",
-    "Fill in the required details.",
-    "Submit the form."
-  ],
-  "how_to_apply": [
-    "Log in to your account.",
-    "Navigate to the application form.",
-    "Upload the necessary documents.",
-    "Submit your application."
-  ],
+  "how_to_do_registration": "Visit the official website.,Click on the registration link.,Fill in the required details.,Submit the form.",
+  "how_to_apply": "Log in to your account.,Navigate to the application form.,Upload the necessary documents.,Submit your application.",
   "last_updated": "2023-12-25T00:00:00.000Z",
   "post_common": {
     "$oid": "66b86fe14d528c942de38c3a"
@@ -37,5 +24,10 @@
   },
   "result_data": {
     "$oid": "66b86fe14d528c942de38c3a"
-  }
+  },
+  "contributors": [
+    {
+      "$oid": "66afaaf24d8bd472905fcf7e"
+    }
+  ]
 }

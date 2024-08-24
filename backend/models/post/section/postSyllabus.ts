@@ -5,7 +5,7 @@ const { ObjectId, Mixed } = Schema.Types;
 
 export const syllabusSchema = new Schema({
   createdAt: { type: Date },
-  creadedBy: { type: ObjectId, ref: "User" },
+  contributors: [{ type: ObjectId, ref: "User" }],
   name_of_the_post: { type: String, require: true },
   last_updated: { type: Date, require: true },
   syllabus_data: [{ type: Mixed }],

@@ -3,36 +3,48 @@
     "$oid": "66b86fe14d528c942de38c3a"
   },
   "createdAt": "2024-08-08T12:00:00Z",
-  "creadedBy": {
-    "$oid": "66afaaf24d8bd472905fcf7e"
-  },
-  "post_code": "JEE2024",
-  "short_information": "cool",
+  "short_information": "cool,cool2",
   "department": "National Testing Agency",
   "stage_level": "National",
   "applicants": {
-    "number_of_applicants_each_year": 500000,
-    "number_of_applicants_selected": 15000
+    "number_of_applicants_each_year": {
+      "$numberInt": "500000"
+    },
+    "number_of_applicants_selected": {
+      "$numberInt": "15000"
+    }
   },
   "post_importance": "Government colleges and major private colleges take admission on the bases of it's result.",
-  "post_exam_toughness_ranking": 4,
+  "post_exam_toughness_ranking": {
+    "$numberInt": "4"
+  },
   "job_type": "none",
-  "post_exam_duration": 120,
+  "post_exam_duration": {
+    "$numberInt": "120"
+  },
   "age_criteria": {
-    "minimum_age": 25,
-    "maximum_age": 35,
+    "minimum_age": {
+      "$numberInt": "25"
+    },
+    "maximum_age": {
+      "$numberInt": "35"
+    },
     "age_relaxation": "5 years for SC/ST candidates",
     "other_age_limits": "No additional age limits"
   },
   "vacancy": [
     {
       "post_name": "HR Manager",
-      "total_post": 10,
+      "total_post": {
+        "$numberInt": "10"
+      },
       "post_eligibility": "Postgraduate degree in HR or related field"
     },
     {
       "post_name": "Recruitment Officer",
-      "total_post": 5,
+      "total_post": {
+        "$numberInt": "5"
+      },
       "post_eligibility": "Bachelor's degree in HR or related field"
     }
   ],
@@ -41,5 +53,11 @@
     "other_qualification": "Experience in HR management preferred"
   },
   "post_exam_mode": "offline_paper_based",
-  "applicants_gender": "male"
+  "applicants_gender": "male",
+  "name_of_the_post": "JEE (Common Section)",
+  "contributors": [
+    {
+      "$oid": "66afaaf24d8bd472905fcf7e"
+    }
+  ]
 }
