@@ -3,7 +3,6 @@ import {
   AdmitCardAdminData,
   AnswerKeyAdminData,
   CertificateVerificationAdminData,
-  IPostAdminData,
   LatestJobAdminData,
   PostCommonAdminData,
   PostImportantAdminData,
@@ -27,7 +26,7 @@ export const POST_SECTION_DATA = [
   "important",
 ];
 
-const modelMap: { [key: string]: mongoose.Model<IPostAdminData> } = {
+const modelMap: { [key: string]: mongoose.Model<any> } = {
   result: ResultAdminData,
   admission: AdmissionAdminData,
   admit_card: AdmitCardAdminData,
@@ -43,17 +42,19 @@ const sectionModelSelector = (
   req: Request,
   res: Response,
   next: NextFunction
-): mongoose.Model<IPostAdminData> | undefined => {
+): mongoose.Model<any> | undefined => {
   const { post_section } = req.body;
 
+  // Convert post_section to snake_case
   const sectionData = convertToSnakeCase(post_section);
 
+  // Check if the section data is valid
   if (!POST_SECTION_DATA.includes(sectionData)) {
     next(new HttpError("Invalid section", 400));
     return undefined;
   }
 
-  // Get the model for the section
+  // Retrieve the model corresponding to the section
   const Model = modelMap[sectionData];
   if (!Model) {
     next(new HttpError("Model not found for the specified section", 400));

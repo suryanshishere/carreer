@@ -1,4 +1,4 @@
-import mongoose, { Schema, Model, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { admissionSchema } from "@models/post/section/postAdmission";
 import { admitCardSchema } from "@models/post/section/postAdmitCard";
 import { answerKeySchema } from "@models/post/section/postAnswerKey";
@@ -8,72 +8,61 @@ import { postImportantSchema } from "@models/post/section/postImportant";
 import { latestJobSchema } from "@models/post/section/postLatestJob";
 import { resultSchema } from "@models/post/section/postResult";
 import { syllabusSchema } from "@models/post/section/postSyllabus";
-import { IPostDetail } from "./IPostDetail";
-
-const { ObjectId } = Schema.Types;
-
-export interface IPostAdminData extends Document {
-  approved?: boolean;
-  contributors?: mongoose.Types.ObjectId[];
-  data: IPostDetail;
-}
 
 // Generic function to create admin data schema and model
-const createAdminDataModel = <T extends Document>(
-  name: string,
-  schemaDefinition: any
-): Model<T> => {
+const createAdminDataModel = (name: string, schemaDefinition: Schema) => {
   const adminDataSchema = new Schema({
-    approved: { type: Boolean }, //undefined means not approved!
-    contributors: [{ type: ObjectId, ref: "User" }],
-    data: { type: schemaDefinition, require: true },
+    approved: { type: Boolean }, // undefined means not approved!
   });
 
-  return mongoose.model<T>(name, adminDataSchema);
+  // Add fields from the passed schema to the adminDataSchema
+  adminDataSchema.add(schemaDefinition);
+
+  return mongoose.model(name, adminDataSchema);
 };
 
-// Creating all admin data models
-export const ResultAdminData = createAdminDataModel<IPostAdminData>(
+// Creating all admin data models using .add() for schema fields
+export const ResultAdminData = createAdminDataModel(
   "ResultAdminData",
   resultSchema
 );
 
-export const AdmissionAdminData = createAdminDataModel<IPostAdminData>(
+export const AdmissionAdminData = createAdminDataModel(
   "AdmissionAdminData",
   admissionSchema
 );
 
-export const AdmitCardAdminData = createAdminDataModel<IPostAdminData>(
+export const AdmitCardAdminData = createAdminDataModel(
   "AdmitCardAdminData",
   admitCardSchema
 );
 
-export const AnswerKeyAdminData = createAdminDataModel<IPostAdminData>(
+export const AnswerKeyAdminData = createAdminDataModel(
   "AnswerKeyAdminData",
   answerKeySchema
 );
 
-export const CertificateVerificationAdminData = createAdminDataModel<IPostAdminData>(
+export const CertificateVerificationAdminData = createAdminDataModel(
   "CertificateVerificationAdminData",
   certificateVerificationSchema
 );
 
-export const PostCommonAdminData = createAdminDataModel<IPostAdminData>(
+export const PostCommonAdminData = createAdminDataModel(
   "PostCommonAdminData",
   postCommonSchema
 );
 
-export const PostImportantAdminData = createAdminDataModel<IPostAdminData>(
+export const PostImportantAdminData = createAdminDataModel(
   "PostImportantAdminData",
   postImportantSchema
 );
 
-export const LatestJobAdminData = createAdminDataModel<IPostAdminData>(
+export const LatestJobAdminData = createAdminDataModel(
   "LatestJobAdminData",
   latestJobSchema
 );
 
-export const SyllabusAdminData = createAdminDataModel<IPostAdminData>(
+export const SyllabusAdminData = createAdminDataModel(
   "SyllabusAdminData",
   syllabusSchema
 );

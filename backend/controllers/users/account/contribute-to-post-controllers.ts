@@ -1,34 +1,73 @@
 import HttpError from "@utils/http-errors";
 import { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import validationError from "../validation-error";
 import sectionModelSelector from "@controllers/controllersHelpers/section-model-selector";
-import { IPostDetail } from "@models/admin/IPostDetail";
+import {
+  IPostImportant,
+  IPostCommon,
+} from "@models/post/post-section-interface";
+import { postImportantSchema } from "@models/post/section/postImportant";
+import { postCommonSchema } from "@models/post/section/postCommon";
+import { admissionSchema } from "@models/post/section/postAdmission";
+import { admitCardSchema } from "@models/post/section/postAdmitCard";
+import { answerKeySchema } from "@models/post/section/postAnswerKey";
+import { certificateVerificationSchema } from "@models/post/section/postCertificateVerification";
+import { latestJobSchema } from "@models/post/section/postLatestJob";
+import { resultSchema } from "@models/post/section/postResult";
+import { syllabusSchema } from "@models/post/section/postSyllabus";
 
-function deepMergeUndefined(target: any, source: any): any {
+const schemaDefinitions: { [key: string]: Schema<any> } = {
+  //using post schema instead of post admin Schema provide stoppage from manipulating the approved.
+  PostImportantAdminData: postImportantSchema,
+  PostCommonAdminData: postCommonSchema,
+  AdmissionAdminData: admissionSchema,
+  AdmitCardAdminData: admitCardSchema,
+  AnswerKeyAdminData: answerKeySchema,
+  CertificateVerificationAdminData: certificateVerificationSchema,
+  LatestJobAdminData: latestJobSchema,
+  ResultAdminData: resultSchema,
+  SyllabusAdminData: syllabusSchema,
+};
+
+function deepMergeUndefined(
+  target: any,
+  source: any,
+  schema: Schema<any>
+): any {
   for (const key in source) {
     if (source.hasOwnProperty(key)) {
+      // Skip _id and name_of_the_post
+      if (key === "_id" || key === "name_of_the_post" || key === "approved") {
+        continue;
+      }
+
+      // Check if the key is valid in the schema
+      // if (!schema.paths[key] ) {
+      //   throw new HttpError(`Invalid field: ${key}`, 400);
+      // }
+
       // If the target value is undefined, update it
-      if (target[key] === undefined) {
+      if (
+        (target[key] === undefined || target[key] === "") &&
+        (source[key] !== undefined || source[key] !== "")
+      ) {
         target[key] = source[key];
-      } 
+      }
       // If the value is an object and not null, recursively merge
-      else if (typeof target[key] === 'object' && target[key] !== null) {
+      else if (typeof target[key] === "object" && target[key] !== null) {
         // If the value is an array and already defined, do not modify it
         if (Array.isArray(target[key])) {
           continue; // Skip the array if it exists
         } else {
           // Recursively merge for objects
-          deepMergeUndefined(target[key], source[key]);
+          deepMergeUndefined(target[key], source[key], schema);
         }
       }
-      // If the target value exists and is not undefined, leave it unchanged
     }
   }
   return target;
 }
-
-
 
 export const postContributeToPost = async (
   req: Request,
@@ -59,13 +98,20 @@ export const postContributeToPost = async (
       return next(new HttpError("Model selection failed", 400));
     }
 
+    console.log(modelSelected.modelName);
+
+    const schema = schemaDefinitions[modelSelected.modelName];
+    if (!schema) {
+      return next(new HttpError("Schema definition not found", 500));
+    }
+
     // Find the post by ID
-    const postData = await modelSelected.findById(postId);
+    let postData = await modelSelected.findById(postId);
     if (!postData) {
       return next(new HttpError("Post not found", 404));
     }
-    
-    postData.data = deepMergeUndefined(postData.data, data);
+
+    postData = deepMergeUndefined(postData, data, schema);
 
     // Initialize the contributors array if it doesn't exist
     if (!postData.contributors) {
@@ -83,7 +129,7 @@ export const postContributeToPost = async (
     // Return the updated post data
     res
       .status(200)
-      .json({ message: "Post updated successfully", data: postData.data });
+      .json({ message: "Post updated successfully", data: postData });
   } catch (error) {
     // Handle any errors
     return next(

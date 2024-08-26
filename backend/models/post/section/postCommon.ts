@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import { IPostCommon } from "../post-section-interface";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-export const postCommonSchema = new Schema({
+export const postCommonSchema = new Schema<IPostCommon>({
   createdAt: { type: Date },
   contributors: [{ type: ObjectId, ref: "User" }],
   name_of_the_post: { type: String, require: true },

@@ -54,7 +54,7 @@ export const postAdminData = async (
         .find({
           approved: { $ne: true },
         })
-        .select("_id data.name_of_the_post");
+        .select("_id name_of_the_post");
 
       res.status(200).json({ [post_section]: documents });
     }
