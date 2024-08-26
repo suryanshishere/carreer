@@ -5,7 +5,7 @@ import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-sl
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import { IPostList } from "models/post/IPostList";
 import NAV from "db/nav/Nav.json";
-import { convertToSnakeCase } from "shared/quick/case-convert";
+import { convertToSnakeCase } from "shared/utilComponents/quick/case-convert";
 
 export const useHomePostListData = () => {
   const { sendRequest, error } = useHttpClient();

@@ -15,6 +15,7 @@ import ContributeToPost from "./user/pages/account/ContributeToPost";
 import EmailVerification from "user/pages/auth/EmailVerification";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import ResetPassword from "user/components/auth/ResetPassword";
+import Admin from "admin/pages/Admin";
 
 const App: React.FC = () => {
   //context won't work here
@@ -48,6 +49,7 @@ const App: React.FC = () => {
       element: <RootLayout />,
       children: [
         { index: true, element: <HomePage /> },
+        {path:"admin", element: <Admin/>},
         {
           path: "category/:category",
           children: [

@@ -23,4 +23,6 @@
   transition: transform 0.3s ease-in-out;
   font-size: var(--font-nav-size);
   height: var(--height-sub-main-nav);
+  overflow-y: auto;
+  white-space: nowrap;
 }

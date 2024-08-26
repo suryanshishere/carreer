@@ -54,7 +54,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         getOptionLabel={(option) =>
           typeof option === "string"
             ? (option)
-            : (option.data.name_of_the_post)
+            : (option.name_of_the_post)
         }
         renderInput={(params) => (
           <TextField

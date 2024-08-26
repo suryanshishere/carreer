@@ -1,5 +1,5 @@
 import React from "react";
-import Filter from "shared/utilComponents/Filter";
+import Filter from "shared/utilComponents/utilPostComponents/Filter";
 import { useCategoryPostListData } from "db/postDb/category-post-list-data";
 import "./Category.css";
 import List from "shared/uiComponents/List";

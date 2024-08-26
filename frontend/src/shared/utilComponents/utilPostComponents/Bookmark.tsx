@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { useHttpClient } from "../utilComponents/hooks/http-hook";
-import { dataStatusUIAction } from "../utilComponents/store/dataStatus-ui-slice";
+import { useHttpClient } from "../hooks/http-hook";
+import { dataStatusUIAction } from "../store/dataStatus-ui-slice";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { IconButton } from "@mui/material";
-import useUserData from "../utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "../localStorageConfig/use-userData-hook";
 
 interface BookmarkProps {
   itemId: string | number;
