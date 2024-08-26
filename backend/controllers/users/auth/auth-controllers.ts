@@ -8,7 +8,7 @@ import sendEmail from "./send-email";
 import User, { IUser } from "@models/user/user-model";
 import { generateUniqueVerificationToken } from "./auth-helpers";
 import ms from "ms";
-import validationError from "../validation-error";
+import validationError from "../../controllersHelpers/validation-error";
 
 const FRONTEND_URL = "http://localhost:3000/user/reset_password";
 const JWT_KEY = process.env.JWT_KEY;
