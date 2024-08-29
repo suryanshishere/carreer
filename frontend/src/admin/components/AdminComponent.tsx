@@ -32,22 +32,44 @@ const AdminComponent: React.FC = () => {
 
         setData(responseDataValue);
       } catch (err) {
-        // Handle error if necessary
-        console.error(err);
+        console.error(err); // Log error to console
       }
     };
 
     fetchData();
-  }, [post_section, sendRequest, token, userId]); 
+  }, [post_section, token, userId, sendRequest]);
+
+  const approvedHandler = async (postId: string | undefined) => {
+    
+    if (postId === undefined) return;
+    try {
+      await sendRequest(
+        `${process.env.REACT_APP_BASE_URL}/admin/private/approve_post`,
+        "POST",
+        JSON.stringify({ post_section, postId }),
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+          userid: userId || "",
+        }
+      );
+
+      // Filter out the approved item
+      setData((prevData) => prevData.filter((item) => item._id !== postId));
+    } catch (err) {
+      console.error(err); // Log error to console
+    }
+  };
 
   return (
-    <div>
+    <ul>
       {data.map((item) => (
         <li key={item._id}>
           {item._id}: {item.name_of_the_post}
+          <button onClick={() => approvedHandler(item._id)}>Approved</button>
         </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

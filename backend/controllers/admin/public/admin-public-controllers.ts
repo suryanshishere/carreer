@@ -12,7 +12,7 @@ import {
   ResultAdminData,
   SyllabusAdminData,
 } from "@models/admin/postAdminData";
-import sectionModelSelector from "@controllers/controllersHelpers/section-model-selector";
+import { sectionAdminModelSelector } from "@controllers/controllersHelpers/section-model-selector";
 
 export const cool = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -46,7 +46,7 @@ export const postAdminData = async (
       return next(new HttpError("The input field cannot be left empty.", 422));
     }
     const { post_section } = req.body;
-    const modelSelected = sectionModelSelector(req, res, next);
+    const modelSelected = sectionAdminModelSelector(post_section, next);
 
     // Find documents where `approved` is `undefined` or `false`
     if (modelSelected !== undefined) {

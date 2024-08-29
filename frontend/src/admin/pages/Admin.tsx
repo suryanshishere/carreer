@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
 import POST_SECTION from "db/adminDb/postSection.json";
 import { useNavigate } from "react-router-dom";
+
+//TODO : Naming correction, data handling on both backend and frontend (get only completed post data otherwise not for the approvements.)
 
 const Admin = () => {
   const navigate = useNavigate(); 

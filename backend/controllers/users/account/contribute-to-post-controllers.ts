@@ -2,7 +2,7 @@ import HttpError from "@utils/http-errors";
 import { Request, Response, NextFunction } from "express";
 import mongoose, { Schema } from "mongoose";
 import validationError from "../../controllersHelpers/validation-error";
-import sectionModelSelector from "@controllers/controllersHelpers/section-model-selector";
+import { sectionAdminModelSelector } from "@controllers/controllersHelpers/section-model-selector";
 import _ from "lodash";
 
 export const postContributeToPost = async (
@@ -13,10 +13,10 @@ export const postContributeToPost = async (
   try {
     validationError(req, res, next);
 
-    const { postId, data } = req.body;
+    const { postId, post_section, data } = req.body;
     const { userid } = req.headers;
 
-    const modelSelected = sectionModelSelector(req, res, next);
+    const modelSelected = sectionAdminModelSelector(post_section, next);
 
     if (!modelSelected) {
       return next(new HttpError("Model selection failed", 400));
