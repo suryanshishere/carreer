@@ -1,5 +1,5 @@
 import express from "express";
-import { postAdminData } from "@controllers/admin/admin-public-controllers";
+import { postAdminData } from "@controllers/admin/public/admin-public-controllers";
 import { check } from "express-validator";
 
 const router = express.Router();

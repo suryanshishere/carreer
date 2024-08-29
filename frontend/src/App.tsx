@@ -16,6 +16,8 @@ import EmailVerification from "user/pages/auth/EmailVerification";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import ResetPassword from "user/components/auth/ResetPassword";
 import Admin from "admin/pages/Admin";
+import AdminComponent from "admin/components/AdminComponent";
+import PostSectionForm from "user/components/account/createForm/PostSectionForm";
 
 const App: React.FC = () => {
   //context won't work here
@@ -27,6 +29,7 @@ const App: React.FC = () => {
         { path: "profile", element: <Profile /> },
         { path: "setting", element: <Setting /> },
         { path: "account/create_post", element: <ContributeToPost /> },
+        { path: "account/create_post/:post_section", element: <PostSectionForm /> },
         {
           path: "email_verification/:verificationToken",
           element: <EmailVerification />,
@@ -41,6 +44,8 @@ const App: React.FC = () => {
         },
         { path: "reset_password/:resetToken", element: <ResetPassword /> },
         { path: "account/create_post", element: <ContributeToPost /> },
+        { path: "account/create_post/:post_section", element: <PostSectionForm /> },
+
       ];
 
   const router = createBrowserRouter([
@@ -49,7 +54,8 @@ const App: React.FC = () => {
       element: <RootLayout />,
       children: [
         { index: true, element: <HomePage /> },
-        {path:"admin", element: <Admin/>},
+        { path: "admin", element: <Admin /> },
+        { path: "admin/:post_section", element: <AdminComponent /> },
         {
           path: "category/:category",
           children: [

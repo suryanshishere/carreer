@@ -38,7 +38,7 @@ const modelMap: { [key: string]: mongoose.Model<any> } = {
   syllabus: SyllabusAdminData,
 };
 
-const sectionModelSelector = (
+const sectionAdminModelSelector = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -64,4 +64,4 @@ const sectionModelSelector = (
   return Model;
 };
 
-export default sectionModelSelector;
+export default sectionAdminModelSelector;

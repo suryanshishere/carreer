@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import HttpError from "../../utils/http-errors";
+import HttpError from "../../../utils/http-errors";
 import { validationResult } from "express-validator";
 import {
   AdmissionAdminData,

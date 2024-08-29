@@ -27,8 +27,8 @@ const AuthComponent: React.FC<AuthProps> = ({
     async (formState) => {
       try {
         const url = formState.isLoginMode
-          ? `${process.env.REACT_APP_BASE_URL}/users/auth/login`
-          : `${process.env.REACT_APP_BASE_URL}/users/auth/signup`;
+          ? `${process.env.REACT_APP_BASE_URL}/user/auth/login`
+          : `${process.env.REACT_APP_BASE_URL}/user/auth/signup`;
 
         const body = JSON.stringify(
           formState.isLoginMode

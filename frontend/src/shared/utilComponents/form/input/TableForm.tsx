@@ -100,10 +100,10 @@ export const TableForm: React.FC<TableFormProps> = ({
             item.subItem.length > 0
         )
         .map((item, itemIndex) => (
-          <div key={itemIndex} className="flex flex-col gap-2">
+          <div key={itemIndex}className="flex flex-col gap-2" >
             <h3>{item.name}</h3>
             {tablesData[item.name]?.map((row, rowIndex) => (
-              <div key={rowIndex} className="row">
+              <div key={rowIndex} className="flex flex-col gap-2">
                 {item.subItem!.map((field) => {
                   const fieldValue = row[field.name];
                   const displayValue =

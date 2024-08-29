@@ -1,7 +1,7 @@
 [
   {
     "header": "Create",
-    "link": "/user/create"
+    "link": "/user/account/create_post"
   },
   {
     "header": "Profile",

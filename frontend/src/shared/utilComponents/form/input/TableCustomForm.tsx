@@ -117,7 +117,7 @@ const TableCustomForm: React.FC<TableFormProps> = ({
   return (
     <>
       {filteredData.map((item) => (
-        <div key={item.name}>
+        <div key={item.name} >
           <h2>{item.name}</h2>
           {(inputValues[item.name] || [""]).map((inputValue, index) => (
             <div

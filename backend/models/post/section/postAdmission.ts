@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { IAdmission } from "../post-section-interface";
 
-const { Schema } = mongoose;
+const { Schema,model } = mongoose;
 const { ObjectId } = Schema.Types;
 
 export const admissionSchema = new Schema<IAdmission>({
@@ -14,6 +14,6 @@ export const admissionSchema = new Schema<IAdmission>({
   important_links: { type: ObjectId, ref: "PostLink" },
 });
 
-const Admission = mongoose.model("Admission", admissionSchema);
+const Admission = model("Admission", admissionSchema);
 
 export default Admission;

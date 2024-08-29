@@ -124,14 +124,15 @@ interface ISyllabus {
 
 export interface IPostDetail {
   _id?: string;
+  contributors?: string[];
   post_code?: string;
   name_of_the_post?: string;
   last_updated?: string;
   syllabus_data?: ISyllabusTopic[] | any;
   important_links?: IImportantLinks;
   how_to_download_result?: string[];
-  result_data?: Cutoff[]; 
-  post_common?: IPostCommon; 
+  result_data?: Cutoff[];
+  post_common?: IPostCommon;
   how_to_do_registration?: string[];
   how_to_apply?: string[];
   syllabus?: ISyllabus;

@@ -16,14 +16,6 @@ export const postContributeToPost = async (
     const { postId, data } = req.body;
     const { userid } = req.headers;
 
-    if (typeof userid !== "string") {
-      return next(
-        new HttpError("User ID is required and must be a string", 400)
-      );
-    }
-
-    const userObjectId = new mongoose.Types.ObjectId(userid);
-
     const modelSelected = sectionModelSelector(req, res, next);
 
     if (!modelSelected) {
@@ -45,6 +37,16 @@ export const postContributeToPost = async (
         data: postData,
       });
     }
+
+    // Convert userId string to ObjectId and add to contributors array
+
+    if (typeof userid !== "string") {
+      return next(
+        new HttpError("User ID is required and must be a string", 400)
+      );
+    }
+
+    const userObjectId = new mongoose.Types.ObjectId(userid);
 
     postData.contributors = postData.contributors || [];
     if (!postData.contributors.includes(userObjectId)) {
