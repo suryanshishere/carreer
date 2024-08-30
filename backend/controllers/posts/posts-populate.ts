@@ -9,20 +9,6 @@ import Syllabus from "@models/post/section/postSyllabus";
 import AnswerKey from "@models/post/section/postAnswerKey";
 import { Model } from "mongoose";
 
-// Function to hash a string with SHA-256 and take the first 24 characters
-export function hashStringToObjectId(name_of_the_post: string): string {
-  // Convert the name_of_the_post to a UTF-8 encoded buffer
-  const buffer = Buffer.from(name_of_the_post, "utf-8");
-
-  // Generate SHA-256 hash
-  const hash = crypto.createHash("sha256").update(buffer).digest("hex");
-
-  // Take the first 24 characters of the hash
-  const objectIdHex = hash.slice(0, 24);
-
-  return objectIdHex;
-}
-
 // Define the PostModel interface
 interface PostModel extends Model<any> {}
 

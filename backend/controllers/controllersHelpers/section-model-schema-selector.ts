@@ -36,7 +36,7 @@ const modelSchemaMap: { [key: string]: Schema<any> } = {
   syllabus: syllabusSchema,
 };
 
-export const modelSchemaSelector = (
+export const sectionModelSchemaSelector = (
   post_section: string,
   next: NextFunction
 ): Schema<any> | undefined => {

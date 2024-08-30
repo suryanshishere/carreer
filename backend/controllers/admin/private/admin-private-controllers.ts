@@ -6,7 +6,10 @@ import {
   sectionAdminModelSelector,
 } from "@controllers/controllersHelpers/section-model-selector";
 import validationError from "@controllers/controllersHelpers/validation-error";
+import { sectionModelSchemaSelector } from "@controllers/controllersHelpers/section-model-schema-selector";
+import updateMissingFields from "@controllers/controllersHelpers/updateMissingFields";
 
+//TODO: Send only that data which is not approved and all the data is completed.
 export const contributedPost = async (
   req: Request,
   res: Response,
@@ -30,7 +33,7 @@ export const contributedPost = async (
     }
 
     // Find the contributed posts
-    const contributedPosts = await modelSelected.find();
+    const contributedPosts = await modelSelected.find({ approved: { $ne: true } });
 
     // Respond with the found posts
     return res.status(200).json({ [post_section]: contributedPosts });
@@ -40,7 +43,6 @@ export const contributedPost = async (
   }
 };
 
-//TODO: verify that all the details are filled (while reference(if unfilled), add it as the as id of the post.).
 export const approvePost = async (
   req: Request,
   res: Response,
@@ -48,7 +50,7 @@ export const approvePost = async (
 ) => {
   validationError(req, res, next);
 
-  const { post_section, postId } = req.body;
+  const { post_section, postId, approve_anyway } = req.body;
   const { userid } = req.headers;
 
   try {
@@ -73,11 +75,39 @@ export const approvePost = async (
       return next(new HttpError("Selected post not found, try again.", 404));
     }
     //added this condition to prevent extra processing.
-    else if (selectedPost.approved === true) {
+    if (selectedPost.approved === true) {
       return next(new HttpError("Post is already approved.", 400));
     }
 
-    // Approve the selected post
+    const schema = sectionModelSchemaSelector(post_section, next);
+    if (!schema) {
+      return next(new HttpError("Post schema not found, try again.", 404));
+    }
+
+    // Get schema fields
+    const { updatedPost, missingFields } = updateMissingFields(
+      schema,
+      selectedPost,
+      postId
+    );
+
+    // here saving make it save the recent all the correct updates, which can be used to update the main post
+    await updatedPost.save();
+
+    // Default approve_anyway to false if it's undefined
+    const shouldApproveAnyway = approve_anyway ?? false;
+
+    // Check if missing fields should trigger an error
+    if (!shouldApproveAnyway && missingFields.length > 0) {
+      return next(
+        new HttpError(
+          `Incomplete post: Missing fields ${missingFields.join(", ")}`,
+          400
+        )
+      );
+    }
+
+    // Approve the selected post but not save it until and unless post is updated.
     selectedPost.approved = true;
 
     // Select the main model for the approved post
@@ -89,6 +119,7 @@ export const approvePost = async (
     const post = await modelSelected.findById(selectedPost._id);
 
     if (post) {
+      await selectedPost.save();
       return next(new HttpError("Post is already approved.", 400));
     }
 
@@ -104,10 +135,8 @@ export const approvePost = async (
       .status(200)
       .json({ message: "Post approved and added successfully!" });
   } catch (err) {
-    console.log(err);
     return next(
       new HttpError("An error occurred while approving the post", 500)
     );
   }
 };
-

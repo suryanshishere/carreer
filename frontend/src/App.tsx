@@ -18,6 +18,7 @@ import ResetPassword from "user/components/auth/ResetPassword";
 import Admin from "admin/pages/Admin";
 import AdminComponent from "admin/components/AdminComponent";
 import PostSectionForm from "user/components/account/createForm/PostSectionForm";
+import CreateNewPost from "admin/pages/CreateNewPost";
 
 const App: React.FC = () => {
   //context won't work here
@@ -29,7 +30,10 @@ const App: React.FC = () => {
         { path: "profile", element: <Profile /> },
         { path: "setting", element: <Setting /> },
         { path: "account/create_post", element: <ContributeToPost /> },
-        { path: "account/create_post/:post_section", element: <PostSectionForm /> },
+        {
+          path: "account/create_post/:post_section",
+          element: <PostSectionForm />,
+        },
         {
           path: "email_verification/:verificationToken",
           element: <EmailVerification />,
@@ -44,8 +48,10 @@ const App: React.FC = () => {
         },
         { path: "reset_password/:resetToken", element: <ResetPassword /> },
         { path: "account/create_post", element: <ContributeToPost /> },
-        { path: "account/create_post/:post_section", element: <PostSectionForm /> },
-
+        {
+          path: "account/create_post/:post_section",
+          element: <PostSectionForm />,
+        },
       ];
 
   const router = createBrowserRouter([
@@ -55,6 +61,7 @@ const App: React.FC = () => {
       children: [
         { index: true, element: <HomePage /> },
         { path: "admin", element: <Admin /> },
+        { path: "admin/create_new_post", element: <CreateNewPost /> },
         { path: "admin/:post_section", element: <AdminComponent /> },
         {
           path: "category/:category",
