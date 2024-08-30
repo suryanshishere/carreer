@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 export interface IAdmission {
   createdAt?: Date;
   contributors?: Types.ObjectId[];
+  post_code: string;
   name_of_the_post: string;
   last_updated?: Date;
   post_common?: Types.ObjectId;
@@ -13,6 +14,7 @@ export interface IAdmission {
 export interface IAdmitCard {
   createdAt?: Date;
   contributors?: Types.ObjectId[];
+  post_code: string;
   name_of_the_post: string;
   last_updated?: Date;
   how_to_download_admit_card?: string;
@@ -26,6 +28,7 @@ export interface IAdmitCard {
 export interface IAnswerKey {
   createdAt?: Date;
   contributors?: Types.ObjectId[];
+  post_code: string;
   name_of_the_post: string;
   answer_key_link?: string;
   last_updated?: Date;
@@ -38,6 +41,7 @@ export interface IAnswerKey {
 export interface ICertificateVerification {
   createdAt?: Date;
   contributors?: Types.ObjectId[];
+  post_code: string;
   name_of_the_post: string;
   last_updated?: Date;
   how_to_fill_the_form?: string;
@@ -49,6 +53,7 @@ export interface ICertificateVerification {
 export interface IPostImportant {
   createdAt?: Date;
   contributors?: Types.ObjectId[];
+  post_code: string;
   name_of_the_post: string;
   last_updated?: Date;
   how_to_fill_the_form?: string;
@@ -60,6 +65,7 @@ export interface IPostImportant {
 export interface IPostCommon {
   createdAt?: Date;
   contributors?: Types.ObjectId[];
+  post_code: string;
   name_of_the_post: string;
   short_information?: string;
   department?: string;
@@ -94,6 +100,7 @@ export interface IPostCommon {
 export interface ILatestJob {
   createdAt?: Date;
   contributors?: Types.ObjectId[];
+  post_code: string;
   name_of_the_post: string;
   last_updated?: Date;
   how_to_do_registration?: string;
@@ -109,6 +116,7 @@ export interface ILatestJob {
 export interface IResult {
   createdAt?: Date;
   contributors?: Types.ObjectId[];
+  post_code: string;
   name_of_the_post: string;
   last_updated?: Date;
   how_to_download_result?: string;
@@ -120,6 +128,7 @@ export interface IResult {
 export interface ISyllabus {
   createdAt?: Date;
   contributors?: Types.ObjectId[];
+  post_code: string;
   name_of_the_post: string;
   last_updated?: Date;
   syllabus_data?: any[]; // Use `any` if the structure of syllabus data is unknown or varies

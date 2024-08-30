@@ -44,7 +44,6 @@ export const Dropdown: React.FC<DropdownProps> = ({
   if (multiple) {
   }
 
-
   // Default search and select
   return (
     <FormControl fullWidth>
@@ -52,15 +51,14 @@ export const Dropdown: React.FC<DropdownProps> = ({
         disablePortal
         options={dropdownData as (string | IPostAdminData)[]}
         getOptionLabel={(option) =>
-          typeof option === "string"
-            ? (option)
-            : (option.name_of_the_post)
+          typeof option === "string" ? option : option.name_of_the_post
         }
         renderInput={(params) => (
           <TextField
             {...params}
             label={label ? formatWord(label) : formatWord(name)}
             name={name}
+            required={required}
           />
         )}
       />

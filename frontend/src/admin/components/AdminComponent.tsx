@@ -32,7 +32,6 @@ const AdminComponent: React.FC = () => {
 
         setData(responseDataValue);
       } catch (err) {
-        console.error(err); // Log error to console
       }
     };
 

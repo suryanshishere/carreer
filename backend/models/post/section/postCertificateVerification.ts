@@ -8,7 +8,8 @@ export const certificateVerificationSchema =
   new Schema<ICertificateVerification>({
     createdAt: { type: Date },
     contributors: [{ type: ObjectId, ref: "User" }],
-    name_of_the_post: { type: String, require: true },
+    post_code: { type: String, unique: true, required: true },
+    name_of_the_post: { type: String, unique: true },
     last_updated: { type: Date, require: true },
     how_to_fill_the_form: { type: String },
     post_common: { type: ObjectId, ref: "PostCommon" },

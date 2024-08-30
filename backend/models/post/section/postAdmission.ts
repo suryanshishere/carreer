@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { IAdmission } from "../post-section-interface";
+import { string } from "joi";
 
 const { Schema,model } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -7,7 +8,8 @@ const { ObjectId } = Schema.Types;
 export const admissionSchema = new Schema<IAdmission>({
   createdAt: { type: Date },
   contributors: [{ type: ObjectId, ref: "User" }],
-  name_of_the_post: { type: String, require: true },
+  post_code: {type:String, unique: true, required: true},
+  name_of_the_post: { type: String , unique: true},
   last_updated: { type: Date },
   post_common: { type: ObjectId, ref: "PostCommon" },
   important_dates: { type: ObjectId, ref: "PostDate" },

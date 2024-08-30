@@ -7,9 +7,10 @@ const { ObjectId } = Schema.Types;
 export const answerKeySchema = new Schema<IAnswerKey>({
   createdAt: { type: Date },
   contributors: [{ type: ObjectId, ref: "User" }],
-  name_of_the_post: { type: String, require: true },
+  post_code: { type: String, unique: true, required: true },
+  name_of_the_post: { type: String, unique: true },
   answer_key_link: { type: String },
-  last_updated: { type: Date},
+  last_updated: { type: Date },
   post_common: { type: ObjectId, ref: "PostCommon" },
   important_dates: { type: ObjectId, ref: "PostDate" },
   important_links: { type: ObjectId, ref: "PostLink" },

@@ -7,7 +7,8 @@ const { ObjectId } = Schema.Types;
 export const admitCardSchema = new Schema<IAdmitCard>({
   createdAt: { type: Date },
   contributors: [{ type: ObjectId, ref: "User" }],
-  name_of_the_post: { type: String, require: true },
+  post_code: { type: String, unique: true, required: true },
+  name_of_the_post: { type: String, unique: true },
   last_updated: { type: Date },
   how_to_download_admit_card: { type: String },
   syllabus: { type: ObjectId, ref: "Syllabus" },

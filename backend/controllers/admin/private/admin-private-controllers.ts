@@ -7,7 +7,9 @@ import {
 } from "@controllers/controllersHelpers/section-model-selector";
 import validationError from "@controllers/controllersHelpers/validation-error";
 import { sectionModelSchemaSelector } from "@controllers/controllersHelpers/section-model-schema-selector";
-import updateMissingFields from "@controllers/controllersHelpers/updateMissingFields";
+import updateMissingFields from "@controllers/controllersHelpers/update-ref-n-missing-field";
+import generateUniqueId from "@controllers/controllersHelpers/generate-unique-id";
+import addPostToAllSections from "@controllers/controllersHelpers/add-post-to-all-sections";
 
 //TODO: Send only that data which is not approved and all the data is completed.
 export const contributedPost = async (
@@ -16,16 +18,10 @@ export const contributedPost = async (
   next: NextFunction
 ) => {
   validationError(req, res, next);
-
   const { userid } = req.headers;
   const { post_section } = req.body;
-
+  checkAuthorisedAdmin(userid, next);
   try {
-    const user = await AuthorisedAdmin.findById(userid);
-    if (!user) {
-      return next(new HttpError("Not an authorized admin!", 403));
-    }
-
     // Select the appropriate model based on the section
     const modelSelected = sectionAdminModelSelector(post_section, next);
     if (!modelSelected) {
@@ -33,7 +29,9 @@ export const contributedPost = async (
     }
 
     // Find the contributed posts
-    const contributedPosts = await modelSelected.find({ approved: { $ne: true } });
+    const contributedPosts = await modelSelected.find({
+      approved: { $ne: true },
+    });
 
     // Respond with the found posts
     return res.status(200).json({ [post_section]: contributedPosts });
@@ -49,17 +47,11 @@ export const approvePost = async (
   next: NextFunction
 ) => {
   validationError(req, res, next);
-
   const { post_section, postId, approve_anyway } = req.body;
   const { userid } = req.headers;
+  checkAuthorisedAdmin(userid, next);
 
   try {
-    // Verify if the user is authorized
-    const user = await AuthorisedAdmin.findById(userid);
-    if (!user) {
-      return next(new HttpError("Not an authorized admin!", 403));
-    }
-
     // Select the appropriate admin data model based on the post section
     const adminDataModelSelected = sectionAdminModelSelector(
       post_section,
@@ -136,7 +128,66 @@ export const approvePost = async (
       .json({ message: "Post approved and added successfully!" });
   } catch (err) {
     return next(
-      new HttpError("An error occurred while approving the post", 500)
+      new HttpError("An error occurred while approving the post.", 500)
     );
   }
+};
+
+export const createNewPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  validationError(req, res, next);
+  const { post_section, name_of_the_post, post_code } = req.body;
+  const { userid } = req.headers;
+  checkAuthorisedAdmin(userid, next);
+  try {
+    const postId = generateUniqueId(post_code);
+
+    const adminDataModelSelected = sectionAdminModelSelector(
+      post_section,
+      next
+    );
+    if (!adminDataModelSelected) {
+      return next(new HttpError("Invalid post section selected.", 400));
+    }
+
+    const selectedPost = await adminDataModelSelected.findById(postId);
+    if (selectedPost) {
+      //TODO: edits of the post (also the user can edits, delete there own contributes)
+      return next(
+        new HttpError(
+          "Such post already exist, try editing the existed post.",
+          400
+        )
+      );
+    }
+
+    //creating new post
+    addPostToAllSections(post_section, name_of_the_post, post_code, next);
+
+    return res.status(200).json({ message: "Created new post successfully!" });
+  } catch (error) {
+    return new HttpError("Error occured while creating new post.", 500);
+  }
+};
+
+//locally helper function ------------------------
+
+const checkAuthorisedAdmin = async (
+  userid: string | string[] | undefined,
+  next: NextFunction
+) => {
+  try {
+    const user = await AuthorisedAdmin.findById(userid);
+    if (!user) {
+      return next(new HttpError("Unauthorized access.", 403));
+    }
+  } catch (error) {
+    return next(
+      new HttpError("Error occurred while finding an authorized admin!", 404)
+    );
+  }
+  return;
 };

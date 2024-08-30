@@ -7,7 +7,8 @@ const { ObjectId } = Schema.Types;
 export const latestJobSchema = new Schema<ILatestJob>({
   createdAt: { type: Date },
   contributors: [{ type: ObjectId, ref: "User" }],
-  name_of_the_post: { type: String, require: true },
+  post_code: { type: String, unique: true, required: true },
+  name_of_the_post: { type: String, unique: true },
   last_updated: { type: Date },
   how_to_do_registration: { type: String },
   how_to_apply: { type: String },

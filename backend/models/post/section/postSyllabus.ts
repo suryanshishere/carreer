@@ -7,7 +7,8 @@ const { ObjectId, Mixed } = Schema.Types;
 export const syllabusSchema = new Schema<ISyllabus>({
   createdAt: { type: Date },
   contributors: [{ type: ObjectId, ref: "User" }],
-  name_of_the_post: { type: String, require: true },
+  post_code: { type: String, unique: true, required: true },
+  name_of_the_post: { type: String, unique: true },
   last_updated: { type: Date },
   syllabus_data: [{ type: Mixed }],
   important_links: { type: ObjectId, ref: "PostLink" },
