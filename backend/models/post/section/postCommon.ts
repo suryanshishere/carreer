@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 export const postCommonSchema = new Schema<IPostCommon>({
-  createdAt: { type: Date },
+  createdAt: { type: Date, default: Date.now },
   contributors: [{ type: ObjectId, ref: "User" }],
   post_code: { type: String, unique: true, required: true },
   name_of_the_post: { type: String, unique: true },

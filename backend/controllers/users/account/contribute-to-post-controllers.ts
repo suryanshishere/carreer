@@ -51,6 +51,7 @@ export const postContributeToPost = async (
     postData.contributors = postData.contributors || [];
     if (!postData.contributors.includes(userObjectId)) {
       postData.contributors.push(userObjectId);
+      postData.last_updated = Date.now();
     }
 
     await postData.save();

@@ -11,7 +11,6 @@ import updateMissingFields from "@controllers/controllersHelpers/update-ref-n-mi
 import generateUniqueId from "@controllers/controllersHelpers/generate-unique-id";
 import addPostToAllSections from "@controllers/controllersHelpers/add-post-to-all-sections";
 
-//TODO: Send only that data which is not approved and all the data is completed.
 export const contributedPost = async (
   req: Request,
   res: Response,
@@ -31,6 +30,8 @@ export const contributedPost = async (
     // Find the contributed posts
     const contributedPosts = await modelSelected.find({
       approved: { $ne: true },
+      name_of_the_post: { $exists: true, $ne: null }, // Check if 'name_of_the_post' exists and is not null
+      post_code: { $exists: true, $ne: null },
     });
 
     // Respond with the found posts
@@ -154,7 +155,7 @@ export const createNewPost = async (
     }
 
     const selectedPost = await adminDataModelSelected.findById(postId);
-    if (selectedPost) {
+    if (selectedPost && selectedPost.name_of_the_post !== undefined) {
       //TODO: edits of the post (also the user can edits, delete there own contributes)
       return next(
         new HttpError(
@@ -169,7 +170,7 @@ export const createNewPost = async (
 
     return res.status(200).json({ message: "Created new post successfully!" });
   } catch (error) {
-    return new HttpError("Error occured while creating new post.", 500);
+    return next(new HttpError("Error occured while creating new post.", 500));
   }
 };
 

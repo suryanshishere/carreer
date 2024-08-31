@@ -51,7 +51,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         disablePortal
         options={dropdownData as (string | IPostAdminData)[]}
         getOptionLabel={(option) =>
-          typeof option === "string" ? option : option.name_of_the_post
+          typeof option === "string" ? option : option._id
         }
         renderInput={(params) => (
           <TextField

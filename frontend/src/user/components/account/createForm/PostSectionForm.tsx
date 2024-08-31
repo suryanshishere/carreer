@@ -26,6 +26,7 @@ import { IPostAdminData } from "models/admin/IPostAdminData";
 import { useDispatch } from "react-redux";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useParams } from "react-router-dom";
+import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 const formMap: Record<string, IContributeInputForm[]> = {
   post_common: POST_COMMON_FORM,
@@ -79,20 +80,38 @@ const PostSectionForm: React.FC = () => {
     setTableFormData(data);
   };
 
-  //TODO
-  const submitHandler = (e: React.FormEvent) => {
+  const { userId, token } = useUserData();
+
+  //TODO: removing the _id from the structureObject and just passing to postId
+  const submitHandler = async (e: React.FormEvent) => {
     const structuredObject = structureOverallFormData(
       e,
       tableFormData,
       postformData
     );
 
-    console.log(structuredObject);
+    const postId = structuredObject._id;
+    try {
+      const response = await sendRequest(
+        `${process.env.REACT_APP_BASE_URL}/user/account/contribute_to_post`,
+        "POST",
+        JSON.stringify({ postId, post_section, data: structuredObject }),
+        {
+          "Content-Type": "application/json",
+          userid: userId || "",
+          authorisation: "Bearer " + token,
+        }
+      );
+
+      const responseData = response.data as unknown as {
+        [key: string]: IPostAdminData[];
+      };
+      console.log(responseData);
+    } catch (err) {}
   };
 
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-2">
-      <h2>Post Common Section</h2>
       {renderFormFields(postformData)}
       <TableCustomForm data={postformData} onTableInputData={tableInputData} />
       <Button>Submit</Button>

@@ -9,7 +9,11 @@ const TableCustomForm: React.FC<TableFormProps> = ({
   const [filteredData, setFilteredData] = useState(
     data.filter((item) => item.type === "customArray")
   );
-
+  useEffect(() => {
+    const customArrayItems = data.filter((item) => item.type === "customArray");
+    setFilteredData(customArrayItems);
+  }, [data]);
+  
   const [inputValues, setInputValues] = useState<{ [key: string]: string[] }>(
     {}
   );
@@ -77,7 +81,6 @@ const TableCustomForm: React.FC<TableFormProps> = ({
         return item;
       })
     );
-
   };
 
   const addColumn = (itemName: string) => {
@@ -117,7 +120,7 @@ const TableCustomForm: React.FC<TableFormProps> = ({
   return (
     <>
       {filteredData.map((item) => (
-        <div key={item.name} >
+        <div key={item.name}>
           <h2>{item.name}</h2>
           {(inputValues[item.name] || [""]).map((inputValue, index) => (
             <div

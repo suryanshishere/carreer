@@ -1,8 +1,5 @@
 [
-    {
-        "name": "name_of_the_post",
-        "type": "text"
-    },
+   
     {
         "name": "answer_key_link",
         "type": "text"

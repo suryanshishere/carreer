@@ -52,7 +52,9 @@ export const postAdminData = async (
     if (modelSelected !== undefined) {
       const documents = await modelSelected
         .find({
-          approved: { $ne: true },
+          approved: { $in: [false, null] },
+          name_of_the_post: { $exists: true, $ne: null }, // Check if 'name_of_the_post' exists and is not null
+          post_code: { $exists: true, $ne: null },
         })
         .select("_id name_of_the_post");
 
