@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import MainNavigation from "../shared/components/navigation/Main";
+import MainNavigation from "shared/components/navigation/Main";
 import Footer from "../shared/components/footer/Footer";
 import AutoUserCheck from "shared/utilComponents/response/emergency/auto-user-check";
 import { RootState } from "shared/utilComponents/store";

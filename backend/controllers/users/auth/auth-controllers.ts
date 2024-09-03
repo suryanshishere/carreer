@@ -228,7 +228,6 @@ export const signup = async (
       tokenExpiration: new Date(tokenExpiry * 1000).toISOString(),
     });
   } catch (err) {
-    console.error("Signup error:", err);
     return next(new HttpError("Signing up failed, please try again", 500));
   }
 };
@@ -238,11 +237,11 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
-  validationError(req, res, next);
-
   const { email, password } = req.body;
 
   try {
+    validationError(req, res, next);
+    
     let existingUser = await User.findOne({ email });
     if (!existingUser) {
       return next(new HttpError("User not found, please signup instead.", 404));
@@ -287,8 +286,7 @@ export const login = async (
         )
       );
     }
-
-    res.status(200).json({
+    return res.status(200).json({
       email: existingUser.email,
       userId: existingUser.id,
       token,
@@ -296,7 +294,6 @@ export const login = async (
       tokenExpiration: new Date(tokenExpiry * 1000).toISOString(),
     });
   } catch (err) {
-    // Handle generic login error
     return next(
       new HttpError("Logging you in failed, please try again later.", 500)
     );

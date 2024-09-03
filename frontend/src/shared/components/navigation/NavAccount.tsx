@@ -1,71 +1,35 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import AccNavList from "user/components/account/AccNavList";
 import Auth from "user/pages/auth/Auth";
 import Modal from "shared/uiComponents/modal/Modal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { NavLink, useLocation } from "react-router-dom";
-import "./NavAccount.css"
 
 const NavAccount = () => {
   const auth = useContext(AuthContext);
-  const [dropdownVisibility, setDropdownVisibility] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [activeAccount, setActiveAccount] = useState<boolean>(false);
 
-  const location = useLocation();
-  const includesUserRef = useRef<boolean>(false);
-  const excludesSavedExamRef = useRef<boolean>(false);
-
-  useEffect(() => {
-    includesUserRef.current = location.pathname.includes("/user/");
-    excludesSavedExamRef.current =
-      !location.pathname.includes("/user/saved_exam");
-
-    setActiveAccount(includesUserRef.current && excludesSavedExamRef.current);
-  }, [location.pathname]);
-
-  const handleDropdownToggle = () => {
-    if (!activeAccount) {
-      setActiveAccount(true);
-    }
-    setDropdownVisibility((prevVisibility) => !prevVisibility);
-  };
-
-  const closeDropdownHandler = () => {
-    if (
-      activeAccount &&
-      (!excludesSavedExamRef.current ||
-        (!includesUserRef.current && excludesSavedExamRef.current))
-    ) {
-      setActiveAccount(false);
-    }
-    setDropdownVisibility(false);
-  };
+  const LoginSignup = (
+    <>
+      <button onClick={() => setShowModal(true)}>Login / Signup</button>
+      {showModal && (
+        <Modal
+          header="Authentication"
+          onClose={() => setShowModal(false)}
+          className="bg-custom-white rounded fixed top-1/2 left-1/2 h-max-[25rem] w-50 z-50 translate-x-[-50%] translate-y-[-50%]"
+        >
+          <Auth onClose={() => setShowModal(false)} />
+        </Modal>
+      )}
+    </>
+  );
 
   return (
-    <div>
+    <>
       {!auth.isLoggedIn ? (
-        <>
-          <button
-            onClick={() => setShowModal(true)}
-            className={showModal ? "nav_link_active upper" : "nav_link"}
-          >
-            Login / Signup
-          </button>
-          {showModal && (
-            <Modal
-              header="Authentication"
-              onClose={() => setShowModal(false)}
-              className="auth_modal fixed top-1/2 left-1/2 h-auto w-50 z-50"
-            >
-              <Auth onClose={() => setShowModal(false)} />
-            </Modal>
-          )}
-        </>
+        LoginSignup
       ) : (
-        <ul className="p-0 m-0 flex-1 flex items-center max-w-fit justify-end">
+        <>
           <NavLink
             className={({ isActive }) =>
               isActive ? "nav_link_active nav_link" : "nav_link"
@@ -74,20 +38,10 @@ const NavAccount = () => {
           >
             Saved
           </NavLink>
-          <button
-            className={
-              activeAccount
-                ? "nav_link_active account_icon nav_link"
-                : "account_icon nav_link"
-            }
-            onClick={handleDropdownToggle}
-          >
-            <FontAwesomeIcon icon={faUser} />
-          </button>
-          {dropdownVisibility && <AccNavList onClose={closeDropdownHandler} />}
-        </ul>
+          <AccNavList />
+        </>
       )}
-    </div>
+    </>
   );
 };
 

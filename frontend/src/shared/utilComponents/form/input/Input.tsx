@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, CSSProperties } from "react";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
@@ -6,12 +6,11 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { IconButton, TextField } from "@mui/material";
-import Button from "../Button";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import "./Input.css";
 
 export const InputStyle = {
-  width: "100%",
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderColor: "var(--hover-color)",
@@ -39,28 +38,22 @@ export interface InputProps
   label?: string;
   name: string;
   placeholder?: string;
-  togglePassword?: boolean;
+  required?: boolean;
+  // className?: string;
+  style?: CSSProperties;
+  row?: number;
   value?: string | number;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
-  error?: string;
-  className?: string;
-  textAreaClassName?: string;
-  row?: number;
-  minHeight?: string;
-  customInput?: boolean;
-  multiple?: boolean;
-  dropdownData?: string[];
 }
 
 export const Input: React.FC<InputProps> = ({
   name,
   placeholder,
-  togglePassword,
-  value,
-  onChange,
   required,
   type,
+  style,
+  value,
+  onChange,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -68,70 +61,65 @@ export const Input: React.FC<InputProps> = ({
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
+  const endAdornment = (() => {
+    if (type === 'password') {
+      // Show password toggle button for password type
+      return (
+        <InputAdornment position="end">
+          <IconButton
+            type="button"
+            size="small"
+            onClick={togglePasswordVisibility}
+            className="hover:cursor-default"
+          >
+            {showPassword ? (
+              <VisibilityOffOutlinedIcon />
+            ) : (
+              <VisibilityOutlinedIcon />
+            )}
+          </IconButton>
+        </InputAdornment>
+      );
+    } else if (type === 'search') {
+      // Show search icon for search type
+      return (
+        <InputAdornment position="end">
+          <IconButton
+            type="button"
+            size="small"
+            className="hover:cursor-default"
+          >
+            <SearchOutlinedIcon />
+          </IconButton>
+        </InputAdornment>
+      );
+    }
+    return null;
+  })();
+
+
   return (
-    <>
-      {togglePassword ? (
-        <div className="w-full flex items-center justify-end">
-          <TextField
-            className="w-full"
-            name={name}
-            type={showPassword ? "text" : "password"}
-            value={value}
-            onChange={onChange}
-            required={required}
-            label={placeholder || formatWord(name)}
-            variant="outlined"
-            inputProps={{
-              sx: {
-                height: "1.5rem",
-                fontSize: "var(--font-size)",
-                fontWeight: "bold",
-              },
-            }}
-            sx={InputStyle}
-          />
-          <div className="absolute mt-1 mr-3">
-            <IconButton
-              type="button"
-              size="small"
-              onClick={togglePasswordVisibility}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                "&:hover": {
-                  cursor: "default !important",
-                },
-              }}
-            >
-              {showPassword ? (
-                <VisibilityOffOutlinedIcon />
-              ) : (
-                <VisibilityOutlinedIcon />
-              )}
-            </IconButton>
-          </div>
-        </div>
-      ) : (
-        <TextField
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          required={required}
-          label={placeholder || formatWord(name)}
-          variant="outlined"
-          inputProps={{
-            sx: {
-              height: "1.5rem",
-              fontSize: "var(--font-size)",
-              fontWeight: "bold",
-            },
-          }}
-          sx={InputStyle}
-        />
-      )}
-    </>
+    <TextField
+      name={name}
+      type={showPassword && type === "password" ? "text" : type}
+      required={required}
+      label={placeholder === "" ? null : placeholder || formatWord(name)}
+      value={value}
+      onChange={onChange}
+      variant="outlined"
+      fullWidth
+      inputProps={{
+        sx: {
+          height: "1rem",
+          fontSize: "var(--font-size)",
+          fontWeight: "bold",
+          ...style,
+        },
+      }}
+      InputProps={{
+        endAdornment
+      }}
+    />
   );
 };
 
@@ -141,7 +129,7 @@ export const TextArea: React.FC<InputProps> = ({
   value,
   onChange,
   row,
-  minHeight,placeholder
+  placeholder,
 }) => {
   return (
     <TextField
@@ -158,7 +146,7 @@ export const TextArea: React.FC<InputProps> = ({
           display: "flex",
           alignItems: "flex-start",
           flexWrap: "wrap",
-          minHeight: minHeight || "7rem",
+          minHeight: "7rem",
           fontSize: "var(--font-size)",
           fontWeight: "bold",
         },
@@ -175,7 +163,6 @@ export const Date: React.FC<InputProps> = ({ name, required }) => {
         <DatePicker
           label={formatWord(name)}
           name={name}
-          
           slotProps={{
             textField: {
               required: required,
@@ -194,43 +181,3 @@ export const Date: React.FC<InputProps> = ({ name, required }) => {
     </LocalizationProvider>
   );
 };
-
-// Todo
-// export const AddInput: React.FC<InputProps> = ({ name, required }) => {
-//   const [inputList, setInputList] = useState<string[]>([]);
-//   const [newInputName, setNewInputName] = useState<string>("");
-
-//   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setNewInputName(event.target.value);
-//   };
-
-//   const handleAddInput = () => {
-//     if (newInputName.trim() !== "") {
-//       setInputList([...inputList, newInputName]);
-//       setNewInputName("");
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <div>
-//         <input
-//           type="text"
-//           value={newInputName}
-//           onChange={handleInputChange}
-//           placeholder="Enter input name"
-//         />
-//         <Button type="button" onClick={handleAddInput}>
-//           Add Input
-//         </Button>
-//       </div>
-//       <div>
-//         {inputList.map((inputName, index) => (
-//           <div key={index}>
-//             <input type="text" name={inputName} required={required} />
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };

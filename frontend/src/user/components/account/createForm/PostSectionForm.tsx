@@ -4,11 +4,7 @@ import {
   structureOverallFormData,
 } from "./createFormHelper/helper";
 import Button from "shared/utilComponents/form/Button";
-import { TableForm } from "../../../../shared/utilComponents/form/input/TableForm";
-import {
-  ICreateSection,
-  ITableFormData,
-} from "./createFormHelper/interfaceHelper";
+import { ITableFormData } from "./createFormHelper/interfaceHelper";
 import TableCustomForm from "../../../../shared/utilComponents/form/input/TableCustomForm";
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 import {
@@ -23,9 +19,8 @@ import {
   ANSWER_KEY_FORM,
 } from "db/userDb/createDb/sectionFormsDb";
 import { IPostAdminData } from "models/admin/IPostAdminData";
-import { useDispatch } from "react-redux";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 const formMap: Record<string, IContributeInputForm[]> = {
@@ -40,12 +35,13 @@ const formMap: Record<string, IContributeInputForm[]> = {
   important: POST_IMPORTANT_FORM,
 };
 
+//TODO: dispatch related left (provide the error and response)
 const PostSectionForm: React.FC = () => {
   const { sendRequest, error } = useHttpClient();
-  const dispatch = useDispatch();
   const [tableFormData, setTableFormData] = useState<ITableFormData>({});
   const [postformData, setPostformData] = useState<IContributeInputForm[]>([]);
   const { post_section } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +65,11 @@ const PostSectionForm: React.FC = () => {
           { name: "_id", type: "text", value: responseDataValue },
           ...(formMap[firstKey] || []),
         ];
-        setPostformData(updatedPostFormData);
+        if (responseDataValue.length > 0) {
+          setPostformData(updatedPostFormData);
+        } else {
+          navigate(-1);
+        }
       } catch (err) {}
     };
 

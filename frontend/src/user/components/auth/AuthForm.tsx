@@ -136,8 +136,8 @@ const Form: React.FC<FormProps> = ({
 
       {!forgotPassword && (
         <Input
-          togglePassword
           name="password"
+          type="password"
           placeholder={resetPassword ? "Your new password" : "Your password"}
           value={formState.password.value}
           onChange={handleInputChange}

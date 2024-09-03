@@ -39,12 +39,6 @@ body {
   margin: 0;
 }
 
-hr {
-  margin: 0;
-  border: none;
-  height: 2px;
-  background: #C7C8CC;
-}
 
 /* commoners for all the main heading in the page  */
 
@@ -52,14 +46,6 @@ button {
   border: unset;
   background: unset;
 }
-
-/* h5 {
-  margin: 0;
-  padding: .3rem;
-  font-size: var(--font-header-size);
-  font-weight: bold;
-  text-transform: capitalize;
-} */
 
 .center {
   position: absolute;
@@ -69,32 +55,6 @@ button {
   text-align: center;
 }
 
-
-/* UI  */
-
-.circle_icon {
-  border-radius: 50%;
-  padding: 0.5rem;
-  font-size: var(--font-size);
-  display: grid;
-  place-items: center;
-  color: black;
-  width: 2rem;
-}
-
-.circle_icon:hover {
-  cursor: pointer;
-  background-color: var(--hover-faint-color);
-}
-
-.circle_icon.active {
-  /* Your active styles here */
-}
-
-.circle_icon>svg {
-  padding: 0;
-  margin: 0;
-}
 
 
 /* table-default-styling */
@@ -109,17 +69,4 @@ tr>td {
   font-size: var(--font-header-size);
 }
 
-/* random helpful css classname */
 
-.upper {
-  z-index: 1000;
-}
-
-/* message & error */
-
-
-.message {
-  font-size: var(--font-size);
-  margin-bottom: .25rem;
-  color: var(--color-gray);
-}

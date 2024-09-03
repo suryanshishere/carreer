@@ -22,6 +22,7 @@ interface DropdownProps {
   label?: string;
 }
 
+//TODO: work over the data presentation in dropdown and value intake
 export const Dropdown: React.FC<DropdownProps> = ({
   required,
   name,
@@ -53,6 +54,13 @@ export const Dropdown: React.FC<DropdownProps> = ({
         getOptionLabel={(option) =>
           typeof option === "string" ? option : option._id
         }
+        renderOption={(props, option) => (
+          <li {...props}>
+            {typeof option === "string"
+              ? formatWord(option)
+              : formatWord(option.name_of_the_post)}
+          </li>
+        )}
         renderInput={(params) => (
           <TextField
             {...params}

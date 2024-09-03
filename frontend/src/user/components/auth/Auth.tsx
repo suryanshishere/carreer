@@ -43,6 +43,7 @@ const AuthComponent: React.FC<AuthProps> = ({
               }
         );
 
+
         const response = await sendRequest(url, "POST", body, {
           "Content-Type": "application/json",
         });

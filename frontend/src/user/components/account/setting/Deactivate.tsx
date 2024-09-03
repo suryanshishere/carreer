@@ -82,9 +82,9 @@ const Deactivate: React.FC<DeactivateProps> = ({ onMsg }) => {
     >
       {isLoading && <Loading />}
       {error && <Error error={error} />}
-      <Input name="password" placeholder="Password" togglePassword required />
+      <Input name="password" placeholder="Password" type="password" required />
       <TextArea
-        textAreaClassName="h-50"
+        className="h-50"
         name="reason_for_deactivate"
         placeholder="Reason for the deactivation (if any)"
       />

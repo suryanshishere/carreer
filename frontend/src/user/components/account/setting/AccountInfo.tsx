@@ -70,7 +70,7 @@ const AccountInfo = () => {
           <Input
             name="password"
             placeholder="Your password"
-            togglePassword
+            type="password"
             required
           />
           <Button type="submit" tick />

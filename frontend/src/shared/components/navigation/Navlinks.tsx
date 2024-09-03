@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import NAV from "db/nav/Nav.json";
-import "./Navlinks.css";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 
 const Navlinks: React.FC = () => {
@@ -13,8 +12,10 @@ const Navlinks: React.FC = () => {
             key={item}
             to={item === "home" ? `/`: `/category/${item}`}
             className={({ isActive }) =>
-              isActive ? "nav_link_active nav_link" : "nav_link"
-            }
+            `no-underline p-1  ${
+              isActive ? "font-bold text-custom-red" : "hover:text-custom-red font-medium"
+            }`
+          }
           >
             {formatWord(item)}
           </NavLink>

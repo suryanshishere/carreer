@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import { IPostDetail } from "models/post/IPostDetail";
@@ -9,6 +9,7 @@ const AdminComponent: React.FC = () => {
   const [data, setData] = useState<IPostDetail[]>([]);
   const { sendRequest, error } = useHttpClient();
   const { userId, token } = useUserData();
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +31,11 @@ const AdminComponent: React.FC = () => {
         const firstKey = Object.keys(responseData)[0];
         const responseDataValue = responseData[firstKey];
 
-        setData(responseDataValue);
+        if(responseDataValue.length > 0) {
+          setData(responseDataValue);
+        }else{
+          navigate(-1)
+        }
       } catch (err) {
       }
     };
