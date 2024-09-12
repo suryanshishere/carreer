@@ -1,14 +1,18 @@
 import React from "react";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 import { IPostDetail } from "models/post/IPostDetail";
-import "./DetailItem.css";
 import Table from "shared/uiComponents/dataVisualization/Table";
+import "./DetailItem.css";
 
 interface DetailItemProps {
   detailPageData: IPostDetail;
+  editMode?: boolean;
 }
 
-const DetailItem: React.FC<DetailItemProps> = ({ detailPageData }) => {
+const DetailItem: React.FC<DetailItemProps> = ({
+  detailPageData,
+  editMode,
+}) => {
   const renderValue = (value: any, key?: string) => {
     if (
       typeof value === "string" ||

@@ -38,6 +38,7 @@ const formMap: Record<string, IContributeInputForm[]> = {
 //TODO: dispatch related left (provide the error and response)
 const PostSectionForm: React.FC = () => {
   const { sendRequest, error } = useHttpClient();
+  const {userId, token} = useUserData()
   const [tableFormData, setTableFormData] = useState<ITableFormData>({});
   const [postformData, setPostformData] = useState<IContributeInputForm[]>([]);
   const { post_section } = useParams();
@@ -47,11 +48,12 @@ const PostSectionForm: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await sendRequest(
-          `${process.env.REACT_APP_BASE_URL}/admin/public/post_admin_data`,
-          "POST",
-          JSON.stringify({ post_section }),
+          `${process.env.REACT_APP_BASE_URL}/admin/public/${post_section}/post_admin_data`,
+          "GET",
+          null,
           {
-            "Content-Type": "application/json",
+            userid: userId || "",
+            Authorisation: "Bearer " + token,
           }
         );
 
@@ -74,13 +76,11 @@ const PostSectionForm: React.FC = () => {
     };
 
     fetchData();
-  }, [post_section, sendRequest]);
+  }, [post_section]);
 
   const tableInputData = (data: Record<string, any>) => {
     setTableFormData(data);
   };
-
-  const { userId, token } = useUserData();
 
   //TODO: removing the _id from the structureObject and just passing to postId
   const submitHandler = async (e: React.FormEvent) => {

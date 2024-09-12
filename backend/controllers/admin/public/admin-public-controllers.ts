@@ -45,7 +45,7 @@ export const postAdminData = async (
     if (!errors.isEmpty()) {
       return next(new HttpError("The input field cannot be left empty.", 422));
     }
-    const { post_section } = req.body;
+    const { post_section } = req.params;
     const modelSelected = sectionAdminModelSelector(post_section, next);
 
     // Find documents where `approved` is `undefined` or `false`
@@ -58,7 +58,7 @@ export const postAdminData = async (
         })
         .select("_id name_of_the_post");
 
-      res.status(200).json({ [post_section]: documents });
+      return res.status(200).json({ [post_section]: documents });
     }
   } catch (error) {
     return next(

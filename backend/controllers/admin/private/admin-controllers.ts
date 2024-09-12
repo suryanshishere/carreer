@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import HttpError from "../../../utils/http-errors";
-import AuthorisedAdmin from "@models/admin/authorisedAdmin";
 import {
   modelSelector,
   sectionAdminModelSelector,
@@ -10,6 +9,7 @@ import { sectionModelSchemaSelector } from "@controllers/controllersHelpers/sect
 import updateMissingFields from "@controllers/controllersHelpers/update-ref-n-missing-field";
 import generateUniqueId from "@controllers/controllersHelpers/generate-unique-id";
 import addPostToAllSections from "@controllers/controllersHelpers/add-post-to-all-sections";
+import checkAuthorisedAdmin from "../adminControllersHelpers/check-authorised-admin";
 
 export const contributedPost = async (
   req: Request,
@@ -23,19 +23,18 @@ export const contributedPost = async (
   try {
     // Select the appropriate model based on the section
     const modelSelected = sectionAdminModelSelector(post_section, next);
-    if (!modelSelected) {
-      return next(new HttpError("Invalid post section selected.", 400));
+
+    if (modelSelected !== undefined) {
+      const contributedPosts = await modelSelected.find({
+        approved: { $ne: true },
+        name_of_the_post: { $exists: true, $ne: null }, // Check if 'name_of_the_post' exists and is not null
+        post_code: { $exists: true, $ne: null },
+      });
+
+      return res.status(200).json({ [post_section]: contributedPosts });
+    } else {
+      return next(new HttpError("Invalid post section", 400));
     }
-
-    // Find the contributed posts
-    const contributedPosts = await modelSelected.find({
-      approved: { $ne: true },
-      name_of_the_post: { $exists: true, $ne: null }, // Check if 'name_of_the_post' exists and is not null
-      post_code: { $exists: true, $ne: null },
-    });
-
-    // Respond with the found posts
-    return res.status(200).json({ [post_section]: contributedPosts });
   } catch (err) {
     // Handle any unexpected errors
     return next(new HttpError("An error occurred while fetching posts", 500));
@@ -171,28 +170,5 @@ export const createNewPost = async (
     return res.status(200).json({ message: "Created new post successfully!" });
   } catch (error) {
     return next(new HttpError("Error occured while creating new post.", 500));
-  }
-};
-
-//locally helper function ------------------------
-
-const checkAuthorisedAdmin = async (
-  userid: string | string[] | undefined,
-  next: NextFunction
-) => {
-  if (userid === undefined) {
-    return next(new HttpError("Unauthorized access.", 403));
-  }
-  try {
-    const user = await AuthorisedAdmin.findById(userid);
-    if (!user) {
-      // Return the next function call to ensure the flow stops here
-      return next(new HttpError("Unauthorized access.", 403));
-    }
-  } catch (error) {
-    // Also return the next function call here
-    return next(
-      new HttpError("Error occurred while finding an authorized admin!", 404)
-    );
   }
 };

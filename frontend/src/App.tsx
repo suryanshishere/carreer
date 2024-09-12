@@ -19,6 +19,9 @@ import Admin from "admin/pages/Admin";
 import AdminComponent from "admin/components/AdminComponent";
 import PostSectionForm from "user/components/account/createForm/PostSectionForm";
 import CreateNewPost from "admin/pages/CreateNewPost";
+import EditPost from "admin/pages/EditPost";
+import EditPostComponent from "admin/components/EditPostComponent";
+import EditPostItem from "admin/pages/EditPostItem";
 
 const App: React.FC = () => {
   //context won't work here
@@ -60,9 +63,23 @@ const App: React.FC = () => {
       element: <RootLayout />,
       children: [
         { index: true, element: <HomePage /> },
-        { path: "admin", element: <Admin /> },
-        { path: "admin/create_new_post", element: <CreateNewPost /> },
-        { path: "admin/:post_section", element: <AdminComponent /> },
+        {
+          path: "admin",
+          children: [
+            { index: true, element: <Admin /> },
+            { path: "create_new_post", element: <CreateNewPost /> },
+            {
+              path: "edit_post",
+              children: [
+                { index: true, element: <EditPost /> },
+                { path: ":post_section", element: <EditPostComponent /> },
+                { path: ":post_section/:post_id", element: <EditPostItem /> },
+              ],
+            },
+            { path: ":post_section", element: <AdminComponent /> },
+          ],
+        },
+
         {
           path: "category/:category",
           children: [

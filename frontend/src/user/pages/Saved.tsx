@@ -5,7 +5,7 @@ import { IPostListData } from "models/post/IPostList";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
 import "./Saved.css";
-import Filter from "shared/utilComponents/utilPostComponents/Filter";
+import Filter from "shared/utilComponents/utilPost/Filter";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 const Saved = () => {

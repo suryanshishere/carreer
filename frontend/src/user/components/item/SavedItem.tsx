@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { IPostListData } from "models/post/IPostList";
 import List from "shared/uiComponents/List";
-import Pagination from "shared/utilComponents/utilPostComponents/Pagination";
-import { usePagination } from "shared/utilComponents/hooks/pagination-hook";
+import Pagination from "shared/utilComponents/utilPost/Pagination";
+import { usePagination } from "shared/utilComponents/utilPost/hooks/pagination-hook";
 import Para from "shared/uiComponents/cover/Para";
 import "./SavedItem.css";
 

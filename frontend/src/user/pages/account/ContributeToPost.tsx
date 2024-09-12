@@ -5,6 +5,7 @@ import Button from "shared/utilComponents/form/Button";
 
 import { IPostDetail } from "models/post/IPostDetail";
 import { useNavigate } from "react-router-dom";
+import NavigateToPostSec from "shared/uiComponents/uiAdmin/NavigateToPostSec";
 
 const ContributeToPost: React.FC = () => {
   const navigate = useNavigate();
@@ -17,12 +18,7 @@ const ContributeToPost: React.FC = () => {
     navigate(post_section);
   };
 
-  return (
-    <form onSubmit={getPostCodeHandler} className="flex gap-2">
-      <Dropdown name="post_section" dropdownData={POST_SECTION} />
-      <Button type="submit">Get Post Code</Button>
-    </form>
-  );
+  return <NavigateToPostSec submitName="Get Post Code" />;
 };
 
 export default ContributeToPost;
