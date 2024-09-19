@@ -25,11 +25,11 @@ router.post(
       .trim()
       .not()
       .isEmpty()
-      .isLength({ min: Number(NAME_LENGTH) }),
+      .isLength({ min: Number(NAME_LENGTH) || 3 }),
     check("email").trim().normalizeEmail().isEmail(),
     check("password")
       .trim()
-      .isLength({ min: Number(PWD_LENGTH) }),
+      .isLength({ min: Number(PWD_LENGTH) || 6 }),
   ],
   signup
 );

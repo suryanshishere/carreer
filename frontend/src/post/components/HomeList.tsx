@@ -28,7 +28,7 @@ const HomeListItem: React.FC<HomeListItemProps> = ({
       style={{ height }}
     >
       <div className="overflow-hidden links_list_sec">
-        <h5 style={{}} className="text-center capitalize p-3 ">
+        <h5 style={{}} className="text-start font-bold capitalize p-3 ">
           {category && formatWord(category)}
         </h5>
         <hr />
@@ -55,7 +55,7 @@ const HomeListItem: React.FC<HomeListItemProps> = ({
         </ul>
       </div>
       <Link
-        className="read_more mr-4 mb-3 self-end font-bold float-right"
+        className="text-custom-red mr-4 mb-3 self-end float-right"
         to={`/category/${category}`}
       >
         Read More

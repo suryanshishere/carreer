@@ -10,9 +10,8 @@ import adminRoutes from "./routes/admin/admin-routes";
 import usersRoutes from "./routes/users/user-routes";
 import HttpError from "./utils/http-errors";
 
-// Declare the type of MONGO_URL explicitly
-const MONGO_URL: string = process.env.DB || "";
-const LOCAL_HOST = process.env.LOCAL_HOST;
+const MONGO_URL: string = process.env.MONGO_URL || "";
+const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
 
 const app = express();
 
@@ -25,7 +24,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/user", usersRoutes);
 
 //Error showign if none of the routes found!
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;
 });

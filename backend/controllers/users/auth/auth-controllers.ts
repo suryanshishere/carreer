@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
-import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
@@ -10,11 +9,11 @@ import { generateUniqueVerificationToken } from "./auth-helpers";
 import ms from "ms";
 import validationError from "../../controllersHelpers/validation-error";
 
-const FRONTEND_URL = "http://localhost:3000/user/reset_password";
+const FRONTEND_URL = `${process.env.FRONTEND_URL}/user/reset_password` ||  "http://localhost:3000/user/reset_password";
 const JWT_KEY = process.env.JWT_KEY;
-const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "900s";
+const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "15";
 const EMAIL_TOKEN_EXPIRY =
-  process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY || "900s";
+  process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY || "1";
 
 // sendVerification is reuse for sending token when forgot password
 export const sendVerificationEmail = async (
@@ -106,11 +105,11 @@ export const verifyEmail = async (
         existingUser.emailVerificationToken === emailVerificationToken &&
         existingUser.emailVerificationTokenCreatedAt instanceof Date
       ) {
-        // Check if token is still valid (within 3 minutes)
+        // token valid till
         const tokenExpirationTime = new Date(
           existingUser.emailVerificationTokenCreatedAt.getTime() +
-            Number(EMAIL_TOKEN_EXPIRY) * 1000
-        ); // 3 minutes in milliseconds
+          Number(EMAIL_TOKEN_EXPIRY) * 60 * 1000
+        ); 
         const currentTime = new Date();
 
         if (currentTime <= tokenExpirationTime) {
@@ -270,22 +269,28 @@ export const login = async (
     }
 
     let token: string;
-    let tokenExpiry: number;
-    try {
-      token = jwt.sign(
-        { userId: existingUser.id, email: existingUser.email },
-        JWT_KEY as string,
-        { expiresIn: JWT_KEY_EXPIRY }
-      );
-      tokenExpiry = Math.floor(Date.now() / 1000) + ms(JWT_KEY_EXPIRY) / 1000;
-    } catch (err) {
-      return next(
-        new HttpError(
-          "Internal server error; please re-login later as features are temporarily limited",
-          500
-        )
-      );
-    }
+let tokenExpiry: number;
+try {
+  // Convert JWT_KEY_EXPIRY from minutes to seconds
+  const expiryInSeconds = parseInt(JWT_KEY_EXPIRY) * 60;
+
+  token = jwt.sign(
+    { userId: existingUser.id, email: existingUser.email },
+    JWT_KEY as string,
+    { expiresIn: expiryInSeconds }
+  );
+  
+  // Calculate the expiration time in seconds from the current time
+  tokenExpiry = Math.floor(Date.now() / 1000) + expiryInSeconds;
+  
+} catch (err) {
+  return next(
+    new HttpError(
+      "An unexpected issue occurred while processing your request.",
+      500
+    )
+  );
+}
     return res.status(200).json({
       email: existingUser.email,
       userId: existingUser.id,
@@ -327,7 +332,7 @@ export const resetPassword = async (
         // Check if token is still valid (within 3 minutes)
         const tokenExpirationTime = new Date(
           existingUser.emailVerificationTokenCreatedAt.getTime() +
-            Number(EMAIL_TOKEN_EXPIRY) * 1000
+          Number(EMAIL_TOKEN_EXPIRY) * 60 * 1000
         ); // 3 minutes in milliseconds
         const currentTime = new Date();
 
