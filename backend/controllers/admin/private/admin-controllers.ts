@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import HttpError from "../../../utils/http-errors";
 import {
-  modelSelector,
+  sectionModelSelector,
   sectionAdminModelSelector,
 } from "@controllers/controllersHelpers/section-model-selector";
 import validationError from "@controllers/controllersHelpers/validation-error";
@@ -17,7 +17,7 @@ export const contributedPost = async (
   next: NextFunction
 ) => {
   validationError(req, res, next);
-  const { userid } = req.headers;
+  const userid = req.headers.userid as string | undefined;
   const { post_section } = req.body;
   checkAuthorisedAdmin(userid, next);
   try {
@@ -48,7 +48,7 @@ export const approvePost = async (
 ) => {
   validationError(req, res, next);
   const { post_section, postId, approve_anyway } = req.body;
-  const { userid } = req.headers;
+  const userid = req.headers.userid as string | undefined;
   checkAuthorisedAdmin(userid, next);
 
   try {
@@ -103,7 +103,7 @@ export const approvePost = async (
     selectedPost.approved = true;
 
     // Select the main model for the approved post
-    const modelSelected = modelSelector(post_section, next);
+    const modelSelected = sectionModelSelector(post_section, next);
     if (!modelSelected) {
       return next(new HttpError("Invalid post section selected.", 400));
     }
@@ -140,8 +140,10 @@ export const createNewPost = async (
 ) => {
   validationError(req, res, next);
   const { post_section, name_of_the_post, post_code } = req.body;
-  const { userid } = req.headers;
-  checkAuthorisedAdmin(userid, next);
+  const userid = req.headers.userid as string | undefined;
+
+  await checkAuthorisedAdmin(userid, next);
+
   try {
     const postId = generateUniqueId(post_code);
 
@@ -149,26 +151,33 @@ export const createNewPost = async (
       post_section,
       next
     );
+
     if (!adminDataModelSelected) {
       return next(new HttpError("Invalid post section selected.", 400));
     }
 
     const selectedPost = await adminDataModelSelected.findById(postId);
     if (selectedPost && selectedPost.name_of_the_post !== undefined) {
-      //TODO: edits of the post (also the user can edits, delete there own contributes)
       return next(
         new HttpError(
-          "Such post already exist, try editing the existed post.",
+          "Such post already exists, try editing the existing post.",
           400
         )
       );
     }
 
-    //creating new post
-    addPostToAllSections(post_section, name_of_the_post, post_code, next);
+    //creating new post to all sections and related
+    await addPostToAllSections(
+      post_section,
+      name_of_the_post,
+      post_code,
+      userid,
+      next
+    );
 
     return res.status(200).json({ message: "Created new post successfully!" });
   } catch (error) {
-    return next(new HttpError("Error occured while creating new post.", 500));
+    // Make sure to handle the error properly
+    return next(new HttpError("Error occurred while creating new post.", 500));
   }
 };

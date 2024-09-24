@@ -3,7 +3,7 @@ import HttpError from "@utils/http-errors";
 import { NextFunction } from "express";
 
 const checkAuthorisedAdmin = async (
-  userid: string | string[] | undefined,
+  userid: string | undefined,
   next: NextFunction
 ) => {
   if (userid === undefined) {

@@ -12,7 +12,7 @@ export const getAllPostAdminData = async (
   // Validate the request for any errors
   validationError(req, res, next);
 
-  const { userid } = req.headers;
+  const userid = req.headers.userid as string | undefined;
   const { post_section } = req.params;
 
   // Check if the admin is authorized
@@ -50,7 +50,7 @@ export const getEditPost = async (
   // Validate the request for any errors
   validationError(req, res, next);
 
-  const { userid } = req.headers;
+  const userid = req.headers.userid as string | undefined;
   const { post_section, post_id } = req.params;
 
   // Check if the admin is authorized

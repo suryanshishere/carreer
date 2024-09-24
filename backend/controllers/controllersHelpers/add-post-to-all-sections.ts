@@ -4,11 +4,13 @@ import generateUniqueId from "./generate-unique-id";
 import { sectionAdminModelSelector } from "./section-model-selector";
 import { sectionModelSchemaSelector } from "./section-model-schema-selector";
 import updateMissingFields from "./update-ref-n-missing-field";
+import mongoose from "mongoose";
 
 const addPostToAllSections = async (
   post_section: string,
   name_of_the_post: string,
   post_code: string,
+  userid: string | undefined,
   next: NextFunction
 ) => {
   const ALL_POST_SECTIONS = [
@@ -23,24 +25,32 @@ const addPostToAllSections = async (
     "important",
   ];
 
+  let userId;
+  try {
+    userId = new mongoose.Types.ObjectId(userid);
+  } catch (error) {
+    return next(new HttpError("Invalid user ID", 400));
+  }
+  
   const postId = generateUniqueId(post_code);
-  const errorMessages: string[] = []; 
+  const errorMessages: string[] = [];
 
   const addPostPromises = ALL_POST_SECTIONS.map(async (section) => {
     try {
       const model = sectionAdminModelSelector(section, next);
       if (!model) {
-        return next(new Error(`Invalid section: ${section}`));
+        errorMessages.push(`Invalid section: ${section}`);
+        return;
       }
 
       const schema = sectionModelSchemaSelector(post_section, next);
       if (!schema) {
-        return next(new Error("Invalid post section; schema not found."));
+        errorMessages.push("Invalid post section; schema not found.");
+        return;
       }
 
       const existingPost = await model.findById(postId);
       if (existingPost && section !== post_section) {
-        // Skip the creation if the post already exists in other sections
         return;
       }
 
@@ -52,17 +62,19 @@ const addPostToAllSections = async (
       } else if (!existingPost && section === post_section) {
         newPost = new model({
           _id: postId,
+          createdBy: userId,
           post_code,
-          name_of_the_post
+          name_of_the_post,
         });
       } else {
         newPost = new model({
           _id: postId,
           post_code,
+          createdBy: userId,
         });
       }
 
-      // Add missing fields to the post as per the schema
+      // Add ref field automatically
       const { updatedPost } = updateMissingFields(schema, newPost, postId);
 
       await updatedPost.save();
@@ -87,5 +99,6 @@ const addPostToAllSections = async (
     );
   }
 };
+
 
 export default addPostToAllSections;

@@ -82,7 +82,7 @@ export const sectionAdminModelSelector = (
   return Model;
 };
 
-export const modelSelector = (
+export const sectionModelSelector = (
   post_section: string,
   next: NextFunction
 ): mongoose.Model<any> | undefined => {

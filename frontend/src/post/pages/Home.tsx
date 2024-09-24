@@ -1,6 +1,6 @@
 import React from "react";
 import HomeListItem from "post/components/HomeList";
-import { useHomePostListData } from "db/postDb/home-post-list-data";
+import { useHomePostListData } from "db/postDb/post-db-hook";
 import "./Home.css";
 
 const Home: React.FC = () => {

@@ -1,15 +1,11 @@
 import mongoose from "mongoose";
 import { IAdmitCard } from "../post-section-interface";
+import createCommonDataModel from "../post-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 export const admitCardSchema = new Schema<IAdmitCard>({
-  createdAt: { type: Date, default: Date.now },
-  last_updated: { type: Date, default: Date.now },
-  contributors: [{ type: ObjectId, ref: "User" }],
-  post_code: { type: String, unique: true, required: true },
-  name_of_the_post: { type: String, unique: true },
   how_to_download_admit_card: { type: String },
   syllabus: { type: ObjectId, ref: "Syllabus" },
   post_common: { type: ObjectId, ref: "PostCommon" },
@@ -18,6 +14,6 @@ export const admitCardSchema = new Schema<IAdmitCard>({
   result_data: { type: ObjectId, ref: "Result" },
 });
 
-const AdmitCard = mongoose.model("AdmitCard", admitCardSchema);
+const AdmitCard = createCommonDataModel("AdmitCard", admitCardSchema);
 
 export default AdmitCard;
