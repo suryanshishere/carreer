@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 import { ILatestJob } from "../post-section-interface";
-import createCommonDataModel from "../post-common";
+import commonDataSchema from "../post-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-export const latestJobSchema = new Schema<ILatestJob>({
+const latestJobSchema = new Schema<ILatestJob>({
   how_to_do_registration: { type: String },
   how_to_apply: { type: String },
   post_common: { type: ObjectId, ref: "PostCommon" },
@@ -16,6 +16,10 @@ export const latestJobSchema = new Schema<ILatestJob>({
   result_data: { type: ObjectId, ref: "Result" },
 });
 
-const LatestJob = createCommonDataModel("LatestJob", latestJobSchema);
+latestJobSchema.add(commonDataSchema);
+
+export {latestJobSchema}
+
+const LatestJob = mongoose.model("LatestJob", latestJobSchema);
 
 export default LatestJob;

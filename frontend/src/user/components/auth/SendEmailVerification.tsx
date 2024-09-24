@@ -49,7 +49,7 @@ const SendEmailVerification = () => {
   const sendEmailHandler = async () => {
     try {
       const response = await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/users/auth/send_verification_email`,
+        `${process.env.REACT_APP_BASE_URL}/user/auth/send_verification_email`,
         "POST",
         JSON.stringify({
           userId: userId,
@@ -76,7 +76,7 @@ const SendEmailVerification = () => {
 
     try {
       const response = await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/users/auth/verify_email`,
+        `${process.env.REACT_APP_BASE_URL}/user/auth/verify_email`,
         "POST",
         JSON.stringify({
           verificationToken: userId + otp,

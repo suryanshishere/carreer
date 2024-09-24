@@ -19,7 +19,7 @@ const EmailVerification = () => {
     const fetchVerification = async () => {
       try {
         const response = await sendRequest(
-          `${process.env.REACT_APP_BASE_URL}/users/auth/verify_email`,
+          `${process.env.REACT_APP_BASE_URL}/user/auth/verify_email`,
           "POST",
           JSON.stringify({
             verificationToken: verificationToken,

@@ -23,7 +23,7 @@ const ResetPassword: React.FC = () => {
 
     try {
       const response = await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/users/auth/reset_password`,
+        `${process.env.REACT_APP_BASE_URL}/user/auth/reset_password`,
         "POST",
         JSON.stringify({ resetToken, password }),
         { "Content-Type": "application/json" }

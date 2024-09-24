@@ -50,16 +50,13 @@ const addPostToAllSections = async (
       }
 
       const existingPost = await model.findById(postId);
-      if (existingPost && section !== post_section) {
+      //if already have name_of_the_post (editing option given earlier)
+      if (existingPost && section === post_section) {
         return;
       }
 
-      let newPost;
-      if (existingPost && section === post_section) {
-        existingPost.name_of_the_post = name_of_the_post;
-        await existingPost.save();
-        return;
-      } else if (!existingPost && section === post_section) {
+      let newPost; 
+      if (!existingPost && section === post_section) {
         newPost = new model({
           _id: postId,
           createdBy: userId,
@@ -70,7 +67,6 @@ const addPostToAllSections = async (
         newPost = new model({
           _id: postId,
           post_code,
-          createdBy: userId,
         });
       }
 
@@ -80,7 +76,7 @@ const addPostToAllSections = async (
       await updatedPost.save();
     } catch (error) {
       // Collect error message instead of calling next
-      errorMessages.push(`${section}`);
+      errorMessages.push(`Error in section: ${section}`);
     }
   });
 

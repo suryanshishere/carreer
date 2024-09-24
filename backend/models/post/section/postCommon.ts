@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import { IPostCommon } from "../post-section-interface";
-import createCommonDataModel from "../post-common";
+import commonDataSchema from "../post-common";
 
 const { Schema } = mongoose;
 
-export const postCommonSchema = new Schema<IPostCommon>({
+const postCommonSchema = new Schema<IPostCommon>({
   short_information: { type: String },
   department: { type: String },
   stage_level: { type: String },
@@ -44,6 +44,10 @@ export const postCommonSchema = new Schema<IPostCommon>({
   },
 });
 
-const PostCommon = createCommonDataModel("PostCommon", postCommonSchema);
+postCommonSchema.add(commonDataSchema);
+
+export {postCommonSchema}
+
+const PostCommon = mongoose.model("PostCommon", postCommonSchema);
 
 export default PostCommon;

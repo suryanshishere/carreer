@@ -46,7 +46,7 @@ export const sectionModelSchemaSelector = (
   // Check if the section data is valid
   if (!POST_SECTION_DATA.includes(sectionData)) {
     next(new HttpError("Invalid section", 400));
-    return undefined;
+    return undefined; // Return immediately after calling next()
   }
 
   // Retrieve the model corresponding to the section
@@ -55,11 +55,12 @@ export const sectionModelSchemaSelector = (
     next(
       new HttpError("Model Schema not found for the specified section", 400)
     );
-    return undefined;
+    return undefined; // Return immediately after calling next()
   }
 
   return ModelSchema;
 };
+
 
 // const adminDataModelMap: { [key: string]: Schema<any> } = {
 //   result: ResultAdminData,

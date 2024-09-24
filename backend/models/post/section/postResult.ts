@@ -1,18 +1,22 @@
 import mongoose from "mongoose";
 import { IResult } from "../post-section-interface";
 import createCommonDataModel from "../post-common";
+import commonDataSchema from "../post-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-export const resultSchema = new Schema<IResult>({
+const resultSchema = new Schema<IResult>({
   how_to_download_result: { type: String },
   result_data: [{ type: Schema.Types.Mixed }],
   post_common: { type: ObjectId, ref: "PostCommon" },
   important_links: { type: ObjectId, ref: "PostLink" },
 });
 
+resultSchema.add(commonDataSchema);
 
-const Result = createCommonDataModel("Result", resultSchema);
+export { resultSchema };
+
+const Result = mongoose.model("Result", resultSchema);
 
 export default Result;

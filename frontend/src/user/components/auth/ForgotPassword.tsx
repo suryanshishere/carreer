@@ -20,7 +20,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   const authSubmitHandler: FormSubmitHandler = async (formState) => {
     try {
       const responseData = await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/users/auth/forgot_password`,
+        `${process.env.REACT_APP_BASE_URL}/user/auth/forgot_password`,
         "POST",
         JSON.stringify({
           email: formState.email.value,
