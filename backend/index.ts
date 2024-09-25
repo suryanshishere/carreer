@@ -23,7 +23,7 @@ app.use("/api", postsRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", usersRoutes);
 
-//Error showign if none of the routes found!
+//Error showing if none of the routes found!
 app.use((req: Request, res: Response, next: NextFunction) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;

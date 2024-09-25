@@ -72,7 +72,7 @@ const ActivateModal = () => {
           // contentClass="flex flex-col items-center"
         >
           {isLoading && <Loading />}
-          {error && <Error error={error} />}
+          {/* {error && <Error error={error} />} */}
           {resMsg && (
             <>
               <h5 className="mb-2">{resMsg}</h5>

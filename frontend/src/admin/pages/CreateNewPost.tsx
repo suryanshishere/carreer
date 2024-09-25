@@ -5,12 +5,13 @@ import POST_SECTION from "db/adminDb/postSection.json";
 import Button from "shared/utilComponents/form/Button";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
-
+import { useNavigate } from "react-router-dom";
 
 //TODO: name of the post length should be greater than certain length
 const CreateNewPost = () => {
   const { userId, token } = useUserData();
   const { sendRequest, error } = useHttpClient();
+  const navigate = useNavigate();
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ const CreateNewPost = () => {
       const response = await sendRequest(
         `${process.env.REACT_APP_BASE_URL}/admin/private/create_new_post`,
         "POST",
-        JSON.stringify({ name_of_the_post, post_section ,post_code}),
+        JSON.stringify({ name_of_the_post, post_section, post_code }),
         {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -34,6 +35,7 @@ const CreateNewPost = () => {
       const responseData = response.data as unknown;
 
       console.log(responseData);
+      navigate(0)
     } catch (err) {}
   };
 

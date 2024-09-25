@@ -81,7 +81,7 @@ const Deactivate: React.FC<DeactivateProps> = ({ onMsg }) => {
       className="mt-2 mr-2 w-auto flex flex-col gap-2"
     >
       {isLoading && <Loading />}
-      {error && <Error error={error} />}
+      {/* {error && <Error error={error} />} */}
       <Input name="password" placeholder="Password" type="password" required />
       <TextArea
         className="h-50"

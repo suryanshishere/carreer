@@ -107,13 +107,14 @@ const PostSectionForm: React.FC = () => {
         [key: string]: IPostAdminData[];
       };
       console.log(responseData);
+      navigate(-1)
     } catch (err) {}
   };
 
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-2">
       {renderFormFields(postformData)}
-      <TableCustomForm data={postformData} onTableInputData={tableInputData} />
+      {/* <TableCustomForm data={postformData} onTableInputData={tableInputData} /> */}
       <Button>Submit</Button>
     </form>
   );

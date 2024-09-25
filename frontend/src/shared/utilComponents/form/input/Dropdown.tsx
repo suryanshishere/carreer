@@ -1,16 +1,10 @@
 import {
   Autocomplete,
   FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import { InputProps } from "./Input";
-import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
-import { useState } from "react";
 import { IPostAdminData } from "models/admin/IPostAdminData";
+import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 
 interface DropdownProps {
   name: string;
@@ -20,9 +14,9 @@ interface DropdownProps {
   customInput?: boolean;
   placeholder?: string;
   label?: string;
+  onChange?: (e: React.SyntheticEvent, value: any) => void; // Updated onChange signature
 }
 
-//TODO: work over the data presentation in dropdown and value intake
 export const Dropdown: React.FC<DropdownProps> = ({
   required,
   name,
@@ -30,30 +24,18 @@ export const Dropdown: React.FC<DropdownProps> = ({
   multiple,
   customInput,
   label,
+  onChange,
 }) => {
-  // if (!dropdownData) return <p>No dropdown data available</p>;
-
-  // Custom input, search, and multi-select
-  if (multiple && customInput) {
-  }
-
-  // Custom input, search, and select
-  if (customInput) {
-  }
-
-  // Default search and multi-select
-  if (multiple) {
-  }
-
-  // Default search and select
   return (
     <FormControl fullWidth>
       <Autocomplete
         disablePortal
+        multiple={multiple} // Enable multi-selection if the `multiple` prop is true
         options={dropdownData as (string | IPostAdminData)[]}
         getOptionLabel={(option) =>
           typeof option === "string" ? option : option._id
         }
+        onChange={onChange} // Use the correct onChange handler
         renderOption={(props, option) => (
           <li {...props}>
             {typeof option === "string"

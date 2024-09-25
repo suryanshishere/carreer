@@ -1,24 +1,45 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+const MAX_ARRAY_SIZE = 5;
+
 const dataStatusUISlice = createSlice({
   name: "response",
   initialState: {
-    error: null,
-    resMsg: null,
-    permanentResMsg: null,
+    error: [] as string[],              // Error is now an array of strings
+    resMsg: [] as string[],             // resMsg is now an array of strings
+    permanentResMsg: [] as string[],    // permanentResMsg is now an array of strings
     isLoading: false,
   },
   reducers: {
-    setErrorHandler(state, action) {
-      state.error = action.payload;
+    setErrorHandler(state, action: PayloadAction<string | null>) {
+      // Add new error and limit array size to MAX_ARRAY_SIZE
+      if (state.error.length >= MAX_ARRAY_SIZE) {
+        state.error.shift(); // Remove the oldest error
+      }
+
+      if(action.payload !== null){
+        state.error.push(action.payload); // Add the new error
+      }
     },
 
-    setResMsg(state, action) {
-      state.resMsg = action.payload;
+    setResMsg(state, action: PayloadAction<string|null>) {
+      // Add new response message and limit array size to MAX_ARRAY_SIZE
+      if (state.resMsg.length >= MAX_ARRAY_SIZE) {
+        state.resMsg.shift(); // Remove the oldest message
+      }
+      if(action.payload !== null){
+        state.resMsg.push(action.payload); // Add the new response message
+      }
     },
 
-    setPermanentResMsg(state, action) {
-      state.permanentResMsg = action.payload;
+    setPermanentResMsg(state, action: PayloadAction<string|null>) {
+      // Add new permanent response message and limit array size to MAX_ARRAY_SIZE
+      if (state.permanentResMsg.length >= MAX_ARRAY_SIZE) {
+        state.permanentResMsg.shift(); // Remove the oldest message
+      }
+      if(action.payload !== null){
+        state.permanentResMsg.push(action.payload); // Add the new permanent message
+      }
     },
 
     isLoadingHandler(state, action: PayloadAction<boolean>) {
@@ -26,8 +47,9 @@ const dataStatusUISlice = createSlice({
     },
 
     clearResponse(state) {
-      state.resMsg = null;
-      state.error = null;
+      // Clear only the resMsg and error arrays (not permanentResMsg)
+      state.resMsg = [];
+      state.error = [];
     },
   },
 });

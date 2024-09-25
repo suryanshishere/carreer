@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
@@ -6,71 +6,48 @@ import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-sl
 import "./DataStatus.css";
 
 interface ResponseProps {
-  error?: string | null;
-  resMsg?: string | null;
-  permanentResMsg?: string | null;
-  clearError?: () => void;
-  style?: CSSProperties;
+  error?: string[];
+  resMsg?: string[];
+  permanentResMsg?: string[];
 }
 
 const DataStatus: React.FC<ResponseProps> = ({
-  error = null,
-  resMsg = null,
-  permanentResMsg = null,
-  clearError,
-  style,
+  error = [],
+  resMsg = [],
+  permanentResMsg = [],
 }) => {
-  const [modalShow, setModalShow] = useState(true); // True, as I know it's already being called.
+  const [modalShow, setModalShow] = useState(true);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
+  // Helper function to get the last element of an array
+  const getLastItem = (arr: string[]) => (arr.length ? arr[arr.length - 1] : null);
 
-    // Start the timer to clear error and response messages after 3 seconds
-    if (error || resMsg) {
-      timer = setTimeout(() => {
-        if (clearError) {
-          clearError();
-        }
-        dispatch(dataStatusUIAction.clearResponse());
-        setModalShow(false);
-      }, 3000);
-    }
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [clearError, dispatch, error, resMsg]);
-
-  const cancelHandler = () => {
-    if (clearError) {
-      clearError();
-    }
-    dispatch(dataStatusUIAction.clearResponse());
-    setModalShow(false);
-  };
+  // Get the last item of error, resMsg, and permanentResMsg
+  const latestError = getLastItem(error);
+  const latestResMsg = getLastItem(resMsg);
+  const latestPermanentResMsg = getLastItem(permanentResMsg);
 
   return (
-    <div className="flex items-center gap-1 font-bold" style={style}>
-      {permanentResMsg && (
+    <div className="flex items-center gap-1 font-bold">
+      {latestPermanentResMsg && (
         <p
           style={{ color: "var(--color-dark-blue)" }} // Style for permanent response messages
         >
-          <FontAwesomeIcon icon={faCircleExclamation} /> {permanentResMsg}
+          <FontAwesomeIcon icon={faCircleExclamation} /> {latestPermanentResMsg}
         </p>
       )}
-      {resMsg && modalShow && (
+      {latestResMsg && modalShow && (
         <p
           style={{ color: "var(--color-green)" }} // Style for response messages
         >
-          <FontAwesomeIcon icon={faCircleExclamation} /> {resMsg}
+          <FontAwesomeIcon icon={faCircleExclamation} /> {latestResMsg}
         </p>
       )}
-      {error && modalShow && (
+      {latestError && modalShow && (
         <p
           style={{ color: "var(--color-red)" }} // Style for error messages
         >
-          <FontAwesomeIcon icon={faCircleExclamation} /> {error}
+          <FontAwesomeIcon icon={faCircleExclamation} /> {latestError}
         </p>
       )}
     </div>

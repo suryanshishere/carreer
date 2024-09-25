@@ -78,7 +78,7 @@ const AuthComponent: React.FC<AuthProps> = ({
   return (
     <div className="authentication">
       {isLoading && <Loading />}
-      {error && !isLoading && <Error error={error} clearError={clearError} />}
+      {/* {error && !isLoading && <Error error={error} clearError={clearError} />} */}
       <hr />
       <Form
         onFormSubmit={authSubmitHandler}
