@@ -141,8 +141,7 @@ export const createNewPost = async (
   validationError(req, res, next);
   const { post_section, name_of_the_post, post_code } = req.body;
   const userid = req.headers.userid as string | undefined;
-
-  await checkAuthorisedAdmin(userid, next);
+  checkAuthorisedAdmin(userid, next);
 
   try {
     const postId = generateUniqueId(post_code);
@@ -151,13 +150,12 @@ export const createNewPost = async (
       post_section,
       next
     );
-
     if (!adminDataModelSelected) {
       return next(new HttpError("Invalid post section selected.", 400));
     }
 
-    const selectedPost = await adminDataModelSelected.findById(postId);
-    if (selectedPost && selectedPost.name_of_the_post !== undefined) {
+    const existingPost = await adminDataModelSelected.findById(postId);
+    if (existingPost) {
       return next(
         new HttpError(
           "Such post already exists, try editing the existing post.",
@@ -167,17 +165,35 @@ export const createNewPost = async (
     }
 
     //creating new post to all sections and related
-    await addPostToAllSections(
-      post_section,
-      name_of_the_post,
+    // await addPostToAllSections(
+    //   post_section,
+    //   name_of_the_post,
+    //   post_code,
+    //   userid,
+    //   next,
+    //   res
+    // );
+
+    const newPost = new adminDataModelSelected({
+      _id: postId,
+      createdBy: userid, // Ensure this is set correctly
       post_code,
-      userid,
-      next
-    );
+      name_of_the_post,
+    });
+
+    const schema = sectionModelSchemaSelector(post_section, next);
+    if (!schema) {
+      return next(
+        new HttpError("Invalid post section; schema not found.", 400)
+      );
+    }
+
+    const { updatedPost } = updateMissingFields(schema, newPost, postId);
+    await updatedPost.save();
 
     return res.status(200).json({ message: "Created new post successfully!" });
   } catch (error) {
-    // Make sure to handle the error properly
+    console.log(error);
     return next(new HttpError("Error occurred while creating new post.", 500));
   }
 };

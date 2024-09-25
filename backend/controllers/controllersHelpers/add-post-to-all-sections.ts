@@ -1,4 +1,4 @@
-import { NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
 import generateUniqueId from "./generate-unique-id";
 import { sectionAdminModelSelector } from "./section-model-selector";
@@ -11,7 +11,8 @@ const addPostToAllSections = async (
   name_of_the_post: string,
   post_code: string,
   userid: string | undefined,
-  next: NextFunction
+  next: NextFunction,
+  res: Response
 ) => {
   const ALL_POST_SECTIONS = [
     "post_common",
@@ -31,7 +32,7 @@ const addPostToAllSections = async (
   } catch (error) {
     return next(new HttpError("Invalid user ID", 400));
   }
-  
+
   const postId = generateUniqueId(post_code);
   const errorMessages: string[] = [];
 
@@ -50,32 +51,49 @@ const addPostToAllSections = async (
       }
 
       const existingPost = await model.findById(postId);
-      //if already have name_of_the_post (editing option given earlier)
-      if (existingPost && section === post_section) {
-        return;
-      }
 
-      let newPost; 
-      if (!existingPost && section === post_section) {
-        newPost = new model({
-          _id: postId,
-          createdBy: userId,
-          post_code,
-          name_of_the_post,
-        });
+      // If the document exists
+      if (existingPost) {
+        // Check if name_of_the_post exists
+        if (existingPost.name_of_the_post) {
+          // Do nothing if name_of_the_post exists
+          return;
+        } else if (section === post_section) {
+          // Update name_of_the_post if section matches
+          existingPost.name_of_the_post = name_of_the_post;
+          existingPost.createdBy = userId;
+          await existingPost.save(); // Save the existing post
+          return;
+        }
       } else {
-        newPost = new model({
-          _id: postId,
-          post_code,
-        });
+        // Document does not exist
+        let newPost;
+
+        // Create a new document with name_of_the_post if section matches
+        if (section === post_section) {
+          newPost = new model({
+            _id: postId,
+            createdBy: userId,
+            post_code,
+            name_of_the_post,
+          });
+        } else {
+          // Create a new document without name_of_the_post if section does not match
+          newPost = new model({
+            _id: postId,
+            post_code,
+          });
+        }
+
+        await newPost.save()
+
+        const findNewPost = await model.findById(postId);
+        const { updatedPost } = updateMissingFields(schema, findNewPost, postId);
+        await updatedPost.save(); // Only save if newPost is new
       }
-
-      // Add ref field automatically
-      const { updatedPost } = updateMissingFields(schema, newPost, postId);
-
-      await updatedPost.save();
     } catch (error) {
       // Collect error message instead of calling next
+      console.log(error);
       errorMessages.push(`Error in section: ${section}`);
     }
   });
@@ -95,6 +113,5 @@ const addPostToAllSections = async (
     );
   }
 };
-
 
 export default addPostToAllSections;

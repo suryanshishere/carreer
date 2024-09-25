@@ -12,7 +12,6 @@ const checkAuthorisedAdmin = async (
   try {
     const user = await AuthorisedAdmin.findById(userid);
     if (!user) {
-      // Return the next function call to ensure the flow stops here
       return next(new HttpError("Unauthorized access.", 403));
     }
   } catch (error) {

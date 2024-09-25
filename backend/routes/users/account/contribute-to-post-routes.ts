@@ -1,4 +1,7 @@
-import { getUndefinedFields, postContributeToPost } from "@controllers/users/account/contribute-to-post-controllers";
+import {
+  getUndefinedFields,
+  contributeToPost,
+} from "@controllers/users/account/contribute-to-post-controllers";
 import express from "express";
 import { check, header } from "express-validator";
 
@@ -27,7 +30,7 @@ router.post(
       .isLength({ min: 24, max: 24 })
       .withMessage("User required to be logged in."),
   ],
-  postContributeToPost
+  contributeToPost
 );
 
 export default router;
