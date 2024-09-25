@@ -3,7 +3,7 @@ import SavedItem from "../components/item/SavedItem";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { IPostListData } from "models/post/IPostList";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import "./Saved.css";
 import Filter from "shared/utilComponents/utilPost/Filter";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";

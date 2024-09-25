@@ -68,14 +68,12 @@ export const sectionAdminModelSelector = (
 
   // Check if the section data is valid
   if (!POST_SECTION_DATA.includes(sectionData)) {
-    next(new HttpError("Invalid section", 400));
     return undefined;
   }
 
   // Retrieve the model corresponding to the section
   const Model = adminDataModelMap[sectionData];
   if (!Model) {
-    next(new HttpError("Model not found for the specified section", 400));
     return undefined;
   }
 
@@ -91,14 +89,12 @@ export const sectionModelSelector = (
 
   // Check if the section data is valid
   if (!POST_SECTION_DATA.includes(sectionData)) {
-    next(new HttpError("Invalid section", 400));
     return undefined;
   }
 
   // Retrieve the model corresponding to the section
   const Model = modelMap[sectionData];
   if (!Model) {
-    next(new HttpError("Model not found for the specified section", 400));
     return undefined;
   }
 

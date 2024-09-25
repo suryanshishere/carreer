@@ -4,7 +4,7 @@ import { Input } from "shared/utilComponents/form/input/Input";
 import Button from "shared/utilComponents/form/Button";
 import Para from "shared/uiComponents/cover/Para";
 import "./AccountInfo.css";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import { useDispatch } from "react-redux";
 import AccountInfoForm from "./forms/AccountInfoForm";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";

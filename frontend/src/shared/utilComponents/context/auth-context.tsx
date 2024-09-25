@@ -1,7 +1,7 @@
 import React, { createContext, FC, useCallback, useState } from "react";
 import { isLoggedIn as checkIsLoggedIn } from "shared/utilComponents/quick/auth-check";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
 

@@ -1,8 +1,4 @@
-import { IPostAdminData } from "models/admin/IPostAdminData";
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
-import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
-import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
-import { Input, TextArea } from "shared/utilComponents/form/input/Input";
 import { ITableFormData } from "./interfaceHelper";
 
 export const structureFormData = (
@@ -29,39 +25,6 @@ export const structureFormData = (
   return structuredData;
 };
 
-export const renderFormFields = (data: IContributeInputForm[]) => {
-  return data.map((item, index) => {
-    if (item.type === "array") {
-      return null;
-    } else if (item.type === "customArray") {
-      return null;
-    } else if (item.type === "object" && item.subItem !== undefined) {
-      return (
-        <div key={index} className="flex flex-col gap-2">
-          <h3>{formatWord(item.name)}</h3>
-          {renderFormFields(item.subItem)}
-        </div>
-      );
-    } else if (item.name === "_id" && item.value !== undefined) {
-      return (
-        <Dropdown
-          key={index}
-          label="Post"
-          name={item.name}
-          dropdownData={item.value}
-        />
-      );
-    } else if (item.value !== undefined) {
-      return (
-        <Dropdown key={index} name={item.name} dropdownData={item.value} />
-      );
-    } else if (item.type === "textarea") {
-      return <TextArea key={index} name={item.name} />;
-    } else {
-      return <Input key={index} name={item.name} type={item.type} />;
-    }
-  });
-};
 
 export const structureOverallFormData = (
   e: React.FormEvent,

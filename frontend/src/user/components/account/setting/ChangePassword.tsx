@@ -3,7 +3,7 @@ import Form, { FormSubmitHandler } from "../../auth/AuthForm";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import "./ChangePassword.css";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 interface ChangePasswordProps {

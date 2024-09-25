@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 
 interface UsePostAdminDataProps {
   postSection: string | null;

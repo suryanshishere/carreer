@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import { IPostList } from "models/post/IPostList";
 import NAV from "db/nav/Nav.json";

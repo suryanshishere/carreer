@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 interface DeleteProps {

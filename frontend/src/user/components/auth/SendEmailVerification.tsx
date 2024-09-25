@@ -5,7 +5,7 @@ import { Input } from "shared/utilComponents/form/input/Input";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 
 const SendEmailVerification = () => {
   const { error, sendRequest } = useHttpClient();

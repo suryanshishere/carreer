@@ -23,6 +23,7 @@ import EditPost from "admin/pages/EditPost";
 import EditPostComponent from "admin/components/EditPostComponent";
 import EditPostItem from "admin/pages/EditPostItem";
 import ApprovePost from "admin/pages/ApprovePost";
+import PostFinalizer from "user/components/account/createForm/PostFinalizer";
 
 const App: React.FC = () => {
   //context won't work here
@@ -33,10 +34,16 @@ const App: React.FC = () => {
         { path: "saved_exam", element: <Saved /> },
         { path: "profile", element: <Profile /> },
         { path: "setting", element: <Setting /> },
-        { path: "account/create_post", element: <ContributeToPost /> },
         {
-          path: "account/create_post/:post_section",
-          element: <PostSectionForm />,
+          path: "account",
+          children: [
+            { path: "create_post", element: <ContributeToPost /> },
+            { path: "create_post/:post_section", element: <PostFinalizer /> },
+            {
+              path: "create_post/:post_section/:post_id",
+              element: <PostSectionForm />,
+            },
+          ],
         },
         {
           path: "email_verification/:verificationToken",
@@ -76,7 +83,8 @@ const App: React.FC = () => {
                 { path: ":post_section", element: <EditPostComponent /> },
                 { path: ":post_section/:post_id", element: <EditPostItem /> },
               ],
-            }, {
+            },
+            {
               path: "approve_post",
               children: [
                 { index: true, element: <ApprovePost /> },

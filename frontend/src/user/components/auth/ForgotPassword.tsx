@@ -6,7 +6,7 @@ import Form, { FormSubmitHandler } from "user/components/auth/AuthForm";
 import { AuthProps } from "user/pages/auth/Auth";
 import Response from "shared/utilComponents/response/Response";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   const { isLoading, error, sendRequest } = useHttpClient();

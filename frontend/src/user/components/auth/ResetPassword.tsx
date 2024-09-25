@@ -3,7 +3,7 @@ import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { Input } from "shared/utilComponents/form/input/Input";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 
 const ResetPassword: React.FC = () => {
   const { resetToken } = useParams<{ resetToken: string }>();

@@ -6,7 +6,7 @@ import Loading from "shared/utilComponents/response/dataStatus/Loading";
 import Error from "shared/utilComponents/response/dataStatus/DataStatus";
 import { AuthProps } from "user/pages/auth/Auth";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import "./Auth.css";
 
 const AuthComponent: React.FC<AuthProps> = ({

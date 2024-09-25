@@ -6,7 +6,7 @@ import Modal from "shared/uiComponents/modal/Modal";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/dataStatus-ui-slice";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 
 const ActivateModal = () => {

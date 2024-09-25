@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-  renderFormFields,
+  // renderFormFields,
   structureOverallFormData,
-} from "./createFormHelper/helper";
+} from "./createFormHelper/structure-json";
 import Button from "shared/utilComponents/form/Button";
 import { ITableFormData } from "./createFormHelper/interfaceHelper";
 import TableCustomForm from "../../../../shared/utilComponents/form/input/TableCustomForm";
@@ -22,6 +22,10 @@ import { IPostAdminData } from "models/admin/IPostAdminData";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import renderFormFields from "./createFormHelper/render-form-fields";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "shared/utilComponents/store";
+import { undefinedFieldActions } from "shared/utilComponents/store/undefined-fields";
 
 const formMap: Record<string, IContributeInputForm[]> = {
   post_common: POST_COMMON_FORM,
@@ -37,46 +41,26 @@ const formMap: Record<string, IContributeInputForm[]> = {
 
 //TODO: dispatch related left (provide the error and response)
 const PostSectionForm: React.FC = () => {
-  const { sendRequest, error } = useHttpClient();
-  const {userId, token} = useUserData()
   const [tableFormData, setTableFormData] = useState<ITableFormData>({});
   const [postformData, setPostformData] = useState<IContributeInputForm[]>([]);
-  const { post_section } = useParams();
+  const { sendRequest, error } = useHttpClient();
+  const { post_section, post_id } = useParams();
+  const { userId, token } = useUserData();
   const navigate = useNavigate();
-
+  const undefinedFields = useSelector(
+    (state: RootState) => state.undefinedFields.fields
+  );
+  const dispatch = useDispatch();
+  // Update postFormData based on the post_section and undefinedFields
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await sendRequest(
-          `${process.env.REACT_APP_BASE_URL}/admin/public/${post_section}/post_admin_data`,
-          "GET",
-          null,
-          {
-            userid: userId || "",
-            Authorisation: "Bearer " + token,
-          }
-        );
-
-        const responseData = response.data as unknown as {
-          [key: string]: IPostAdminData[];
-        };
-        const firstKey = Object.keys(responseData)[0];
-        const responseDataValue = responseData[firstKey] || [];
-
-        const updatedPostFormData = [
-          { name: "_id", type: "text", value: responseDataValue },
-          ...(formMap[firstKey] || []),
-        ];
-        if (responseDataValue.length > 0) {
-          setPostformData(updatedPostFormData);
-        } else {
-          navigate(-1);
-        }
-      } catch (err) {}
-    };
-
-    fetchData();
-  }, [post_section]);
+    if (post_section && formMap[post_section]) {
+      // Filter postFormData based on undefinedFields
+      const selectedForm = formMap[post_section].filter((formField) =>
+        undefinedFields.includes(formField.name)
+      );
+      setPostformData(selectedForm);
+    }
+  }, [post_section, undefinedFields]);
 
   const tableInputData = (data: Record<string, any>) => {
     setTableFormData(data);
@@ -89,13 +73,13 @@ const PostSectionForm: React.FC = () => {
       tableFormData,
       postformData
     );
-
-    const postId = structuredObject._id;
+    console.log(structuredObject)
     try {
+      if(!post_id && !post_section){return;}
       const response = await sendRequest(
         `${process.env.REACT_APP_BASE_URL}/user/account/contribute_to_post`,
         "POST",
-        JSON.stringify({ postId, post_section, data: structuredObject }),
+        JSON.stringify({ post_id, post_section, data: structuredObject }),
         {
           "Content-Type": "application/json",
           userid: userId || "",
@@ -106,8 +90,11 @@ const PostSectionForm: React.FC = () => {
       const responseData = response.data as unknown as {
         [key: string]: IPostAdminData[];
       };
+
+      dispatch(undefinedFieldActions.clearFields());
+
       console.log(responseData);
-      navigate(-1)
+      navigate(-1);
     } catch (err) {}
   };
 
