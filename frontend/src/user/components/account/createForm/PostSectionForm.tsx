@@ -66,16 +66,16 @@ const PostSectionForm: React.FC = () => {
     setTableFormData(data);
   };
 
-  //TODO: removing the _id from the structureObject and just passing to postId
   const submitHandler = async (e: React.FormEvent) => {
     const structuredObject = structureOverallFormData(
       e,
       tableFormData,
       postformData
     );
-    console.log(structuredObject)
     try {
-      if(!post_id && !post_section){return;}
+      if (!post_id && !post_section) {
+        return;
+      }
       const response = await sendRequest(
         `${process.env.REACT_APP_BASE_URL}/user/account/contribute_to_post`,
         "POST",
@@ -101,7 +101,7 @@ const PostSectionForm: React.FC = () => {
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-2">
       {renderFormFields(postformData)}
-      {/* <TableCustomForm data={postformData} onTableInputData={tableInputData} /> */}
+      <TableCustomForm data={postformData} onTableInputData={tableInputData} />
       <Button>Submit</Button>
     </form>
   );

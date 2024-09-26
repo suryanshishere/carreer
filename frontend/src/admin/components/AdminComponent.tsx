@@ -4,6 +4,7 @@ import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import { IPostDetail } from "models/post/IPostDetail";
 
+//TODO: from the response take the undefined field to display
 const AdminComponent: React.FC = () => {
   const { post_section } = useParams();
   const [data, setData] = useState<IPostDetail[]>([]);

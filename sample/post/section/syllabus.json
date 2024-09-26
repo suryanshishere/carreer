@@ -1,10 +1,11 @@
 {
   "_id": {
-    "$oid": "66b86fe14d528c942de38c3a"
+    "$oid": "06219de446e10e16e91b7260"
   },
   "createdAt": "2024-08-08T12:00:00Z",
-  "name_of_the_post": "jee syllabus",
-  "last_updated": "2023-12-25T00:00:00.000Z",
+  "updatedAt": "2024-09-25T00:00:00.000Z",
+  "post_code": "JEE",
+  "name_of_the_post": "JEE syllabus",
   "syllabus_data": [
     {
       "section": "Mathematics",
@@ -20,7 +21,7 @@
     }
   ],
   "important_links": {
-    "$oid": "66b86fe14d528c942de38c3a"
+    "$oid": "06219de446e10e16e91b7260"
   },
   "contributors": [
     {

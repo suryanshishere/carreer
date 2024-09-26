@@ -36,20 +36,40 @@ export const getUndefinedFields = async (
       return next(new HttpError("Schema selection failed", 400));
     }
 
-    // Initialize an array to hold undefined fields
     const undefinedFields: string[] = [];
 
-    // Iterate through the schema and check for undefined fields in postDetail
+    // Function to check if a value is empty
+    function isEmpty(value: any): boolean {
+      return (
+        value === undefined ||
+        value === null ||
+        (typeof value === "string" && value.trim() === "") ||
+        (Array.isArray(value) && value.length === 0) ||
+        (typeof value === "object" && Object.keys(value).length === 0)
+      );
+    }
+
+    // Iterate through the schema and check for undefined or empty fields in postDetail
     Object.keys(schema.paths).forEach((field) => {
-      if (postDetail[field] === undefined) {
-        undefinedFields.push(field);
+      // Use lodash to handle deep checking of nested fields
+      const fieldValue = _.get(postDetail, field);
+      if (isEmpty(fieldValue)) {
+        // Extract the first-level key (before the first dot)
+        const topLevelKey = field.split(".")[0];
+        if (!undefinedFields.includes(topLevelKey)) {
+          undefinedFields.push(topLevelKey);
+        }
       }
     });
+
+    const filteredUndefinedFields = undefinedFields.filter(
+      (field) => field !== "createdAt" && field !== "updatedAt"
+    );
 
     // Send undefined fields to the client
     res.status(200).json({
       message: "Undefined fields in post detail",
-      undefinedFields,
+      undefinedFields: filteredUndefinedFields,
     });
   } catch (error) {
     next(new HttpError("Something went wrong", 500));
@@ -120,19 +140,18 @@ export const contributeToPost = async (
   }
 };
 
-
 //not needed schema for validation, it work anyway!
 const updatePostData = (postData: any, data: any) => {
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
-      if (typeof data[key] === 'object' && data[key] !== null) {
+      if (typeof data[key] === "object" && data[key] !== null) {
         if (!postData[key] || _.isEmpty(postData[key])) {
           postData[key] = data[key];
         } else {
           updatePostData(postData[key], data[key]);
         }
       } else {
-        if (!postData[key] || postData[key] === '') {
+        if (!postData[key] || postData[key] === "") {
           postData[key] = data[key];
         }
       }

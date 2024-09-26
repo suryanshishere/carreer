@@ -1,8 +1,13 @@
 {
   "_id": {
-    "$oid": "66b86fe14d528c942de38c3a"
+    "$oid": "06219de446e10e16e91b7260"
   },
   "createdAt": "2024-08-08T12:00:00Z",
+  "updatedAt": "2024-09-08T12:00:00Z",
+  "createdBy": {
+    "$oid": "66afaaf24d8bd472905fcf7e"
+  },
+  "post_code": "JEE",
   "short_information": "cool,cool2",
   "department": "National Testing Agency",
   "stage_level": "National",
