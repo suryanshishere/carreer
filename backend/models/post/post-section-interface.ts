@@ -9,7 +9,6 @@ export interface IBasePost {
   updatedAt?: Date;
 }
 
-
 export interface IAdmission extends IBasePost {
   post_common?: Types.ObjectId;
   important_dates?: Types.ObjectId;
@@ -47,7 +46,7 @@ export interface IPostImportant extends IBasePost{
   important_dates?: Types.ObjectId;
 }
 
-export interface IPostCommon extends IBasePost{
+export interface IPostCommon extends IBasePost {
   short_information?: string;
   department?: string;
   stage_level?: string;

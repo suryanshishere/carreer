@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import { IPostCommon } from "../post-section-interface";
 import commonDataSchema from "../post-common";
 
-const { Schema } = mongoose;
+const { ObjectId } = Schema.Types;
 
 const postCommonSchema = new Schema<IPostCommon>({
   short_information: { type: String },
@@ -40,14 +40,13 @@ const postCommonSchema = new Schema<IPostCommon>({
   applicants_gender: {
     type: String,
     enum: ["male", "female", "both"],
-    default: "both",
   },
 });
 
+// Add the common data schema
 postCommonSchema.add(commonDataSchema);
+export { postCommonSchema };
 
-export {postCommonSchema}
-
+// Export the model
 const PostCommon = mongoose.model("PostCommon", postCommonSchema);
-
 export default PostCommon;

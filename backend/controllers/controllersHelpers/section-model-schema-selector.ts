@@ -52,9 +52,6 @@ export const sectionModelSchemaSelector = (
   // Retrieve the model corresponding to the section
   const ModelSchema = modelSchemaMap[sectionData];
   if (!ModelSchema) {
-    next(
-      new HttpError("Model Schema not found for the specified section", 400)
-    );
     return undefined; // Return immediately after calling next()
   }
 

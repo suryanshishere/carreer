@@ -22,7 +22,7 @@ router.get(
 router.post(
   "/contribute_to_post",
   [
-    check("postId").trim().isLength({ min: 24, max: 24 }),
+    check("post_id").trim().isLength({ min: 24, max: 24 }),
     check("post_section").trim().notEmpty(),
     header("userid")
       .notEmpty()
