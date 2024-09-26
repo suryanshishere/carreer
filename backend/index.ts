@@ -6,8 +6,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 import postsRoutes from "./routes/posts/posts-routes";
-import adminRoutes from "./routes/admin/admin-routes";
-import usersRoutes from "./routes/users/user-routes";
 import HttpError from "./utils/http-errors";
 
 const MONGO_URL: string = process.env.MONGO_URL || "";
@@ -20,8 +18,6 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/api", postsRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/user", usersRoutes);
 
 //Error showing if none of the routes found!
 app.use((req: Request, res: Response, next: NextFunction) => {
