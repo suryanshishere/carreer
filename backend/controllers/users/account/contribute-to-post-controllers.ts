@@ -108,8 +108,7 @@ export const contributeToPost = async (
 
     if (_.isEqual(originalPostData, postData.toObject())) {
       return res.status(200).json({
-        message: "No changes were made to the post.",
-        data: postData,
+        message: "No changes were made to the post."
       });
     }
 
@@ -129,8 +128,7 @@ export const contributeToPost = async (
     await postData.save();
 
     res.status(200).json({
-      message: "Post updated successfully!",
-      data: postData,
+      message: "Post updated successfully!"
     });
   } catch (error) {
     console.log(error);

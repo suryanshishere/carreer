@@ -28,7 +28,7 @@ export const structureFormData = (
 
 export const structureOverallFormData = (
   e: React.FormEvent,
-  tableFormData: ITableFormData,
+  tableFormData: ITableFormData[],
   data: IContributeInputForm[]
 ) => {
   e.preventDefault();
@@ -50,11 +50,32 @@ export const structureOverallFormData = (
 
   const structuredData = structureFormData(formValues, data);
 
-  // Merge the dynamic form data with the structured data
+  // Merge tableFormData directly into structuredData
+  const mergedTableData: Record<string, any> = {};
+
+  tableFormData.forEach(item => {
+    Object.entries(item).forEach(([key, value]) => {
+      // Check if the key already exists in mergedTableData
+      if (mergedTableData[key]) {
+        // If it exists, ensure it's an array and push the new value
+        if (Array.isArray(mergedTableData[key])) {
+          mergedTableData[key].push(value);
+        } else {
+          mergedTableData[key] = [mergedTableData[key], value];
+        }
+      } else {
+        mergedTableData[key] = value;
+      }
+    });
+  });
+
+  // Final structured data now contains merged table data
   const finalStructuredData = {
     ...structuredData,
-    ...tableFormData,
+    ...mergedTableData,
   };
 
+  console.log(finalStructuredData);
   return finalStructuredData;
 };
+

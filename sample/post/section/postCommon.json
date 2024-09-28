@@ -40,16 +40,12 @@
   "vacancy": [
     {
       "post_name": "HR Manager",
-      "total_post": {
-        "$numberInt": "10"
-      },
+      "total_post":  10,
       "post_eligibility": "Postgraduate degree in HR or related field"
     },
     {
       "post_name": "Recruitment Officer",
-      "total_post": {
-        "$numberInt": "5"
-      },
+      "total_post": 5,
       "post_eligibility": "Bachelor's degree in HR or related field"
     }
   ],

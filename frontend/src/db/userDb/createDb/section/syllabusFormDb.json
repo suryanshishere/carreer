@@ -1,17 +1,16 @@
 [
-    
-    {
-        "name":"syllabus_data",
-        "type": "array",
-        "subItem":[
-            {
-                "name":"section",
-                "type":"text"
-            },
-            {
-                "name":"topics",
-                "type":"textarea"
-            }
-        ]
-    }
+  {
+    "name": "syllabus_data",
+    "type": "array",
+    "subItem": [
+      {
+        "name": "section",
+        "type": "text"
+      },
+      {
+        "name": "topics",
+        "type": "textarea"
+      }
+    ]
+  }
 ]
