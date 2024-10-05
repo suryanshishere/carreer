@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import "./AccNavList.css";
 
-
 //TODO: Improve the design
 const AccNavList: React.FC = () => {
   const auth = useContext(AuthContext);

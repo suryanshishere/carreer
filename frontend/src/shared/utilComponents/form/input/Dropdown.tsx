@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'; 
+import React, { forwardRef } from "react"; 
 import { Autocomplete, FormControl, TextField } from "@mui/material";
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
@@ -14,9 +14,10 @@ interface DropdownProps {
     value: string | IPostAdminData | (string | IPostAdminData)[] | null,
     reason: string,
     details?: { option?: string | IPostAdminData }
-  ) => void; 
+  )=>void; 
   error?: boolean; 
   helperText?: string; 
+  register?: any; // Make register optional
 }
 
 // Wrap the component in forwardRef
@@ -29,6 +30,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(({
     onChange,
     error,
     helperText,
+    register, // Accept register as a prop
   },
   ref
 ) => {
@@ -39,14 +41,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(({
         multiple={multiple} 
         options={dropdownData as (string | IPostAdminData)[]}
         getOptionLabel={(option) =>
-          typeof option === "string" ? option : option.name_of_the_post || option._id 
+          typeof option === "string" ? option :  option._id 
         }
-        onChange={(event, value) => {
-          // Call the onChange handler passed from the parent component
-          if (onChange) {
-            onChange(event, value ?? null, "select-option"); // Pass null if value is null
-          }
-        }}
+        onChange={onChange}
         renderOption={(props, option) => {
           const { key, ...restProps } = props;
           return (
@@ -65,6 +62,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(({
             required={required}
             error={error}
             helperText={error ? helperText : undefined}
+            {...(register ? register(name) : {})} // Only register if it's provided
           />
         )}
       />

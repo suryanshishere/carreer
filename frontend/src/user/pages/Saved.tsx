@@ -17,7 +17,7 @@ const Saved = () => {
 
   useEffect(() => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error, clearError, dispatch]);
+  }, [error,  dispatch]);
 
   useEffect(() => {
     const fetchPlaces = async () => {

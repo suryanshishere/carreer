@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form"; // Import useForm
+import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
+import * as Yup from "yup"; // Import Yup
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
-import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import Button from "shared/utilComponents/form/Button";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
-import PostSectionForm from "./PostSectionForm";
 import { useDispatch } from "react-redux";
 import { undefinedFieldActions } from "shared/utilComponents/store/undefined-fields";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 
+// Schema validation with Yup
+const validationSchema = Yup.object().shape({
+  post_id: Yup.string()
+    .length(24, "Post ID must be exactly 24 characters long") // MongoDB ObjectId length
+    .required("Post ID is required"), // Required field
+});
+
 const PostFinalizer = () => {
-  const { sendRequest, error } = useHttpClient();
+  const { sendRequest } = useHttpClient();
   const { userId, token } = useUserData();
   const [postIdData, setPostIdData] = useState<IPostAdminData[]>([]);
-  const [undefinedFields, setUndefinedFields] = useState<string[]>([]);
   const { post_section } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Initialize useForm from react-hook-form with validation schema
+  const { register, handleSubmit, setError, formState: { errors } } = useForm({
+    resolver: yupResolver(validationSchema), // Add Yup resolver for validation
+    mode: "onSubmit",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,24 +54,19 @@ const PostFinalizer = () => {
         const responseDataValue = responseData[firstKey] || [];
         if (responseDataValue.length === 0) {
           dispatch(dataStatusUIAction.setErrorHandler("No data found"));
-          navigate(-1);
+          navigate('/user/account/contribute_to_post');
+        } else {
+          setPostIdData(responseDataValue);
         }
-        setPostIdData(responseDataValue);
-      } catch (err) {}
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
     };
     fetchData();
-  }, [post_section]);
+  }, [post_section, sendRequest, userId, token, dispatch, navigate]);
 
-  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    const postId = formData.get("post_id");
-
-    if (!postId) {
-      // Handle error if postId is not selected
-      return;
-    }
+  const submitHandler: SubmitHandler<{ post_id: string }> = async (data) => {
+    const postId = data.post_id;
 
     try {
       const response = await sendRequest(
@@ -71,24 +79,30 @@ const PostFinalizer = () => {
         }
       );
 
-      //TODO: dispatch the message
-
       const responseData = response.data as unknown as {
         message: string;
         undefinedFields: string[];
       };
 
       dispatch(undefinedFieldActions.setFields(responseData.undefinedFields));
-
       navigate(`${postId}`);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error submitting form:", err);
+    }
   };
 
   return (
-    <form onSubmit={submitHandler} className="flex flex-col gap-2">
+    <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col gap-2">
       <h3>{formatWord(`${post_section}`)}</h3>
-      <Dropdown name="post_id" dropdownData={postIdData} />
-      <Button>Select</Button>
+      <Dropdown
+        name="post_id"
+        dropdownData={postIdData}
+        required
+        register={register} // Pass register to the Dropdown
+        error={!!errors.post_id} // Pass error status
+        helperText={errors.post_id?.message} // Pass error message
+      />
+      <Button type="submit">Select</Button>
     </form>
   );
 };

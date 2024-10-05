@@ -9,6 +9,8 @@ import Button from "shared/utilComponents/form/Button";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 
 // Schema validation with Yup
 const validationSchema = Yup.object().shape({
@@ -32,12 +34,10 @@ const CreateNewPost: React.FC = () => {
   const { userId, token } = useUserData();
   const { sendRequest } = useHttpClient();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ICreateNewPostForm>({
+  // Use the useForm hook and set up validation with Yup
+  const { register, handleSubmit, formState: { errors } } = useForm<ICreateNewPostForm>({
     resolver: yupResolver(validationSchema),
     mode: "onSubmit",
   });
@@ -54,7 +54,7 @@ const CreateNewPost: React.FC = () => {
           userid: userId || "",
         }
       );
-      console.log(response);
+      dispatch(dataStatusUIAction.setResMsg(response.data.message));
       navigate(0);
     } catch (err) {
       console.error("Submission failed", err);
@@ -62,30 +62,30 @@ const CreateNewPost: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-2"
+    >
       <Input
         placeholder="Name of the Post"
         {...register("name_of_the_post")}
         error={!!errors.name_of_the_post}
-        helperText={
-          errors.name_of_the_post ? errors.name_of_the_post.message : undefined
-        }
+        helperText={errors.name_of_the_post?.message}
       />
 
       <Input
         placeholder="Post Code"
         {...register("post_code")}
         error={!!errors.post_code}
-        helperText={errors.post_code ? errors.post_code.message : undefined}
+        helperText={errors.post_code?.message}
       />
 
       <Dropdown
         dropdownData={POST_SECTION}
-        {...register("post_section")}
+        name="post_section" 
         error={!!errors.post_section}
-        helperText={
-          errors.post_section ? errors.post_section.message : undefined
-        }
+        helperText={errors.post_section?.message}
+        register={register} 
       />
 
       <Button type="submit">Submit</Button>

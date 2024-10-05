@@ -22,7 +22,6 @@ import renderFormFields from "./createFormHelper/render-form-fields";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "shared/utilComponents/store";
 import { undefinedFieldActions } from "shared/utilComponents/store/undefined-fields";
-import TableInput from "shared/utilComponents/form/input/TableInput";
 
 const formMap: Record<string, IContributeInputForm[]> = {
   post_common: POST_COMMON_FORM,
@@ -36,39 +35,42 @@ const formMap: Record<string, IContributeInputForm[]> = {
   important: POST_IMPORTANT_FORM,
 };
 
+//TODO: If the link is directly pasted, it's should be able to make up the form anyhow (hint: combining the postfinalizer and postsectionfrom into one)
+
 const PostSectionForm: React.FC = () => {
-  const [tableFormData, setTableFormData] = useState<ITableFormData[]>([]);
-  const [postformData, setPostformData] = useState<IContributeInputForm[]>([]);
-  const [tableFields, setTableFields] = useState<IContributeInputForm[]>([]); 
-  const { sendRequest, error } = useHttpClient();
   const { post_section, post_id } = useParams();
   const { userId, token } = useUserData();
   const navigate = useNavigate();
-  const undefinedFields = useSelector(
-    (state: RootState) => state.undefinedFields.fields
-  );
+  const { sendRequest, error } = useHttpClient();
+  const [tableFormData, setTableFormData] = useState<ITableFormData[]>([]);
+
   const dispatch = useDispatch();
+  const { fields, postformData } = useSelector(
+    (state: RootState) => state.undefinedFields
+  );
 
-  // Update postFormData based on the post_section and undefinedFields
+  // Hydrate the Redux state from localStorage on component mount
   useEffect(() => {
-    if (post_section && formMap[post_section]) {
-      // Filter postFormData based on undefinedFields
-      const selectedForm = formMap[post_section].filter((formField) =>
-        undefinedFields.includes(formField.name)
-      );
-      setPostformData(selectedForm);
+    dispatch(undefinedFieldActions.restoreState());
+  }, [dispatch]);
 
-      // Filter only customArray or array types for table input
-      const tableOnlyFields = selectedForm.filter(
-        (field) => field.type === "customArray" || field.type === "array"
-      );
-      setTableFields(tableOnlyFields); // Set the fields for table
+ 
+  useEffect(() => {
+    if (post_section) {
+      const newFormMap = formMap[post_section]; 
+      if (newFormMap && fields.length > 0) {
+        const selectedForm = newFormMap.filter((formField) =>
+          fields.includes(formField.name)
+        );
+        dispatch(undefinedFieldActions.setPostformData(selectedForm));
+      }
     }
-  }, [post_section, undefinedFields]);
+  }, [post_section, fields, dispatch]);
 
-
+  // Handle form submission
   const submitHandler = async (e: React.FormEvent) => {
-    console.log("Table Form Data on Submit: ", tableFormData);
+    // console.log("Table Form Data on Submit: ", tableFormData);
+    e.preventDefault();
     const structuredObject = structureOverallFormData(
       e,
       tableFormData,
@@ -94,24 +96,21 @@ const PostSectionForm: React.FC = () => {
       };
 
       dispatch(undefinedFieldActions.clearFields());
+      dispatch(undefinedFieldActions.clearFormData());
 
       console.log(responseData);
-      // navigate(-1);
+      // navigate(-1); // Uncomment to navigate back after submission
     } catch (err) {}
   };
-  
+
+  // Handle table form data updates
   const handleTableInputData = (data: Record<string, any>) => {
-    setTableFormData((prev) => [...prev, data]); // Append received data to tableFormData array
+    setTableFormData((prev) => [...prev, data]);
   };
 
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-2">
-      {renderFormFields(postformData)}
-      <div>
-        {tableFields.length > 0 &&
-          tableFields.map((item) => <TableInput key={item.name} data={item} tableInputData={handleTableInputData}/>)}
-      </div>
-
+      {renderFormFields(postformData, handleTableInputData)}
       <Button type="submit">Submit</Button>
     </form>
   );

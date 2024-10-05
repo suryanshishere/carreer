@@ -14,22 +14,32 @@ interface TableProps {
 
 interface TableInputProps {
   data: IContributeInputForm;
-  tableInputData: (data: Record<string, any>) => void; // Add prop for callback
+  tableInputData?: (data: Record<string, any>) => void; // Add prop for callback
 }
 
 const TableInput: React.FC<TableInputProps> = ({ data, tableInputData }) => {
   const isCustomArray = data.type === "customArray"; // Check if type is customArray
   const initialColumnNames = data.subItem?.map((item) => item.name) || [];
-  
+
   // Initialize column types based on subItem types
-  const initialColumnTypes: string[] = data.subItem?.map((item) => item.type) || ["text"];
+  const initialColumnTypes: string[] = data.subItem?.map(
+    (item) => item.type
+  ) || ["text"];
 
   const [columnNames, setColumnNames] = useState<string[]>(initialColumnNames); // Initialize with subItem names
   const [columnTypes, setColumnTypes] = useState<string[]>(initialColumnTypes); // Initialize column types
-  const [tableData, setTableData] = useState<string[][]>(initialColumnNames.length > 0 ? [new Array(initialColumnNames.length).fill("")] : []); // Initialize table data
+  const [tableData, setTableData] = useState<string[][]>(
+    initialColumnNames.length > 0
+      ? [new Array(initialColumnNames.length).fill("")]
+      : []
+  ); // Initialize table data
 
   // Handle cell input changes
-  const handleInputChange = (rowIndex: number, columnIndex: number, value: string) => {
+  const handleInputChange = (
+    rowIndex: number,
+    columnIndex: number,
+    value: string
+  ) => {
     const updatedTableData = [...tableData];
     updatedTableData[rowIndex][columnIndex] = value;
     setTableData(updatedTableData);
@@ -50,7 +60,10 @@ const TableInput: React.FC<TableInputProps> = ({ data, tableInputData }) => {
   };
 
   // Handle column type changes if it's a customArray
-  const handleColumnTypeChange = (columnIndex: number, value: SubItem["type"]) => {
+  const handleColumnTypeChange = (
+    columnIndex: number,
+    value: SubItem["type"]
+  ) => {
     if (isCustomArray) {
       const updatedTypes = [...columnTypes];
       updatedTypes[columnIndex] = value;
@@ -79,8 +92,10 @@ const TableInput: React.FC<TableInputProps> = ({ data, tableInputData }) => {
     const finalData = {
       [data.name]: jsonData, // Use top-level name as key
     };
-    console.log(JSON.stringify(finalData, null, 2)); // Log formatted JSON for clarity
-    tableInputData(finalData); // Pass data to parent
+    console.log(JSON.stringify(finalData, null, 2));
+    if (tableInputData) {
+      tableInputData(finalData); // Pass data to parent
+    }
   };
 
   return (
@@ -94,13 +109,20 @@ const TableInput: React.FC<TableInputProps> = ({ data, tableInputData }) => {
                 <input
                   type="text"
                   value={col}
-                  onChange={(e) => isCustomArray && handleColumnChange(index, e.target.value)}
-                  disabled={!isCustomArray} 
+                  onChange={(e) =>
+                    isCustomArray && handleColumnChange(index, e.target.value)
+                  }
+                  disabled={!isCustomArray}
                 />
                 {isCustomArray && (
                   <select
-                    value={columnTypes[index]} 
-                    onChange={(e) => handleColumnTypeChange(index, e.target.value as SubItem['type'])} 
+                    value={columnTypes[index]}
+                    onChange={(e) =>
+                      handleColumnTypeChange(
+                        index,
+                        e.target.value as SubItem["type"]
+                      )
+                    }
                   >
                     <option value="text">Text</option>
                     <option value="number">Number</option>
@@ -119,7 +141,9 @@ const TableInput: React.FC<TableInputProps> = ({ data, tableInputData }) => {
                   <input
                     type={columnTypes[columnIndex]} // Use the correct input type based on columnTypes
                     value={cell}
-                    onChange={(e) => handleInputChange(rowIndex, columnIndex, e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange(rowIndex, columnIndex, e.target.value)
+                    }
                   />
                 </td>
               ))}
@@ -128,13 +152,23 @@ const TableInput: React.FC<TableInputProps> = ({ data, tableInputData }) => {
         </tbody>
       </table>
       <div style={{ marginTop: "10px" }}>
-        <button type="button" onClick={addRow}>Add Row</button>
+        <button type="button" onClick={addRow}>
+          Add Row
+        </button>
         {isCustomArray && (
-          <button type="button" onClick={addColumn} style={{ marginLeft: "10px" }}>
+          <button
+            type="button"
+            onClick={addColumn}
+            style={{ marginLeft: "10px" }}
+          >
             Add Column
           </button>
         )}
-        <button type="button" onClick={saveAsJSON} style={{ marginLeft: "10px" }}>
+        <button
+          type="button"
+          onClick={saveAsJSON}
+          style={{ marginLeft: "10px" }}
+        >
           Save as JSON
         </button>
       </div>

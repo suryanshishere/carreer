@@ -1,8 +1,9 @@
+
 import {
   approvePost,
   contributedPost,
   createNewPost,
-} from "@controllers/admin/private/admin-controllers";
+} from "@controllers/admin/private/admin-private-controllers";
 import {
   getAllPostAdminData,
   getEditPost,

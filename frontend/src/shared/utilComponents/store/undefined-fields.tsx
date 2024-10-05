@@ -1,12 +1,16 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
+import { ITableFormData } from "user/components/account/createForm/createFormHelper/interfaceHelper";
 
 // Define the initial state for the slice
 interface UndefinedFieldState {
   fields: string[];
+  postformData: IContributeInputForm[];
 }
 
 const initialState: UndefinedFieldState = {
   fields: [],
+  postformData: [], // Store for postformData
 };
 
 // Create the Redux slice
@@ -16,11 +20,32 @@ const undefinedFieldSlice = createSlice({
   reducers: {
     // Reducer to set fields with a payload of string array
     setFields(state, action: PayloadAction<string[]>) {
-      state.fields = action.payload; // Set the payload as the new fields
+      state.fields = action.payload;
+      localStorage.setItem("fields", JSON.stringify(state.fields));
     },
     // Reducer to clear fields (reset to empty array)
     clearFields(state) {
       state.fields = [];
+      localStorage.removeItem("fields");
+    },
+    // Reducer to set postformData
+    setPostformData(state, action: PayloadAction<IContributeInputForm[]>) {
+      state.postformData = action.payload;
+      localStorage.setItem("postformData", JSON.stringify(state.postformData));
+    },
+    // Reducer to clear postformData and tableFormData
+    clearFormData(state) {
+      state.postformData = [];
+      localStorage.removeItem("postformData");
+    },
+    restoreState(state) {
+      const storedFields = localStorage.getItem("fields");
+      const storedPostformData = localStorage.getItem("postformData");
+      const storedTableFormData = localStorage.getItem("tableFormData");
+
+      if (storedFields) state.fields = JSON.parse(storedFields);
+      if (storedPostformData)
+        state.postformData = JSON.parse(storedPostformData);
     },
   },
 });

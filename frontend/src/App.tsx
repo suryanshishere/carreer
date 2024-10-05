@@ -37,10 +37,10 @@ const App: React.FC = () => {
         {
           path: "account",
           children: [
-            { path: "create_post", element: <ContributeToPost /> },
-            { path: "create_post/:post_section", element: <PostFinalizer /> },
+            { path: "contribute_to_post", element: <ContributeToPost /> },
+            { path: "contribute_to_post/:post_section", element: <PostFinalizer /> },
             {
-              path: "create_post/:post_section/:post_id",
+              path: "contribute_to_post/:post_section/:post_id",
               element: <PostSectionForm />,
             },
           ],
@@ -58,9 +58,9 @@ const App: React.FC = () => {
           element: <EmailVerification />,
         },
         { path: "reset_password/:resetToken", element: <ResetPassword /> },
-        { path: "account/create_post", element: <ContributeToPost /> },
+        { path: "account/contribute_to_post", element: <ContributeToPost /> },
         {
-          path: "account/create_post/:post_section",
+          path: "account/contribute_to_post/:post_section",
           element: <PostSectionForm />,
         },
       ];

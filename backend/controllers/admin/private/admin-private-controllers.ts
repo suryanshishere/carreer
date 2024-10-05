@@ -158,7 +158,7 @@ export const createNewPost = async (
     if (existingPost) {
       return next(
         new HttpError(
-          "Such post already exists, try editing the existing post.",
+          "Such post already exists",
           400
         )
       );
