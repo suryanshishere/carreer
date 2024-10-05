@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useState } from "react";
+import { faTimes } from "@fortawesome/free-solid-svg-icons"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
+import { Box, Modal } from "@mui/material";
 import "./DataStatus.css";
 
 interface ResponseProps {
@@ -16,41 +15,77 @@ const DataStatus: React.FC<ResponseProps> = ({
   resMsg = [],
   permanentResMsg = [],
 }) => {
-  const [modalShow, setModalShow] = useState(true);
-  const dispatch = useDispatch();
+  const [modalShow, setModalShow] = useState(false);
+  const getLastItem = (arr: string[]) =>
+    arr.length ? arr[arr.length - 1] : null;
 
-  // Helper function to get the last element of an array
-  const getLastItem = (arr: string[]) => (arr.length ? arr[arr.length - 1] : null);
-
-  // Get the last item of error, resMsg, and permanentResMsg
+  // Get the latest messages
   const latestError = getLastItem(error);
   const latestResMsg = getLastItem(resMsg);
   const latestPermanentResMsg = getLastItem(permanentResMsg);
 
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+    setModalShow(false);
+  };
+
+  useEffect(() => {
+    // Show modal if there are any messages
+    if (latestResMsg || latestError || latestPermanentResMsg) {
+      setModalShow(true);
+      setOpen(true);
+
+      // If there's no permanent message, set timer to close
+      if (!latestPermanentResMsg) {
+        const timer = setTimeout(() => {
+          handleClose();
+        }, 3000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [latestResMsg, latestError, latestPermanentResMsg]);
+
+  const style = {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    width: 300,
+    bgcolor: "var(--color-white)",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const NoBackdrop = (props: any) => (
+    <div {...props} style={{ backgroundColor: "transparent" }} />
+  );
+
   return (
-    <div className="flex items-center gap-1 font-bold">
-      {latestPermanentResMsg && (
-        <p
-          style={{ color: "var(--color-dark-blue)" }} // Style for permanent response messages
+    <Modal
+      open={modalShow}
+      onClose={handleClose}
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
+      BackdropProps={{ invisible: true }}
+    >
+      <Box sx={style}>
+        <div className="flex flex-col items-center gap-1 font-bold">
+          {latestPermanentResMsg && (
+            <p className="text-custom-blue">{latestPermanentResMsg}</p>
+          )}
+          {latestResMsg && <p className="text-custom-green">{latestResMsg}</p>}
+          {latestError && <p className="text-custom-red">{latestError}</p>}
+        </div>
+        <button
+          className="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
+          onClick={handleClose}
         >
-          <FontAwesomeIcon icon={faCircleExclamation} /> {latestPermanentResMsg}
-        </p>
-      )}
-      {latestResMsg && modalShow && (
-        <p
-          style={{ color: "var(--color-green)" }} // Style for response messages
-        >
-          <FontAwesomeIcon icon={faCircleExclamation} /> {latestResMsg}
-        </p>
-      )}
-      {latestError && modalShow && (
-        <p
-          style={{ color: "var(--color-red)" }} // Style for error messages
-        >
-          <FontAwesomeIcon icon={faCircleExclamation} /> {latestError}
-        </p>
-      )}
-    </div>
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
+      </Box>
+    </Modal>
   );
 };
 

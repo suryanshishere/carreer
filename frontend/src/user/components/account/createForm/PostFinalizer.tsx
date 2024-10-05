@@ -9,6 +9,8 @@ import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
 import PostSectionForm from "./PostSectionForm";
 import { useDispatch } from "react-redux";
 import { undefinedFieldActions } from "shared/utilComponents/store/undefined-fields";
+import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 
 const PostFinalizer = () => {
   const { sendRequest, error } = useHttpClient();
@@ -37,7 +39,10 @@ const PostFinalizer = () => {
         };
         const firstKey = Object.keys(responseData)[0];
         const responseDataValue = responseData[firstKey] || [];
-
+        if (responseDataValue.length === 0) {
+          dispatch(dataStatusUIAction.setErrorHandler("No data found"));
+          navigate(-1);
+        }
         setPostIdData(responseDataValue);
       } catch (err) {}
     };
@@ -72,7 +77,7 @@ const PostFinalizer = () => {
         message: string;
         undefinedFields: string[];
       };
-      
+
       dispatch(undefinedFieldActions.setFields(responseData.undefinedFields));
 
       navigate(`${postId}`);
@@ -81,6 +86,7 @@ const PostFinalizer = () => {
 
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-2">
+      <h3>{formatWord(`${post_section}`)}</h3>
       <Dropdown name="post_id" dropdownData={postIdData} />
       <Button>Select</Button>
     </form>

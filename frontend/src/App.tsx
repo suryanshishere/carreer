@@ -29,7 +29,7 @@ const App: React.FC = () => {
   //context won't work here
   const { token } = useUserData();
 
-  const authRoutes = token
+  const authRoutes = token || !token
     ? [
         { path: "saved_exam", element: <Saved /> },
         { path: "profile", element: <Profile /> },

@@ -18,7 +18,7 @@ const NavigateToPostSec: React.FC<NavigateToPostSecProps> = ({
     const post_section = formData.get("post_section") as string;
     if (!post_section) return;
 
-    navigate(`${post_section}`);
+    navigate(`${post_section}`,{ replace: true });
   };
 
   return (

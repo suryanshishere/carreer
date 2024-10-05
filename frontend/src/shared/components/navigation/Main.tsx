@@ -3,7 +3,7 @@ import Navlinks from "./Navlinks";
 import NavSearch from "./NavSearch";
 import NavAccount from "./NavAccount";
 import Features from "shared/components/features/Features";
-import Response from "shared/utilComponents/response/Response";
+// import Response from "shared/utilComponents/response/Response";
 import useHandleScroll from "shared/utilComponents/hooks/sub-nav-scroll-hook";
 
 const MainNavigation: React.FC = () => {
@@ -22,7 +22,7 @@ const MainNavigation: React.FC = () => {
       >
           <Navlinks />
           <Features />
-          <Response />
+          {/* <Response /> */}
         </div>
       )}
     </div>

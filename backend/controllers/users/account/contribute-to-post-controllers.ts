@@ -133,7 +133,7 @@ export const contributeToPost = async (
   } catch (error) {
     console.log(error);
     return next(
-      new HttpError("Contributing to post failed, please try again later.", 500)
+      new HttpError("Contributing to post failed, please try again later", 500)
     );
   }
 };
