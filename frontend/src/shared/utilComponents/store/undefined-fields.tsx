@@ -5,12 +5,12 @@ import { ITableFormData } from "user/components/account/createForm/createFormHel
 // Define the initial state for the slice
 interface UndefinedFieldState {
   fields: string[];
-  postformData: IContributeInputForm[];
+  postFormData: IContributeInputForm[];
 }
 
 const initialState: UndefinedFieldState = {
   fields: [],
-  postformData: [], // Store for postformData
+  postFormData: [], // Store for postFormData
 };
 
 // Create the Redux slice
@@ -28,24 +28,24 @@ const undefinedFieldSlice = createSlice({
       state.fields = [];
       localStorage.removeItem("fields");
     },
-    // Reducer to set postformData
+    // Reducer to set postFormData
     setPostformData(state, action: PayloadAction<IContributeInputForm[]>) {
-      state.postformData = action.payload;
-      localStorage.setItem("postformData", JSON.stringify(state.postformData));
+      state.postFormData = action.payload;
+      localStorage.setItem("postFormData", JSON.stringify(state.postFormData));
     },
-    // Reducer to clear postformData and tableFormData
+    // Reducer to clear postFormData and tableFormData
     clearFormData(state) {
-      state.postformData = [];
-      localStorage.removeItem("postformData");
+      state.postFormData = [];
+      localStorage.removeItem("postFormData");
     },
     restoreState(state) {
       const storedFields = localStorage.getItem("fields");
-      const storedPostformData = localStorage.getItem("postformData");
+      const storedPostformData = localStorage.getItem("postFormData");
       const storedTableFormData = localStorage.getItem("tableFormData");
 
       if (storedFields) state.fields = JSON.parse(storedFields);
       if (storedPostformData)
-        state.postformData = JSON.parse(storedPostformData);
+        state.postFormData = JSON.parse(storedPostformData);
     },
   },
 });

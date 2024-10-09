@@ -37,12 +37,16 @@ const CreateNewPost: React.FC = () => {
   const dispatch = useDispatch();
 
   // Use the useForm hook and set up validation with Yup
-  const { register, handleSubmit, formState: { errors } } = useForm<ICreateNewPostForm>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ICreateNewPostForm>({
     resolver: yupResolver(validationSchema),
     mode: "onSubmit",
   });
 
-  const onSubmit: SubmitHandler<ICreateNewPostForm> = async (data) => {
+  const submitHandler: SubmitHandler<ICreateNewPostForm> = async (data) => {
     try {
       const response = await sendRequest(
         `${process.env.REACT_APP_BASE_URL}/admin/private/create_new_post`,
@@ -62,10 +66,7 @@ const CreateNewPost: React.FC = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-2"
-    >
+    <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col gap-2">
       <Input
         placeholder="Name of the Post"
         {...register("name_of_the_post")}
@@ -82,10 +83,10 @@ const CreateNewPost: React.FC = () => {
 
       <Dropdown
         dropdownData={POST_SECTION}
-        name="post_section" 
+        name="post_section"
         error={!!errors.post_section}
         helperText={errors.post_section?.message}
-        register={register} 
+        register={register}
       />
 
       <Button type="submit">Submit</Button>

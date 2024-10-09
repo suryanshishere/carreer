@@ -45,7 +45,7 @@ const PostSectionForm: React.FC = () => {
   const [tableFormData, setTableFormData] = useState<ITableFormData[]>([]);
 
   const dispatch = useDispatch();
-  const { fields, postformData } = useSelector(
+  const { fields, postFormData } = useSelector(
     (state: RootState) => state.undefinedFields
   );
 
@@ -54,10 +54,9 @@ const PostSectionForm: React.FC = () => {
     dispatch(undefinedFieldActions.restoreState());
   }, [dispatch]);
 
- 
   useEffect(() => {
     if (post_section) {
-      const newFormMap = formMap[post_section]; 
+      const newFormMap = formMap[post_section];
       if (newFormMap && fields.length > 0) {
         const selectedForm = newFormMap.filter((formField) =>
           fields.includes(formField.name)
@@ -74,31 +73,33 @@ const PostSectionForm: React.FC = () => {
     const structuredObject = structureOverallFormData(
       e,
       tableFormData,
-      postformData
+      postFormData
     );
+
+    console.log(structuredObject);
     try {
       if (!post_id && !post_section) {
         return;
       }
-      const response = await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/user/account/contribute_to_post`,
-        "POST",
-        JSON.stringify({ post_id, post_section, data: structuredObject }),
-        {
-          "Content-Type": "application/json",
-          userid: userId || "",
-          authorisation: "Bearer " + token,
-        }
-      );
+      // const response = await sendRequest(
+      //   `${process.env.REACT_APP_BASE_URL}/user/account/contribute_to_post`,
+      //   "POST",
+      //   JSON.stringify({ post_id, post_section, data: structuredObject }),
+      //   {
+      //     "Content-Type": "application/json",
+      //     userid: userId || "",
+      //     authorisation: "Bearer " + token,
+      //   }
+      // );
 
-      const responseData = response.data as unknown as {
-        [key: string]: IPostAdminData[];
-      };
+      // const responseData = response.data as unknown as {
+      //   [key: string]: IPostAdminData[];
+      // };
 
-      dispatch(undefinedFieldActions.clearFields());
-      dispatch(undefinedFieldActions.clearFormData());
+      // dispatch(undefinedFieldActions.clearFields());
+      // dispatch(undefinedFieldActions.clearFormData());
 
-      console.log(responseData);
+      // console.log(responseData);
       // navigate(-1); // Uncomment to navigate back after submission
     } catch (err) {}
   };
@@ -110,7 +111,7 @@ const PostSectionForm: React.FC = () => {
 
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-2">
-      {renderFormFields(postformData, handleTableInputData)}
+      {renderFormFields(postFormData, handleTableInputData)}
       <Button type="submit">Submit</Button>
     </form>
   );
