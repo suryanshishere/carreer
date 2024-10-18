@@ -1,5 +1,6 @@
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 import { ITableFormData } from "./interfaceHelper";
+import _ from 'lodash';
 
 export const structureFormData = (
   formData: Record<string, any>,
@@ -75,7 +76,34 @@ export const structureOverallFormData = (
     ...mergedTableData,
   };
 
-  console.log(finalStructuredData);
-  return finalStructuredData;
+  const cleanedData = removeEmptyFields(finalStructuredData);
+  console.log(cleanedData);  
+  
+  return cleanedData;
 };
 
+type Data = Record<string, any>;
+
+const removeEmptyFields = (data: Data): Data => {
+  if (_.isObject(data) && !_.isArray(data)) {
+    const cleanedData = _.reduce(data, (result, value, key) => {
+      if (_.isString(value) && (value as string).trim() === '') return result;
+      if (_.isNumber(value) && value === 0) return result;
+      if (_.isUndefined(value)) return result;
+
+      // Recursively clean nested objects
+      const cleanedValue = _.isObject(value) ? removeEmptyFields(value) : value;
+
+      // Only add non-empty fields to the result
+      if (!(_.isObject(cleanedValue) && _.isEmpty(cleanedValue))) {
+        result[key] = cleanedValue;
+      }
+
+      return result;
+    }, {} as Data);
+
+    // If the cleaned data is an empty object, return an empty object
+    return _.isEmpty(cleanedData) ? {} : cleanedData;
+  }
+  return data;
+};

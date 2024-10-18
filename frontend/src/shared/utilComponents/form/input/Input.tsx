@@ -45,6 +45,8 @@ export interface InputProps
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   error?: boolean; // Added error prop for validation
   helperText?: string; // Added for helper text
+  disabled?: boolean;
+  type?: string;
 }
 
 // Forward ref to Input component
@@ -134,7 +136,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = 'Input'; // Optional: Set display name for better debugging
+Input.displayName = "Input"; // Optional: Set display name for better debugging
 
 // TextArea Component
 export const TextArea: React.FC<InputProps> = forwardRef<
@@ -142,13 +144,37 @@ export const TextArea: React.FC<InputProps> = forwardRef<
   InputProps
 >(
   (
-    { name, required, value, onChange, row, placeholder },
+    {
+      name,
+      required,
+      value,
+      onChange,
+      row,
+      placeholder,
+      disabled = false,
+      type,
+    },
     ref // Accept ref here
   ) => {
+    if (type === "number") {
+      return (
+        <Input
+          type={type}
+          name={name}
+          onChange={onChange}
+          value={value}
+          required={required}
+          ref={ref}
+          label={placeholder || formatWord(name)}
+          disabled={disabled}
+        />
+      );
+    }
     return (
       <TextField
-        id="outlined-multiline-flexible"
+        // id="outlined-multiline-flexible"
         label={placeholder || formatWord(name)}
+        disabled={disabled}
         multiline
         maxRows={row}
         name={name}
@@ -161,18 +187,19 @@ export const TextArea: React.FC<InputProps> = forwardRef<
             display: "flex",
             alignItems: "flex-start",
             flexWrap: "wrap",
-            minHeight: "7rem",
+            // minHeight: "7rem",
             fontSize: "var(--font-size)",
             fontWeight: "bold",
           },
         }}
         sx={InputStyle}
+        fullWidth
       />
     );
   }
 );
 
-TextArea.displayName = 'TextArea'; // Optional: Set display name for better debugging
+TextArea.displayName = "TextArea"; // Optional: Set display name for better debugging
 
 // Date Component
 export const Date: React.FC<InputProps> = forwardRef<
@@ -205,4 +232,4 @@ export const Date: React.FC<InputProps> = forwardRef<
   );
 });
 
-Date.displayName = 'Date'; // Optional: Set display name for better debugging
+Date.displayName = "Date"; // Optional: Set display name for better debugging

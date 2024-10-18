@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import NAV_ACCOUNT from "db/nav/NavAccount.json";
 import { Button, Menu, MenuItem, Fade } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
 import "./AccNavList.css";
 
 //TODO: Improve the design
@@ -38,7 +36,7 @@ const AccNavList: React.FC = () => {
         onClick={handleClick}
         className="account_icon nav_link"
       >
-        <FontAwesomeIcon icon={faUser} />
+        {/* <FontAwesomeIcon icon={faUser} /> */}
       </Button>
       <Menu
         id="account-menu"

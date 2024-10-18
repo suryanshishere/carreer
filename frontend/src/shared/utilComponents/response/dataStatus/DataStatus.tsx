@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { faTimes } from "@fortawesome/free-solid-svg-icons"; 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Modal } from "@mui/material";
 import "./DataStatus.css";
 
@@ -82,7 +80,7 @@ const DataStatus: React.FC<ResponseProps> = ({
           className="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
           onClick={handleClose}
         >
-          <FontAwesomeIcon icon={faTimes} />
+          {/* <FontAwesomeIcon icon={faTimes} /> */}
         </button>
       </Box>
     </Modal>
