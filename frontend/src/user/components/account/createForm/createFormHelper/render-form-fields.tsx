@@ -9,15 +9,12 @@ import { ITableFormData } from "./interfaceHelper";
 const renderFormFields = (
   data: IContributeInputForm[],
   handleTableInputData: (data: ITableFormData) => void,
-  register?: any, // Optional register prop
-  errors?: any, // Optional errors prop
-  parentName?: string // Add a parentName prop to track the field path
+  register?: any,
+  errors?: any,
+  parentName?: string
 ) => {
   return data.map((item, index) => {
-    // Skip rendering for _id fields
     if (["_id"].includes(item.type)) return null;
-
-    // Create a field name that reflects the nested structure
     const fieldName = parentName ? `${parentName}.${item.name}` : item.name;
 
     if (item.type === "object" && item.subItem) {
@@ -29,7 +26,7 @@ const renderFormFields = (
             handleTableInputData,
             register,
             errors,
-            fieldName // Pass the current field name as the parent
+            fieldName
           )}
         </div>
       );
@@ -39,9 +36,9 @@ const renderFormFields = (
           key={index}
           name={fieldName}
           placeholder={formatWord(item.name)}
-          {...(register ? register(fieldName) : {})} // Use the updated field name for registration
-          error={errors ? !!errors[item.name] : false} // Set error only if errors exist
-          helperText={errors?.[item.name]?.message} // Set helperText only if errors exist
+          {...(register ? register(fieldName) : {})}
+          error={errors ? !!errors[fieldName] : false}
+          helperText={errors?.[fieldName]?.message}
         />
       );
     } else if (item.value) {
@@ -50,9 +47,9 @@ const renderFormFields = (
           key={index}
           name={fieldName}
           dropdownData={item.value}
-          error={errors ? !!errors[item.name] : false} // Set error only if errors exist
-          helperText={errors?.[item.name]?.message} // Set helperText only if errors exist
-          register={register} // Pass register if provided
+          error={errors ? !!errors[fieldName] : false}
+          helperText={errors?.[fieldName]?.message}
+          register={register}
         />
       );
     } else if (item.type === "customArray" || item.type === "array") {
@@ -67,17 +64,16 @@ const renderFormFields = (
       return (
         <Input
           key={index}
-          name={fieldName} // Use the updated field name for registration
+          name={fieldName}
           type={item.type}
           placeholder={formatWord(item.name)}
-          {...(register ? register(fieldName) : {})} // Use the updated field name for registration
-          error={errors ? !!errors[item.name] : false} // Set error only if errors exist
-          helperText={errors?.[item.name]?.message} // Set helperText only if errors exist
+          {...(register ? register(fieldName) : {})}
+          error={errors ? !!errors[fieldName] : false}
+          helperText={errors?.[fieldName]?.message}
         />
       );
     }
   });
 };
-
 
 export default renderFormFields;

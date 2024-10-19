@@ -7,6 +7,8 @@ export interface IValidation {
     maxLength?: number;
     min?: number;
     max?: number;
+    minWords?:number;
+    maxWords?:number;
 }
 
 // Extend the original interface to include validation

@@ -2,94 +2,95 @@ import { IContributeInputForm } from "models/userModel/account/contributeToPost/
 import { ITableFormData } from "./interfaceHelper";
 import _ from 'lodash';
 
-export const structureFormData = (
-  formData: Record<string, any>,
-  formFields: any[]
-): Record<string, any> => {
-  const structuredData: Record<string, any> = {};
+// export const structureFormData = (
+//   formData: Record<string, any>,
+//   formFields: any[]
+// ): Record<string, any> => {
+//   const structuredData: Record<string, any> = {};
 
-  formFields.forEach((field) => {
-    if (field.type === "object") {
-      structuredData[field.name] = structureFormData(formData, field.subItem);
-    } else {
-      let value = formData[field.name];
+//   formFields.forEach((field) => {
+//     if (field.type === "object") {
+//       structuredData[field.name] = structureFormData(formData, field.subItem);
+//     } else {
+//       let value = formData[field.name];
 
-      // Convert value to number if the field type is number
-      if (field.type === "number" && value !== undefined) {
-        value = Number(value);
-      }
+//       // Convert value to number if the field type is number
+//       if (field.type === "number" && value !== undefined) {
+//         value = Number(value);
+//       }
 
-      structuredData[field.name] = value;
-    }
-  });
+//       structuredData[field.name] = value;
+//     }
+//   });
 
-  return structuredData;
-};
+//   return structuredData;
+// };
 
 
-export const structureOverallFormData = (
-  e: React.FormEvent,
-  tableFormData: ITableFormData[],
-  data: IContributeInputForm[]
-) => {
-  e.preventDefault();
+// export const structureOverallFormData = (
+//   e: React.FormEvent,
+//   tableFormData: ITableFormData[],
+//   data: IContributeInputForm[]
+// ) => {
+//   e.preventDefault();
 
-  const formData = new FormData(e.currentTarget as HTMLFormElement);
-  const formValues: Record<string, any> = {};
+//   const formData = new FormData(e.currentTarget as HTMLFormElement);
+//   const formValues: Record<string, any> = {};
 
-  formData.forEach((value, key) => {
-    if (formValues[key]) {
-      if (Array.isArray(formValues[key])) {
-        formValues[key].push(value);
-      } else {
-        formValues[key] = [formValues[key], value];
-      }
-    } else {
-      formValues[key] = value;
-    }
-  });
+//   formData.forEach((value, key) => {
+//     if (formValues[key]) {
+//       if (Array.isArray(formValues[key])) {
+//         formValues[key].push(value);
+//       } else {
+//         formValues[key] = [formValues[key], value];
+//       }
+//     } else {
+//       formValues[key] = value;
+//     }
+//   });
 
-  const structuredData = structureFormData(formValues, data);
+//   const structuredData = structureFormData(formValues, data);
 
-  // Merge tableFormData directly into structuredData
-  const mergedTableData: Record<string, any> = {};
+//   // Merge tableFormData directly into structuredData
+//   const mergedTableData: Record<string, any> = {};
 
-  tableFormData.forEach(item => {
-    Object.entries(item).forEach(([key, value]) => {
-      // Check if the key already exists in mergedTableData
-      if (mergedTableData[key]) {
-        // If it exists, ensure it's an array and push the new value
-        if (Array.isArray(mergedTableData[key])) {
-          mergedTableData[key].push(value);
-        } else {
-          mergedTableData[key] = [mergedTableData[key], value];
-        }
-      } else {
-        mergedTableData[key] = value;
-      }
-    });
-  });
+//   tableFormData.forEach(item => {
+//     Object.entries(item).forEach(([key, value]) => {
+//       // Check if the key already exists in mergedTableData
+//       if (mergedTableData[key]) {
+//         // If it exists, ensure it's an array and push the new value
+//         if (Array.isArray(mergedTableData[key])) {
+//           mergedTableData[key].push(value);
+//         } else {
+//           mergedTableData[key] = [mergedTableData[key], value];
+//         }
+//       } else {
+//         mergedTableData[key] = value;
+//       }
+//     });
+//   });
 
-  // Final structured data now contains merged table data
-  const finalStructuredData = {
-    ...structuredData,
-    ...mergedTableData,
-  };
+//   // Final structured data now contains merged table data
+//   const finalStructuredData = {
+//     ...structuredData,
+//     ...mergedTableData,
+//   };
 
-  const cleanedData = removeEmptyFields(finalStructuredData);
-  console.log(cleanedData);  
+//   const cleanedData = removeEmptyFields(finalStructuredData);
+//   console.log(cleanedData);  
   
-  return cleanedData;
-};
+//   return cleanedData;
+// };
 
 type Data = Record<string, any>;
 
-const removeEmptyFields = (data: Data): Data => {
+export const removeEmptyFields = (data: Data): Data => {
   if (_.isObject(data) && !_.isArray(data)) {
     const cleanedData = _.reduce(data, (result, value, key) => {
       if (_.isString(value) && (value as string).trim() === '') return result;
       if (_.isNumber(value) && value === 0) return result;
       if (_.isUndefined(value)) return result;
+      if(_.isNull(value)) return result;
 
       // Recursively clean nested objects
       const cleanedValue = _.isObject(value) ? removeEmptyFields(value) : value;

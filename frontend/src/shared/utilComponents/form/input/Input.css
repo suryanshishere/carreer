@@ -1,36 +1,22 @@
-.input_sec {
-    font-size: var(--font-size);
-    gap: var(--gap);
-    width: 100%;
-}
-
-.input_sec_input {
-    padding-left: 1rem;
-    border: 2px solid var(--hover-color);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size);
-    height: 3.5rem;
-    outline: none;
-    width: 100%;
-}
-
-.input_sec_input:focus {
-    border: 2px solid black;
-}
-.input_sec_input_focus {
-    border: 2px solid black;
-}
-
-.input_sec textarea:focus {
-    border: 2px solid black;
-}
-
-.input_sec textarea {
-    width: 100%;
-    font-size: var(--font-size);
-    padding: 1rem;
-    resize: none;
-    border: 2px solid var(--hover-color);
-    border-radius: var(--border-radius);
-    outline: none;
-}
+/* export const InputStyle = {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "var(--hover-color)",
+        borderWidth: "2px",
+        borderRadius: "var(--border-radius)",
+        fontSize: "var(--font-size)",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "black",
+        borderWidth: "2px",
+      },
+    },
+    "& .MuiFormLabel-root": {
+      color: "var(--color-gray)",
+      fontWeight: "bold",
+    },
+    "& .Mui-focused.MuiInputLabel-root": {
+      color: "var(--color-black)",
+      fontWeight: "bold",
+    },
+  }; */

@@ -10,28 +10,7 @@ import { IconButton, InputAdornment, TextField } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import "./Input.css";
 
-export const InputStyle = {
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "var(--hover-color)",
-      borderWidth: "2px",
-      borderRadius: "var(--border-radius)",
-      fontSize: "var(--font-size)",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "black",
-      borderWidth: "2px",
-    },
-  },
-  "& .MuiFormLabel-root": {
-    color: "var(--color-gray)",
-    fontWeight: "bold",
-  },
-  "& .Mui-focused.MuiInputLabel-root": {
-    color: "var(--color-black)",
-    fontWeight: "bold",
-  },
-};
+
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -119,14 +98,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           fullWidth
           error={error} // Set error state
           helperText={helperText} // Display helper text
-          inputProps={{
-            sx: {
-              height: "1rem",
-              fontSize: "var(--font-size)",
-              fontWeight: "bold",
-              ...style,
-            },
-          }}
           InputProps={{
             endAdornment,
           }}
@@ -153,6 +124,8 @@ export const TextArea: React.FC<InputProps> = forwardRef<
       placeholder,
       disabled = false,
       type,
+      error,
+      helperText,
     },
     ref // Accept ref here
   ) => {
@@ -167,12 +140,13 @@ export const TextArea: React.FC<InputProps> = forwardRef<
           ref={ref}
           label={placeholder || formatWord(name)}
           disabled={disabled}
+          error={error} 
+          helperText={helperText} 
         />
       );
     }
     return (
       <TextField
-        // id="outlined-multiline-flexible"
         label={placeholder || formatWord(name)}
         disabled={disabled}
         multiline
@@ -181,19 +155,10 @@ export const TextArea: React.FC<InputProps> = forwardRef<
         onChange={onChange}
         value={value}
         required={required}
-        inputRef={ref} // Use inputRef instead of ref
-        InputProps={{
-          sx: {
-            display: "flex",
-            alignItems: "flex-start",
-            flexWrap: "wrap",
-            // minHeight: "7rem",
-            fontSize: "var(--font-size)",
-            fontWeight: "bold",
-          },
-        }}
-        sx={InputStyle}
+        inputRef={ref} 
         fullWidth
+        error={error} 
+        helperText={helperText} 
       />
     );
   }
@@ -216,14 +181,6 @@ export const Date: React.FC<InputProps> = forwardRef<
             textField: {
               required: required,
               inputRef: ref, // Pass ref to the text field
-            },
-          }}
-          sx={{
-            ...InputStyle,
-            "& input": {
-              height: "1.5rem",
-              fontSize: "var(--font-size)",
-              fontWeight: "bold",
             },
           }}
         />
