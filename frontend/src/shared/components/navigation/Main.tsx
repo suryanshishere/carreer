@@ -8,6 +8,7 @@ import useHandleScroll from "shared/utilComponents/hooks/sub-nav-scroll-hook";
 
 const MainNavigation: React.FC = () => {
   const showSubNav = useHandleScroll();
+  console.log(showSubNav)
 
   return (
     <div className="main_nav_sec transition-transform ease-in-out duration-300 bg-custom-dark-blue fixed w-full flex flex-col items-center gap-2 pb-1 z-20">

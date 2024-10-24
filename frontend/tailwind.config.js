@@ -36,6 +36,7 @@ module.exports = {
         'faint': '0.2rem',
       },
       fontSize: {
+        'main-header': '1.5rem',
         'header': '1.25rem',
         'nav': '1rem',
         'default': '1.15rem',

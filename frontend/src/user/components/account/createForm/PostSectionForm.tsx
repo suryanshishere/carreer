@@ -26,6 +26,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { removeEmptyFields } from "./createFormHelper/structure-json";
 import _ from "lodash";
+import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 
 const formMap: Record<string, IContributeInputForm[]> = {
   post_common: POST_COMMON_FORM,
@@ -90,10 +91,11 @@ const PostSectionForm: React.FC = () => {
               },
               (value) =>
                 !value ||
-                value.trim().split(/\s+/).length >= (field.validation?.minWords ?? 0)
+                value.trim().split(/\s+/).length >=
+                  (field.validation?.minWords ?? 0)
             );
           }
-          
+
           if (field.validation?.maxWords !== undefined) {
             validation = (validation as Yup.StringSchema).test(
               "maxWords",
@@ -103,10 +105,11 @@ const PostSectionForm: React.FC = () => {
               },
               (value) =>
                 !value ||
-                value.trim().split(/\s+/).length <= (field.validation?.maxWords ?? Infinity)
+                value.trim().split(/\s+/).length <=
+                  (field.validation?.maxWords ?? Infinity)
             );
           }
-          
+
           break;
 
         case "number":
@@ -163,7 +166,8 @@ const PostSectionForm: React.FC = () => {
   // Hydrate the Redux state from localStorage on component mount
   useEffect(() => {
     dispatch(undefinedFieldActions.restoreState());
-  }, [dispatch]);
+    dispatch(dataStatusUIAction.setErrorHandler(error));
+  }, []);
 
   useEffect(() => {
     if (post_section) {
@@ -191,44 +195,61 @@ const PostSectionForm: React.FC = () => {
   });
 
   const submitHandler: SubmitHandler<any> = async (data) => {
-    console.log(data);
-    const finalData = removeEmptyFields(data);
-    console.log(finalData);
-
     //TODO: TABLE DATA ADDING TO THE FINALDATA LEFT
 
-    // const structuredObject = structureOverallFormData(
-    //   data,
-    //   tableFormData,
-    //   postFormData
-    // );
+    const mergedTableData: Record<string, any> = {};
+
+    tableFormData.forEach((item) => {
+      Object.entries(item).forEach(([key, value]) => {
+        // Check if the key already exists in mergedTableData
+        if (mergedTableData[key]) {
+          // If it exists, ensure it's an array and push the new value
+          if (Array.isArray(mergedTableData[key])) {
+            mergedTableData[key].push(value);
+          } else {
+            mergedTableData[key] = [mergedTableData[key], value];
+          }
+        } else {
+          mergedTableData[key] = value;
+        }
+      });
+    });
+
+    // Final structured data now contains merged table data
+    const finalStructuredData = {
+      ...data,
+      ...mergedTableData,
+    };
+
+    const finalData = removeEmptyFields(finalStructuredData);
+    console.log("Data sent", finalData);
 
     try {
       if (!post_id && !post_section) {
         return;
       } else if (Object.keys(finalData).length === 0) {
+        dispatch(dataStatusUIAction.setErrorHandler("No data entered!"));
         return;
       }
 
-      // const response = await sendRequest(
-      //   `${process.env.REACT_APP_BASE_URL}/user/account/contribute_to_post`,
-      //   "POST",
-      //   JSON.stringify({ post_id, post_section, data: structuredObject }),
-      //   {
-      //     "Content-Type": "application/json",
-      //     userid: userId || "",
-      //     authorisation: "Bearer " + token,
-      //   }
-      // );
+      const response = await sendRequest(
+        `${process.env.REACT_APP_BASE_URL}/user/account/contribute_to_post`,
+        "POST",
+        JSON.stringify({ post_id, post_section, data: finalData }),
+        {
+          "Content-Type": "application/json",
+          userid: userId || "",
+          authorisation: "Bearer " + token,
+        }
+      );
 
-      // const responseData = response.data as unknown as {
-      //   [key: string]: IPostAdminData[];
-      // };
+      const responseData = response.data as unknown as {
+        [key: string]: IPostAdminData[];
+      };
 
-      // dispatch(undefinedFieldActions.clearFields());
-      // dispatch(undefinedFieldActions.clearFormData());
-
-      // console.log(responseData);
+      dispatch(undefinedFieldActions.clearFields());
+      dispatch(undefinedFieldActions.clearFormData());
+      dispatch(dataStatusUIAction.setResMsg(`${responseData.message}`));
       // navigate(-1); // Uncomment to navigate back after submission
     } catch (err) {}
   };

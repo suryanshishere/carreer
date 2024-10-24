@@ -10,20 +10,18 @@ import { IconButton, InputAdornment, TextField } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import "./Input.css";
 
-
-
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
   name: string;
+  label?: string;
   placeholder?: string;
   required?: boolean;
   style?: CSSProperties;
   row?: number;
   value?: string | number;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  error?: boolean; // Added error prop for validation
-  helperText?: string; // Added for helper text
+  error?: boolean; 
+  helperText?: string; 
   disabled?: boolean;
   type?: string;
 }
@@ -33,6 +31,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       name,
+      label,
       placeholder,
       required,
       type,
@@ -91,13 +90,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           name={name}
           type={showPassword && type === "password" ? "text" : type}
           required={required}
-          label={placeholder === "" ? null : placeholder || formatWord(name)}
+          label={label === "" ? undefined : label || placeholder || formatWord(name)}
+          placeholder={
+            placeholder === "" ? undefined : placeholder || formatWord(name) || label
+          }
           value={value}
           onChange={onChange}
           variant="outlined"
           fullWidth
-          error={error} // Set error state
-          helperText={helperText} // Display helper text
+          error={error} 
+          helperText={helperText} 
           InputProps={{
             endAdornment,
           }}
@@ -140,8 +142,8 @@ export const TextArea: React.FC<InputProps> = forwardRef<
           ref={ref}
           label={placeholder || formatWord(name)}
           disabled={disabled}
-          error={error} 
-          helperText={helperText} 
+          error={error}
+          helperText={helperText}
         />
       );
     }
@@ -155,10 +157,10 @@ export const TextArea: React.FC<InputProps> = forwardRef<
         onChange={onChange}
         value={value}
         required={required}
-        inputRef={ref} 
+        inputRef={ref}
         fullWidth
-        error={error} 
-        helperText={helperText} 
+        error={error}
+        helperText={helperText}
       />
     );
   }

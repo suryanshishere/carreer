@@ -52,31 +52,31 @@ import _ from 'lodash';
 //   const structuredData = structureFormData(formValues, data);
 
 //   // Merge tableFormData directly into structuredData
-//   const mergedTableData: Record<string, any> = {};
+  // const mergedTableData: Record<string, any> = {};
 
-//   tableFormData.forEach(item => {
-//     Object.entries(item).forEach(([key, value]) => {
-//       // Check if the key already exists in mergedTableData
-//       if (mergedTableData[key]) {
-//         // If it exists, ensure it's an array and push the new value
-//         if (Array.isArray(mergedTableData[key])) {
-//           mergedTableData[key].push(value);
-//         } else {
-//           mergedTableData[key] = [mergedTableData[key], value];
-//         }
-//       } else {
-//         mergedTableData[key] = value;
-//       }
-//     });
-//   });
+  // tableFormData.forEach(item => {
+  //   Object.entries(item).forEach(([key, value]) => {
+  //     // Check if the key already exists in mergedTableData
+  //     if (mergedTableData[key]) {
+  //       // If it exists, ensure it's an array and push the new value
+  //       if (Array.isArray(mergedTableData[key])) {
+  //         mergedTableData[key].push(value);
+  //       } else {
+  //         mergedTableData[key] = [mergedTableData[key], value];
+  //       }
+  //     } else {
+  //       mergedTableData[key] = value;
+  //     }
+  //   });
+  // });
 
-//   // Final structured data now contains merged table data
-//   const finalStructuredData = {
-//     ...structuredData,
-//     ...mergedTableData,
-//   };
+  // // Final structured data now contains merged table data
+  // const finalStructuredData = {
+  //   ...structuredData,
+  //   ...mergedTableData,
+  // };
 
-//   const cleanedData = removeEmptyFields(finalStructuredData);
+  // const cleanedData = removeEmptyFields(finalStructuredData);
 //   console.log(cleanedData);  
   
 //   return cleanedData;

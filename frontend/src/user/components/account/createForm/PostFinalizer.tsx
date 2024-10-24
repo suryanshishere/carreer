@@ -59,7 +59,6 @@ const PostFinalizer = () => {
           setPostIdData(responseDataValue);
         }
       } catch (err) {
-        console.error("Error fetching data:", err);
       }
     };
     fetchData();
@@ -85,6 +84,7 @@ const PostFinalizer = () => {
       };
 
       dispatch(undefinedFieldActions.setFields(responseData.undefinedFields));
+      console.log(responseData.undefinedFields)
       navigate(`${postId}`);
     } catch (err) {
       console.error("Error submitting form:", err);
