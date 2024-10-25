@@ -9,7 +9,7 @@ module.exports = {
         'custom-red': '#A52A2A', // Brown color in hex
         'custom-white': '#FFFFFF', // White color in hex
         'custom-black': '#000000', // Black color in hex
-        'custom-gray': 'gray',
+        'custom-grey': '#686D76',
         'custom-hover': '#C7C8CC',
         'custom-hover-faint': 'rgba(128, 128, 128, 0.211)',
         'custom-backdrop': '#2C3333',

@@ -25,7 +25,7 @@ const NavAccount = () => {
   );
 
   return (
-    <>
+    <div>
       {!auth.isLoggedIn ? (
         LoginSignup
       ) : (
@@ -41,7 +41,7 @@ const NavAccount = () => {
           <AccNavList />
         </>
       )}
-    </>
+    </div>
   );
 };
 

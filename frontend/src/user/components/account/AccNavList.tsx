@@ -36,7 +36,7 @@ const AccNavList: React.FC = () => {
         onClick={handleClick}
         className="account_icon nav_link"
       >
-        {/* <FontAwesomeIcon icon={faUser} /> */}
+        {/* <FontAwesomeIcon icon={faUser} /> */} account
       </Button>
       <Menu
         id="account-menu"
