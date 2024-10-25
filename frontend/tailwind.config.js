@@ -6,9 +6,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'custom-red': '#A52A2A', // Brown color in hex
-        'custom-white': '#FFFFFF', // White color in hex
-        'custom-black': '#000000', // Black color in hex
+        'custom-red': '#A52A2A',
+        'custom-less-red': '#F5004F',
+        'custom-white': '#FFFFFF', 
+        'custom-black': '#000000', 
         'custom-grey': '#686D76',
         'custom-hover': '#C7C8CC',
         'custom-hover-faint': 'rgba(128, 128, 128, 0.211)',
@@ -30,20 +31,15 @@ module.exports = {
         'button': '.25rem .5rem',
       },
       gap: {
-        'main-nav': '2rem',
-        'more': '1.5rem',
-        'default': '.5rem',
-        'faint': '0.2rem',
       },
       fontSize: {
-        'main-header': '1.5rem',
-        'header': '1.25rem',
-        'nav': '1rem',
-        'default': '1.15rem',
-        'min': '.8rem',
+        // 'main-header': '1.5rem',
+        // 'header': '1.25rem',
+        // 'nav': '1rem',
+        // 'default': '1.15rem',
+        // 'min': '.8rem',
       },
       borderRadius: {
-        'more': '1.5rem',
       },
     },
   },

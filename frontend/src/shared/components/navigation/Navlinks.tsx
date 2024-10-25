@@ -5,7 +5,7 @@ import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 
 const Navlinks: React.FC = () => {
   return (
-    <ul className="nav_links m-0 p-0 flex gap-2">
+    <ul className="m-0 p-0 flex gap-2 items-center">
       {NAV.map((item) =>
         item ? (
           <NavLink

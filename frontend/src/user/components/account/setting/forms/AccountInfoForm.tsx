@@ -130,7 +130,7 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
                 {data && data.length !== 0 ? <EditIcon /> : <AddIcon />}
               </IconButton>
             ) : (
-              <Button type="submit" size="small" className="mr-6 mt-4" tick />
+              <Button type="submit" classProp="mr-6 mt-4" tick />
             )}
           </form>
           {index !== Object.keys(accountInfoData).length - 1 && <hr />}

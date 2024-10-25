@@ -184,7 +184,6 @@ const TableInput: React.FC<TableInputProps> = ({ data, tableInputData }) => {
                   <Button
                     color="error"
                     onClick={() => removeRow(rowIndex)}
-                    size="small"
                     noOutline
                   >
                     Remove row

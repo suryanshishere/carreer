@@ -11,19 +11,19 @@ const MainNavigation: React.FC = () => {
 
   return (
     <div className="transition-transform ease-in-out duration-300  fixed w-full flex flex-col items-center">
-      <div className="px-page font-bold text-custom-white h-main-nav bg-custom-dark-blue w-full flex items-center justify-between gap-2 z-20">
-        <header className="text-3xl">careerjankari</header>
+      <div className="px-page font-bold text-custom-white h-main-nav bg-custom-grey w-full flex items-center justify-between gap-2 z-20">
+        <header className="text-2xl">sarkari-jankari</header>
         {/* <NavSearch /> */}
         <NavAccount />
       </div>
-      <div className={`py-1 h-custom-sub-nav text-nav overflow-y-auto whitespace-nowrap z-15 bg-custom-dark-blue w-full flex justify-between items-center gap-2 transition-transform ease-in-out duration-300 ${
+      <div className={`py-1 h-custom-sub-nav text-nav overflow-y-auto whitespace-nowrap z-15 bg-custom-grey w-full flex justify-between items-center gap-2 transition-transform ease-in-out duration-300 ${
             showSubNav ? "translate-y-0" : "-translate-y-20 "
           }`}>
         <div
-          className="w-full px-page bg-custom-white "
+          className="w-full px-page bg-custom-white text-base"
         >
           <Navlinks />
-          <Features />
+          {/* <Features /> */}
           {/* <Response /> */}
         </div>
       </div>
