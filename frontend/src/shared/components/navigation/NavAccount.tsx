@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import AccNavList from "user/components/account/AccNavList";
 import Auth from "user/pages/auth/Auth";
@@ -10,23 +10,30 @@ const NavAccount = () => {
   const auth = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
 
+  useEffect(() => {
+    auth.authClickedHandler(showModal);
+  }, [showModal]);
+
   let LoginSignup = (
     <>
       <Button
-        classProp="bg-custom-red rounded-xl hover:bg-custom-less-red z-50"
-        onClick={() => setShowModal(true)}
+        classProp={` rounded-xl hover:bg-custom-less-red z-50 ${
+          showModal ? `bg-custom-less-red` : `bg-custom-red`
+        }`}
+        onClick={() => setShowModal(!showModal)}
       >
         Login / Signup
       </Button>
-      {showModal && (
+      {/* {showModal && (
+        //TODO: add above to subnav in horinzontal form
         <Modal
           header="Authentication"
           onClose={() => setShowModal(false)}
-          className="bg-custom-white rounded fixed top-20 h-max-[25rem] w-50 z-50"
+          className="fixed border-3 border-custom-less-red top-1/2  right-1/2 h-max-[25rem] text-custom-black bg-custom-white p-2 w-[25rem]"
         >
           <Auth onClose={() => setShowModal(false)} />
         </Modal>
-      )}
+      )} */}
     </>
   );
 

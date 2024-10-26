@@ -1,177 +1,71 @@
-import React, { ReactNode, useState } from "react";
+import React from "react";
 import { Input } from "shared/utilComponents/form/input/Input";
 import Button from "shared/utilComponents/form/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton } from "@mui/material";
 import "./AuthForm.css";
 
-export interface FormState {
-  email: {
-    value: string;
-    isValid: boolean;
-  };
-  password: {
-    value: string;
-    isValid: boolean;
-  };
-  newPassword?: {
-    value: string;
-    isValid: boolean;
-  };
-  name?: {
-    value: string;
-    isValid: boolean;
-  };
-  isLoginMode?: boolean;
-  userId?: {
-    value: string;
-    isValid: boolean;
-  };
-}
-
-export type FormSubmitHandler = (formState: FormState) => void;
-
 interface FormProps {
-  onFormSubmit: FormSubmitHandler;
   forgotPasswordClicked?: () => void;
-  resetPasswordClicked?: () => void;
-  signupClicked?: () => void;
   forgotPassword?: boolean;
-  resetPassword?: boolean;
-  otp?: boolean;
   onBack?: () => void;
-  onBackLogin?: () => void;
-  changePassword?: boolean;
+  register?: any;
+  errors?: any;
 }
 
-const Form: React.FC<FormProps> = ({
-  onFormSubmit,
+const AuthForm: React.FC<FormProps> = ({
   forgotPasswordClicked,
   forgotPassword,
-  resetPassword,
   onBack,
-  onBackLogin,
+  errors,
+  register,
 }) => {
-  const [formState, setFormState] = useState<FormState>({
-    email: {
-      value: "",
-      isValid: false,
-    },
-    password: {
-      value: "",
-      isValid: false,
-    },
-    newPassword: {
-      value: "",
-      isValid: false,
-    },
-    userId: {
-      value: "",
-      isValid: false,
-    },
-    isLoginMode: true,
-  });
-
-  const switchModeHandler = () => {
-    setFormState((prevState) => ({
-      ...prevState,
-      isLoginMode: !prevState.isLoginMode,
-      name: prevState.isLoginMode ? undefined : { value: "", isValid: false },
-      image: prevState.isLoginMode
-        ? undefined
-        : { value: null, isValid: false },
-    }));
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: {
-        value: value,
-        isValid: true,
-      },
-    }));
-  };
-
-  const submitHandler = (e: React.FormEvent) => {
-    e.preventDefault();
-    onFormSubmit(formState);
-  };
-
-  let backButton: ReactNode = (
-    <>
-      <IconButton onClick={onBackLogin || onBack}>
-        <ArrowBackIcon />
-      </IconButton>
-    </>
-  );
-
   return (
-    <form
-      className="auth_form w-full flex flex-col gap-3"
-      onSubmit={submitHandler}
-    >
-      {!formState.isLoginMode && !forgotPassword && (
-        <Input
-          type="text"
-          name="name"
-          placeholder="Your name"
-          value={formState.name?.value || ""}
-          onChange={handleInputChange}
-          required
-        />
-      )}
-
+    <>
       <Input
         type="email"
-        name="email"
-        placeholder="Your email id"
-        value={formState.email?.value || ""}
-        onChange={handleInputChange}
-        required
+        {...register("email")}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+        placeholder="Email"
+        classProp="text-xl"
       />
-
       {!forgotPassword && (
-        <Input
-          name="password"
-          type="password"
-          placeholder={resetPassword ? "Your new password" : "Your password"}
-          value={formState.password.value}
-          onChange={handleInputChange}
-          required
-        />
-      )}
-      <div className="auth_form_button w-full flex justify-between items-center">
-        {forgotPassword && (
-          <div>
-            {backButton} <Button>Send reset link</Button>
-          </div>
-        )}
-
-        {!forgotPassword && (
-          <>
+        <>
+          <Input
+            {...register("password")}
+            type="password"
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            placeholder="Password"
+            classProp="text-xl"
+          />
+          <div className="flex gap-2">
             <Button
-              noOutline
-              className="ml-2 forgotPasswordReset"
+              classProp=" border-custom-grey"
               type="button"
               onClick={forgotPasswordClicked}
             >
               Forgot Password?
             </Button>
-            <div>
-              <Button type="button" onClick={switchModeHandler}>
-                SWITCH TO {formState.isLoginMode ? "SIGNUP" : "LOGIN"}
-              </Button>
-              <Button>{formState.isLoginMode ? "LOGIN" : "SIGNUP"}</Button>
-            </div>
-          </>
-        )}
-      </div>
-    </form>
+            <Button classProp="border-custom-grey" type="submit">
+              Authenticate
+            </Button>
+          </div>
+        </>
+      )}
+      {forgotPassword && (
+        <div className="flex gap-2">
+          <IconButton onClick={onBack}>
+            <ArrowBackIcon />
+          </IconButton>
+          <Button classProp="border-custom-grey" type="submit">
+            Send reset link
+          </Button>
+        </div>
+      )}
+    </>
   );
 };
 
-export default Form;
+export default AuthForm;

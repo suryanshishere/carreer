@@ -14,6 +14,7 @@ export interface InputProps
   helperText?: string;
   disabled?: boolean;
   type?: string;
+  classProp?: string;
 }
 
 // Forward ref to Input component
@@ -29,7 +30,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       value,
       onChange,
       error,
-      helperText, // Accept helper text
+      helperText,
+      classProp,
     },
     ref // Accept ref here
   ) => {
@@ -76,16 +78,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           placeholder={placeholder || name}
           value={value}
           onChange={onChange}
-          className={`w-full p-2 border ${
-            error ? "border-custom-red-500" : "border-gray-300"
-          } rounded-md focus:outline-none focus:ring-2 ${
-            error ? "focus:ring-custom-red-500" : "focus:ring-blue-500"
+          className={`w-full pl-2 py-1 border-2 border-custom-less-grey rounded-md ${classProp} ${
+            error ? "border-custom-red" : ""
+          }  ${
+            error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"
           }`}
           style={style}
         />
         {endAdornment}
         {helperText && (
-          <p className={`mt-1 text-sm ${error ? "text-custom-red-500" : "text-gray-500"}`}>
+          <p
+            className={`mt-1 text-sm ${
+              error ? "text-custom-red-500" : "text-gray-500"
+            }`}
+          >
             {helperText}
           </p>
         )}
@@ -97,9 +103,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = "Input"; // Optional: Set display name for better debugging
 
 // TextArea Component
-export const TextArea = forwardRef<HTMLTextAreaElement, Omit<InputProps, "onChange"> & {
-  onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-}>(
+export const TextArea = forwardRef<
+  HTMLTextAreaElement,
+  Omit<InputProps, "onChange"> & {
+    onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  }
+>(
   (
     {
       name,
@@ -110,7 +119,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Omit<InputProps, "onChan
       placeholder,
       disabled = false,
       error,
-      helperText,
+      helperText,classProp
     },
     ref
   ) => {
@@ -128,14 +137,18 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Omit<InputProps, "onChan
           disabled={disabled}
           value={value}
           onChange={onChange} // Now specific to HTMLTextAreaElement
-          className={`w-full p-2 border ${
-            error ? "border-custom-red-500" : "border-gray-300"
-          } rounded-md focus:outline-none focus:ring-2 ${
-            error ? "focus:ring-custom-red-500" : "focus:ring-blue-500"
+          className={`w-full pl-2 border-2 border-custom-less-grey rounded-md ${classProp} ${
+            error ? "border-custom-red" : ""
+          }  ${
+            error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"
           }`}
         />
         {helperText && (
-          <p className={`mt-1 text-sm ${error ? "text-custom-red-500" : "text-gray-500"}`}>
+          <p
+            className={`mt-1 text-sm ${
+              error ? "text-custom-red" : "text-custom-grey"
+            }`}
+          >
             {helperText}
           </p>
         )}

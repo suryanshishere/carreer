@@ -23,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       type={type}
-      className={`cursor-pointer flex items-center justify-center p-button border-2 hover:bg-custom-hover-faint overflow-hidden ${classProp}`}
+      className={`cursor-pointer flex items-center justify-center p-button border-2 w-full whitespace-nowrap hover:bg-custom-hover-faint overflow-hidden ${classProp}`}
     >
       {children}
     </button>

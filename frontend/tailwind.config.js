@@ -11,7 +11,7 @@ module.exports = {
         'custom-white': '#FFFFFF', 
         'custom-black': '#000000', 
         'custom-grey': '#686D76',
-        'custom-hover': '#C7C8CC',
+        'custom-less-grey': '#C7C8CC',
         'custom-hover-faint': 'rgba(128, 128, 128, 0.211)',
         'custom-backdrop': '#2C3333',
         'custom-green': '#7F9F80',
@@ -20,7 +20,7 @@ module.exports = {
         'custom-yellow': '#EEEBDD',
         'custom-white-yellow': '#FEFAF6',
       },
-      height: {
+      spacing: {
         'main-nav': '3rem',
         'sub-main-nav': '2rem',
         'nav-overall': 'calc(3rem + 2rem + 2.5rem)',

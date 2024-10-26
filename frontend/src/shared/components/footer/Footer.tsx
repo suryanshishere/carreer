@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="footer_sec absolute bottom-2 flex justify-between items-end w-full">
+    <footer className="bottom-2 flex justify-between items-end w-full">
       <div className="select-none">
         Copyright &copy; 2024 All Rights Reserved by <b>theJobs</b>
       </div>

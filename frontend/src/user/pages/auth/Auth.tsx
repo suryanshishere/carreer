@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import ForgotPassword from "../../components/auth/ForgotPassword";
-import ResetPassword from "../../components/auth/ResetPassword";
 import AuthComponent from "user/components/auth/Auth";
 
 enum AuthState {
   LOGIN,
   FORGOT_PASSWORD,
-  RESET_PASSWORD,
-  SIGNUP_OTP,
 }
 
 export interface AuthProps {
@@ -15,51 +12,32 @@ export interface AuthProps {
   onBack?: () => void;
   onBackLogin?: () => void;
   forgotPasswordClicked?: () => void;
-  resetPasswordClicked?: () => void;
   signupDataForwardHandler?: (email: string, message: string) => void;
-  changePassword?: boolean;
-  onMsg?: (value: string) => void;
 }
 
 const Auth: React.FC<AuthProps> = ({ onClose }) => {
-  const [authState, setAuthState] = useState(AuthState.LOGIN);
+  const [authState, setAuthState] = useState<AuthState>(AuthState.LOGIN);
 
-  const clickedHandler = (newState: AuthState) => {
+  const handleStateChange = (newState: AuthState) => {
     setAuthState(newState);
   };
 
   const handleBackClick = () => {
-    switch (authState) {
-      case AuthState.FORGOT_PASSWORD:
-        setAuthState(AuthState.LOGIN);
-        break;
-      default:
-        break;
+    if (authState === AuthState.FORGOT_PASSWORD) {
+      setAuthState(AuthState.LOGIN);
     }
   };
 
-  let authComponent;
-  switch (authState) {
-    case AuthState.FORGOT_PASSWORD:
-      authComponent = (
-        <ForgotPassword
-          resetPasswordClicked={() => clickedHandler(AuthState.RESET_PASSWORD)}
-          onBack={handleBackClick}
-        />
-      );
-      break;
-    default:
-      authComponent = (
-        <AuthComponent
-          onClose={onClose}
-          forgotPasswordClicked={() =>
-            clickedHandler(AuthState.FORGOT_PASSWORD)
-          }
-        />
-      );
+  if (authState === AuthState.FORGOT_PASSWORD) {
+    return <ForgotPassword onBack={handleBackClick} />;
   }
 
-  return authComponent;
+  return (
+    <AuthComponent
+      onClose={onClose}
+      forgotPasswordClicked={() => handleStateChange(AuthState.FORGOT_PASSWORD)}
+    />
+  );
 };
 
 export default Auth;

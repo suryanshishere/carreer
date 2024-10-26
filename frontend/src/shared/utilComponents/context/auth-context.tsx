@@ -8,7 +8,9 @@ import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDa
 const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
 
 interface AuthContextValue {
+  clickedAuth: boolean;
   isLoggedIn: boolean;
+  authClickedHandler: (val:boolean)=>void;
   login: (
     email: string | undefined,
     userId: string | undefined,
@@ -20,6 +22,8 @@ interface AuthContextValue {
 }
 
 export const AuthContext = createContext<AuthContextValue>({
+  clickedAuth: false,
+  authClickedHandler:()=>{},
   isLoggedIn: false,
   login: () => {},
   logout: () => {},
@@ -34,7 +38,12 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
 }) => {
   const { sessionExpireMsg } = useUserData();
   const [loggedIn, setLoggedIn] = useState<boolean>(checkIsLoggedIn());
+  const [clickedAuth, setClickedAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
+
+const authClickedHandler = (val:boolean) => {
+  setClickedAuth(val);
+}
 
   if (sessionExpireMsg) {
     dispatch(dataStatusUIAction.setResMsg(sessionExpireMsg));
@@ -80,6 +89,8 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   }, []);
 
   const ctxValue: AuthContextValue = {
+    clickedAuth ,
+    authClickedHandler,
     isLoggedIn: loggedIn,
     login,
     logout,

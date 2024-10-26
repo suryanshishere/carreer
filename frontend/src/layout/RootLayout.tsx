@@ -7,18 +7,17 @@ import Response from "shared/utilComponents/response/Response";
 import Loading from "shared/utilComponents/response/dataStatus/Loading";
 import { useSelector } from "react-redux";
 import SendEmailVerification from "user/components/auth/SendEmailVerification";
-import "./RootLayout.css";
 
 const RootLayout: React.FC = () => {
   const loading = useSelector((state: RootState) => state.dataStatus.isLoading);
   // AutoUserCheck();
 
   return (
-    <div className="w-full flex flex-col min-h-screen relative pb-20">
+    <div className="">
       <MainNavigation />
       <Response />
       {loading && <Loading loadingOnTop />}
-      <div className="outlet flex flex-col">
+      <div className="px-page mt-nav-overall mb-footer">
         <Outlet />
       </div>
       <SendEmailVerification />

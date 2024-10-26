@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Form, { FormSubmitHandler } from "../../auth/AuthForm";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import "./ChangePassword.css";
 import { useDispatch } from "react-redux";
@@ -19,23 +18,23 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ onMsg }) => {
     dispatch(dataStatusUIAction.setErrorHandler(error));
   }, [error,  clearError, dispatch]);
 
-  const authSubmitHandler: FormSubmitHandler = async (formState) => {
-    if (
-      formState.password.value.trim() !== "" &&
-      formState.password.value === formState.newPassword?.value
-    ) {
-      return dispatch(
-        dataStatusUIAction.setErrorHandler("Password seem exactly same")
-      );
-    }
+  const authSubmitHandler = async () => {
+    // if (
+    //   formState.password.value.trim() !== "" &&
+    //   formState.password.value === formState.newPassword?.value
+    // ) {
+    //   return dispatch(
+    //     dataStatusUIAction.setErrorHandler("Password seem exactly same")
+    //   );
+    // }
     try {
       const response = await sendRequest(
         `${process.env.REACT_APP_BASE_URL}/users/change-password`,
         "POST",
         JSON.stringify({
-          email: formState.email.value,
-          password: formState.password.value,
-          newPassword: formState.newPassword?.value,
+          // email: formState.email.value,
+          // password: formState.password.value,
+          // newPassword: formState.newPassword?.value,
         }),
         {
           Authorization: "bearer " + token,
@@ -51,7 +50,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ onMsg }) => {
 
   return (
     <div className="w-full mt-4">
-      <Form onFormSubmit={authSubmitHandler} changePassword />
+      {/* <Form onFormSubmit={authSubmitHandler} changePassword /> */}
     </div>
   );
 };

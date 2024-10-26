@@ -15,12 +15,14 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = (props) => {
   return (
-    <div className={`${props.className}`}>
-      <div className="border-2 flex p-2 justify-center items-center">
-        <header className=" text-center m-0 font-bold">{props.header}</header>
+    <div className={`rounded-xl z-50 ${props.className}`}>
+      <div className="flex p-2 justify-center items-center">
+        <div className="text-base text-center">
+          {props.header}
+        </div>
         {props.onClose && (
           <IconButton
-            className="right-0"
+            className="right-1 top-2"
             size="small"
             sx={{
               position: "absolute",
@@ -35,7 +37,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           </IconButton>
         )}
       </div>
-      {props.header && <hr />}
+      {props.header && <hr className="mb-2" />}
       {props.children}
     </div>
   );
