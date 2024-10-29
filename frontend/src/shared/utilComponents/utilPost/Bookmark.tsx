@@ -5,7 +5,7 @@ import { dataStatusUIAction } from "../store/data-status-ui";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { IconButton } from "@mui/material";
-import useUserData from "../localStorageConfig/use-userData-hook";
+import useUserData from "../hooks/user-data-hook";
 
 interface BookmarkProps {
   itemId: string | number;

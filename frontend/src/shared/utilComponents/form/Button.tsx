@@ -1,10 +1,11 @@
-import React, { ButtonHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes, StyleHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   onClick?: () => void;
   tick?: boolean;
   classProp?: string;
+  // styleProp?:StyleHTMLAttributes;
   type?: "button" | "submit" | "reset";
   noOutline?: boolean;
   href?: string;
@@ -13,6 +14,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const Button: React.FC<ButtonProps> = ({
   children,
   classProp,
+  style,
   tick,
   type,
   onClick,
@@ -23,7 +25,8 @@ const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       type={type}
-      className={`cursor-pointer flex items-center justify-center p-button border-2 w-full whitespace-nowrap hover:bg-custom-hover-faint overflow-hidden ${classProp}`}
+      style={style}
+      className={`cursor-pointer flex items-center justify-center p-button border-2 w-auto whitespace-nowrap overflow-hidden ${classProp}`}
     >
       {children}
     </button>

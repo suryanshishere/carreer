@@ -5,7 +5,7 @@ const defaultUserData: IUserData = {
   userId: undefined,
   token: undefined,
   expiration: undefined,
-  emailVerified: undefined,
+  isEmailVerified: undefined,
   sessionExpireMsg: undefined,
 };
 
@@ -17,7 +17,8 @@ const useUserData = (): IUserData => {
   }
 
   try {
-    const userData: IUserData = JSON.parse(userDataString);
+    let userData: IUserData = JSON.parse(userDataString);
+    userData.isEmailVerified = userData.isEmailVerified === "1";
     return userData;
   } catch (error) {
     console.error("Error parsing userData from localStorage:", error);

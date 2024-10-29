@@ -3,7 +3,7 @@ import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import "./ChangePassword.css";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 
 interface ChangePasswordProps {
   onMsg: (msg: string) => void;

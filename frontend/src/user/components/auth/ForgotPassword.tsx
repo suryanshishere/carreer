@@ -47,8 +47,8 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)}>
-        <AuthForm register={register} errors={errors} onBack={onBack} forgotPassword />
+    <form  onSubmit={handleSubmit(submitHandler)} className="h-full flex items-center gap-2 ">
+        <AuthForm register={register} errors={errors} onBack={onBack} />
     </form>
   );
 };

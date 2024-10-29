@@ -12,8 +12,7 @@ import Profile from "./user/pages/account/Profile";
 import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
 import ContributeToPost from "./user/pages/account/ContributeToPost";
-import EmailVerification from "user/pages/auth/EmailVerification";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 import ResetPassword from "user/components/auth/ResetPassword";
 import Admin from "admin/pages/Admin";
 import AdminComponent from "admin/components/AdminComponent";
@@ -29,41 +28,37 @@ const App: React.FC = () => {
   //context won't work here
   const { token } = useUserData();
 
-  const authRoutes = token || !token
-    ? [
-        { path: "saved_exam", element: <Saved /> },
-        { path: "profile", element: <Profile /> },
-        { path: "setting", element: <Setting /> },
-        {
-          path: "account",
-          children: [
-            { path: "contribute_to_post", element: <ContributeToPost /> },
-            { path: "contribute_to_post/:post_section", element: <PostFinalizer /> },
-            {
-              path: "contribute_to_post/:post_section/:post_id",
-              element: <PostSectionForm />,
-            },
-          ],
-        },
-        {
-          path: "email_verification/:verificationToken",
-          element: <EmailVerification />,
-        },
-        { path: "reset_password/:resetToken", element: <ResetPassword /> },
-        { path: "*", element: <NotFound /> },
-      ]
-    : [
-        {
-          path: "email_verification/:verificationToken",
-          element: <EmailVerification />,
-        },
-        { path: "reset_password/:resetToken", element: <ResetPassword /> },
-        { path: "account/contribute_to_post", element: <ContributeToPost /> },
-        {
-          path: "account/contribute_to_post/:post_section",
-          element: <PostSectionForm />,
-        },
-      ];
+  const authRoutes =
+    token || !token
+      ? [
+          { path: "saved_exam", element: <Saved /> },
+          { path: "profile", element: <Profile /> },
+          { path: "setting", element: <Setting /> },
+          {
+            path: "account",
+            children: [
+              { path: "contribute_to_post", element: <ContributeToPost /> },
+              {
+                path: "contribute_to_post/:post_section",
+                element: <PostFinalizer />,
+              },
+              {
+                path: "contribute_to_post/:post_section/:post_id",
+                element: <PostSectionForm />,
+              },
+            ],
+          },
+          { path: "reset_password/:resetToken", element: <ResetPassword /> },
+          { path: "*", element: <NotFound /> },
+        ]
+      : [
+          { path: "reset_password/:resetToken", element: <ResetPassword /> },
+          { path: "account/contribute_to_post", element: <ContributeToPost /> },
+          {
+            path: "account/contribute_to_post/:post_section",
+            element: <PostSectionForm />,
+          },
+        ];
 
   const router = createBrowserRouter([
     {

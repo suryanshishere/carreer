@@ -23,10 +23,7 @@ interface IAuth {
   password: string;
 }
 
-const AuthComponent: React.FC<AuthProps> = ({
-  forgotPasswordClicked,
-  onClose,
-}) => {
+const AuthComponent: React.FC<AuthProps> = ({ onClose }) => {
   const auth = useContext(AuthContext);
   const { error, sendRequest } = useHttpClient();
   const dispatch = useDispatch();
@@ -53,41 +50,48 @@ const AuthComponent: React.FC<AuthProps> = ({
     const url = `${process.env.REACT_APP_BASE_URL}/user/auth`;
 
     try {
-      const response = await sendRequest(url, "POST", data, {
+      const response = await sendRequest(url, "POST", JSON.stringify(data), {
         "Content-Type": "application/json",
       });
 
-      const { email, userId, token, tokenExpiration, emailVerified } =
-        response.data as {
-          email: string;
-          userId: string;
-          token: string;
-          message: string;
-          tokenExpiration: string;
-          emailVerified: boolean;
-        };
+      const {
+        email,
+        userId,
+        token,
+        message,
+        tokenExpiration,
+        isEmailVerified,
+      } = response.data as {
+        email: string;
+        userId: string;
+        token: string;
+        message: string;
+        tokenExpiration: string;
+        isEmailVerified: boolean;
+      };
+      auth.login(email, userId, token, tokenExpiration, isEmailVerified);
+      dispatch(dataStatusUIAction.setResMsg(message));
+      auth.authClickedHandler(false);
 
-      auth.login(email, userId, token, tokenExpiration, emailVerified);
-
-      if (onClose) {
+      if (isEmailVerified && onClose) {
         onClose();
       }
     } catch (error) {}
   };
 
   return (
-    <div className="h-16 py-1 w-full px-page bg-custom-white flex items-center justify-end z-20">
-      <form
-        onSubmit={handleSubmit(submitHandler)}
-        className="h-full flex items-center gap-2 text-base"
-      >
-        <AuthForm
-          register={register}
-          errors={errors}
-          forgotPasswordClicked={forgotPasswordClicked}
-        />
-      </form>
-    </div>
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className="h-5/6 flex-1 flex items-center gap-2 justify-end"
+    >
+      <AuthForm
+        register={register}
+        errors={errors}
+        inputClassProp="py-2 text-md rounded placeholder:text-sm"
+        inputOuterClassProp="flex-1"
+        buttonClassProp="py-2 rounded-full bg-custom-grey text-white font-bold px-3 hover:bg-custom-black hover:text-custom-white hover:border-custom-black"
+      />
+    </form>
   );
 };
 

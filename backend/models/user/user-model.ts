@@ -2,9 +2,9 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser extends Document {
   isEmailVerified: boolean;
-  emailVerificationToken?: string | undefined;
-  emailVerificationTokenCreatedAt?: Date | undefined;
-  passwordResetAt?: Date | undefined;
+  emailVerificationToken?: string;
+  emailVerificationTokenExpireAt?: Date;
+  passwordResetAt?: Date;
   name: string;
   username: string;
   email: string;
@@ -19,9 +19,9 @@ export interface IUser extends Document {
 const userSchema: Schema = new Schema<IUser>({
   isEmailVerified: { type: Boolean, default: false },
   emailVerificationToken: { type: String },
-  emailVerificationTokenCreatedAt: { type: Date },
+  emailVerificationTokenExpireAt: { type: Date },
   passwordResetAt: { type: Date },
-  name: { type: String, required: true },
+  name: { type: String, required: true, default: "Cool" },
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },

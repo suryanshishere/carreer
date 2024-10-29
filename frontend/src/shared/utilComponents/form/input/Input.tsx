@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, CSSProperties, forwardRef } from "react";
+import Button from "../Button";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -15,6 +16,7 @@ export interface InputProps
   disabled?: boolean;
   type?: string;
   classProp?: string;
+  outerClassProp?: string;
 }
 
 // Forward ref to Input component
@@ -32,6 +34,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       error,
       helperText,
       classProp,
+      outerClassProp,
     },
     ref // Accept ref here
   ) => {
@@ -44,13 +47,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const endAdornment = (() => {
       if (type === "password") {
         return (
-          <button
+          <Button
             type="button"
-            className="absolute right-3 top-1/2 transform -translate-y-1/2"
+            style={{ cursor: "default" }}
+            classProp="cursor-default p-0 hover:text-custom-red absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-custom-grey"
             onClick={togglePasswordVisibility}
           >
             {showPassword ? "Hide" : "Show"}
-          </button>
+          </Button>
         );
       } else if (type === "search") {
         return (
@@ -63,33 +67,35 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     })();
 
     return (
-      <div className="relative w-full">
-        {label && (
-          <label htmlFor={name} className="block text-sm font-medium mb-1">
-            {label || placeholder || name}
-          </label>
-        )}
-        <input
-          ref={ref} // Use inputRef instead of ref
-          id={name}
-          name={name}
-          type={showPassword && type === "password" ? "text" : type}
-          required={required}
-          placeholder={placeholder || name}
-          value={value}
-          onChange={onChange}
-          className={`w-full pl-2 py-1 border-2 border-custom-less-grey rounded-md ${classProp} ${
-            error ? "border-custom-red" : ""
-          }  ${
-            error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"
-          }`}
-          style={style}
-        />
-        {endAdornment}
+      <div className={`${outerClassProp}`}>
+        <div className="relative w-full">
+          {label && (
+            <label htmlFor={name} className="block text-sm font-medium mb-1">
+              {label || placeholder || name}
+            </label>
+          )}
+          <input
+            ref={ref} // Use inputRef instead of ref
+            id={name}
+            name={name}
+            type={showPassword && type === "password" ? "text" : type}
+            required={required}
+            placeholder={placeholder || name}
+            value={value}
+            onChange={onChange}
+            className={`w-full pl-2 py-1 border-2 border-custom-grey rounded-md ${classProp} ${
+              error ? "border-custom-red" : ""
+            }  ${
+              error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"
+            }`}
+            style={style}
+          />
+          {endAdornment}
+        </div>
         {helperText && (
           <p
-            className={`mt-1 text-sm ${
-              error ? "text-custom-red-500" : "text-gray-500"
+            className={`ml-2 mt-1 text-xs ${
+              error ? "text-custom-red" : "text-grey"
             }`}
           >
             {helperText}
@@ -119,12 +125,14 @@ export const TextArea = forwardRef<
       placeholder,
       disabled = false,
       error,
-      helperText,classProp
+      helperText,
+      classProp,
+      outerClassProp,
     },
     ref
   ) => {
     return (
-      <div className="relative w-full">
+      <div className={`relative ${outerClassProp}`}>
         <label htmlFor={name} className="block text-sm font-medium mb-1">
           {placeholder || name}
         </label>
@@ -145,7 +153,7 @@ export const TextArea = forwardRef<
         />
         {helperText && (
           <p
-            className={`mt-1 text-sm ${
+            className={`ml-2 text-sm ${
               error ? "text-custom-red" : "text-custom-grey"
             }`}
           >

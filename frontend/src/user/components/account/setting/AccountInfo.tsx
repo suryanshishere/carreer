@@ -7,7 +7,7 @@ import "./AccountInfo.css";
 import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import { useDispatch } from "react-redux";
 import AccountInfoForm from "./forms/AccountInfoForm";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 
 export interface AccountInfoData {
   username: string;

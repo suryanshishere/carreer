@@ -1,10 +1,10 @@
 import express from "express";
 import { check } from "express-validator";
 import {
-  login,
   sendVerificationEmail,
-  signup,
-  verifyEmail,resetPassword
+  auth,
+  verifyEmail,
+  resetPassword,
 } from "@controllers/users/auth/auth-controllers";
 import checkAuth from "@middleware/check-auth";
 
@@ -13,37 +13,37 @@ const router = express.Router();
 const { NAME_LENGTH, PWD_LENGTH } = process.env;
 
 router.post(
-  "/verify_email",
-  check("verificationToken").trim().isLength({ min: 30, max: 30 }),
-  verifyEmail
-);
-
-router.post(
-  "/signup",
+  "/",
   [
-    check("name")
-      .trim()
-      .not()
-      .isEmpty()
-      .isLength({ min: Number(NAME_LENGTH) || 3 }),
+    // check("name")
+    //   .trim()
+    //   .not()
+    //   .isEmpty()
+    //   .isLength({ min: Number(NAME_LENGTH) || 3 }),
     check("email").trim().normalizeEmail().isEmail(),
     check("password")
       .trim()
       .isLength({ min: Number(PWD_LENGTH) || 6 }),
   ],
-  signup
+  auth
 );
 
 router.post(
-  "/login",
-  [
-    check("email").trim().normalizeEmail().isEmail(),
-    check("password")
-      .trim()
-      .isLength({ min: Number(PWD_LENGTH) }),
-  ],
-  login
+  "/verify_email",
+  check("verificationToken").trim().isLength({ min: 30, max: 30 }),
+  verifyEmail
 );
+
+// router.post(
+//   "/login",
+//   [
+//     check("email").trim().normalizeEmail().isEmail(),
+//     check("password")
+//       .trim()
+//       .isLength({ min: Number(PWD_LENGTH) }),
+//   ],
+//   login
+// );
 
 router.post(
   "/forgot_password",

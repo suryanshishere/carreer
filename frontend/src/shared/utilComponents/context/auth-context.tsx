@@ -1,8 +1,14 @@
-import React, { createContext, FC, useCallback, useState } from "react";
+import React, {
+  createContext,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { isLoggedIn as checkIsLoggedIn } from "shared/utilComponents/quick/auth-check";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
 
 const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
@@ -10,20 +16,22 @@ const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
 interface AuthContextValue {
   clickedAuth: boolean;
   isLoggedIn: boolean;
-  authClickedHandler: (val:boolean)=>void;
+  authClickedHandler: (val: boolean) => void;
   login: (
     email: string | undefined,
     userId: string | undefined,
     token: string | undefined,
     tokenExpiration?: string | undefined,
-    emailVerified?: boolean | undefined
+    isEmailVerified?: boolean | undefined
   ) => void;
   logout: () => void;
 }
 
+//todo: use context every where integrated with local storage except for path at index use localhost to make it wor
+
 export const AuthContext = createContext<AuthContextValue>({
   clickedAuth: false,
-  authClickedHandler:()=>{},
+  authClickedHandler: () => {},
   isLoggedIn: false,
   login: () => {},
   logout: () => {},
@@ -41,44 +49,56 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   const [clickedAuth, setClickedAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
 
-const authClickedHandler = (val:boolean) => {
-  setClickedAuth(val);
-}
+  useEffect(() => {
+    if (sessionExpireMsg) {
+      dispatch(dataStatusUIAction.setResMsg(sessionExpireMsg));
+    }
+  }, [sessionExpireMsg, dispatch]);
 
-  if (sessionExpireMsg) {
-    dispatch(dataStatusUIAction.setResMsg(sessionExpireMsg));
-  }
+  const authClickedHandler = (val: boolean) => {
+    setClickedAuth(val);
+  };
 
   const login = useCallback(
     (
-      email: string | undefined,
-      uid: string | undefined,
-      token: string | undefined,
-      expirationDate?: string | undefined,
-      emailVerified?: boolean | undefined
+      email?: string,
+      userId?: string,
+      token?: string,
+      expirationDate?: string,
+      isEmailVerified?: boolean
     ) => {
-      if (
-        email === undefined ||
-        token === undefined ||
-        expirationDate === undefined ||
-        uid === undefined
-      )
-        return;
+      console.log(
+        email,
+        userId,
+        token,
+        expirationDate,
+        isEmailVerified
+      );
+      if (!email && !userId && !token && isEmailVerified ===undefined) return;
 
-      const localEmailVerified = emailVerified ? "1" : "0";
+      const localEmailVerified = isEmailVerified ? "1" : "0";
       const newTokenExpirationDate = expirationDate
         ? new Date(expirationDate)
-        : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY));
+        : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY)); //fallback if expiration not came
+
+      console.log(
+        email,
+        userId,
+        token,
+        newTokenExpirationDate,
+        isEmailVerified
+      );
       userDataHandler({
         email,
-        userId: uid,
+        userId,
         token,
         expiration: newTokenExpirationDate.toISOString(),
-        emailVerified: localEmailVerified,
+        isEmailVerified: localEmailVerified,
         sessionExpireMsg: undefined,
       });
 
       setLoggedIn(true);
+      setClickedAuth(false);
     },
     []
   );
@@ -89,7 +109,7 @@ const authClickedHandler = (val:boolean) => {
   }, []);
 
   const ctxValue: AuthContextValue = {
-    clickedAuth ,
+    clickedAuth,
     authClickedHandler,
     isLoggedIn: loggedIn,
     login,

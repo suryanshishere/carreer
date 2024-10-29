@@ -8,7 +8,7 @@ import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 
 interface AccountInfoFormProps {
   accountInfoData: AccountInfoData;

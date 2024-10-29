@@ -4,7 +4,7 @@ import DetailItemHeader from "post/components/DetailItemHeader";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 
 const EditPostItem = () => {
   const { post_section, post_id } = useParams();

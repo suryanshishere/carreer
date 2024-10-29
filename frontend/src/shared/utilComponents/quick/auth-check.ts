@@ -11,7 +11,7 @@ export const isLoggedIn = () => {
     userId: undefined,
     token: undefined,
     expiration: undefined,
-    emailVerified: undefined,
+    isEmailVerified: undefined,
     sessionExpireMsg: undefined,
   };
 
@@ -23,14 +23,18 @@ export const isLoggedIn = () => {
     }
   }
 
-  const { token, expiration } = currentUserData;
+  const { token, expiration, userId, sessionExpireMsg } = currentUserData;
 
-  if (token === undefined || expiration === undefined) {
-    return false;
-  } else if (token && new Date(expiration) >= new Date()) {
-    return true;
-  } else {
-    userDataHandler({ sessionExpireMsg: EXPIRE_MESSAGE });
+  if (!token || !expiration) {
     return false;
   }
+  if (new Date(expiration) < new Date()) {
+    if (!sessionExpireMsg) {
+      userDataHandler({ ...currentUserData, sessionExpireMsg: EXPIRE_MESSAGE });
+    }
+    return false;
+  }
+
+  // check for no token, no Expiration, if expiration not pass then set sessionExpire after than pass it
+  return true;
 };

@@ -16,7 +16,7 @@ import {
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 import renderFormFields from "./createFormHelper/render-form-fields";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "shared/utilComponents/store";

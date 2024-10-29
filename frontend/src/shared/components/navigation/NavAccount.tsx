@@ -14,26 +14,18 @@ const NavAccount = () => {
     auth.authClickedHandler(showModal);
   }, [showModal]);
 
+  useEffect(() => {
+    setShowModal(auth.clickedAuth);
+  }, [auth.clickedAuth]);
+
   let LoginSignup = (
     <>
-      <Button
-        classProp={` rounded-xl hover:bg-custom-less-red z-50 ${
-          showModal ? `bg-custom-less-red` : `bg-custom-red`
-        }`}
-        onClick={() => setShowModal(!showModal)}
+      {!showModal && <Button
+        classProp={` rounded z-50 bg-custom-red hover:bg-custom-less-red`}
+        onClick={() => setShowModal(true)}
       >
         Login / Signup
-      </Button>
-      {/* {showModal && (
-        //TODO: add above to subnav in horinzontal form
-        <Modal
-          header="Authentication"
-          onClose={() => setShowModal(false)}
-          className="fixed border-3 border-custom-less-red top-1/2  right-1/2 h-max-[25rem] text-custom-black bg-custom-white p-2 w-[25rem]"
-        >
-          <Auth onClose={() => setShowModal(false)} />
-        </Modal>
-      )} */}
+      </Button>}
     </>
   );
 

@@ -6,7 +6,9 @@ import { IconButton } from "@mui/material";
 import "./AuthForm.css";
 
 interface FormProps {
-  forgotPasswordClicked?: () => void;
+  inputOuterClassProp?: string;
+  inputClassProp?: string;
+  buttonClassProp?: string;
   forgotPassword?: boolean;
   onBack?: () => void;
   register?: any;
@@ -14,7 +16,9 @@ interface FormProps {
 }
 
 const AuthForm: React.FC<FormProps> = ({
-  forgotPasswordClicked,
+  inputOuterClassProp,
+  inputClassProp,
+  buttonClassProp,
   forgotPassword,
   onBack,
   errors,
@@ -28,38 +32,36 @@ const AuthForm: React.FC<FormProps> = ({
         error={!!errors.email}
         helperText={errors.email?.message}
         placeholder="Email"
-        classProp="text-xl"
+        classProp={`${inputClassProp}`}
+        outerClassProp={`${inputOuterClassProp}`}
       />
-      {!forgotPassword && (
+      {!forgotPassword ? (
         <>
           <Input
             {...register("password")}
             type="password"
             error={!!errors.password}
             helperText={errors.password?.message}
-            placeholder="Password"
-            classProp="text-xl"
+            placeholder="Password / Create new password"
+            classProp={`${inputClassProp}`}
+            outerClassProp={`${inputOuterClassProp}`}
           />
-          <div className="flex gap-2">
-            <Button
-              classProp=" border-custom-grey"
-              type="button"
-              onClick={forgotPasswordClicked}
-            >
-              Forgot Password?
-            </Button>
-            <Button classProp="border-custom-grey" type="submit">
-              Authenticate
-            </Button>
-          </div>
+          <Button
+            classProp={` ${buttonClassProp}`}
+            type="submit"
+          >
+            Authenticate
+          </Button>
         </>
-      )}
-      {forgotPassword && (
+      ) : (
         <div className="flex gap-2">
           <IconButton onClick={onBack}>
             <ArrowBackIcon />
           </IconButton>
-          <Button classProp="border-custom-grey" type="submit">
+          <Button
+            classProp={`${buttonClassProp}`}
+            type="submit"
+          >
             Send reset link
           </Button>
         </div>

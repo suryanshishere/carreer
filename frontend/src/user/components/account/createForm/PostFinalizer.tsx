@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
 import * as Yup from "yup"; // Import Yup
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import Button from "shared/utilComponents/form/Button";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";

@@ -7,7 +7,7 @@ import { Input } from "shared/utilComponents/form/input/Input";
 import POST_SECTION from "db/adminDb/postSection.json";
 import Button from "shared/utilComponents/form/Button";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";

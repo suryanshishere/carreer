@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import "./Saved.css";
 import Filter from "shared/utilComponents/utilPost/Filter";
-import useUserData from "shared/utilComponents/localStorageConfig/use-userData-hook";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 
 const Saved = () => {
   const { sendRequest, clearError, error } = useHttpClient();
