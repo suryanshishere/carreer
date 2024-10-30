@@ -67,27 +67,13 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
       expirationDate?: string,
       isEmailVerified?: boolean
     ) => {
-      console.log(
-        email,
-        userId,
-        token,
-        expirationDate,
-        isEmailVerified
-      );
-      if (!email && !userId && !token && isEmailVerified ===undefined) return;
+      if (!email && !userId && !token && isEmailVerified === undefined) return;
 
       const localEmailVerified = isEmailVerified ? "1" : "0";
       const newTokenExpirationDate = expirationDate
         ? new Date(expirationDate)
         : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY)); //fallback if expiration not came
 
-      console.log(
-        email,
-        userId,
-        token,
-        newTokenExpirationDate,
-        isEmailVerified
-      );
       userDataHandler({
         email,
         userId,

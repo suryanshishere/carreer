@@ -11,7 +11,6 @@ import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
 
-// Define form schema
 const otpSchema = Yup.object().shape({
   email_verification_otp: Yup.string()
     .required("OTP is required")
@@ -28,9 +27,10 @@ const EmailVerification = () => {
   const { userId, token, email, isEmailVerified } = useUserData();
   const auth = useContext(AuthContext);
   const dispatch = useDispatch();
-  const [checkOtp, setCheckOtp] = useState<boolean>(true);
-  const [resendTimer, setResendTimer] = useState<number>(60);
-  const [verificationStatus, setVerificationStatus] = useState<boolean>(false);
+
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [resendTimer, setResendTimer] = useState(60);
+  const [verificationStatus, setVerificationStatus] = useState(false);
 
   const {
     register,
@@ -38,28 +38,27 @@ const EmailVerification = () => {
     formState: { errors },
   } = useForm<OTPFormInputs>({
     resolver: yupResolver(otpSchema),
-    mode: "onSubmit",
   });
 
   useEffect(() => {
-    dispatch(dataStatusUIAction.setErrorHandler(error));
+    if (error) dispatch(dataStatusUIAction.setErrorHandler(error));
   }, [error, dispatch]);
 
   useEffect(() => {
-    // Countdown for resend OTP button
-    if (!checkOtp) {
-      setResendTimer(60);
-    }
-  }, [checkOtp]);
+    if (!isOtpSent) setResendTimer(60);
+  }, [isOtpSent]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
     if (resendTimer > 0) {
-      interval = setInterval(() => setResendTimer((prev) => prev - 1), 1000);
+      const countdown = setInterval(
+        () => setResendTimer((prev) => prev - 1),
+        1000
+      );
+      return () => clearInterval(countdown);
     }
-    return () => clearInterval(interval);
   }, [resendTimer]);
 
+  // Skip rendering if the user is already verified
   if (
     verificationStatus ||
     !userId ||
@@ -70,25 +69,25 @@ const EmailVerification = () => {
     return null;
   }
 
-  const sendEmailHandler = async () => {
+  const sendOtpEmail = async () => {
     try {
       const response = await sendRequest(
         `${process.env.REACT_APP_BASE_URL}/user/auth/send_verification_email`,
         "POST",
-        JSON.stringify({ userId, email }),
+        JSON.stringify({ userId }),
         {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         }
       );
       dispatch(dataStatusUIAction.setResMsg(response.data.message as string));
-      setCheckOtp(true);
-    } catch (err) {
-      // Handle error if needed
+      setIsOtpSent(true);
+    } catch (error) {
+      console.error("Failed to send OTP email:", error);
     }
   };
 
-  const verifyOtpHandler: SubmitHandler<OTPFormInputs> = async ({
+  const verifyOtp: SubmitHandler<OTPFormInputs> = async ({
     email_verification_otp,
   }) => {
     try {
@@ -105,18 +104,17 @@ const EmailVerification = () => {
       dispatch(dataStatusUIAction.setResMsg(response.data.message as string));
       userDataHandler({ isEmailVerified: "1" });
       setVerificationStatus(true);
-    } catch (err) {
-      // Handle error if needed
+    } catch (error) {
+      console.error("OTP verification failed:", error);
     }
   };
 
   return (
     <form
-      onSubmit={handleSubmit(verifyOtpHandler)}
+      onSubmit={handleSubmit(verifyOtp)}
       className="flex items-center gap-2 bg-custom-red"
     >
-      Enter your OTP
-      {/* <div className="w-40"> */}
+      <span>Enter your OTP</span>
       <Input
         {...register("email_verification_otp")}
         error={!!errors.email_verification_otp}
@@ -125,15 +123,11 @@ const EmailVerification = () => {
         placeholder="_ _ _ _ _ _"
         classProp="text-custom-black"
       />
-      {/* </div> */}
       <Button type="submit">Verify OTP</Button>
-      <Button
-        type="button"
-        onClick={sendEmailHandler}
-        disabled={resendTimer > 0}
-      >
+      <Button type="button" onClick={sendOtpEmail} disabled={resendTimer > 0}>
         {resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend"}
       </Button>
+      <Button onClick={() => auth.logout()}>Logout</Button>
     </form>
   );
 };

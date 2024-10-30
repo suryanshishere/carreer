@@ -26,7 +26,6 @@ const RootLayout: React.FC = () => {
       >
         <Outlet />
       </div>
-      <SendEmailVerification />
       <Footer />
     </div>
   );

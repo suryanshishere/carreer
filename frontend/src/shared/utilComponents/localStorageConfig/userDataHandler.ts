@@ -32,7 +32,6 @@ export function userDataHandler(newData: IUserData): void {
     // Otherwise, merge new data with the existing data, preserving current values for unspecified fields
     updatedUserData = { ...currentUserData, ...newData };
   }
-console.log(updatedUserData)
 
   // Save the updated data back to localStorage
   localStorage.setItem("userData", JSON.stringify(updatedUserData));

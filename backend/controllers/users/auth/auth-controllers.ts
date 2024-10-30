@@ -22,89 +22,67 @@ const FRONTEND_URL =
 // const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "15";
 const EMAIL_TOKEN_EXPIRY = process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY || "1";
 
-// sendVerification is reuse for sending token when forgot password
 export const sendVerificationEmail = async (
   req: Request,
   res: Response,
   next: NextFunction,
-  userId?: string,
-  email?: string,
-  token?: string,
-  directTrigger = false
+  options: { userId?: string; email?: string; isDirect?: boolean } = {}
 ) => {
-  validationError(req, res, next);
-  let localToken;
-  let localEmail;
-  let localUserId;
-
-  if (token?.length != 0 && email) {
-    localToken = token;
-    localEmail = email;
-    localUserId = userId;
-  } else {
-    const { token, userId, email } = req.body;
-    localEmail = email;
-    localToken = token;
-    localUserId = userId;
+  if (!options.isDirect) {
+    validationError(req, res, next);
   }
+  // Use userId and email from options if provided, otherwise from req.body
+  const userId = options.userId || req.body.userId;
+  const password_reset = req.body.password_reset;
 
   try {
-    let user: IUser | null = null;
-
-    if (localUserId) {
-      user = await User.findById(localUserId);
-    } else {
-      const users = await User.find({ email });
-      user = users.length > 0 ? users[0] : null;
-    }
-
-    if (!user) {
-      return next(new HttpError("User not found", 404));
-    }
-
-    if (user.email !== localEmail) {
-      return next(
-        new HttpError(
-          "Email does not match the user's email, change it in settings first if needed!",
-          400
-        )
-      );
-    }
-
-    const generateUniqueToken = generateUniqueVerificationToken();
-
-    user.emailVerificationToken = generateUniqueToken;
-    user.emailVerificationTokenExpireAt = calculateTokenExpiration(Number(EMAIL_TOKEN_EXPIRY));
-
-    await user.save();
-
-    try {
-      await sendEmail(
-        localEmail,
-        localToken
-          ? "Verify your email through OTP"
-          : "Forgot password and reset",
-        localToken
-          ? `${generateUniqueToken}`
-          : `${FRONTEND_URL}/${user.id}${generateUniqueToken}`
-      );
-
-      // Only send response if not directly triggered
-      if (!directTrigger) {
-        return res.status(200).json({
-          message: userId
-            ? "OTP sent to your email successfully."
-            : "Password reset link sent successfully.",
-        });
+    // Find the user by ID if not directly passed as an email option
+    let user = null;
+    if (!options.email) {
+      user = await User.findById(userId);
+      if (!user) {
+        return next(new HttpError("User not found", 404));
       }
-    } catch (err) {
-      return next(
-        new HttpError("Error sending verification email, try again later.", 500)
-      );
     }
-  } catch (err) {
-    return next(
-      new HttpError("Sending verification email failed, please try again", 500)
+
+    const emailToSend = options.email || user?.email;
+    if (!emailToSend) {
+      return next(new HttpError("Email address is required", 400));
+    }
+
+    // Generate a verification token and set expiration
+    const verificationToken = generateUniqueVerificationToken();
+    if (user) {
+      user.emailVerificationToken = verificationToken;
+      user.emailVerificationTokenExpireAt = calculateTokenExpiration(
+        Number(process.env.EMAIL_TOKEN_EXPIRY)
+      );
+      await user.save();
+    }
+
+    // Define email content
+    const emailSubject = password_reset
+      ? "Forgot password and reset"
+      : "Verify your email through OTP";
+    const emailContent = password_reset
+      ? `${process.env.FRONTEND_URL}/reset-password/${user?.id}/${verificationToken}`
+      : verificationToken;
+
+    // Send email
+    await sendEmail(emailToSend, emailSubject, emailContent);
+
+    // If `isDirect`, skip the response
+    if (options.isDirect) return;
+
+    // Respond to client
+    res.status(200).json({
+      message: password_reset
+        ? "Password reset link sent successfully."
+        : "OTP sent to your email successfully.",
+    });
+  } catch (error) {
+    next(
+      new HttpError("Error sending verification email, try again later.", 500)
     );
   }
 };
@@ -174,37 +152,43 @@ export const verifyEmail = async (
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Validate request
     validationError(req, res, next);
 
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
-    const generateUniqueToken = generateUniqueVerificationToken();
+    const verificationToken = generateUniqueVerificationToken();
 
     if (existingUser) {
-      // User exists, check verification and credentials
       if (!existingUser.isEmailVerified) {
-        await updateUnverifiedUser(existingUser, password, generateUniqueToken);
+        existingUser.emailVerificationToken = verificationToken;
+        existingUser.emailVerificationTokenExpireAt = calculateTokenExpiration(
+          Number(EMAIL_TOKEN_EXPIRY)
+        );
+        await existingUser.save();
         return sendVerificationResponse(req, res, next, existingUser);
       }
 
-      // Verify password
-      const isValidPassword = await bcrypt.compare(password, existingUser.password as string);
+      const isValidPassword = await bcrypt.compare(
+        password,
+        existingUser.password as string
+      );
       if (!isValidPassword) {
-        return next(new HttpError("Invalid credentials, could not log you in.", 401));
+        return next(
+          new HttpError("Invalid credentials, could not log you in.", 401)
+        );
       }
 
-      // User is verified and password is valid
       return sendAuthenticatedResponse(res, existingUser);
     } else {
-      // New user, create account and send verification email
       const hashedPassword = await bcrypt.hash(password, 12);
       const newUser = new User({
         username: uuidv4(),
         email,
         password: hashedPassword,
-        emailVerificationToken: generateUniqueToken,
-        emailVerificationTokenExpireAt: calculateTokenExpiration(Number(EMAIL_TOKEN_EXPIRY)),
+        emailVerificationToken: verificationToken,
+        emailVerificationTokenExpireAt: calculateTokenExpiration(
+          Number(EMAIL_TOKEN_EXPIRY)
+        ),
       });
       await newUser.save();
 
