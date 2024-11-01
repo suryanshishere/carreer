@@ -23,8 +23,9 @@ module.exports = {
       spacing: {
         'main-nav': '3rem',
         'auth-nav':'5rem',
-        'sub-main-nav': '2rem',
-        'nav-overall': 'calc(3rem + 2rem + 2.5rem)',
+        'sub-nav': '2rem',
+        'auth-sub-nav': '7rem',
+        'nav-overall': '8rem',
         'footer': '5.5rem',
       },
       padding: {

@@ -71,10 +71,9 @@ const AuthComponent: React.FC<AuthProps> = ({ onClose }) => {
       };
       auth.login(email, userId, token, tokenExpiration, isEmailVerified);
       dispatch(dataStatusUIAction.setResMsg(message));
-      auth.authClickedHandler(false);
-
-      if (isEmailVerified && onClose) {
-        onClose();
+      
+      if (isEmailVerified) {
+        auth.authClickedHandler(false);
       }
     } catch (error) {}
   };

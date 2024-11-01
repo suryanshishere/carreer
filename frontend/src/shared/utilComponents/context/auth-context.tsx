@@ -15,6 +15,7 @@ const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
 
 interface AuthContextValue {
   clickedAuth: boolean;
+  isOtpSend: boolean;
   isLoggedIn: boolean;
   authClickedHandler: (val: boolean) => void;
   login: (
@@ -31,6 +32,7 @@ interface AuthContextValue {
 
 export const AuthContext = createContext<AuthContextValue>({
   clickedAuth: false,
+  isOtpSend: false,
   authClickedHandler: () => {},
   isLoggedIn: false,
   login: () => {},
@@ -46,9 +48,16 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
 }) => {
   const { sessionExpireMsg } = useUserData();
   const [loggedIn, setLoggedIn] = useState<boolean>(checkIsLoggedIn());
-  const [clickedAuth, setClickedAuth] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const [isOtpSend, setIsOtpSend] = useState<boolean>(false);
+  const { isEmailVerified, token } = useUserData();
+  const [clickedAuth, setClickedAuth] = useState(false);
+  
+  // Update clickedAuth when token or email verification status changes
+  useEffect(() => {
+    setClickedAuth(!!(token && !isEmailVerified));
+  }, [token, isEmailVerified]);
 
+  const dispatch = useDispatch();
   useEffect(() => {
     if (sessionExpireMsg) {
       dispatch(dataStatusUIAction.setResMsg(sessionExpireMsg));
@@ -59,43 +68,44 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
     setClickedAuth(val);
   };
 
-  const login = useCallback(
-    (
-      email?: string,
-      userId?: string,
-      token?: string,
-      expirationDate?: string,
-      isEmailVerified?: boolean
-    ) => {
-      if (!email && !userId && !token && isEmailVerified === undefined) return;
+  const login = (
+    email?: string,
+    userId?: string,
+    token?: string,
+    expirationDate?: string,
+    isEmailVerified?: boolean
+  ) => {
+    if (!email && !userId && !token && isEmailVerified === undefined) return;
+    const localEmailVerified = isEmailVerified ? "1" : "0";
+    const newTokenExpirationDate = expirationDate
+      ? new Date(expirationDate)
+      : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY)); //fallback if expiration not came
 
-      const localEmailVerified = isEmailVerified ? "1" : "0";
-      const newTokenExpirationDate = expirationDate
-        ? new Date(expirationDate)
-        : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY)); //fallback if expiration not came
+    userDataHandler({
+      email,
+      userId,
+      token,
+      expiration: newTokenExpirationDate.toISOString(),
+      isEmailVerified: localEmailVerified,
+      sessionExpireMsg: undefined,
+    });
 
-      userDataHandler({
-        email,
-        userId,
-        token,
-        expiration: newTokenExpirationDate.toISOString(),
-        isEmailVerified: localEmailVerified,
-        sessionExpireMsg: undefined,
-      });
-
-      setLoggedIn(true);
+    setLoggedIn(true);
+    setIsOtpSend(true);
+    if (isEmailVerified) {
       setClickedAuth(false);
-    },
-    []
-  );
+    }
+  };
 
-  const logout = useCallback(() => {
+  const logout = () => {
     localStorage.removeItem("userData");
+    setClickedAuth(false);
     setLoggedIn(false);
-  }, []);
+  };
 
   const ctxValue: AuthContextValue = {
     clickedAuth,
+    isOtpSend,
     authClickedHandler,
     isLoggedIn: loggedIn,
     login,

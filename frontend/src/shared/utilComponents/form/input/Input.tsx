@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, CSSProperties, forwardRef } from "react";
 import Button from "../Button";
+import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -80,7 +81,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             name={name}
             type={showPassword && type === "password" ? "text" : type}
             required={required}
-            placeholder={placeholder || name}
+            placeholder={placeholder || formatWord(name)}
             value={value}
             onChange={onChange}
             className={`w-full pl-2 py-1 border-2 border-custom-grey rounded-md ${classProp} ${
@@ -94,7 +95,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </div>
         {helperText && (
           <p
-            className={`ml-2 mt-1 text-xs ${
+            className={`ml-2 mt-1 text-xs w-auto whitespace-nowrap ${
               error ? "text-custom-red" : "text-grey"
             }`}
           >

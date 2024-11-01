@@ -5,11 +5,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Button from "shared/utilComponents/form/Button";
 import { Input } from "shared/utilComponents/form/input/Input";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import { useMutation } from "@tanstack/react-query"; // Import useMutation
 import useUserData from "shared/utilComponents/hooks/user-data-hook";
 import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
+import axios from "axios"; // Make sure axios is imported
 
 const otpSchema = Yup.object().shape({
   email_verification_otp: Yup.string()
@@ -23,30 +24,17 @@ type OTPFormInputs = {
 };
 
 const EmailVerification = () => {
-  const { error, sendRequest } = useHttpClient();
   const { userId, token, email, isEmailVerified } = useUserData();
+
   const auth = useContext(AuthContext);
+  const [isSendOnce, setIsSendOnce] = useState<boolean>(auth.isOtpSend);
   const dispatch = useDispatch();
-
-  const [isOtpSent, setIsOtpSent] = useState(false);
-  const [resendTimer, setResendTimer] = useState(60);
-  const [verificationStatus, setVerificationStatus] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<OTPFormInputs>({
-    resolver: yupResolver(otpSchema),
-  });
-
+  const [resendTimer, setResendTimer] = useState(0);
   useEffect(() => {
-    if (error) dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error, dispatch]);
-
-  useEffect(() => {
-    if (!isOtpSent) setResendTimer(60);
-  }, [isOtpSent]);
+    if (auth.isOtpSend) {
+      setResendTimer(60);
+    }
+  }, [auth.isOtpSend]);
 
   useEffect(() => {
     if (resendTimer > 0) {
@@ -58,77 +46,160 @@ const EmailVerification = () => {
     }
   }, [resendTimer]);
 
-  // Skip rendering if the user is already verified
-  if (
-    verificationStatus ||
-    !userId ||
-    !token ||
-    !email ||
-    isEmailVerified === "1"
-  ) {
-    return null;
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<OTPFormInputs>({
+    resolver: yupResolver(otpSchema),
+  });
 
-  const sendOtpEmail = async () => {
-    try {
-      const response = await sendRequest(
+  // Mutation for sending OTP email
+  const sendOtpMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/user/auth/send_verification_email`,
-        "POST",
         JSON.stringify({ userId }),
         {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      dispatch(dataStatusUIAction.setResMsg(response.data.message as string));
-      setIsOtpSent(true);
-    } catch (error) {
-      console.error("Failed to send OTP email:", error);
-    }
+      return response.data;
+    },
+    onSuccess: (data) => {
+      dispatch(dataStatusUIAction.setResMsg(data.message));
+      if (!isSendOnce) {
+        setIsSendOnce(true);
+      }
+      setResendTimer(60);
+    },
+    onError: (error: any) => {
+      dispatch(
+        dataStatusUIAction.setErrorHandler(`${error.response?.data?.message}`)
+      );
+    },
+  });
+
+  // Mutation for verifying OTP
+  const verifyOtpMutation = useMutation({
+    mutationFn: async (otp: string) => {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/user/auth/verify_email`,
+        JSON.stringify({
+          verificationToken: userId + otp,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      dispatch(dataStatusUIAction.setResMsg(data.message));
+      userDataHandler({ isEmailVerified: "1" });
+      auth.authClickedHandler(false);
+    },
+    onError: (error: any) => {
+      dispatch(
+        dataStatusUIAction.setErrorHandler(`${error.response?.data?.message}`)
+      );
+    },
+  });
+
+  if (isEmailVerified) {
+    return null;
+  }
+  
+  const handleOtpEmail = () => {
+    sendOtpMutation.mutate();
   };
 
   const verifyOtp: SubmitHandler<OTPFormInputs> = async ({
     email_verification_otp,
   }) => {
-    try {
-      const response = await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/verify_email`,
-        "POST",
-        JSON.stringify({
-          verificationToken: userId + email_verification_otp,
-        }),
-        {
-          "Content-Type": "application/json",
-        }
-      );
-      dispatch(dataStatusUIAction.setResMsg(response.data.message as string));
-      userDataHandler({ isEmailVerified: "1" });
-      setVerificationStatus(true);
-    } catch (error) {
-      console.error("OTP verification failed:", error);
-    }
+    verifyOtpMutation.mutate(email_verification_otp);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(verifyOtp)}
-      className="flex items-center gap-2 bg-custom-red"
-    >
-      <span>Enter your OTP</span>
-      <Input
-        {...register("email_verification_otp")}
-        error={!!errors.email_verification_otp}
-        helperText={errors.email_verification_otp?.message}
-        type="number"
-        placeholder="_ _ _ _ _ _"
-        classProp="text-custom-black"
-      />
-      <Button type="submit">Verify OTP</Button>
-      <Button type="button" onClick={sendOtpEmail} disabled={resendTimer > 0}>
-        {resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend"}
-      </Button>
-      <Button onClick={() => auth.logout()}>Logout</Button>
-    </form>
+    <>
+      <form
+        onSubmit={handleSubmit(verifyOtp)}
+        className="h-5/6 flex-1 flex items-center gap-2 justify-between"
+      >
+        <div className="flex-wrap w-fit">
+          {!(!isSendOnce && !auth.isOtpSend)
+            ? "Enter your OTP for verification, which was sent to your email "
+            : "Generate OTP for verification on your email "}
+          <span className="text-custom-red">{email}</span>
+        </div>
+
+        {!isSendOnce && !auth.isOtpSend ? (
+          <Button
+            classProp="py-2 px-3 rounded-full bg-custom-grey text-white font-bold  hover:bg-custom-black hover:text-custom-white hover:border-custom-black"
+            onClick={handleOtpEmail}
+            disabled={sendOtpMutation.isPending} // Disable button if sending OTP is in progress
+          >
+            {sendOtpMutation.isPending ? "Generating..." : "Generate OTP"}
+          </Button>
+        ) : (
+          <>
+            <Input
+              {...register("email_verification_otp")}
+              error={!!errors.email_verification_otp}
+              helperText={errors.email_verification_otp?.message}
+              type="number"
+              classProp="py-2 text-md rounded placeholder:text-sm min-w-[6rem] flex-1"
+              placeholder="Enter OTP"
+              outerClassProp="flex-1"
+            />
+            <Button
+              classProp="py-2 rounded-full bg-custom-grey text-white font-bold px-3 hover:bg-custom-black hover:text-custom-white hover:border-custom-black"
+              type="submit"
+              disabled={verifyOtpMutation.isPending} // Disable button if verifying OTP is in progress
+            >
+              {verifyOtpMutation.isPending ? "Verifying..." : "Verify OTP"}
+            </Button>
+          </>
+        )}
+        {isSendOnce && (
+          <Button
+            classProp={`${
+              resendTimer > 0
+                ? "bg-custom-hover-faint"
+                : "bg-custom-grey hover:bg-custom-black"
+            } ml-2 py-2 rounded-full text-white font-bold px-3`}
+            onClick={handleOtpEmail}
+            disabled={resendTimer > 0 || sendOtpMutation.isPending} // Disable if resend timer is active or OTP sending is in progress
+          >
+            {sendOtpMutation.isPending
+              ? "Resending..."
+              : resendTimer > 0
+              ? `Resend (${resendTimer}s)`
+              : "Resend"}
+          </Button>
+        )}
+      </form>
+      <div className="flex flex-col items-end text-xs w-auto">
+        <Button
+          style={{ cursor: "default" }}
+          classProp="hover:text-custom-less-red p-0 m-0"
+        >
+          Need help?
+        </Button>
+        <Button
+          style={{ cursor: "default" }}
+          classProp=" hover:text-custom-less-red p-0 m-0 ml-auto"
+          onClick={() => auth.logout()}
+        >
+          Logout
+        </Button>
+      </div>
+    </>
   );
 };
 

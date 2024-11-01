@@ -1,14 +1,17 @@
-import React, { ButtonHTMLAttributes, StyleHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes } from "react";
+import { motion } from "framer-motion";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   onClick?: () => void;
   tick?: boolean;
   classProp?: string;
-  // styleProp?:StyleHTMLAttributes;
   type?: "button" | "submit" | "reset";
   noOutline?: boolean;
   href?: string;
+  commonLoading?: boolean;
+  disabled?: boolean;
+  style?: React.CSSProperties;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,17 +19,20 @@ const Button: React.FC<ButtonProps> = ({
   classProp,
   style,
   tick,
-  type,
+  commonLoading,
+  disabled,
+  type = "button",
   onClick,
   noOutline,
-  href
+  href,
 }) => {
   return (
     <button
       onClick={onClick}
       type={type}
-      style={style}
-      className={`cursor-pointer flex items-center justify-center p-button border-2 w-auto whitespace-nowrap overflow-hidden ${classProp}`}
+      style={{ cursor: disabled ? "default" : "", ...style }}
+      disabled={disabled}
+      className={`cursor-pointer flex items-center justify-center p-button border-2 min-w-fit whitespace-nowrap overflow-hidden ${classProp}`}
     >
       {children}
     </button>
