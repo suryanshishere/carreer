@@ -7,6 +7,7 @@ import "./AuthForm.css";
 
 interface FormProps {
   inputOuterClassProp?: string;
+  inputErrorClassProp?:string;
   inputClassProp?: string;
   buttonClassProp?: string;
   forgotPassword?: boolean;
@@ -16,6 +17,7 @@ interface FormProps {
 }
 
 const AuthForm: React.FC<FormProps> = ({
+  inputErrorClassProp,
   inputOuterClassProp,
   inputClassProp,
   buttonClassProp,
@@ -44,6 +46,7 @@ const AuthForm: React.FC<FormProps> = ({
             helperText={errors.password?.message}
             placeholder="Password / Create new password"
             classProp={`${inputClassProp}`}
+          errorClassProp={`${inputErrorClassProp}`}
             outerClassProp={`${inputOuterClassProp}`}
           />
           <Button
@@ -62,7 +65,7 @@ const AuthForm: React.FC<FormProps> = ({
             classProp={`${buttonClassProp}`}
             type="submit"
           >
-            Send reset link
+            Send reset password link
           </Button>
         </div>
       )}

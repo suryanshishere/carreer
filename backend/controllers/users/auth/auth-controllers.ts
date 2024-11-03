@@ -37,11 +37,27 @@ export const sendVerificationEmail = async (
 
   try {
     // Find the user by ID if not directly passed as an email option
-    let user = null;
+    let user: IUser | null = null;
     if (!options.email) {
       user = await User.findById(userId);
       if (!user) {
         return next(new HttpError("User not found", 404));
+      }
+    }
+
+    if (user?.emailVerificationTokenExpireAt) {
+      const currentTime = new Date();
+      const expireTime = new Date(user.emailVerificationTokenExpireAt);
+      
+      const timeDifferenceInSeconds = (expireTime.getTime() - currentTime.getTime()) / 1000;
+      
+      if (timeDifferenceInSeconds >= 120) { // Check if it's 2 minutes or more
+        return next(
+          new HttpError(
+            "Please wait for " + Math.floor(timeDifferenceInSeconds - 120) + " second(s).",
+            429
+          )
+        );
       }
     }
 
@@ -63,7 +79,7 @@ export const sendVerificationEmail = async (
     // Define email content
     const emailSubject = password_reset
       ? "Forgot password and reset"
-      : "Verify your email through OTP";
+      : "Verify your email through OTP (Valid for 3min)";
     const emailContent = password_reset
       ? `${process.env.FRONTEND_URL}/reset-password/${user?.id}/${verificationToken}`
       : verificationToken;
@@ -195,196 +211,10 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
       return sendVerificationResponse(req, res, next, newUser);
     }
   } catch (err) {
-    console.error("Authentication error:", err);
     return next(new HttpError("Authentication failed, please try again.", 500));
   }
 };
 
-// export const auth = async (req: Request, res: Response, next: NextFunction) => {
-//   validationError(req, res, next);
-
-//   const { email, password } = req.body;
-
-//   try {
-//     const existingUser = await User.findOne({ email });
-
-//     let hashedPassword: string;
-//     try {
-//       hashedPassword = await bcrypt.hash(password, 12);
-//     } catch (err) {
-//       return next(
-//         new HttpError("Authenticating failed, please try again", 500)
-//       );
-//     }
-
-//     let user: IUser;
-//     const generateUniqueToken = generateUniqueVerificationToken();
-
-//     if (existingUser) {
-//       if (!existingUser.isEmailVerified) {
-//         existingUser.password = hashedPassword;
-//         existingUser.emailVerificationToken = generateUniqueToken;
-//         existingUser.emailVerificationTokenExpireAt = new Date();
-//         await existingUser.save();
-//         user = existingUser;
-//       } else {
-//         user = existingUser;
-//         let isValidPassword: boolean;
-//         try {
-//           // Compare hashed password with provided password
-//           isValidPassword = await bcrypt.compare(
-//             password,
-//             existingUser.password as string
-//           );
-//         } catch (err) {
-//           return next(
-//             new HttpError(
-//               "Could not log you in right now, please try again later.",
-//               500
-//             )
-//           );
-//         }
-
-//         if (!isValidPassword) {
-//           return next(
-//             new HttpError("Invalid credentials, could not log you in.", 401)
-//           );
-//         }
-//       }
-//     } else {
-//       user = new User({
-//         username: uuidv4(),
-//         email,
-//         password: hashedPassword,
-//         emailVerificationToken: generateUniqueToken,
-//         emailVerificationTokenExpireAt: new Date(),
-//       });
-//       await user.save();
-//     }
-
-//     if (!JWT_KEY) {
-//       return next(
-//         new HttpError("Authenticating failed, please try again", 500)
-//       );
-//     }
-
-//     // Generate JWT token and do if JWT_KEY present
-//     let token: string;
-//     try {
-//       token = jwt.sign(
-//         {
-//           userId: user.id,
-//           email: user.email,
-//         },
-//         JWT_KEY,
-//         { expiresIn: JWT_KEY_EXPIRY }
-//       );
-//     } catch (err) {
-//       console.error("JWT token generation error:", err);
-//       return next(
-//         new HttpError("Authenticating failed, please try again", 500)
-//       );
-//     }
-
-//     if (!user.isEmailVerified) {
-//       await sendVerificationEmail(
-//         req,
-//         res,
-//         next,
-//         user.id,
-//         user.email,
-//         token,
-//         true
-//       );
-//     }
-
-//     return res.status(201).json({
-//       email: user.email,
-//       userId: user.id,
-//       token,
-//       isEmailVerified: user.isEmailVerified,
-//       tokenExpiration: calculateTokenExpiration(Number(JWT_KEY_EXPIRY)),
-//       message: user.isEmailVerified
-//         ? undefined
-//         : "A verification OTP email has been sent. Please verify to complete authentication.",
-//     });
-//   } catch (err) {
-//     return next(new HttpError("Authenticating failed, please try again", 500));
-//   }
-// };
-
-// export const login = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   const { email, password } = req.body;
-
-//   try {
-//     validationError(req, res, next);
-
-//     let existingUser = await User.findOne({ email });
-//     if (!existingUser) {
-//       return next(new HttpError("User not found, please signup instead.", 404));
-//     }
-
-//     let isValidPassword: boolean;
-//     try {
-//       // Compare hashed password with provided password
-//       isValidPassword = await bcrypt.compare(
-//         password,
-//         existingUser.password as string
-//       );
-//     } catch (err) {
-//       return next(
-//         new HttpError(
-//           "Could not log you in right now, please try again later.",
-//           500
-//         )
-//       );
-//     }
-
-//     if (!isValidPassword) {
-//       return next(
-//         new HttpError("Invalid credentials, could not log you in.", 401)
-//       );
-//     }
-
-//     let token: string;
-//     let tokenExpiry: number;
-//     try {
-//       // Convert JWT_KEY_EXPIRY from minutes to seconds
-//       const expiryInSeconds = parseInt(JWT_KEY_EXPIRY) * 60;
-
-//       token = jwt.sign(
-//         { userId: existingUser.id, email: existingUser.email },
-//         JWT_KEY as string,
-//         { expiresIn: expiryInSeconds }
-//       );
-
-//       // Calculate the expiration time in seconds from the current time
-//       tokenExpiry = Math.floor(Date.now() / 1000) + expiryInSeconds;
-//     } catch (err) {
-//       return next(
-//         new HttpError(
-//           "An unexpected issue occurred while processing your request.",
-//           500
-//         )
-//       );
-//     }
-//     return res.status(200).json({
-//       email: existingUser.email,
-//       userId: existingUser.id,
-//       token,
-//       emailVerified: existingUser.isEmailVerified,
-//       tokenExpiration: new Date(tokenExpiry * 1000).toISOString(),
-//     });
-//   } catch (err) {
-//     return next(
-//       new HttpError("Logging you in failed, please try again later.", 500)
-//     );
-//   }
-// };
 
 export const resetPassword = async (
   req: Request,

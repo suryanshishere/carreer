@@ -23,7 +23,7 @@ interface IAuth {
   password: string;
 }
 
-const AuthComponent: React.FC<AuthProps> = ({ onClose }) => {
+const AuthComponent: React.FC<AuthProps> = () => {
   const auth = useContext(AuthContext);
   const { error, sendRequest } = useHttpClient();
   const dispatch = useDispatch();
@@ -88,7 +88,7 @@ const AuthComponent: React.FC<AuthProps> = ({ onClose }) => {
         errors={errors}
         inputClassProp="py-2 text-md rounded placeholder:text-sm"
         inputOuterClassProp="flex-1"
-        buttonClassProp="py-2 rounded-full bg-custom-grey text-white font-bold px-3 hover:bg-custom-black hover:text-custom-white hover:border-custom-black"
+        buttonClassProp={`${""} py-2 rounded-full bg-custom-grey text-white font-bold px-3 hover:bg-custom-black hover:text-custom-white hover:border-custom-black`}
       />
     </form>
   );

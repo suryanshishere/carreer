@@ -20,10 +20,10 @@ export interface AuthProps {
   signupDataForwardHandler?: (email: string, message: string) => void;
 }
 
-const Auth: React.FC<AuthProps> = ({ onClose }) => {
-  const [authState, setAuthState] = useState<AuthState>(AuthState.LOGIN);
+const Auth: React.FC<AuthProps> = () => {
   const auth = useContext(AuthContext);
-  const {isEmailVerified, token} = useUserData();
+  const [authState, setAuthState] = useState<AuthState>(AuthState.LOGIN);
+  const { isEmailVerified, token } = useUserData();
 
   const handleStateChange = (newState: AuthState) => {
     setAuthState(newState);
@@ -35,43 +35,90 @@ const Auth: React.FC<AuthProps> = ({ onClose }) => {
     }
   };
 
+  let components;
+
   if (authState === AuthState.FORGOT_PASSWORD) {
-    return <ForgotPassword onBack={handleBackClick} />;
+    components = <ForgotPassword onBack={handleBackClick} />;
   } else if (token && !isEmailVerified) {
-    return <EmailVerification/>;
+    components = <EmailVerification />;
+  } else {
+    components = <AuthComponent />;
   }
 
   return (
-    <>
-      {/* <div className="flex-1 flex gap-1 items-center"> */}
-      <AuthComponent onClose={onClose} />
-      {/* </div> */}
-      <div className="text-xs w-auto list-inside list-disc">
-        <Button
-          style={{ cursor: "default" }}
-          classProp=" text-custom-red hover:text-custom-less-red p-0 m-0"
-          type="button"
-          onClick={() => handleStateChange(AuthState.FORGOT_PASSWORD)}
-        >
-          Forgot Password?
-        </Button>
-        <Button
-          style={{ cursor: "default" }}
-          classProp="hover:text-custom-less-red p-0 m-0"
-          type="button"
-        >
-          Need help?
-        </Button>
-        <Button
-          style={{ cursor: "default" }}
-          onClick={() => auth.authClickedHandler(false)}
-          classProp="hover:text-custom-less-red p-0 m-0"
-          type="button"
-        >
-          Close
-        </Button>
+    <div className="w-full grid grid-cols-[85%_15%] items-center">
+      {components}
+      <div className="pl-8 text-xs">
+        {authState === AuthState.LOGIN && !token && (
+          <>
+            <Button
+              style={{ cursor: "default" }}
+              classProp=" text-custom-red hover:text-custom-less-red p-0 m-0"
+              onClick={() => handleStateChange(AuthState.FORGOT_PASSWORD)}
+            >
+              Forgot Password?
+            </Button>
+            <Button
+              style={{ cursor: "default" }}
+              classProp="hover:text-custom-less-red p-0 m-0"
+            >
+              Need help?
+            </Button>
+            <Button
+              style={{ cursor: "default" }}
+              onClick={() => auth.authClickedHandler(false)}
+              classProp="hover:text-custom-less-red p-0 m-0"
+            >
+              Close
+            </Button>
+          </>
+        )}
+        {authState === AuthState.FORGOT_PASSWORD && (
+          <>
+            <Button
+              style={{ cursor: "default" }}
+              classProp=" text-custom-red hover:text-custom-less-red p-0 m-0"
+              type="button"
+              onClick={handleBackClick}
+            >
+              Login / Signup
+            </Button>
+            <Button
+              style={{ cursor: "default" }}
+              classProp="hover:text-custom-less-red p-0 m-0"
+              type="button"
+            >
+              Need help?
+            </Button>
+            <Button
+              style={{ cursor: "default" }}
+              onClick={() => auth.authClickedHandler(false)}
+              classProp="hover:text-custom-less-red p-0 m-0"
+              type="button"
+            >
+              Close
+            </Button>
+          </>
+        )}
+        {token && !isEmailVerified && (
+          <>
+            <Button
+              style={{ cursor: "default" }}
+              classProp="hover:text-custom-less-red p-0 m-0"
+            >
+              Need help?
+            </Button>
+            <Button
+              style={{ cursor: "default" }}
+              classProp=" hover:text-custom-less-red p-0 m-0 ml-auto"
+              onClick={() => auth.logout()}
+            >
+              Logout
+            </Button>
+          </>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

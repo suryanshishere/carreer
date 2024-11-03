@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Khand:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
-:root {
+/* :root {
   --border-radius: 10px;
   --border-radius-more: 25px;
   --font-header-size: 1.25rem;
@@ -33,40 +32,25 @@
   --height-sub-main-nav: 2rem;
   --height-main-nav-sec: calc(var(--height-main-nav) + var(--height-sub-main-nav) + 2.5rem );
   --height-footer: 5.5rem;
-}
+} */
 
 body {
   margin: 0;
 }
-
-
-/* commoners for all the main heading in the page  */
 
 button {
   border: unset;
   background: unset;
 }
 
-.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%);
-  text-align: center;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-
-
-/* table-default-styling */
-
-tr {
-  padding: .25rem .8rem;
-  display: flex;
-  gap: .3rem;
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
-
-tr>td {
-  font-size: var(--font-header-size);
-}
-
 

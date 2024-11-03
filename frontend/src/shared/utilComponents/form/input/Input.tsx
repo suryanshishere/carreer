@@ -18,6 +18,7 @@ export interface InputProps
   type?: string;
   classProp?: string;
   outerClassProp?: string;
+  errorClassProp?:string;
 }
 
 // Forward ref to Input component
@@ -36,6 +37,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       helperText,
       classProp,
       outerClassProp,
+      errorClassProp,
     },
     ref // Accept ref here
   ) => {
@@ -95,9 +97,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </div>
         {helperText && (
           <p
-            className={`ml-2 mt-1 text-xs w-auto whitespace-nowrap ${
+            className={`ml-2 mt-0 bg-custom-white text-xs w-auto whitespace-nowrap ${
               error ? "text-custom-red" : "text-grey"
-            }`}
+            } ${errorClassProp}`}
           >
             {helperText}
           </p>
