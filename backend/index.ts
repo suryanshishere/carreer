@@ -33,8 +33,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
   const statusCode = error.code || 500;
   const errorMessage = error.message || "An unknown error occurred!";
-  res.status(statusCode).json({ message: errorMessage });
+  
+  const response = {
+    message: errorMessage,
+    ...(error.extraData && { extraData: error.extraData }), // Include extraData if it exists
+  };
+  
+  res.status(statusCode).json(response);
 });
+
 
 mongoose
   .connect(MONGO_URL)

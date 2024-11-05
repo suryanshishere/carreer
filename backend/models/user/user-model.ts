@@ -2,9 +2,11 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser extends Document {
   isEmailVerified: boolean;
-  emailVerificationToken?: string;
-  emailVerificationTokenExpireAt?: Date;
-  passwordResetAt?: Date;
+  emailVerificationToken?: number;
+  emailVerificationTokenCreatedAt?: Date;
+  passwordResetToken?: number;
+  passwordResetTokenCreatedAt?: Date;
+  passwordChangedAt?: Date;
   name: string;
   username: string;
   email: string;
@@ -16,11 +18,23 @@ export interface IUser extends Document {
   detail?: mongoose.Types.ObjectId;
 }
 
+// // Function to validate a 6-digit number
+// const isSixDigitNumber = (v: number): boolean => /^\d{6}$/.test(v.toString());
+
+// // Custom error message for failed validation
+// const sixDigitNumberValidator = {
+//   validator: isSixDigitNumber,
+//   message: (props: { value: number }) =>
+//     `${props.value} is not a 6-digit number!`,
+// };
+
 const userSchema: Schema = new Schema<IUser>({
   isEmailVerified: { type: Boolean, default: false },
-  emailVerificationToken: { type: String },
-  emailVerificationTokenExpireAt: { type: Date },
-  passwordResetAt: { type: Date },
+  emailVerificationToken: { type: Number },
+  emailVerificationTokenCreatedAt: { type: Date },
+  passwordResetToken: { type: Number },
+  passwordResetTokenCreatedAt: { type: Date },
+  passwordChangedAt: { type: Date },
   name: { type: String, required: true, default: "Cool" },
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },

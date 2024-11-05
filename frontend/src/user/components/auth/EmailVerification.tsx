@@ -13,23 +13,32 @@ import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDa
 import axios from "axios"; // Make sure axios is imported
 
 const otpSchema = Yup.object().shape({
-  email_verification_otp: Yup.string()
+  email_verification_otp: Yup.number()
     .required("OTP is required")
-    .length(6, "OTP must be exactly 6 digits")
-    .matches(/^\d+$/, "OTP must only contain numbers"),
+    .typeError("OTP must be a number")
+    .test(
+      "len",
+      "OTP must be exactly 6 digits",
+      (val) => val !== undefined && val.toString().length === 6
+    )
+    .test(
+      "is-positive",
+      "OTP must be a positive number",
+      (val) => val !== undefined && val > 0
+    ),
 });
 
 type OTPFormInputs = {
-  email_verification_otp: string;
+  email_verification_otp: number;
 };
 
 const EmailVerification = () => {
   const { userId, token, email, isEmailVerified } = useUserData();
-
   const auth = useContext(AuthContext);
   const [isSendOnce, setIsSendOnce] = useState<boolean>(auth.isOtpSend);
   const dispatch = useDispatch();
-  const [resendTimer, setResendTimer] = useState(0);
+  const [resendTimer, setResendTimer] = useState<number>(0);
+
   useEffect(() => {
     if (auth.isOtpSend) {
       setResendTimer(60);
@@ -52,17 +61,18 @@ const EmailVerification = () => {
     formState: { errors },
   } = useForm<OTPFormInputs>({
     resolver: yupResolver(otpSchema),
+    mode: "onSubmit",
   });
 
   // Mutation for sending OTP email
   const sendOtpMutation = useMutation({
     mutationFn: async () => {
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/send_verification_email`,
-        JSON.stringify({ userId }),
+        `${process.env.REACT_APP_BASE_URL}/user/auth/send_verification_otp`,
+        {},
         {
           headers: {
-            "Content-Type": "application/json",
+            userid: userId,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -77,6 +87,10 @@ const EmailVerification = () => {
       setResendTimer(60);
     },
     onError: (error: any) => {
+      if (error.response.status === 429) {
+        setResendTimer(error.response.data.extraData);
+        setIsSendOnce(true);
+      }
       dispatch(
         dataStatusUIAction.setErrorHandler(`${error.response?.data?.message}`)
       );
@@ -85,15 +99,15 @@ const EmailVerification = () => {
 
   // Mutation for verifying OTP
   const verifyOtpMutation = useMutation({
-    mutationFn: async (otp: string) => {
+    mutationFn: async (otp: number) => {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/user/auth/verify_email`,
-        JSON.stringify({
-          verificationToken: userId + otp,
-        }),
+        {otp},
         {
           headers: {
             "Content-Type": "application/json",
+            userid: userId,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -121,7 +135,7 @@ const EmailVerification = () => {
 
   const verifyOtp: SubmitHandler<OTPFormInputs> = async ({
     email_verification_otp,
-  }) => {
+  }) => {  
     verifyOtpMutation.mutate(email_verification_otp);
   };
 
@@ -131,7 +145,7 @@ const EmailVerification = () => {
       className="h-5/6 flex-1 flex items-center gap-2 justify-between "
     >
       <div className="flex-wrap w-fit">
-        {!(!isSendOnce && !auth.isOtpSend)
+        {isSendOnce
           ? "Enter your OTP for verification, which was sent to your email "
           : "Generate OTP for verification on your email "}
         <span className="text-custom-red">
@@ -140,9 +154,13 @@ const EmailVerification = () => {
         </span>
       </div>
 
-      {!isSendOnce && !auth.isOtpSend ? (
+      {!isSendOnce ? (
         <Button
-          classProp={`py-2 px-3 font-bold rounded-full  text-custom-white ${sendOtpMutation.isPending ? "bg-custom-black":"bg-custom-grey hover:bg-custom-black"}`}
+          classProp={`py-2 px-3 font-bold rounded-full  text-custom-white ${
+            sendOtpMutation.isPending
+              ? "bg-custom-black"
+              : "bg-custom-grey hover:bg-custom-black"
+          }`}
           onClick={handleOtpEmail}
           disabled={sendOtpMutation.isPending}
         >
@@ -160,7 +178,11 @@ const EmailVerification = () => {
             outerClassProp="flex-1"
           />
           <Button
-            classProp={`${verifyOtpMutation.isPending ? "bg-custom-black" : "hover:bg-custom-black bg-custom-grey"} py-2 rounded-full  text-white px-3  font-bold`}
+            classProp={`${
+              verifyOtpMutation.isPending
+                ? "bg-custom-black"
+                : "hover:bg-custom-black bg-custom-grey"
+            } py-2 rounded-full  text-white px-3  font-bold`}
             type="submit"
             disabled={verifyOtpMutation.isPending}
           >
@@ -171,8 +193,9 @@ const EmailVerification = () => {
       {isSendOnce && (
         <Button
           classProp={`${
-            sendOtpMutation.isPending? "bg-custom-black":
-            resendTimer > 0
+            sendOtpMutation.isPending
+              ? "bg-custom-black"
+              : resendTimer > 0
               ? "bg-custom-hover-faint"
               : "bg-custom-grey hover:bg-custom-black"
           } ml-2 py-2 rounded-full text-white px-3 font-bold`}

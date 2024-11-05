@@ -7,13 +7,14 @@ import "./AuthForm.css";
 
 interface FormProps {
   inputOuterClassProp?: string;
-  inputErrorClassProp?:string;
+  inputErrorClassProp?: string;
   inputClassProp?: string;
   buttonClassProp?: string;
   forgotPassword?: boolean;
   onBack?: () => void;
   register?: any;
   errors?: any;
+  pendingProp?: boolean;
 }
 
 const AuthForm: React.FC<FormProps> = ({
@@ -25,6 +26,7 @@ const AuthForm: React.FC<FormProps> = ({
   onBack,
   errors,
   register,
+  pendingProp = false,
 }) => {
   return (
     <>
@@ -46,14 +48,11 @@ const AuthForm: React.FC<FormProps> = ({
             helperText={errors.password?.message}
             placeholder="Password / Create new password"
             classProp={`${inputClassProp}`}
-          errorClassProp={`${inputErrorClassProp}`}
+            errorClassProp={`${inputErrorClassProp}`}
             outerClassProp={`${inputOuterClassProp}`}
           />
-          <Button
-            classProp={` ${buttonClassProp}`}
-            type="submit"
-          >
-            Authenticate
+          <Button classProp={` ${buttonClassProp}`} type="submit">
+            {pendingProp ? "Authenticating..." : "Authenticate"}
           </Button>
         </>
       ) : (
@@ -61,11 +60,10 @@ const AuthForm: React.FC<FormProps> = ({
           <IconButton onClick={onBack}>
             <ArrowBackIcon />
           </IconButton>
-          <Button
-            classProp={`${buttonClassProp}`}
-            type="submit"
-          >
-            Send reset password link
+          <Button classProp={`${buttonClassProp}`} type="submit">
+            {pendingProp
+              ? "Sending reset password link.."
+              : "Send reset password link"}
           </Button>
         </div>
       )}

@@ -12,7 +12,6 @@ import useUserData from "shared/utilComponents/hooks/user-data-hook";
 const MainNavigation: React.FC = () => {
   const showSubNav = useHandleScroll();
   const auth = useContext(AuthContext);
-  console.log(auth.clickedAuth);
 
   return (
     <div className="fixed w-full  flex flex-col justify-center z-30">

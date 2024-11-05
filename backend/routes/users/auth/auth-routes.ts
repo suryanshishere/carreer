@@ -1,10 +1,11 @@
 import express from "express";
-import { check } from "express-validator";
+import { check, header } from "express-validator";
 import {
-  sendVerificationEmail,
+  sendVerificationOtp,
   auth,
   verifyEmail,
   resetPassword,
+  sendPasswordResetLink,
 } from "@controllers/users/auth/auth-controllers";
 import checkAuth from "@middleware/check-auth";
 
@@ -23,25 +24,34 @@ router.post(
   auth
 );
 
+//auth check then below
+
 router.post(
   "/verify_email",
-  check("verificationToken").trim().isLength({ min: 30, max: 30 }),
+  check("otp")
+    .isInt({ min: 100000, max: 999999 })
+    .withMessage("OTP must be a 6-digit number."),
+  header("userid")
+    .isLength({ min: 24, max: 24 })
+    .withMessage("User required to be logged in."),
   verifyEmail
 );
 
 router.post(
-  "/send_verification_email",
-  check("userId").trim().isLength({ min: 24, max: 24 }),
-  sendVerificationEmail
+  "/send_verification_otp",
+  header("userid")
+    .isLength({ min: 24, max: 24 })
+    .withMessage("User required to be logged in."),
+  sendVerificationOtp
+);
+
+router.post(
+  "/send_password_reset_link",
+  check("email").trim().normalizeEmail().isEmail(),
+  sendPasswordResetLink
 );
 
 export default router;
-
-// router.post(
-//   "/forgot_password",
-//   [check("email").trim().normalizeEmail().isEmail()],
-//   sendVerificationEmail
-// );
 
 // router.post(
 //   "/reset_password",

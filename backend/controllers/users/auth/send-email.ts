@@ -1,7 +1,13 @@
 import nodemailer from "nodemailer";
 import HttpError from "../../../utils/http-errors";
+import { NextFunction } from "express";
 
-const sendEmail = async (email: string, subject: string, text: string) => {
+const sendEmail = async (
+  next: NextFunction,
+  email: string,
+  subject: string,
+  text: string
+) => {
   try {
     const transporter = nodemailer.createTransport({
       host: process.env.HOST,
@@ -21,8 +27,9 @@ const sendEmail = async (email: string, subject: string, text: string) => {
       text: text,
     });
   } catch (error) {
-    console.log(error)
-    throw new HttpError("Failed to send email, please try again later.", 500);
+    return next(
+      new HttpError("Failed to send email, please try again later.", 500)
+    );
   }
 };
 

@@ -11,8 +11,6 @@ router.get(
   "/undefined_fields/:post_section/:post_id",
   [
     header("userid")
-      .notEmpty()
-      .withMessage("User required to be logged in.")
       .isLength({ min: 24, max: 24 })
       .withMessage("User required to be logged in."),
   ],
@@ -25,8 +23,6 @@ router.post(
     check("post_id").trim().isLength({ min: 24, max: 24 }),
     check("post_section").trim().notEmpty(),
     header("userid")
-      .notEmpty()
-      .withMessage("User required to be logged in.")
       .isLength({ min: 24, max: 24 })
       .withMessage("User required to be logged in."),
   ],

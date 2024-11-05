@@ -9,6 +9,9 @@ import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import AuthForm from "user/components/auth/AuthForm";
 import Button from "shared/utilComponents/form/Button";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import useUserData from "shared/utilComponents/hooks/user-data-hook";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -19,14 +22,8 @@ interface IForgotPassword {
 }
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
-  const { isLoading, error, sendRequest } = useHttpClient();
-  const [response, setResponse] = useState<string>("");
   const dispatch = useDispatch();
-  const auth = useContext(AuthContext);
-
-  useEffect(() => {
-    dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error, dispatch]);
+  const { userId } = useUserData();
 
   const {
     register,
@@ -37,35 +34,53 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
     mode: "onSubmit",
   });
 
-  const submitHandler: SubmitHandler<IForgotPassword> = async (data) => {
-    try {
-      const responseData = await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/forgot_password`,
-        "POST",
-        data,
+  const submitMutation = useMutation({
+    mutationFn: async (data: IForgotPassword) => {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/user/auth/send_password_reset_link`,
+        JSON.stringify(data),
         {
-          "Content-Type": "application/json",
+          headers: {
+            "Content-Type": "application/json",
+            userid: userId,
+          },
         }
       );
-      setResponse(responseData.data.message as string);
-    } catch (err) {}
+      return response.data;
+    },
+    onSuccess: (data) => {
+      dispatch(dataStatusUIAction.setResMsg(data.message));
+      // onBack;
+    },
+    onError: (error: any) => {
+      dispatch(
+        dataStatusUIAction.setErrorHandler(`${error.response?.data?.message}`)
+      );
+    },
+  });
+
+  const submitHandler: SubmitHandler<IForgotPassword> = async (data) => {
+    submitMutation.mutate(data);
   };
 
   return (
-      <form
-        onSubmit={handleSubmit(submitHandler)}
-        className="h-5/6 flex-1 flex items-center gap-2 justify-end"
-      >
-        <AuthForm
-          forgotPassword
-          inputClassProp="py-2 text-md rounded placeholder:text-sm"
-          inputOuterClassProp="flex-1"
-          buttonClassProp="py-2 rounded-full bg-custom-grey text-white font-bold px-3 hover:bg-custom-black hover:text-custom-white hover:border-custom-black"
-          register={register}
-          errors={errors}
-          onBack={onBack}
-        />
-      </form>
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className="h-5/6 flex-1 flex items-center gap-2 justify-end"
+    >
+      <AuthForm
+        forgotPassword
+        inputClassProp="py-2 text-md rounded placeholder:text-sm"
+        inputOuterClassProp="flex-1"
+        register={register}
+        errors={errors}
+        onBack={onBack}
+        pendingProp={submitMutation.isPending}
+        buttonClassProp={`${
+          submitMutation.isPending ? "bg-custom-black" : "bg-custom-grey"
+        } py-2 rounded-full  text-white font-bold px-3 hover:bg-custom-black`}
+      />
+    </form>
   );
 };
 
