@@ -51,21 +51,23 @@ const AuthForm: React.FC<FormProps> = ({
             errorClassProp={`${inputErrorClassProp}`}
             outerClassProp={`${inputOuterClassProp}`}
           />
-          <Button classProp={` ${buttonClassProp}`} type="submit">
+          <Button classProp={`${buttonClassProp}`} type="submit">
             {pendingProp ? "Authenticating..." : "Authenticate"}
           </Button>
         </>
       ) : (
-        <div className="flex gap-2">
-          <IconButton onClick={onBack}>
-            <ArrowBackIcon />
-          </IconButton>
+        <>
+          {onBack && (
+            <IconButton onClick={onBack}>
+              <ArrowBackIcon />
+            </IconButton>
+          )}
           <Button classProp={`${buttonClassProp}`} type="submit">
             {pendingProp
               ? "Sending reset password link.."
               : "Send reset password link"}
           </Button>
-        </div>
+        </>
       )}
     </>
   );

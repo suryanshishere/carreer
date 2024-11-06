@@ -7,9 +7,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   tick?: boolean;
   classProp?: string;
   type?: "button" | "submit" | "reset";
-  noOutline?: boolean;
-  href?: string;
-  commonLoading?: boolean;
+  outline?: boolean;
+  // href?: string;
+  // commonLoading?: boolean;
   disabled?: boolean;
   style?: React.CSSProperties;
 }
@@ -18,21 +18,28 @@ const Button: React.FC<ButtonProps> = ({
   children,
   classProp,
   style,
-  tick,
-  commonLoading,
+  // commonLoading,
   disabled,
   type = "button",
   onClick,
-  noOutline,
-  href,
+  outline,
+  // href,
 }) => {
+  // Check if classProp contains any rounded-related classes
+  const hasRoundedClass = classProp
+    ?.split(" ")
+    .some((cls) => cls.includes("rounded"));
   return (
     <button
       onClick={onClick}
       type={type}
       style={{ cursor: disabled ? "default" : "", ...style }}
       disabled={disabled}
-      className={`cursor-pointer flex items-center justify-center p-button border-2 min-w-fit whitespace-nowrap overflow-hidden ${classProp}`}
+      className={`flex items-center justify-center ${
+        !hasRoundedClass ? "rounded" : ""
+      } ${
+        outline && "border border-custom-grey hover:bg-custom-hover-faint p-button"
+      } min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
     >
       {children}
     </button>

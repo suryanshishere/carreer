@@ -15,12 +15,12 @@ const RootLayout: React.FC = () => {
   // AutoUserCheck();
 
   return (
-    <div className="">
+    <div className="flex flex-col min-h-screen">
       <MainNavigation />
       <Response />
       {loading && <Loading loadingOnTop />}
       <div
-        className={`px-page mt-nav-overall mb-footer transition-transform ease-in-out duration-300 ${
+        className={`flex-grow px-page mt-nav-overall mb-footer transition-transform ease-in-out duration-300 ${
           auth.clickedAuth ? "translate-y-auth-nav" : "translate-y-0"
         }`}
       >

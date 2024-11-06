@@ -11,7 +11,8 @@ import checkAuth from "@middleware/check-auth";
 
 const router = express.Router();
 
-const { NAME_LENGTH, PWD_LENGTH } = process.env;
+const { NAME_LENGTH } = process.env;
+const PWD_LENGTH = Number(process.env.PWD_LENGTH);
 
 router.post(
   "/",
@@ -51,17 +52,17 @@ router.post(
   sendPasswordResetLink
 );
 
+router.post(
+  "/reset_password",
+  [
+    check("resetPasswordToken")
+      .isInt({ min: 100000, max: 999999 })
+      .withMessage("Invalid link"),
+    check("password").trim().isLength({ min: PWD_LENGTH }),
+    header("userid").isLength({ min: 24, max: 24 }),
+  ],
+  resetPassword
+);
 export default router;
-
-// router.post(
-//   "/reset_password",
-//   [
-//     check("resetToken").trim().isLength({ min: 30, max: 30 }),
-//     check("password")
-//       .trim()
-//       .isLength({ min: Number(PWD_LENGTH) }),
-//   ],
-//   resetPassword
-// );
 
 // router.use(checkAuth);

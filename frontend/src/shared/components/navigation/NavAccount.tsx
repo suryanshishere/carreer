@@ -21,7 +21,7 @@ const NavAccount = () => {
   let LoginSignup = (
     <>
       {!showModal && <Button
-        classProp={` rounded z-50 bg-custom-red hover:bg-custom-less-red`}
+        classProp="z-50 bg-custom-red hover:bg-custom-less-red p-button"
         onClick={() => setShowModal(true)}
       >
         Login / Signup

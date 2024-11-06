@@ -48,11 +48,11 @@ const App: React.FC = () => {
               },
             ],
           },
-          { path: "reset_password/:resetToken", element: <ResetPassword /> },
+          { path: "reset_password/:resetPasswordToken", element: <ResetPassword /> },
           { path: "*", element: <NotFound /> },
         ]
       : [
-          { path: "reset_password/:resetToken", element: <ResetPassword /> },
+          { path: "reset_password/:resetPasswordToken", element: <ResetPassword /> },
           { path: "account/contribute_to_post", element: <ContributeToPost /> },
           {
             path: "account/contribute_to_post/:post_section",

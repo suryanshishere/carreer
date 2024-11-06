@@ -18,6 +18,7 @@ export interface AuthProps {
   onBackLogin?: () => void;
   forgotPasswordClicked?: () => void;
   signupDataForwardHandler?: (email: string, message: string) => void;
+  classProp?: string;
 }
 
 const Auth: React.FC<AuthProps> = () => {
@@ -38,7 +39,7 @@ const Auth: React.FC<AuthProps> = () => {
   let components;
 
   if (authState === AuthState.FORGOT_PASSWORD) {
-    components = <ForgotPassword onBack={handleBackClick} />;
+    components = <ForgotPassword onBack={handleBackClick} classProp="h-5/6 flex-1 flex items-center gap-2 justify-end"/>;
   } else if (token && !isEmailVerified) {
     components = <EmailVerification />;
   } else {
@@ -48,26 +49,26 @@ const Auth: React.FC<AuthProps> = () => {
   return (
     <div className="w-full grid grid-cols-[85%_15%] items-center">
       {components}
-      <div className="pl-8 text-xs">
+      <div className="pl-8">
         {authState === AuthState.LOGIN && !token && (
           <>
             <Button
               style={{ cursor: "default" }}
-              classProp=" text-custom-red hover:text-custom-less-red p-0 m-0"
+              classProp=" text-custom-red hover:text-custom-less-red p-0 m-0 text-sm"
               onClick={() => handleStateChange(AuthState.FORGOT_PASSWORD)}
             >
               Forgot Password?
             </Button>
             <Button
               style={{ cursor: "default" }}
-              classProp="hover:text-custom-less-red p-0 m-0"
+              classProp="hover:text-custom-less-red p-0 m-0 text-xs"
             >
               Need help?
             </Button>
             <Button
               style={{ cursor: "default" }}
               onClick={() => auth.authClickedHandler(false)}
-              classProp="hover:text-custom-less-red p-0 m-0"
+              classProp="hover:text-custom-less-red p-0 m-0 text-xs"
             >
               Close
             </Button>
@@ -77,7 +78,7 @@ const Auth: React.FC<AuthProps> = () => {
           <>
             <Button
               style={{ cursor: "default" }}
-              classProp=" text-custom-red hover:text-custom-less-red p-0 m-0"
+              classProp=" text-custom-red hover:text-custom-less-red p-0 m-0 text-sm"
               type="button"
               onClick={handleBackClick}
             >
@@ -85,7 +86,7 @@ const Auth: React.FC<AuthProps> = () => {
             </Button>
             <Button
               style={{ cursor: "default" }}
-              classProp="hover:text-custom-less-red p-0 m-0"
+              classProp="hover:text-custom-less-red p-0 m-0 text-xs"
               type="button"
             >
               Need help?
@@ -93,7 +94,7 @@ const Auth: React.FC<AuthProps> = () => {
             <Button
               style={{ cursor: "default" }}
               onClick={() => auth.authClickedHandler(false)}
-              classProp="hover:text-custom-less-red p-0 m-0"
+              classProp="hover:text-custom-less-red p-0 m-0 text-xs"
               type="button"
             >
               Close
@@ -104,13 +105,13 @@ const Auth: React.FC<AuthProps> = () => {
           <>
             <Button
               style={{ cursor: "default" }}
-              classProp="hover:text-custom-less-red p-0 m-0"
+              classProp="hover:text-custom-less-red p-0 m-0 text-xs"
             >
               Need help?
             </Button>
             <Button
               style={{ cursor: "default" }}
-              classProp=" hover:text-custom-less-red p-0 m-0 ml-auto"
+              classProp=" hover:text-custom-less-red p-0 m-0 ml-auto text-xs"
               onClick={() => auth.logout()}
             >
               Logout

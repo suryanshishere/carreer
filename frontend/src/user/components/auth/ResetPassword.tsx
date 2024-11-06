@@ -1,51 +1,127 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { Input } from "shared/utilComponents/form/input/Input";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
+import Button from "shared/utilComponents/form/Button";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import ForgotPassword from "./ForgotPassword";
+
+const validationSchema = yup.object().shape({
+  new_password: yup.string().required("New password is required"),
+  confirm_new_password: yup
+    .string()
+    .oneOf([yup.ref("new_password")], "Passwords must match")
+    .required("Confirm new password is required"),
+});
+
+interface IResetPasswordForm {
+  new_password: string;
+  confirm_new_password: string;
+}
 
 const ResetPassword: React.FC = () => {
-  const { resetToken } = useParams<{ resetToken: string }>();
-  const { sendRequest, error } = useHttpClient();
+  const { resetPasswordToken } = useParams<{ resetPasswordToken: string }>();
   const dispatch = useDispatch();
+  const [reached, setReached] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error, dispatch]);
+  // React Hook Form setup
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IResetPasswordForm>({
+    resolver: yupResolver(validationSchema),
+  });
 
-  const resetPasswordHandler = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const password = formData.get("confirm_new_password") as string;
+  const userId = resetPasswordToken?.slice(0, -6);
 
-    try {
-      const response = await sendRequest(
+  // Mutation for resetting the password
+  const submitMutation = useMutation({
+    mutationFn: async (data: IResetPasswordForm) => {
+      const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/user/auth/reset_password`,
-        "POST",
-        JSON.stringify({ resetToken, password }),
-        { "Content-Type": "application/json" }
+        JSON.stringify({
+          resetPasswordToken: Number(resetPasswordToken?.slice(-6)),
+          password: data.new_password,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            userid: userId,
+          },
+        }
       );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      dispatch(dataStatusUIAction.setResMsg(data.message));
+      navigate("/");
+    },
+    onError: (error: any) => {
+      dispatch(
+        dataStatusUIAction.setErrorHandler(`${error.response?.data?.message}`)
+      );
+      if (error.response.status === 410) {
+        setReached(true);
+      }
+    },
+  });
 
-      dispatch(dataStatusUIAction.setResMsg(response.data.message));
-    } catch (err) {
-      // Handle error
-    }
+  // Handle form submission
+  const submitHandler: SubmitHandler<IResetPasswordForm> = (data) => {
+    submitMutation.mutate(data);
   };
+  const isValidObjectId = (id: string) => /^[0-9a-f]{24}$/.test(id);
 
-  if (resetToken?.length !== 30) return <div>NOT VALID RESET</div>;
-
-  //password and input form validation left.
+  if (
+    reached ||
+    resetPasswordToken?.length !== 30 ||
+    (userId && !isValidObjectId(userId))
+  )
+    return (
+      <div className="w-full flex flex-col gap-4 items-center">
+        {!reached && (
+          <div className="text-center text-custom-red">
+            Not a valid reset password link. <br />
+            <b>Try again</b> if problem persist.
+          </div>
+        )}
+        <ForgotPassword classProp="w-1/2 flex flex-col gap-2" />
+      </div>
+    );
 
   return (
-    <div className="w-30">
-      <form onSubmit={resetPasswordHandler}>
-        <Input name="new_password" type="password" required />
-        // match both password validation
-        <Input name="confirm_new_password" type="password" required />
-        <button type="submit">Reset Password</button>
+    <div className="w-full flex justify-center">
+      <form
+        onSubmit={handleSubmit(submitHandler)}
+        className="w-1/2 flex flex-col gap-2"
+      >
+        <Input
+          {...register("new_password")}
+          type="password"
+          // classProp=""
+          error={!!errors.new_password}
+          helperText={errors.new_password?.message}
+        />
+        <Input
+          {...register("confirm_new_password")}
+          type="password"
+          // classProp=""
+          error={!!errors.confirm_new_password}
+          helperText={errors.confirm_new_password?.message}
+        />
+        <Button type="submit" classProp="ml-auto" outline>
+          {submitMutation.isPending
+            ? "Submitting Reset Password.."
+            : "Reset Password"}
+        </Button>
       </form>
     </div>
   );

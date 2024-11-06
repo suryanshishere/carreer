@@ -73,7 +73,7 @@ const AccountInfo = () => {
             type="password"
             required
           />
-          <Button type="submit" tick />
+          <Button type="submit" />
         </form>
         <Para>Verify first, in-order to get access to your account info.</Para>
       </div>

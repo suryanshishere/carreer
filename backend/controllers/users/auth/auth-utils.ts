@@ -14,18 +14,6 @@ export const generateUniqueVerificationToken = () => {
   return Math.floor(100000 + Math.random() * 900000);
 };
 
-// Calculate expiration date based on minutes
-export const calculateTokenExpiration = (expiryInMinutes: number): Date => {
-  if (typeof expiryInMinutes !== "number" || expiryInMinutes <= 0) {
-    throw new Error(
-      "Invalid expiry time provided. It should be a positive number."
-    );
-  }
-  const currentTime = Date.now();
-  const expiryTimeInMilliseconds = expiryInMinutes * 60 * 1000;
-  return new Date(currentTime + expiryTimeInMilliseconds);
-};
-
 // Update unverified user fields with new password and verification token
 export const updateUnverifiedUser = async (user: IUser, password: string) => {
   user.password = await bcrypt.hash(password, 12);
@@ -41,37 +29,32 @@ export const sendVerificationResponse = async (
   next: NextFunction,
   user: IUser
 ) => {
-  const token = generateJWTToken(user.id, user.email);
   const options = { userId: user.id, email: user.email, isDirect: true };
 
   // Call sendVerificationOtp
   await sendVerificationOtp(req, res, next, options);
 
-  return res.status(201).json({
-    email: user.email,
-    userId: user.id,
-    token,
-    isEmailVerified: false,
-    tokenExpiration: calculateTokenExpiration(
-      Number(JWT_KEY_EXPIRY)
-    ).toISOString(),
-    message:
-      "A verification OTP email has been sent. Please verify to complete authentication.",
-  });
+  return sendAuthenticatedResponse(res, user, false);
 };
 
 // Send authenticated response for verified users
-export const sendAuthenticatedResponse = (res: Response, user: IUser) => {
+export const sendAuthenticatedResponse = (
+  res: Response,
+  user: IUser,
+  isEmailVerified: boolean = true
+) => {
   const token = generateJWTToken(user.id, user.email);
+  const tokenExpiration = new Date(
+    Date.now() + Number(JWT_KEY_EXPIRY) * 60000
+  ).toISOString();
 
   return res.status(200).json({
     email: user.email,
     userId: user.id,
     token,
-    isEmailVerified: true,
-    tokenExpiration: calculateTokenExpiration(
-      Number(JWT_KEY_EXPIRY)
-    ).toISOString(),
+    isEmailVerified,
+    tokenExpiration: tokenExpiration,
+    message: isEmailVerified ? "Logged in successf" : "An OTP verification being sent to your mail",
   });
 };
 

@@ -86,7 +86,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder || formatWord(name)}
             value={value}
             onChange={onChange}
-            className={`w-full pl-2 py-1 border-2 border-custom-grey rounded-md ${classProp} ${
+            className={`w-full pl-2 py-2 border-2 border-custom-grey text-base rounded ${classProp} ${
               error ? "border-custom-red" : ""
             }  ${
               error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"

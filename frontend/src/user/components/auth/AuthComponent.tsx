@@ -86,7 +86,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
       <AuthForm
         register={register}
         errors={errors}
-        inputClassProp="py-2 text-md rounded placeholder:text-sm"
+        inputClassProp="placeholder:text-sm"
         inputOuterClassProp="flex-1"
         pendingProp={submitMutation.isPending}
         buttonClassProp={`${

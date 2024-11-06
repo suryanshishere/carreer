@@ -21,10 +21,10 @@ interface IForgotPassword {
   email: string;
 }
 
-const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
+const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
   const dispatch = useDispatch();
   const { userId } = useUserData();
-
+  const [reached, setReached] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -50,7 +50,10 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
     },
     onSuccess: (data) => {
       dispatch(dataStatusUIAction.setResMsg(data.message));
-      // onBack;
+      if (onBack) {
+        onBack();
+      }
+      setReached(true);
     },
     onError: (error: any) => {
       dispatch(
@@ -63,14 +66,19 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
     submitMutation.mutate(data);
   };
 
+  if (reached) {
+    return (
+      <p className="text-base text-custom-green p-button font-bold">
+        Reset password link sent successfully!
+      </p>
+    );
+  }
+
   return (
-    <form
-      onSubmit={handleSubmit(submitHandler)}
-      className="h-5/6 flex-1 flex items-center gap-2 justify-end"
-    >
+    <form onSubmit={handleSubmit(submitHandler)} className={`${classProp}`}>
       <AuthForm
         forgotPassword
-        inputClassProp="py-2 text-md rounded placeholder:text-sm"
+        inputClassProp="placeholder:text-sm"
         inputOuterClassProp="flex-1"
         register={register}
         errors={errors}

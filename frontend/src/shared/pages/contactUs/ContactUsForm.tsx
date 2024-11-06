@@ -70,7 +70,7 @@ const ContactUsForm: React.FC = () => {
         />
         <div className={`form_error_submit`}>
           {error && <div className="basic-error-info">{error}</div>}
-          <Button type="submit">{isLoading ? "loading icon" : "Submit"}</Button>
+          <Button type="submit" outline >{isLoading ? "loading icon" : "Submit"}</Button>
         </div>
       </form>
 
