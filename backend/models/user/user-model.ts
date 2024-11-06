@@ -18,16 +18,6 @@ export interface IUser extends Document {
   detail?: mongoose.Types.ObjectId;
 }
 
-// // Function to validate a 6-digit number
-// const isSixDigitNumber = (v: number): boolean => /^\d{6}$/.test(v.toString());
-
-// // Custom error message for failed validation
-// const sixDigitNumberValidator = {
-//   validator: isSixDigitNumber,
-//   message: (props: { value: number }) =>
-//     `${props.value} is not a 6-digit number!`,
-// };
-
 const userSchema: Schema = new Schema<IUser>({
   isEmailVerified: { type: Boolean, default: false },
   emailVerificationToken: { type: Number },
@@ -45,12 +35,6 @@ const userSchema: Schema = new Schema<IUser>({
   deactivated_at: { type: Date },
   detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
 });
-
-//expiring the token after the given time
-// userSchema.index(
-//   { emailVerificationTokenCreatedAt: 1 },
-//   { expireAfterSeconds: Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY) }
-// );
 
 const User = mongoose.model<IUser>("User", userSchema);
 export default User;

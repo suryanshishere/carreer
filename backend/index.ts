@@ -9,6 +9,7 @@ import postsRoutes from "./routes/posts/posts-routes";
 import adminRoutes from "./routes/admin/admin-routes";
 import usersRoutes from "./routes/users/user-routes";
 import HttpError from "./utils/http-errors";
+import userCleanupTask from "@middleware/cronJobs/user-cleanup-task";
 
 const MONGO_URL: string = process.env.MONGO_URL || "";
 const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
@@ -33,15 +34,16 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
   const statusCode = error.code || 500;
   const errorMessage = error.message || "An unknown error occurred!";
-  
+
   const response = {
     message: errorMessage,
     ...(error.extraData && { extraData: error.extraData }), // Include extraData if it exists
   };
-  
+
   res.status(statusCode).json(response);
 });
 
+userCleanupTask();
 
 mongoose
   .connect(MONGO_URL)
