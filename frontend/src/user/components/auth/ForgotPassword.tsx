@@ -1,17 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import React, { useContext, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { AuthProps } from "user/pages/auth/Auth";
-import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import AuthForm from "user/components/auth/AuthForm";
-import Button from "shared/utilComponents/form/Button";
-import { AuthContext } from "shared/utilComponents/context/auth-context";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import { ResponseContext } from "shared/utilComponents/context/response-context";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -22,7 +18,7 @@ interface IForgotPassword {
 }
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
-  const dispatch = useDispatch();
+  const response = useContext(ResponseContext);
   const { userId } = useUserData();
   const [reached, setReached] = useState<boolean>(false);
   const {
@@ -49,16 +45,14 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
       return response.data;
     },
     onSuccess: (data) => {
-      dispatch(dataStatusUIAction.setResMsg(data.message));
+      response.setSuccessMsg(data.message);
       if (onBack) {
         onBack();
       }
       setReached(true);
     },
     onError: (error: any) => {
-      dispatch(
-        dataStatusUIAction.setErrorHandler(`${error.response?.data?.message}`)
-      );
+      response.setErrorMsg(`${error.response?.data?.message}`);
     },
   });
 

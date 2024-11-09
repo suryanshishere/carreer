@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -7,10 +6,10 @@ import Button from "shared/utilComponents/form/Button";
 import { Input } from "shared/utilComponents/form/input/Input";
 import { useMutation } from "@tanstack/react-query"; // Import useMutation
 import useUserData from "shared/utilComponents/hooks/user-data-hook";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
 import axios from "axios"; // Make sure axios is imported
+import { ResponseContext } from "shared/utilComponents/context/response-context";
 
 const otpSchema = Yup.object().shape({
   email_verification_otp: Yup.number()
@@ -36,7 +35,7 @@ const EmailVerification = () => {
   const { userId, token, email, isEmailVerified } = useUserData();
   const auth = useContext(AuthContext);
   const [isSendOnce, setIsSendOnce] = useState<boolean>(auth.isOtpSend);
-  const dispatch = useDispatch();
+  const response = useContext(ResponseContext);
   const [resendTimer, setResendTimer] = useState<number>(0);
 
   useEffect(() => {
@@ -80,7 +79,7 @@ const EmailVerification = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      dispatch(dataStatusUIAction.setResMsg(data.message));
+      response.setSuccessMsg(data.message);
       if (!isSendOnce) {
         setIsSendOnce(true);
       }
@@ -91,9 +90,7 @@ const EmailVerification = () => {
         setResendTimer(error.response.data.extraData);
         setIsSendOnce(true);
       }
-      dispatch(
-        dataStatusUIAction.setErrorHandler(`${error.response?.data?.message}`)
-      );
+      response.setErrorMsg(`${error.response?.data?.message}`);
     },
   });
 
@@ -102,7 +99,7 @@ const EmailVerification = () => {
     mutationFn: async (otp: number) => {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/user/auth/verify_email`,
-        {otp},
+        { otp },
         {
           headers: {
             "Content-Type": "application/json",
@@ -114,14 +111,12 @@ const EmailVerification = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      dispatch(dataStatusUIAction.setResMsg(data.message));
+      response.setSuccessMsg(data.message);
       userDataHandler({ isEmailVerified: "1" });
       auth.authClickedHandler(false);
     },
     onError: (error: any) => {
-      dispatch(
-        dataStatusUIAction.setErrorHandler(`${error.response?.data?.message}`)
-      );
+      response.setErrorMsg(`${error.response?.data?.message}`);
     },
   });
 
@@ -135,7 +130,7 @@ const EmailVerification = () => {
 
   const verifyOtp: SubmitHandler<OTPFormInputs> = async ({
     email_verification_otp,
-  }) => {  
+  }) => {
     verifyOtpMutation.mutate(email_verification_otp);
   };
 

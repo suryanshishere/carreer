@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useHttpClient } from "../hooks/http-hook";
-import { dataStatusUIAction } from "../store/data-status-ui";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { IconButton } from "@mui/material";
@@ -20,9 +19,6 @@ const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
   );
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error,  dispatch]);
 
   useEffect(() => {
     setIsBookmarked(bookmarked);
@@ -33,11 +29,11 @@ const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
       if (!userId || !token) {
         setIsBookmarked(false);
 
-        dispatch(
-          dataStatusUIAction.setErrorHandler(
-            "Please sign up or log in to save this exam to your account."
-          )
-        );
+        // dispatch(
+        //   dataStatusUIAction.setErrorHandler(
+        //     "Please sign up or log in to save this exam to your account."
+        //   )
+        // );
       } else {
         try {
           const responseData = await sendRequest(
@@ -49,9 +45,9 @@ const Bookmark: React.FC<BookmarkProps> = ({ itemId, bookmarked }) => {
               "Content-Type": "application/json",
             }
           );
-          dispatch(
-            dataStatusUIAction.setResMsg(responseData.data.message)
-          );
+          // dispatch(
+          //   dataStatusUIAction.setResMsg(responseData.data.message)
+          // );
         } catch (err) {
           setIsBookmarked(false);
         }

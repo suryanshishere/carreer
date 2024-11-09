@@ -1,12 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IPostListData } from "models/post/IPostList";
-import Card from "shared/uiComponents/cover/Card";
-// import Bookmark from "src/shared/components/utils/Bookmark";
 import SampleLoad from "shared/uiComponents/common/SampleLoad";
-import "./HomeList.css";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
-// import Tag from "src/shared/uiComponents/common/Tag";
+import "./HomeComponent.css";
 
 interface HomeListItemProps {
   ListItemData: IPostListData[];
@@ -16,7 +13,7 @@ interface HomeListItemProps {
 
 const HOME_LIMIT = Number(process.env.REACT_APP_NUMBER_OF_POST_HOMELIST) || 12
 
-const HomeListItem: React.FC<HomeListItemProps> = ({
+const HomeComponent: React.FC<HomeListItemProps> = ({
   ListItemData,
   category,
   height,
@@ -45,8 +42,6 @@ const HomeListItem: React.FC<HomeListItemProps> = ({
                   >
                     {item.name_of_the_post}
                   </Link>
-                  {/* <Tag last_updated={item.last_updated } /> */}
-                  {/* <Bookmark itemId={item._id} bookmarked={item.bookmarked} /> */}
                 </li>
                 {index !== ListItemData.length - 1 && <hr />}
               </React.Fragment>
@@ -64,4 +59,4 @@ const HomeListItem: React.FC<HomeListItemProps> = ({
   );
 };
 
-export default HomeListItem;
+export default HomeComponent;

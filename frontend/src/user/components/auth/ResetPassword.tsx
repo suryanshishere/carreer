@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import React, { useContext, useEffect, useState } from "react";
 import { Input } from "shared/utilComponents/form/input/Input";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import Button from "shared/utilComponents/form/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,6 +8,7 @@ import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import ForgotPassword from "./ForgotPassword";
+import { ResponseContext } from "shared/utilComponents/context/response-context";
 
 const validationSchema = yup.object().shape({
   new_password: yup.string().required("New password is required"),
@@ -27,7 +25,7 @@ interface IResetPasswordForm {
 
 const ResetPassword: React.FC = () => {
   const { resetPasswordToken } = useParams<{ resetPasswordToken: string }>();
-  const dispatch = useDispatch();
+  const response = useContext(ResponseContext);
   const [reached, setReached] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -61,13 +59,11 @@ const ResetPassword: React.FC = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      dispatch(dataStatusUIAction.setResMsg(data.message));
+      response.setSuccessMsg(data.message);
       navigate("/");
     },
     onError: (error: any) => {
-      dispatch(
-        dataStatusUIAction.setErrorHandler(`${error.response?.data?.message}`)
-      );
+      response.setErrorMsg(`${error.response?.data?.message}`);
       if (error.response.status === 410) {
         setReached(true);
       }

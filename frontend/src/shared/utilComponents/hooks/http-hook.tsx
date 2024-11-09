@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 
 // Define an interface for response data
 interface ResponseData {
@@ -15,15 +14,10 @@ interface HttpClientResponse<T> {
 }
 
 export const useHttpClient = () => {
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const activeHttpRequests = useRef<Map<number, AbortController>>(new Map());
   const requestCounter = useRef(0);
-
-  useEffect(() => {
-    dispatch(dataStatusUIAction.isLoadingHandler(isLoading));
-  }, [isLoading, dispatch]);
 
   const sendRequest = useCallback(
     async <T extends ResponseData>(

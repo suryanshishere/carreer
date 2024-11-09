@@ -1,15 +1,15 @@
 import React, {
   createContext,
   FC,
-  useCallback,
+  useContext,
   useEffect,
   useState,
 } from "react";
 import { isLoggedIn as checkIsLoggedIn } from "shared/utilComponents/quick/auth-check";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import useUserData from "shared/utilComponents/hooks/user-data-hook";
 import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
+import { ResponseContext } from "./response-context";
 
 const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
 
@@ -28,7 +28,7 @@ interface AuthContextValue {
   logout: () => void;
 }
 
-//todo: use context every where integrated with local storage except for path at index use localhost to make it wor
+//TODO: use redux for mangement and redux peristance for the same
 
 export const AuthContext = createContext<AuthContextValue>({
   clickedAuth: false,
@@ -51,7 +51,8 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   const [isOtpSend, setIsOtpSend] = useState<boolean>(false);
   const { isEmailVerified, token } = useUserData();
   const [clickedAuth, setClickedAuth] = useState(false);
-  
+  const response = useContext(ResponseContext);
+
   // Update clickedAuth when token or email verification status changes
   useEffect(() => {
     setClickedAuth(!!(token && !isEmailVerified));
@@ -60,7 +61,7 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   const dispatch = useDispatch();
   useEffect(() => {
     if (sessionExpireMsg) {
-      dispatch(dataStatusUIAction.setResMsg(sessionExpireMsg));
+      response.setErrorMsg(sessionExpireMsg, 1000)
     }
   }, [sessionExpireMsg, dispatch]);
 

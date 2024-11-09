@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import Button from "shared/utilComponents/form/Button";
-import Error from "shared/utilComponents/response/dataStatus/DataStatus";
-import Loading from "shared/utilComponents/response/dataStatus/Loading";
+import Loading from "shared/utilComponents/api/response/dataStatus/Loading";
 import Modal from "shared/uiComponents/modal/Modal";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import useUserData from "shared/utilComponents/hooks/user-data-hook";
 
 const ActivateModal = () => {

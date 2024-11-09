@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"; // Import useForm
 import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
 import * as Yup from "yup"; // Import Yup
@@ -8,10 +8,10 @@ import useUserData from "shared/utilComponents/hooks/user-data-hook";
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import Button from "shared/utilComponents/form/Button";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
-import { useDispatch } from "react-redux";
 import { undefinedFieldActions } from "shared/utilComponents/store/undefined-fields";
 import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
+import { ResponseContext } from "shared/utilComponents/context/response-context";
+import { useDispatch } from "react-redux";
 
 // Schema validation with Yup
 const validationSchema = Yup.object().shape({
@@ -26,10 +26,16 @@ const PostFinalizer = () => {
   const [postIdData, setPostIdData] = useState<IPostAdminData[]>([]);
   const { post_section } = useParams();
   const navigate = useNavigate();
+  const response = useContext(ResponseContext);
   const dispatch = useDispatch();
 
   // Initialize useForm from react-hook-form with validation schema
-  const { register, handleSubmit, setError, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(validationSchema), // Add Yup resolver for validation
     mode: "onSubmit",
   });
@@ -37,7 +43,7 @@ const PostFinalizer = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await sendRequest(
+        const responseCool = await sendRequest(
           `${process.env.REACT_APP_BASE_URL}/admin/public/${post_section}/post_admin_data`,
           "GET",
           null,
@@ -47,22 +53,21 @@ const PostFinalizer = () => {
           }
         );
 
-        const responseData = response.data as unknown as {
+        const responseData = responseCool.data as unknown as {
           [key: string]: IPostAdminData[];
         };
         const firstKey = Object.keys(responseData)[0];
         const responseDataValue = responseData[firstKey] || [];
         if (responseDataValue.length === 0) {
-          dispatch(dataStatusUIAction.setErrorHandler("No data found"));
-          navigate('/user/account/contribute_to_post');
+          response.setErrorMsg("No data found!");
+          navigate("/user/account/contribute_to_post");
         } else {
           setPostIdData(responseDataValue);
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     };
     fetchData();
-  }, [post_section, sendRequest, userId, token, dispatch, navigate]);
+  }, [post_section, sendRequest, userId, token, navigate]);
 
   const submitHandler: SubmitHandler<{ post_id: string }> = async (data) => {
     const postId = data.post_id;
@@ -84,7 +89,7 @@ const PostFinalizer = () => {
       };
 
       dispatch(undefinedFieldActions.setFields(responseData.undefinedFields));
-      console.log(responseData.undefinedFields)
+      console.log(responseData.undefinedFields);
       navigate(`${postId}`);
     } catch (err) {
       console.error("Error submitting form:", err);
@@ -92,7 +97,10 @@ const PostFinalizer = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col gap-2">
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className="flex flex-col gap-2"
+    >
       <h3>{formatWord(`${post_section}`)}</h3>
       <Dropdown
         name="post_id"

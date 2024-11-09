@@ -13,7 +13,6 @@ enum AuthState {
 }
 
 export interface AuthProps {
-  onClose?: () => void;
   onBack?: () => void;
   onBackLogin?: () => void;
   forgotPasswordClicked?: () => void;
@@ -36,10 +35,15 @@ const Auth: React.FC<AuthProps> = () => {
     }
   };
 
-  let components;
+  let components: React.ReactNode;
 
   if (authState === AuthState.FORGOT_PASSWORD) {
-    components = <ForgotPassword onBack={handleBackClick} classProp="h-5/6 flex-1 flex items-center gap-2 justify-end"/>;
+    components = (
+      <ForgotPassword
+        onBack={handleBackClick}
+        classProp="h-5/6 flex-1 flex items-center gap-2 justify-end"
+      />
+    );
   } else if (token && !isEmailVerified) {
     components = <EmailVerification />;
   } else {
@@ -54,7 +58,7 @@ const Auth: React.FC<AuthProps> = () => {
           <>
             <Button
               style={{ cursor: "default" }}
-              classProp=" text-custom-red hover:text-custom-less-red p-0 m-0 text-sm"
+              classProp="text-custom-red hover:text-custom-less-red p-0 m-0 text-sm"
               onClick={() => handleStateChange(AuthState.FORGOT_PASSWORD)}
             >
               Forgot Password?
@@ -78,7 +82,7 @@ const Auth: React.FC<AuthProps> = () => {
           <>
             <Button
               style={{ cursor: "default" }}
-              classProp=" text-custom-red hover:text-custom-less-red p-0 m-0 text-sm"
+              classProp="text-custom-red hover:text-custom-less-red p-0 m-0 text-sm"
               type="button"
               onClick={handleBackClick}
             >
@@ -111,7 +115,7 @@ const Auth: React.FC<AuthProps> = () => {
             </Button>
             <Button
               style={{ cursor: "default" }}
-              classProp=" hover:text-custom-less-red p-0 m-0 ml-auto text-xs"
+              classProp="hover:text-custom-less-red p-0 m-0 ml-auto text-xs"
               onClick={() => auth.logout()}
             >
               Logout

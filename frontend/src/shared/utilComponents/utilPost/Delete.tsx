@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import useUserData from "shared/utilComponents/hooks/user-data-hook";
 
 interface DeleteProps {
@@ -16,9 +15,7 @@ const Delete: React.FC<DeleteProps> = ({ itemId, onDelete }) => {
   const { token, userId } = useUserData();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error,  clearError, dispatch]);
+
 
   const deleteHandler = async () => {
     try {
@@ -35,7 +32,7 @@ const Delete: React.FC<DeleteProps> = ({ itemId, onDelete }) => {
       );
 
       onDelete(itemId);
-      dispatch(dataStatusUIAction.setResMsg(response.data.message));
+      // dispatch(dataStatusUIAction.setResMsg(response.data.message));
     } catch (err) {}
   };
 

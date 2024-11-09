@@ -2,17 +2,17 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
 import { Input } from "shared/utilComponents/form/input/Input";
 import POST_SECTION from "db/adminDb/postSection.json";
 import Button from "shared/utilComponents/form/Button";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import useUserData from "shared/utilComponents/hooks/user-data-hook";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
+import { ResponseContext } from "shared/utilComponents/context/response-context";
 
-// Schema validation with Yup
+// Validation schema using Yup
 const validationSchema = Yup.object().shape({
   name_of_the_post: Yup.string()
     .min(5, "Name of the post should be at least 5 characters long")
@@ -32,11 +32,10 @@ interface ICreateNewPostForm {
 
 const CreateNewPost: React.FC = () => {
   const { userId, token } = useUserData();
-  const { sendRequest } = useHttpClient();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const response = React.useContext(ResponseContext);
 
-  // Use the useForm hook and set up validation with Yup
+  // Setup form with React Hook Form and Yup for validation
   const {
     register,
     handleSubmit,
@@ -46,27 +45,44 @@ const CreateNewPost: React.FC = () => {
     mode: "onSubmit",
   });
 
-  const submitHandler: SubmitHandler<ICreateNewPostForm> = async (data) => {
-    try {
-      const response = await sendRequest(
+  // Mutation for form submission
+  const submitMutation = useMutation({
+    mutationFn: async (data: ICreateNewPostForm) => {
+      const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/admin/private/create_new_post`,
-        "POST",
         JSON.stringify(data),
         {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          userid: userId || "",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            userid: userId || "",
+          },
         }
       );
-      dispatch(dataStatusUIAction.setResMsg(response.data.message));
+      return response.data;
+    },
+    onSuccess: (data) => {
+      response.setSuccessMsg(data.message);
       navigate(0);
-    } catch (err) {
-      console.error("Submission failed", err);
-    }
+    },
+    onError: (error: any) => {
+      response.setErrorMsg(
+        error.response?.data?.message || "Submission failed!"
+      );
+      console.error("Submission failed", error);
+    },
+  });
+
+  // Submit handler for the form
+  const submitHandler: SubmitHandler<ICreateNewPostForm> = (data) => {
+    submitMutation.mutate(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col gap-2">
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className="flex flex-col gap-2"
+    >
       <Input
         placeholder="Name of the Post"
         {...register("name_of_the_post")}
@@ -89,7 +105,9 @@ const CreateNewPost: React.FC = () => {
         register={register}
       />
 
-      <Button type="submit">Submit</Button>
+      <Button type="submit" disabled={submitMutation.isPending}>
+        {submitMutation.isPending ? "Submitting..." : "Submit"}
+      </Button>
     </form>
   );
 };

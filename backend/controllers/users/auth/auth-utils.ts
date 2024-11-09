@@ -54,7 +54,7 @@ export const sendAuthenticatedResponse = (
     token,
     isEmailVerified,
     tokenExpiration: tokenExpiration,
-    message: isEmailVerified ? "Logged in successf" : "An OTP verification being sent to your mail",
+    message: isEmailVerified ? "Logged in successfully!" : "An OTP verification being sent to your mail.",
   });
 };
 

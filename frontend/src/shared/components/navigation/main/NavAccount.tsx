@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import AccNavList from "user/components/account/AccNavList";
-import Auth from "user/pages/auth/Auth";
-import Modal from "shared/uiComponents/modal/Modal";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import Button from "shared/utilComponents/form/Button";
 
 const NavAccount = () => {
@@ -21,7 +19,7 @@ const NavAccount = () => {
   let LoginSignup = (
     <>
       {!showModal && <Button
-        classProp="z-50 bg-custom-red hover:bg-custom-less-red p-button"
+        classProp="z-50 bg-custom-red hover:bg-custom-less-red px-2 py-1 rounded-full"
         onClick={() => setShowModal(true)}
       >
         Login / Signup

@@ -3,11 +3,10 @@ import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
 import { Input } from "shared/utilComponents/form/input/Input";
 import Button from "shared/utilComponents/form/Button";
 import Para from "shared/uiComponents/cover/Para";
-import "./AccountInfo.css";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
 import { useDispatch } from "react-redux";
 import AccountInfoForm from "./forms/AccountInfoForm";
 import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import "./AccountInfo.css";
 
 export interface AccountInfoData {
   username: string;
@@ -28,11 +27,6 @@ const AccountInfo = () => {
     () => ({} as AccountInfoData)
   );
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(dataStatusUIAction.setErrorHandler(error));
-  }, [error,   dispatch]);
 
   const passwordSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

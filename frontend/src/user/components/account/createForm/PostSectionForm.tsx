@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "shared/utilComponents/form/Button";
 import { ITableFormData } from "./createFormHelper/interfaceHelper";
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
@@ -26,7 +26,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { removeEmptyFields } from "./createFormHelper/structure-json";
 import _ from "lodash";
-import { dataStatusUIAction } from "shared/utilComponents/store/data-status-ui";
+import { ResponseContext } from "shared/utilComponents/context/response-context";
 
 const formMap: Record<string, IContributeInputForm[]> = {
   post_common: POST_COMMON_FORM,
@@ -48,6 +48,7 @@ const PostSectionForm: React.FC = () => {
   const navigate = useNavigate();
   const { sendRequest, error } = useHttpClient();
   const [tableFormData, setTableFormData] = useState<ITableFormData[]>([]);
+  const response = useContext(ResponseContext);
 
   const dispatch = useDispatch();
   const { fields, postFormData } = useSelector(
@@ -166,7 +167,7 @@ const PostSectionForm: React.FC = () => {
   // Hydrate the Redux state from localStorage on component mount
   useEffect(() => {
     dispatch(undefinedFieldActions.restoreState());
-    dispatch(dataStatusUIAction.setErrorHandler(error));
+    // response.setErrorMsg(error)
   }, []);
 
   useEffect(() => {
@@ -228,11 +229,11 @@ const PostSectionForm: React.FC = () => {
       if (!post_id && !post_section) {
         return;
       } else if (Object.keys(finalData).length === 0) {
-        dispatch(dataStatusUIAction.setErrorHandler("No data entered!"));
+        response.setErrorMsg("No data entered!");
         return;
       }
 
-      const response = await sendRequest(
+      const responseCool = await sendRequest(
         `${process.env.REACT_APP_BASE_URL}/user/account/contribute_to_post`,
         "POST",
         JSON.stringify({ post_id, post_section, data: finalData }),
@@ -243,13 +244,13 @@ const PostSectionForm: React.FC = () => {
         }
       );
 
-      const responseData = response.data as unknown as {
+      const responseData = responseCool.data as unknown as {
         [key: string]: IPostAdminData[];
       };
 
       dispatch(undefinedFieldActions.clearFields());
       dispatch(undefinedFieldActions.clearFormData());
-      dispatch(dataStatusUIAction.setResMsg(`${responseData.message}`));
+      response.setSuccessMsg(`${responseData.message}`);
       // navigate(-1); // Uncomment to navigate back after submission
     } catch (err) {}
   };

@@ -22,7 +22,7 @@ module.exports = {
         "main-nav": "3rem",
         "auth-nav": "5rem",
         "sub-nav": "2rem",
-        "auth-sub-nav": "7rem",
+        "auth-sub-nav": "8rem",
         "nav-overall": "8rem",
         footer: "5.5rem",
       },
