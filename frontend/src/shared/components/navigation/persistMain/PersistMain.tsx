@@ -13,7 +13,7 @@ const PersistMain = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -40, opacity: 0 }}
           transition={{ ease: "easeInOut", duration: 0.3 }}
-          className="h-auth-nav border-b-2 border-custom-grey w-full px-page bg-custom-white flex items-center justify-between z-20 text-base gap-4"
+          className="h-auth-nav bg-cust w-full px-page bg-custom-white flex items-center justify-between z-20 text-base gap-4"
         >
           <Auth />
         </motion.div>

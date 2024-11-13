@@ -6,6 +6,7 @@ import axiosInstance from "shared/utilComponents/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import "./Detail.css";
+import useQueryStates from "shared/uiComponents/uiUtilComponents/hooks/query-states-hook";
 
 const fetchPostDetail = async (
   category: string,
@@ -29,9 +30,13 @@ const Detail: React.FC = () => {
     queryFn: () => fetchPostDetail(category, postId),
   });
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  if (Object.keys(data).length === 0) return <p>Empty...</p>;
+  const queryStateMessage = useQueryStates({
+    isLoading,
+    error: error ? error.message : null,
+    empty: Object.keys(data).length === 0,
+  });
+
+  if (queryStateMessage) return queryStateMessage;
 
   return (
     <div className="detail_page_sec flex flex-col items-center">

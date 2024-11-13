@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import Button from "shared/utilComponents/form/Button";
-import Loading from "shared/utilComponents/api/response/dataStatus/Loading";
 import Modal from "shared/uiComponents/modal/Modal";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import { useDispatch } from "react-redux";
 import useUserData from "shared/utilComponents/hooks/user-data-hook";
 
 const ActivateModal = () => {
@@ -69,7 +67,6 @@ const ActivateModal = () => {
           // onSubmit={submitHandler}
           // contentClass="flex flex-col items-center"
         >
-          {isLoading && <Loading />}
           {/* {error && <Error error={error} />} */}
           {resMsg && (
             <>

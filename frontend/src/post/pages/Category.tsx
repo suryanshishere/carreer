@@ -5,6 +5,7 @@ import axiosInstance from "shared/utilComponents/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import "./Category.css";
+import useQueryStates from "shared/uiComponents/uiUtilComponents/hooks/query-states-hook";
 
 // Fetch function with type annotations
 const fetchCategoryPostList = async (category: string): Promise<IPostList> => {
@@ -24,9 +25,13 @@ const Category: React.FC = () => {
     enabled: Boolean(category),
   });
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  if (Object.keys(data).length === 0) return <p>Empty...</p>;
+  const queryStateMessage = useQueryStates({
+    isLoading,
+    error: error ? error.message : null,
+    empty: Object.keys(data).length === 0,
+  });
+
+  if (queryStateMessage) return queryStateMessage;
 
   return (
     <div className="flex gap-3">

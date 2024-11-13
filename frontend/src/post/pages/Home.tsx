@@ -1,18 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import HomeListItem from "post/components/HomeComponent";
 import axiosInstance from "shared/utilComponents/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import { IPostList } from "models/post/IPostList";
+import useQueryStates from "shared/uiComponents/uiUtilComponents/hooks/query-states-hook";
 import "./Home.css";
-import { ResponseContext } from "shared/utilComponents/context/response-context";
-import handleQueryStates from "shared/uiComponents/quick/handle-query-states";
 
 const fetchHomePostList = async (): Promise<IPostList> => {
   const { data } = await axiosInstance.get("/home");
   return data;
 };
 
-// Define specific heights for different categories for better readability
 const heights: Record<string, string> = {
   result: "55rem",
   admit_card: "55rem",
@@ -21,7 +19,6 @@ const heights: Record<string, string> = {
 };
 
 const Home: React.FC = () => {
-  const response = useContext(ResponseContext);
   const {
     data = {},
     isLoading,
@@ -29,10 +26,16 @@ const Home: React.FC = () => {
   } = useQuery<IPostList, Error>({
     queryKey: ["homePostList"],
     queryFn: fetchHomePostList,
+    retry: 3,
   });
 
-  const queryState = handleQueryStates(isLoading, error, data, response);
-  if (queryState) return queryState;
+  const queryStateMessage = useQueryStates({
+    isLoading,
+    error: error ? error.message : null,
+    empty: Object.keys(data).length === 0,
+  });
+
+  if (queryStateMessage) return queryStateMessage;
 
   return (
     <div className="grid grid-cols-3 gap-3">

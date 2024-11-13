@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "shared/utilComponents/form/Button";
 import { Input, TextArea } from "shared/utilComponents/form/input/Input";
-import Loading from "shared/utilComponents/api/response/dataStatus/Loading";
 import Para from "shared/uiComponents/cover/Para";
 import { AuthContext } from "shared/utilComponents/context/auth-context";
 import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
@@ -79,7 +78,6 @@ const Deactivate: React.FC<DeactivateProps> = ({ onMsg }) => {
       onSubmit={submitHandler}
       className="mt-2 mr-2 w-auto flex flex-col gap-2"
     >
-      {isLoading && <Loading />}
       {/* {error && <Error error={error} />} */}
       <Input name="password" placeholder="Password" type="password" required />
       <TextArea

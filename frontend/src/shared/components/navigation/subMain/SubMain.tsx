@@ -13,7 +13,7 @@ const SubMain: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -40, opacity: 0 }}
           transition={{ ease: "easeInOut", duration: 0.3 }}
-          className={`shadow-sm shadow-custom-grey h-sub-nav text-base px-page overflow-y-auto whitespace-nowrap bg-custom-white text-base z-20 bg-custom-grey w-full flex justify-between items-center gap-2`}
+          className={`bg-custom-pale-yellow h-sub-nav text-base px-page overflow-y-auto whitespace-nowrap bg-custom-white text-base z-20 bg-custom-grey w-full flex justify-between items-center gap-2`}
         >
           <Navlinks />
         </motion.div>
