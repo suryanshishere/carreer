@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import Button from "shared/utilComponents/form/Button";
-import Modal from "shared/uiComponents/modal/Modal";
-import { AuthContext } from "shared/utilComponents/context/auth-context";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import Button from "shared/utils/form/Button";
+import { AuthContext } from "shared/context/auth-context";
+import { useHttpClient } from "shared/hooks/http-hook";
+import useUserData from "shared/hooks/user-data-hook";
 
 const ActivateModal = () => {
   const { token, userId } = useUserData();
@@ -63,7 +62,7 @@ const ActivateModal = () => {
   return (
     <>
       {showModal && (
-        <Modal
+        <div
           // onSubmit={submitHandler}
           // contentClass="flex flex-col items-center"
         >
@@ -79,7 +78,7 @@ const ActivateModal = () => {
               </div>
             </>
           )}
-        </Modal>
+        </div>
       )}
     </>
   );

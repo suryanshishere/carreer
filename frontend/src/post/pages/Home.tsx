@@ -1,9 +1,9 @@
 import React from "react";
 import HomeListItem from "post/components/HomeComponent";
-import axiosInstance from "shared/utilComponents/api/axios-instance";
+import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import { IPostList } from "models/post/IPostList";
-import useQueryStates from "shared/uiComponents/uiUtilComponents/hooks/query-states-hook";
+import useQueryStates from "shared/hooks/query-states-hook";
 import "./Home.css";
 
 const fetchHomePostList = async (): Promise<IPostList> => {

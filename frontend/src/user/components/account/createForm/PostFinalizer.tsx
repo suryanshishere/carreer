@@ -2,15 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"; // Import useForm
 import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
 import * as Yup from "yup"; // Import Yup
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import { useHttpClient } from "shared/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import useUserData from "shared/hooks/user-data-hook";
 import { IPostAdminData } from "models/admin/IPostAdminData";
-import Button from "shared/utilComponents/form/Button";
-import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
-import { undefinedFieldActions } from "shared/utilComponents/store/undefined-fields";
-import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
-import { ResponseContext } from "shared/utilComponents/context/response-context";
+import Button from "shared/utils/form/Button";
+import { Dropdown } from "shared/utils/form/input/Dropdown";
+import { undefinedFieldActions } from "shared/store/undefined-fields";
+import { formatWord } from "shared/quick/format-word";
+import { ResponseContext } from "shared/context/response-context";
 import { useDispatch } from "react-redux";
 
 // Schema validation with Yup

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Box from "shared/uiComponents/cover/Box";
 import ACCOUNT_SETTING from "db/userDb/AccountSetting.json";
 import ChangePassword from "user/components/account/setting/ChangePassword";
 import AccountInfo from "user/components/account/setting/AccountInfo";
 import Deactivate from "user/components/account/setting/Deactivate";
-import Para from "shared/uiComponents/cover/Para";
 import "./Setting.css";
 
 const Setting = () => {
@@ -82,7 +80,7 @@ const Setting = () => {
   }
 
   return (
-    <Box className="setting_sec w-full flex ">
+    <div className="setting_sec w-full flex ">
       <ul className="column1 h-full p-1 font-bold flex flex-col gap-1">
         {ACCOUNT_SETTING.map((item, index) => (
           <React.Fragment key={index}>
@@ -105,8 +103,8 @@ const Setting = () => {
       {content && !showMsg && (
         <div className="flex-1 overflow-y-auto">{content}</div>
       )}
-      {showMsg && <Para paraMsg>{showMsg}</Para>}
-    </Box>
+      {showMsg && <p>{showMsg}</p>}
+    </div>
   );
 };
 

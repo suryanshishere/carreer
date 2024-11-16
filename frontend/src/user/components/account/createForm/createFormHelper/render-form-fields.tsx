@@ -1,9 +1,9 @@
 import React from "react";
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
-import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
-import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
-import { Input, TextArea } from "shared/utilComponents/form/input/Input";
-import TableInput from "shared/utilComponents/form/input/TableInput";
+import { formatWord } from "shared/quick/format-word";
+import { Dropdown } from "shared/utils/form/input/Dropdown";
+import { Input, TextArea } from "shared/utils/form/input/Input";
+import TableInput from "shared/utils/form/input/TableInput";
 import { ITableFormData } from "./interfaceHelper";
 
 const renderFormFields = (

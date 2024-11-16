@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Input } from "shared/utilComponents/form/input/Input";
+import { Input } from "shared/utils/form/input/Input";
 import { useNavigate, useParams } from "react-router-dom";
-import Button from "shared/utilComponents/form/Button";
+import Button from "shared/utils/form/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import ForgotPassword from "./ForgotPassword";
-import { ResponseContext } from "shared/utilComponents/context/response-context";
+import { ResponseContext } from "shared/context/response-context";
 
 const validationSchema = yup.object().shape({
   new_password: yup.string().required("New password is required"),

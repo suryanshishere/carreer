@@ -6,8 +6,8 @@ import { AuthProps } from "user/pages/auth/Auth";
 import AuthForm from "user/components/auth/AuthForm";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
-import { ResponseContext } from "shared/utilComponents/context/response-context";
+import useUserData from "shared/hooks/user-data-hook";
+import { ResponseContext } from "shared/context/response-context";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),

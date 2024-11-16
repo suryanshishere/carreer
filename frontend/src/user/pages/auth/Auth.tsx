@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import ForgotPassword from "../../components/auth/ForgotPassword";
 import AuthComponent from "user/components/auth/AuthComponent";
-import Button from "shared/utilComponents/form/Button";
-import { AuthContext } from "shared/utilComponents/context/auth-context";
+import Button from "shared/utils/form/Button";
+import { AuthContext } from "shared/context/auth-context";
 import EmailVerification from "user/components/auth/EmailVerification";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import useUserData from "shared/hooks/user-data-hook";
 
 enum AuthState {
   LOGIN,
@@ -53,12 +53,12 @@ const Auth: React.FC<AuthProps> = () => {
   return (
     <div className="w-full grid grid-cols-[85%_15%] items-center">
       {components}
-      <div className="pl-8">
+      <div className="pl-8 flex flex-col gap-[3px] items-start">
         {authState === AuthState.LOGIN && !token && (
           <>
             <Button
               style={{ cursor: "default" }}
-              classProp="text-custom-red hover:text-custom-less-red p-0 m-0 text-sm"
+              classProp="text-custom-red hover:text-custom-less-red p-0 m-0 text-xs"
               onClick={() => handleStateChange(AuthState.FORGOT_PASSWORD)}
             >
               Forgot Password?
@@ -82,7 +82,7 @@ const Auth: React.FC<AuthProps> = () => {
           <>
             <Button
               style={{ cursor: "default" }}
-              classProp="text-custom-red hover:text-custom-less-red p-0 m-0 text-sm"
+              classProp="text-custom-red hover:text-custom-less-red p-0 m-0 text-xs"
               type="button"
               onClick={handleBackClick}
             >

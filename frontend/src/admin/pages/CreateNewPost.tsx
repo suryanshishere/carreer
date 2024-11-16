@@ -4,13 +4,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { Dropdown } from "shared/utilComponents/form/input/Dropdown";
-import { Input } from "shared/utilComponents/form/input/Input";
+import { Dropdown } from "shared/utils/form/input/Dropdown";
+import { Input } from "shared/utils/form/input/Input";
 import POST_SECTION from "db/adminDb/postSection.json";
-import Button from "shared/utilComponents/form/Button";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import Button from "shared/utils/form/Button";
+import useUserData from "shared/hooks/user-data-hook";
 import { useNavigate } from "react-router-dom";
-import { ResponseContext } from "shared/utilComponents/context/response-context";
+import { ResponseContext } from "shared/context/response-context";
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({

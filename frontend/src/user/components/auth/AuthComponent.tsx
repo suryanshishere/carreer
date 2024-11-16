@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AuthContext } from "shared/utilComponents/context/auth-context";
+import { AuthContext } from "shared/context/auth-context";
 import { AuthProps } from "user/pages/auth/Auth";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,7 +7,7 @@ import * as yup from "yup";
 import AuthForm from "./AuthForm";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { ResponseContext } from "shared/utilComponents/context/response-context";
+import { ResponseContext } from "shared/context/response-context";
 
 // Validation schema using Yup
 const validationSchema = yup.object().shape({

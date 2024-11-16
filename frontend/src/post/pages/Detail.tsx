@@ -2,11 +2,11 @@ import React from "react";
 import DetailItem from "post/components/DetailItem";
 import DetailItemHeader from "post/components/DetailItemHeader";
 import { IPostDetail } from "models/post/IPostDetail";
-import axiosInstance from "shared/utilComponents/api/axios-instance";
+import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import "./Detail.css";
-import useQueryStates from "shared/uiComponents/uiUtilComponents/hooks/query-states-hook";
+import useQueryStates from "shared/hooks/query-states-hook";
 
 const fetchPostDetail = async (
   category: string,

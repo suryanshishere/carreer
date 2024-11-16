@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Para from "shared/uiComponents/cover/Para";
+import React from "react";
 import "./NotFound.css";
 
 interface NotFoundProps {
@@ -9,8 +7,8 @@ interface NotFoundProps {
 }
 
 const NotFound: React.FC<NotFoundProps> = ({ children, className }) => {
-  const navigate = useNavigate();
-  const [countdown, setCountdown] = useState(10);
+  // const navigate = useNavigate();
+  // const [countdown, setCountdown] = useState(10);
 
   // useEffect(() => {
   //   if (!children) {
@@ -31,11 +29,11 @@ const NotFound: React.FC<NotFoundProps> = ({ children, className }) => {
 
   return (
     <div className={`${className} center`}>
-      <Para>
+      <p>
         {children
           ? children
           : `Page doesn't exist.`}
-      </Para>
+      </p>
     </div>
   );
 };

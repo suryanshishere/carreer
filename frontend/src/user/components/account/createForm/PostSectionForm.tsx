@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Button from "shared/utilComponents/form/Button";
+import Button from "shared/utils/form/Button";
 import { ITableFormData } from "./createFormHelper/interfaceHelper";
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 import {
@@ -14,19 +14,19 @@ import {
   ANSWER_KEY_FORM,
 } from "db/userDb/contributeToPostDb/sectionFormsDb";
 import { IPostAdminData } from "models/admin/IPostAdminData";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import { useHttpClient } from "shared/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import useUserData from "shared/hooks/user-data-hook";
 import renderFormFields from "./createFormHelper/render-form-fields";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "shared/utilComponents/store";
-import { undefinedFieldActions } from "shared/utilComponents/store/undefined-fields";
+import { RootState } from "shared/store";
+import { undefinedFieldActions } from "shared/store/undefined-fields";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { removeEmptyFields } from "./createFormHelper/structure-json";
 import _ from "lodash";
-import { ResponseContext } from "shared/utilComponents/context/response-context";
+import { ResponseContext } from "shared/context/response-context";
 
 const formMap: Record<string, IContributeInputForm[]> = {
   post_common: POST_COMMON_FORM,

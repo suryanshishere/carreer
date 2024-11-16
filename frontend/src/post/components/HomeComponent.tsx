@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IPostListData } from "models/post/IPostList";
-import SampleLoad from "shared/uiComponents/common/SampleLoad";
-import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
+import { formatWord } from "shared/quick/format-word";
 import "./HomeComponent.css";
 
 interface HomeListItemProps {
@@ -31,7 +30,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
         <hr />
         <ul className="links_ul flex flex-col gap-1 ml-0 pr-0">
           {ListItemData.length === 0 ? (
-            <SampleLoad />
+            <div>dddd</div>
           ) : (
             ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
               <React.Fragment key={index}>

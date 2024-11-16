@@ -1,11 +1,11 @@
 import React from "react";
-import List from "shared/uiComponents/List";
+import List from "shared/ui/List";
 import { IPostList } from "models/post/IPostList";
-import axiosInstance from "shared/utilComponents/api/axios-instance";
+import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import "./Category.css";
-import useQueryStates from "shared/uiComponents/uiUtilComponents/hooks/query-states-hook";
+import useQueryStates from "shared/hooks/query-states-hook";
 
 // Fetch function with type annotations
 const fetchCategoryPostList = async (category: string): Promise<IPostList> => {
@@ -23,6 +23,7 @@ const Category: React.FC = () => {
     queryKey: ["categoryPostList", category],
     queryFn: () => fetchCategoryPostList(category),
     enabled: Boolean(category),
+    staleTime: 5 * 60 * 1000,
   });
 
   const queryStateMessage = useQueryStates({

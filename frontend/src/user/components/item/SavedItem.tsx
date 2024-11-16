@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { IPostListData } from "models/post/IPostList";
-import List from "shared/uiComponents/List";
-import Pagination from "shared/utilComponents/utilPost/Pagination";
-import { usePagination } from "shared/utilComponents/utilPost/hooks/pagination-hook";
-import Para from "shared/uiComponents/cover/Para";
+import List from "shared/ui/List";
+import Pagination from "shared/utils/postUtils/Pagination"
+import { usePagination } from "shared/hooks/pagination-hook";
 import "./SavedItem.css";
 
 interface SavedProps {
@@ -31,10 +30,10 @@ const SavedItem: React.FC<SavedProps> = ({ savedExamData }) => {
   return (
     <div className="w-full flex flex-col gap-4">
       {filteredData.length === 0 ? (
-        <Para className="h-full">
+        <p className="h-full">
           No saved exam. Try finding your interested exams and add it here by
           clicking on the bookmark icon.
-        </Para>
+        </p>
       ) : (
         <>
           <List

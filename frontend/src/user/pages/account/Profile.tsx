@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Box from "shared/uiComponents/cover/Box";
 import ACCOUNT_PROFILE from "db/userDb/AccountProfile.json";
 import "./Profile.css";
 
@@ -29,7 +28,7 @@ const Profile = () => {
   }
 
   return (
-    <Box className="setting_sec w-full flex ">
+    <div className="setting_sec w-full flex ">
       <ul className="column1 h-full p-1 font-bold flex flex-col gap-1">
         {ACCOUNT_PROFILE.map((item, index) => (
           <React.Fragment key={index}>
@@ -52,7 +51,7 @@ const Profile = () => {
         <div className="flex-1 overflow-y-auto">{content}</div>
       )}
       {showMsg && <div className="setting_content_msg">{showMsg}</div>}
-    </Box>
+    </div>
   );
 };
 

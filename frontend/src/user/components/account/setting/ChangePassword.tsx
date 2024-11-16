@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
+import { useHttpClient } from "shared/hooks/http-hook";
 import "./ChangePassword.css";
 import { useDispatch } from "react-redux";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import useUserData from "shared/hooks/user-data-hook";
 
 interface ChangePasswordProps {
   onMsg: (msg: string) => void;

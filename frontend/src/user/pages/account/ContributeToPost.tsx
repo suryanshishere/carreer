@@ -1,5 +1,5 @@
 import React from "react";
-import NavigateToPostSec from "shared/uiComponents/uiAdmin/NavigateToPostSec";
+import NavigateToPostSec from "shared/ui/uiAdmin/NavigateToPostSec";
 
 const ContributeToPost: React.FC = () => {
   

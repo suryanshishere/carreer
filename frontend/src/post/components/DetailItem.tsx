@@ -1,7 +1,7 @@
 import React from "react";
-import { formatWord } from "shared/uiComponents/uiUtilComponents/format-word";
+import { formatWord } from "shared/quick/format-word";
 import { IPostDetail } from "models/post/IPostDetail";
-import Table from "shared/uiComponents/dataVisualization/Table";
+import Table from "shared/ui/dataVisualization/Table";
 import "./DetailItem.css";
 
 interface DetailItemProps {

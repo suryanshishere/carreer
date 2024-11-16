@@ -1,12 +1,11 @@
 import React, { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import Button from "shared/utilComponents/form/Button";
-import Modal from "shared/uiComponents/modal/Modal";
+import { useHttpClient } from "shared/hooks/http-hook";
+import Button from "shared/utils/form/Button";
 import { IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import UIFormData from "shared/uiComponents/uiUtilComponents/UIFormData";
-import { Input, TextArea } from "shared/utilComponents/form/input/Input";
+import UIFormData from "shared/ui/uiUtils/UIFormData";
+import { Input, TextArea } from "shared/utils/form/input/Input";
 import "./ContactUsForm.css";
 
 interface ContactUsFormProps {
@@ -74,7 +73,7 @@ const ContactUsForm: React.FC = () => {
         </div>
       </form>
 
-      {showModal && (
+      {/* {showModal && (
         <Modal
           header="Review your info and confirm for submission"
           onCloseBackdrop={onCloseModalHandler}
@@ -89,7 +88,7 @@ const ContactUsForm: React.FC = () => {
             <Button onClick={okayModalHandler}>Confirm</Button>
           </div>
         </Modal>
-      )}
+      )} */}
     </>
   );
 };

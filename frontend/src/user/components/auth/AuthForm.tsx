@@ -1,6 +1,6 @@
 import React from "react";
-import { Input } from "shared/utilComponents/form/input/Input";
-import Button from "shared/utilComponents/form/Button";
+import { Input } from "shared/utils/form/input/Input";
+import Button from "shared/utils/form/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton } from "@mui/material";
 import "./AuthForm.css";

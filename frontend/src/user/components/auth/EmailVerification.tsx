@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import Button from "shared/utilComponents/form/Button";
-import { Input } from "shared/utilComponents/form/input/Input";
+import Button from "shared/utils/form/Button";
+import { Input } from "shared/utils/form/input/Input";
 import { useMutation } from "@tanstack/react-query"; // Import useMutation
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
-import { AuthContext } from "shared/utilComponents/context/auth-context";
-import { userDataHandler } from "shared/utilComponents/localStorageConfig/userDataHandler";
+import useUserData from "shared/hooks/user-data-hook";
+import { AuthContext } from "shared/context/auth-context";
+import { userDataHandler } from "shared/utils/localStorageConfig/userDataHandler";
 import axios from "axios"; // Make sure axios is imported
-import { ResponseContext } from "shared/utilComponents/context/response-context";
+import { ResponseContext } from "shared/context/response-context";
 
 const otpSchema = Yup.object().shape({
   email_verification_otp: Yup.number()
@@ -79,7 +79,7 @@ const EmailVerification = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      response.setSuccessMsg(data.message);
+      response.setSuccessMsg(data.message, 10);
       if (!isSendOnce) {
         setIsSendOnce(true);
       }
@@ -191,7 +191,7 @@ const EmailVerification = () => {
             sendOtpMutation.isPending
               ? "bg-custom-black"
               : resendTimer > 0
-              ? "bg-custom-hover-faint"
+              ? "bg-custom-super-less-grey"
               : "bg-custom-grey hover:bg-custom-black"
           } ml-2 py-2 rounded-full text-white px-3 font-bold`}
           onClick={handleOtpEmail}

@@ -1,10 +1,10 @@
 import SavedItem from "../components/item/SavedItem";
 import { IPostListData } from "models/post/IPostList";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
-import axiosInstance from "shared/utilComponents/api/axios-instance";
+import useUserData from "shared/hooks/user-data-hook";
+import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
+import useQueryStates from "shared/hooks/query-states-hook";
 import "./Saved.css";
-import useQueryStates from "shared/uiComponents/uiUtilComponents/hooks/query-states-hook";
 
 // Fetch function to get saved exams
 const fetchSavedPosts = async (

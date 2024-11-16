@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import { Input } from "shared/utilComponents/form/input/Input";
-import Button from "shared/utilComponents/form/Button";
-import Para from "shared/uiComponents/cover/Para";
-import { useDispatch } from "react-redux";
+import { useHttpClient } from "shared/hooks/http-hook";
+import { Input } from "shared/utils/form/input/Input";
+import Button from "shared/utils/form/Button";
 import AccountInfoForm from "./forms/AccountInfoForm";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import useUserData from "shared/hooks/user-data-hook";
 import "./AccountInfo.css";
 
 export interface AccountInfoData {
@@ -69,7 +67,7 @@ const AccountInfo = () => {
           />
           <Button type="submit" />
         </form>
-        <Para>Verify first, in-order to get access to your account info.</Para>
+        <p>Verify first, in-order to get access to your account info.</p>
       </div>
     );
   }

@@ -5,14 +5,14 @@ import HomePage from "post/pages/Home";
 import Detail from "post/pages/Detail";
 import Category from "post/pages/Category";
 import ContactUs from "shared/pages/contactUs/ContactUs";
-import { AuthContextProvider } from "./shared/utilComponents/context/auth-context";
+import { AuthContextProvider } from "./shared/context/auth-context";
 import Saved from "./user/pages/Saved";
 import Profile from "./user/pages/account/Profile";
 import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import useUserData from "shared/hooks/user-data-hook";
 import ResetPassword from "user/components/auth/ResetPassword";
-import { ResponseContextProvider } from "shared/utilComponents/context/response-context";
+import { ResponseContextProvider } from "shared/context/response-context";
 
 const App: React.FC = () => {
   //context won't work here

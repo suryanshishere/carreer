@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "shared/utilComponents/form/Button";
-import { Input, TextArea } from "shared/utilComponents/form/input/Input";
-import Para from "shared/uiComponents/cover/Para";
-import { AuthContext } from "shared/utilComponents/context/auth-context";
-import { useHttpClient } from "shared/utilComponents/hooks/http-hook";
-import useUserData from "shared/utilComponents/hooks/user-data-hook";
+import Button from "shared/utils/form/Button";
+import { Input, TextArea } from "shared/utils/form/input/Input";
+import { AuthContext } from "shared/context/auth-context";
+import { useHttpClient } from "shared/hooks/http-hook";
+import useUserData from "shared/hooks/user-data-hook";
 
 interface DeactivateProps {
   onMsg: (value: string) => void;
@@ -65,10 +64,10 @@ const Deactivate: React.FC<DeactivateProps> = ({ onMsg }) => {
           {" "}
           Deactivate Account{" "}
         </Button>
-        <Para>
+        <div>
           This will delete your account and can't be reactivated after 1 month
           of deactivated period.
-        </Para>
+        </div>
       </div>
     );
   }
