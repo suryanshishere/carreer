@@ -10,7 +10,12 @@ import POST_SECTION from "db/adminDb/postSection.json";
 import Button from "shared/utils/form/Button";
 import useUserData from "shared/hooks/user-data-hook";
 import { useNavigate } from "react-router-dom";
-import { ResponseContext } from "shared/context/response-context";
+import { useDispatch } from "react-redux";
+import {
+  triggerErrorMsg,
+  triggerSuccessMsg,
+} from "shared/store/thunks/response-thunk";
+import { AppDispatch } from "shared/store";
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -33,7 +38,7 @@ interface ICreateNewPostForm {
 const CreateNewPost: React.FC = () => {
   const { userId, token } = useUserData();
   const navigate = useNavigate();
-  const response = React.useContext(ResponseContext);
+  const dispatch = useDispatch<AppDispatch>();
 
   // Setup form with React Hook Form and Yup for validation
   const {
@@ -62,14 +67,13 @@ const CreateNewPost: React.FC = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      response.setSuccessMsg(data.message);
+      dispatch(triggerSuccessMsg(data.message));
       navigate(0);
     },
     onError: (error: any) => {
-      response.setErrorMsg(
-        error.response?.data?.message || "Submission failed!"
+      dispatch(
+        triggerErrorMsg(error.response?.data?.message || "Submission failed!")
       );
-      console.error("Submission failed", error);
     },
   });
 

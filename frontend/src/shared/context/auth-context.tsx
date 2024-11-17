@@ -1,7 +1,6 @@
 import React, {
   createContext,
   FC,
-  useContext,
   useEffect,
   useState,
 } from "react";
@@ -9,7 +8,8 @@ import { isLoggedIn as checkIsLoggedIn } from "shared/quick/auth-check";
 import { useDispatch } from "react-redux";
 import useUserData from "shared/hooks/user-data-hook";
 import { userDataHandler } from "shared/utils/localStorageConfig/userDataHandler";
-import { ResponseContext } from "shared/context/response-context";
+import { AppDispatch } from "shared/store";
+import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 
 const TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY;
 
@@ -19,17 +19,16 @@ interface AuthContextValue {
   isLoggedIn: boolean;
   authClickedHandler: (val: boolean) => void;
   login: (
-    email: string | undefined,
-    userId: string | undefined,
-    token: string | undefined,
-    tokenExpiration?: string | undefined,
-    isEmailVerified?: boolean | undefined
+    email: string,
+    userId: string,
+    token: string,
+    tokenExpiration?: string,
+    isEmailVerified?: boolean
   ) => void;
   logout: () => void;
 }
 
 //TODO: use redux for mangement and redux peristance for the same
-
 export const AuthContext = createContext<AuthContextValue>({
   clickedAuth: false,
   isOtpSend: false,
@@ -51,17 +50,15 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   const [isOtpSend, setIsOtpSend] = useState<boolean>(false);
   const { isEmailVerified, token } = useUserData();
   const [clickedAuth, setClickedAuth] = useState(false);
-  const response = useContext(ResponseContext);
+  const dispatch = useDispatch<AppDispatch>();
 
-  // Update clickedAuth when token or email verification status changes
   useEffect(() => {
     setClickedAuth(!!(token && !isEmailVerified));
   }, [token, isEmailVerified]);
 
-  const dispatch = useDispatch();
   useEffect(() => {
     if (sessionExpireMsg) {
-      response.setErrorMsg(sessionExpireMsg, 1000)
+      dispatch(triggerErrorMsg(sessionExpireMsg, 1000));
     }
   }, [sessionExpireMsg, dispatch]);
 
@@ -80,7 +77,7 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
     const localEmailVerified = isEmailVerified ? "1" : "0";
     const newTokenExpirationDate = expirationDate
       ? new Date(expirationDate)
-      : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY)); //fallback if expiration not came
+      : new Date(new Date().getTime() + 1000 * Number(TOKEN_EXPIRY)); 
 
     userDataHandler({
       email,

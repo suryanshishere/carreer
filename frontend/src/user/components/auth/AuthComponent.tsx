@@ -7,7 +7,12 @@ import * as yup from "yup";
 import AuthForm from "./AuthForm";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { ResponseContext } from "shared/context/response-context";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "shared/store";
+import {
+  triggerErrorMsg,
+  triggerSuccessMsg,
+} from "shared/store/thunks/response-thunk";
 
 // Validation schema using Yup
 const validationSchema = yup.object().shape({
@@ -25,7 +30,7 @@ interface IAuth {
 
 const AuthComponent: React.FC<AuthProps> = () => {
   const auth = useContext(AuthContext);
-  const response = useContext(ResponseContext);
+  const dispatch = useDispatch<AppDispatch>();
   // Setup form with React Hook Form
   const {
     register,
@@ -59,14 +64,14 @@ const AuthComponent: React.FC<AuthProps> = () => {
       message,
     }) => {
       auth.login(email, userId, token, tokenExpiration, isEmailVerified);
-      response.setSuccessMsg(message);
+      dispatch(triggerSuccessMsg(message));
 
       if (isEmailVerified) {
         auth.authClickedHandler(false);
       }
     },
     onError: (error: any) => {
-      response.setErrorMsg(`${error.response?.data?.message}`);
+      dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
     },
   });
 

@@ -19,14 +19,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import useUserData from "shared/hooks/user-data-hook";
 import renderFormFields from "./createFormHelper/render-form-fields";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "shared/store";
-import { undefinedFieldActions } from "shared/store/undefined-fields";
+import { AppDispatch, RootState } from "shared/store";
+import { undefinedFieldActions } from "shared/store/undefined-fields-slice";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { removeEmptyFields } from "./createFormHelper/structure-json";
 import _ from "lodash";
-import { ResponseContext } from "shared/context/response-context";
+import {
+  triggerErrorMsg,
+  triggerSuccessMsg,
+} from "shared/store/thunks/response-thunk";
 
 const formMap: Record<string, IContributeInputForm[]> = {
   post_common: POST_COMMON_FORM,
@@ -48,9 +51,8 @@ const PostSectionForm: React.FC = () => {
   const navigate = useNavigate();
   const { sendRequest, error } = useHttpClient();
   const [tableFormData, setTableFormData] = useState<ITableFormData[]>([]);
-  const response = useContext(ResponseContext);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const dispatch = useDispatch();
   const { fields, postFormData } = useSelector(
     (state: RootState) => state.undefinedFields
   );
@@ -229,7 +231,7 @@ const PostSectionForm: React.FC = () => {
       if (!post_id && !post_section) {
         return;
       } else if (Object.keys(finalData).length === 0) {
-        response.setErrorMsg("No data entered!");
+        dispatch(triggerErrorMsg("No data entered!"));
         return;
       }
 
@@ -250,7 +252,7 @@ const PostSectionForm: React.FC = () => {
 
       dispatch(undefinedFieldActions.clearFields());
       dispatch(undefinedFieldActions.clearFormData());
-      response.setSuccessMsg(`${responseData.message}`);
+      dispatch(triggerSuccessMsg(`${responseData.message}`));
       // navigate(-1); // Uncomment to navigate back after submission
     } catch (err) {}
   };

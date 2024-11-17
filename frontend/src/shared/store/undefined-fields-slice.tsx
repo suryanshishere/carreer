@@ -54,4 +54,4 @@ const undefinedFieldSlice = createSlice({
 export const undefinedFieldActions = undefinedFieldSlice.actions;
 
 // Export the reducer to be used in the store configuration
-export default undefinedFieldSlice;
+export default undefinedFieldSlice.reducer;

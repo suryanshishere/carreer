@@ -8,7 +8,12 @@ import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import ForgotPassword from "./ForgotPassword";
-import { ResponseContext } from "shared/context/response-context";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "shared/store";
+import {
+  triggerErrorMsg,
+  triggerSuccessMsg,
+} from "shared/store/thunks/response-thunk";
 
 const validationSchema = yup.object().shape({
   new_password: yup.string().required("New password is required"),
@@ -25,7 +30,7 @@ interface IResetPasswordForm {
 
 const ResetPassword: React.FC = () => {
   const { resetPasswordToken } = useParams<{ resetPasswordToken: string }>();
-  const response = useContext(ResponseContext);
+  const dispatch = useDispatch<AppDispatch>();
   const [reached, setReached] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -59,11 +64,11 @@ const ResetPassword: React.FC = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      response.setSuccessMsg(data.message);
+      dispatch(triggerSuccessMsg(data.message));
       navigate("/");
     },
     onError: (error: any) => {
-      response.setErrorMsg(`${error.response?.data?.message}`);
+      dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
       if (error.response.status === 410) {
         setReached(true);
       }

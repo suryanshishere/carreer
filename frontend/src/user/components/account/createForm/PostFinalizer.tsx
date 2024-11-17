@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"; // Import useForm
 import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
 import * as Yup from "yup"; // Import Yup
@@ -8,10 +8,12 @@ import useUserData from "shared/hooks/user-data-hook";
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import Button from "shared/utils/form/Button";
 import { Dropdown } from "shared/utils/form/input/Dropdown";
-import { undefinedFieldActions } from "shared/store/undefined-fields";
+import { undefinedFieldActions } from "shared/store/undefined-fields-slice";
 import { formatWord } from "shared/quick/format-word";
-import { ResponseContext } from "shared/context/response-context";
+
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "shared/store";
+import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 
 // Schema validation with Yup
 const validationSchema = Yup.object().shape({
@@ -26,8 +28,7 @@ const PostFinalizer = () => {
   const [postIdData, setPostIdData] = useState<IPostAdminData[]>([]);
   const { post_section } = useParams();
   const navigate = useNavigate();
-  const response = useContext(ResponseContext);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   // Initialize useForm from react-hook-form with validation schema
   const {
@@ -59,7 +60,7 @@ const PostFinalizer = () => {
         const firstKey = Object.keys(responseData)[0];
         const responseDataValue = responseData[firstKey] || [];
         if (responseDataValue.length === 0) {
-          response.setErrorMsg("No data found!");
+          dispatch(triggerErrorMsg("No data found!"));
           navigate("/user/account/contribute_to_post");
         } else {
           setPostIdData(responseDataValue);

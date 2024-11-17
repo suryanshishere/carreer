@@ -7,7 +7,9 @@ import AuthForm from "user/components/auth/AuthForm";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import useUserData from "shared/hooks/user-data-hook";
-import { ResponseContext } from "shared/context/response-context";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "shared/store";
+import { triggerErrorMsg, triggerSuccessMsg } from "shared/store/thunks/response-thunk";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -18,7 +20,7 @@ interface IForgotPassword {
 }
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
-  const response = useContext(ResponseContext);
+const dispatch = useDispatch<AppDispatch>();
   const { userId } = useUserData();
   const [reached, setReached] = useState<boolean>(false);
   const {
@@ -45,14 +47,14 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
       return response.data;
     },
     onSuccess: (data) => {
-      response.setSuccessMsg(data.message);
+      dispatch(triggerSuccessMsg(data.message));
       if (onBack) {
         onBack();
       }
       setReached(true);
     },
     onError: (error: any) => {
-      response.setErrorMsg(`${error.response?.data?.message}`);
+      dispatch(triggerErrorMsg(`${error.response?.data?.message}`))
     },
   });
 

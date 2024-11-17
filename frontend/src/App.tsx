@@ -12,7 +12,6 @@ import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
 import useUserData from "shared/hooks/user-data-hook";
 import ResetPassword from "user/components/auth/ResetPassword";
-import { ResponseContextProvider } from "shared/context/response-context";
 
 const App: React.FC = () => {
   //context won't work here
@@ -104,10 +103,8 @@ const App: React.FC = () => {
 
   return (
     <AuthContextProvider>
-      <ResponseContextProvider>
         <RouterProvider router={router} />
         <ActivateModal />
-      </ResponseContextProvider>
     </AuthContextProvider>
   );
 };

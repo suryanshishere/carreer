@@ -4,12 +4,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Button from "shared/utils/form/Button";
 import { Input } from "shared/utils/form/input/Input";
-import { useMutation } from "@tanstack/react-query"; // Import useMutation
+import { useMutation } from "@tanstack/react-query";
 import useUserData from "shared/hooks/user-data-hook";
 import { AuthContext } from "shared/context/auth-context";
 import { userDataHandler } from "shared/utils/localStorageConfig/userDataHandler";
-import axios from "axios"; // Make sure axios is imported
-import { ResponseContext } from "shared/context/response-context";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "shared/store";
+import {
+  triggerErrorMsg,
+  triggerSuccessMsg,
+} from "shared/store/thunks/response-thunk";
 
 const otpSchema = Yup.object().shape({
   email_verification_otp: Yup.number()
@@ -35,7 +40,7 @@ const EmailVerification = () => {
   const { userId, token, email, isEmailVerified } = useUserData();
   const auth = useContext(AuthContext);
   const [isSendOnce, setIsSendOnce] = useState<boolean>(auth.isOtpSend);
-  const response = useContext(ResponseContext);
+  const dispatch = useDispatch<AppDispatch>();
   const [resendTimer, setResendTimer] = useState<number>(0);
 
   useEffect(() => {
@@ -79,7 +84,7 @@ const EmailVerification = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      response.setSuccessMsg(data.message, 10);
+      dispatch(triggerSuccessMsg(data.message, 10));
       if (!isSendOnce) {
         setIsSendOnce(true);
       }
@@ -90,7 +95,7 @@ const EmailVerification = () => {
         setResendTimer(error.response.data.extraData);
         setIsSendOnce(true);
       }
-      response.setErrorMsg(`${error.response?.data?.message}`);
+      dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
     },
   });
 
@@ -111,12 +116,12 @@ const EmailVerification = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      response.setSuccessMsg(data.message);
+      dispatch(triggerSuccessMsg(data.message));
       userDataHandler({ isEmailVerified: "1" });
       auth.authClickedHandler(false);
     },
     onError: (error: any) => {
-      response.setErrorMsg(`${error.response?.data?.message}`);
+      dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
     },
   });
 
