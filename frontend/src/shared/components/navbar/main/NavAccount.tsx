@@ -10,7 +10,9 @@ import { handleAuthClick } from "shared/store/auth-slice";
 
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const isNavAuthClicked = useSelector((state: RootState) => state.auth.isNavAuthClicked);
+  const isNavAuthClicked = useSelector(
+    (state: RootState) => state.auth.isNavAuthClicked
+  );
   const { userId, email, token } = useSelector(
     (state: RootState) => state.auth.userData
   );
@@ -18,12 +20,15 @@ const NavAccount = () => {
   let LoginSignup = (
     <>
       {!isNavAuthClicked && (
-        <Button
-          classProp="z-50 bg-custom-red hover:bg-custom-less-red px-2 py-1 rounded-full"
+        <button
+          className="relative text-sm"
           onClick={() => dispatch(handleAuthClick(true))}
         >
-          Login / Signup
-        </Button>
+          <span className="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-custom-black"></span>
+          <span className="relative inline-block h-full w-full rounded px-2 py-1 font-bold text-custom-white bg-custom-red hover:bg-custom-less-red">
+            Login / Signup
+          </span>
+        </button>
       )}
     </>
   );

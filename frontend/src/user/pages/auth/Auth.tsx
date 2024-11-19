@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import ForgotPassword from "../../components/auth/ForgotPassword";
 import AuthComponent from "user/components/auth/AuthComponent";
 import Button from "shared/utils/form/Button";
@@ -27,7 +27,7 @@ const Auth: React.FC<AuthProps> = () => {
   const { token, isEmailVerified } = useSelector(
     (state: RootState) => state.auth.userData
   );
-console.log(token, isEmailVerified)
+  console.log(token, isEmailVerified);
   const handleStateChange = (newState: AuthState) => setAuthState(newState);
 
   const renderButtons = () => {
