@@ -3,11 +3,12 @@ import { AccountInfoData } from "../AccountInfo";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "shared/utils/form/Button";
 import { useHttpClient } from "shared/hooks/http-hook";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
 import { formatWord } from "shared/quick/format-word";
-import useUserData from "shared/hooks/user-data-hook";
+import { RootState } from "shared/store";
+
 
 interface AccountInfoFormProps {
   accountInfoData: AccountInfoData;
@@ -20,7 +21,9 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
     useState<AccountInfoData>(accountInfoData);
   const [editState, setEditState] = useState<string>("");
   const { error,  sendRequest, clearError } = useHttpClient();
-  const { token, userId } = useUserData();
+    const { token, userId } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
   const dispatch = useDispatch();
 
 

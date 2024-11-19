@@ -6,10 +6,13 @@ import { AuthProps } from "user/pages/auth/Auth";
 import AuthForm from "user/components/auth/AuthForm";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import useUserData from "shared/hooks/user-data-hook";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "shared/store";
-import { triggerErrorMsg, triggerSuccessMsg } from "shared/store/thunks/response-thunk";
+
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
+import {
+  triggerErrorMsg,
+  triggerSuccessMsg,
+} from "shared/store/thunks/response-thunk";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -20,8 +23,8 @@ interface IForgotPassword {
 }
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
-const dispatch = useDispatch<AppDispatch>();
-  const { userId } = useUserData();
+  const dispatch = useDispatch<AppDispatch>();
+  const { userId } = useSelector((state: RootState) => state.auth.userData);
   const [reached, setReached] = useState<boolean>(false);
   const {
     register,
@@ -54,7 +57,7 @@ const dispatch = useDispatch<AppDispatch>();
       setReached(true);
     },
     onError: (error: any) => {
-      dispatch(triggerErrorMsg(`${error.response?.data?.message}`))
+      dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
     },
   });
 

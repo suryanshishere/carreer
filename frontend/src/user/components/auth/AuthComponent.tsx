@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { AuthContext } from "shared/context/auth-context";
+import React from "react";
 import { AuthProps } from "user/pages/auth/Auth";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,6 +12,7 @@ import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
+import { handleAuthClick, login } from "shared/store/auth-slice";
 
 // Validation schema using Yup
 const validationSchema = yup.object().shape({
@@ -29,7 +29,6 @@ interface IAuth {
 }
 
 const AuthComponent: React.FC<AuthProps> = () => {
-  const auth = useContext(AuthContext);
   const dispatch = useDispatch<AppDispatch>();
   // Setup form with React Hook Form
   const {
@@ -63,11 +62,13 @@ const AuthComponent: React.FC<AuthProps> = () => {
       isEmailVerified,
       message,
     }) => {
-      auth.login(email, userId, token, tokenExpiration, isEmailVerified);
+      dispatch(
+        login({ email, userId, token, tokenExpiration, isEmailVerified })
+      );
       dispatch(triggerSuccessMsg(message));
 
       if (isEmailVerified) {
-        auth.authClickedHandler(false);
+        dispatch(handleAuthClick(false));
       }
     },
     onError: (error: any) => {

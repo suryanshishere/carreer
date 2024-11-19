@@ -1,12 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "shared/utils/form/Button";
-import { AuthContext } from "shared/context/auth-context";
 import { useHttpClient } from "shared/hooks/http-hook";
-import useUserData from "shared/hooks/user-data-hook";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
+import { logout } from "shared/store/auth-slice";
 
 const ActivateModal = () => {
-  const { token, userId } = useUserData();
-  const auth = useContext(AuthContext);
+  const { token, userId } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
+  const dispatch = useDispatch<AppDispatch>();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [resMsg, setResponseMsg] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -36,7 +39,7 @@ const ActivateModal = () => {
   // }, [sendRequest, userId, token]);
 
   const noHandler = () => {
-    auth.logout();
+    dispatch(logout());
     setShowModal(false);
   };
 
@@ -63,8 +66,8 @@ const ActivateModal = () => {
     <>
       {showModal && (
         <div
-          // onSubmit={submitHandler}
-          // contentClass="flex flex-col items-center"
+        // onSubmit={submitHandler}
+        // contentClass="flex flex-col items-center"
         >
           {/* {error && <Error error={error} />} */}
           {resMsg && (

@@ -16,7 +16,7 @@ import {
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
-import useUserData from "shared/hooks/user-data-hook";
+
 import renderFormFields from "./createFormHelper/render-form-fields";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
@@ -47,7 +47,9 @@ const formMap: Record<string, IContributeInputForm[]> = {
 
 const PostSectionForm: React.FC = () => {
   const { post_section, post_id } = useParams();
-  const { userId, token } = useUserData();
+    const {userId, token } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
   const navigate = useNavigate();
   const { sendRequest, error } = useHttpClient();
   const [tableFormData, setTableFormData] = useState<ITableFormData[]>([]);

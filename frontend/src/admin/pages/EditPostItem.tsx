@@ -2,16 +2,20 @@ import { IPostDetail } from "models/post/IPostDetail";
 import DetailItem from "post/components/DetailItem";
 import DetailItemHeader from "post/components/DetailItemHeader";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttpClient } from "shared/hooks/http-hook";
-import useUserData from "shared/hooks/user-data-hook";
+import { RootState } from "shared/store";
+
 
 const EditPostItem = () => {
   const { post_section, post_id } = useParams();
   const { sendRequest } = useHttpClient();
   const [data, setData] = useState<IPostDetail | null>(null);
   const navigate = useNavigate();
-  const { userId, token } = useUserData();
+    const {userId, token } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
 
   useEffect(() => {
     const fetchData = async () => {

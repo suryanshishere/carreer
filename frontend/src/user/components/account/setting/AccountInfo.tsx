@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { Input } from "shared/utils/form/input/Input";
 import Button from "shared/utils/form/Button";
 import AccountInfoForm from "./forms/AccountInfoForm";
-import useUserData from "shared/hooks/user-data-hook";
 import "./AccountInfo.css";
+
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 
 export interface AccountInfoData {
   username: string;
@@ -18,13 +20,14 @@ export interface AccountInfoData {
 }
 
 const AccountInfo = () => {
-  const { sendRequest, error,  clearError } = useHttpClient();
-  const { token, userId } = useUserData();
+  const { sendRequest, error, clearError } = useHttpClient();
+  const { token, userId } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
   const [contentState, setContentState] = useState(false);
   const [responseData, setResponseData] = useState<AccountInfoData>(
     () => ({} as AccountInfoData)
   );
-
 
   const passwordSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

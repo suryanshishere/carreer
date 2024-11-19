@@ -8,14 +8,14 @@ import { Dropdown } from "shared/utils/form/input/Dropdown";
 import { Input } from "shared/utils/form/input/Input";
 import POST_SECTION from "db/adminDb/postSection.json";
 import Button from "shared/utils/form/Button";
-import useUserData from "shared/hooks/user-data-hook";
+
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
-import { AppDispatch } from "shared/store";
+import { AppDispatch, RootState } from "shared/store";
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -36,7 +36,9 @@ interface ICreateNewPostForm {
 }
 
 const CreateNewPost: React.FC = () => {
-  const { userId, token } = useUserData();
+    const {userId, token } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 

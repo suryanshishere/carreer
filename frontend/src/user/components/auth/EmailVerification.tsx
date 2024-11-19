@@ -5,16 +5,14 @@ import * as Yup from "yup";
 import Button from "shared/utils/form/Button";
 import { Input } from "shared/utils/form/input/Input";
 import { useMutation } from "@tanstack/react-query";
-import useUserData from "shared/hooks/user-data-hook";
-import { AuthContext } from "shared/context/auth-context";
-import { userDataHandler } from "shared/utils/localStorageConfig/userDataHandler";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "shared/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
+import { handleAuthClick, updateUserData } from "shared/store/auth-slice";
 
 const otpSchema = Yup.object().shape({
   email_verification_otp: Yup.number()
@@ -37,17 +35,19 @@ type OTPFormInputs = {
 };
 
 const EmailVerification = () => {
-  const { userId, token, email, isEmailVerified } = useUserData();
-  const auth = useContext(AuthContext);
-  const [isSendOnce, setIsSendOnce] = useState<boolean>(auth.isOtpSend);
+  const { token, email, userId, isEmailVerified } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
+  const isOtpSent = useSelector((state: RootState) => state.auth.isOtpSent);
+  const [isSendOnce, setIsSendOnce] = useState<boolean>(isOtpSent);
   const dispatch = useDispatch<AppDispatch>();
   const [resendTimer, setResendTimer] = useState<number>(0);
 
   useEffect(() => {
-    if (auth.isOtpSend) {
+    if (isOtpSent) {
       setResendTimer(60);
     }
-  }, [auth.isOtpSend]);
+  }, [isOtpSent]);
 
   useEffect(() => {
     if (resendTimer > 0) {
@@ -116,18 +116,14 @@ const EmailVerification = () => {
       return response.data;
     },
     onSuccess: (data) => {
+      dispatch(updateUserData({isEmailVerified: true}))
       dispatch(triggerSuccessMsg(data.message));
-      userDataHandler({ isEmailVerified: "1" });
-      auth.authClickedHandler(false);
+      dispatch(handleAuthClick(false));
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
     },
   });
-
-  if (isEmailVerified) {
-    return null;
-  }
 
   const handleOtpEmail = () => {
     sendOtpMutation.mutate();

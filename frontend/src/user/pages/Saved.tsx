@@ -1,9 +1,10 @@
 import SavedItem from "../components/item/SavedItem";
 import { IPostListData } from "models/post/IPostList";
-import useUserData from "shared/hooks/user-data-hook";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 import "./Saved.css";
 
 // Fetch function to get saved exams
@@ -20,7 +21,9 @@ const fetchSavedPosts = async (
 };
 
 const Saved = () => {
-  const { token, userId } = useUserData();
+    const { token, userId } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
 
   const {
     data = [],

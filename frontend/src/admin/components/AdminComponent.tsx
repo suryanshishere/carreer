@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttpClient } from "shared/hooks/http-hook";
-import useUserData from "shared/hooks/user-data-hook";
+
 import { IPostDetail } from "models/post/IPostDetail";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 
 //TODO: from the response take the undefined field to display
 const AdminComponent: React.FC = () => {
   const { post_section } = useParams();
   const [data, setData] = useState<IPostDetail[]>([]);
   const { sendRequest, error } = useHttpClient();
-  const { userId, token } = useUserData();
+    const {userId, token } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
   const navigate = useNavigate(); 
 
   useEffect(() => {

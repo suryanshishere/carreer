@@ -2,9 +2,10 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "shared/utils/form/Button";
 import { Input, TextArea } from "shared/utils/form/input/Input";
-import { AuthContext } from "shared/context/auth-context";
 import { useHttpClient } from "shared/hooks/http-hook";
-import useUserData from "shared/hooks/user-data-hook";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
+import { logout } from "shared/store/auth-slice";
 
 interface DeactivateProps {
   onMsg: (value: string) => void;
@@ -13,8 +14,10 @@ interface DeactivateProps {
 const Deactivate: React.FC<DeactivateProps> = ({ onMsg }) => {
   const [contentState, setContentState] = useState(false);
   const { error, sendRequest, isLoading } = useHttpClient();
-  const { token, userId } = useUserData();
-  const auth = useContext(AuthContext);
+  const { token, userId } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +43,7 @@ const Deactivate: React.FC<DeactivateProps> = ({ onMsg }) => {
         );
         const responseData = response.data as unknown as { message: string };
         onMsg(responseData.message);
-        auth.logout();
+        dispatch(logout());
         setTimeout(() => {
           navigate("/");
         }, 5000);

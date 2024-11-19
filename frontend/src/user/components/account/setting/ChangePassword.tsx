@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHttpClient } from "shared/hooks/http-hook";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 import "./ChangePassword.css";
-import { useDispatch } from "react-redux";
-import useUserData from "shared/hooks/user-data-hook";
 
 interface ChangePasswordProps {
   onMsg: (msg: string) => void;
 }
 
 const ChangePassword: React.FC<ChangePasswordProps> = ({ onMsg }) => {
-  const {  error, sendRequest, clearError } = useHttpClient();
-  const { token, userId } = useUserData();
-
+  const { sendRequest } = useHttpClient();
+  const { token, userId } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
 
   const authSubmitHandler = async () => {
     // if (

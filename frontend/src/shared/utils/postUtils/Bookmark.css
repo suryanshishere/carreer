@@ -1,7 +1,0 @@
-.bookmark_sec {
-    color: var(--color-gray);
-    font-size: var(--font-min-size);
-    padding: .25rem .5rem;
-    border-radius: 50%;
-    cursor: pointer;
-}

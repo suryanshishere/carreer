@@ -1,26 +1,30 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import undefinedFieldReducer from "./undefined-fields-slice";
 import dropdownReducer from "./dropdown-slice";
 import responseReducer from "./response-slice";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-// import authReducer from "./auth-slice";
+import authReducer from "./auth-slice";
 
-const persistConfig = {
+const authPersistConfig = {
   key: "auth",
   storage,
+  whitelist: ["isNavAuthClicked", "userData"],
 };
 
-// const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 const store = configureStore({
   reducer: {
     undefinedFields: undefinedFieldReducer,
     dropdown: dropdownReducer,
     response: responseReducer,
-    // auth: persistedAuthReducer,
+    auth: persistedAuthReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // Disable to handle non-serializable values like functions
+    }),
 });
 
 export const persistor = persistStore(store);

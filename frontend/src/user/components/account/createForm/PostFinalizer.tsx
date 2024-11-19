@@ -4,15 +4,15 @@ import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
 import * as Yup from "yup"; // Import Yup
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
-import useUserData from "shared/hooks/user-data-hook";
+
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import Button from "shared/utils/form/Button";
 import { Dropdown } from "shared/utils/form/input/Dropdown";
 import { undefinedFieldActions } from "shared/store/undefined-fields-slice";
 import { formatWord } from "shared/quick/format-word";
 
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "shared/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
 import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 
 // Schema validation with Yup
@@ -24,7 +24,9 @@ const validationSchema = Yup.object().shape({
 
 const PostFinalizer = () => {
   const { sendRequest } = useHttpClient();
-  const { userId, token } = useUserData();
+    const {userId, token } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
   const [postIdData, setPostIdData] = useState<IPostAdminData[]>([]);
   const { post_section } = useParams();
   const navigate = useNavigate();

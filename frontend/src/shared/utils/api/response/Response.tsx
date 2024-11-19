@@ -1,14 +1,12 @@
-import { useContext } from "react";
 import { motion } from "framer-motion";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "shared/store";
+import {  useSelector } from "react-redux";
+import { selectErrorMsg, selectSuccessMsg, selectIsLoading } from "shared/store/selectors";
+
 
 const Response = () => {
-  const { successMsg, errorMsg } = useSelector((state: RootState) => ({
-    successMsg: state.response.onSuccessMsg,
-    errorMsg: state.response.onErrorMsg,
-    isLoading: state.response.isLoading,
-  }));
+  const errorMsg = useSelector(selectErrorMsg);
+  const successMsg = useSelector(selectSuccessMsg);
+  // const isLoading = useSelector(selectIsLoading);
 
   return (
     <div className="px-page text-sm text-custom-white rounded font-bold flex justify-end mt-1 w-full gap-2 z-19">

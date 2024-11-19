@@ -1,10 +1,12 @@
 import { IPostListData } from "models/post/IPostList";
 import { useEffect, useState } from "react";
 
-export const usePagination = (data: IPostListData[]) => {
+const usePagination = (data: IPostListData[]) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage] = useState(parseInt(process.env.REACT_APP_RECORDS_PER_PAGE ?? '10', 10));
-  const [dataChanged, setDataChanged] = useState(false); 
+  const [recordsPerPage] = useState(
+    parseInt(process.env.REACT_APP_RECORDS_PER_PAGE ?? "10", 10)
+  );
+  const [dataChanged, setDataChanged] = useState(false);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -19,7 +21,10 @@ export const usePagination = (data: IPostListData[]) => {
   const safeCurrentPage = Math.min(currentPage, nPages);
 
   // Calculate the indices for slicing the data
-  const indexOfLastRecord = Math.min(safeCurrentPage * recordsPerPage, validData.length);
+  const indexOfLastRecord = Math.min(
+    safeCurrentPage * recordsPerPage,
+    validData.length
+  );
   const indexOfFirstRecord = Math.max(indexOfLastRecord - recordsPerPage, 0);
   const currentRecords = validData.slice(indexOfFirstRecord, indexOfLastRecord);
 
@@ -32,3 +37,5 @@ export const usePagination = (data: IPostListData[]) => {
     setDataChanged,
   };
 };
+
+export default usePagination;

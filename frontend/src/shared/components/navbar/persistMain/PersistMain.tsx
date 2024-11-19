@@ -1,13 +1,14 @@
-import React, { useContext } from "react";
 import Auth from "user/pages/auth/Auth";
 import { AnimatePresence, motion } from "framer-motion";
-import { AuthContext } from "shared/context/auth-context";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 
 const PersistMain = () => {
-  const auth = useContext(AuthContext);
+  const isNavAuthClicked = useSelector((state: RootState) => state.auth.isNavAuthClicked);
+
   return (
     <AnimatePresence>
-      {auth.clickedAuth && (
+      {isNavAuthClicked && (
         <motion.div
           initial={{ y: -40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
