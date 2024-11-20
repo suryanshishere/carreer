@@ -8,6 +8,9 @@ interface IAuthSlice {
 }
 
 const AUTH_TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY || 15;
+const NAV_ACCOUNT_DEFAULT_DP =
+  process.env.REACT_APP_NAV_ACCOUNT_DEFAULT_DP ||
+  "https://img.freepik.com/free-photo/background_53876-32170.jpg?t=st=1732070280~exp=1732073880~hmac=f3b7e7a5ee6cef8bc932b0f3595f7d90864f64a12871da125d205ef3559a0208&w=996";
 
 const initialState: IAuthSlice = {
   isNavAuthClicked: false,
@@ -17,8 +20,6 @@ const initialState: IAuthSlice = {
     userId: "",
     token: "",
     isEmailVerified: false,
-    tokenExpiration: undefined,
-    sessionExpireMsg: undefined,
   },
 };
 
@@ -36,16 +37,21 @@ const authSlice = createSlice({
         email: string;
         userId: string;
         token: string;
-        tokenExpiration?: string;
         isEmailVerified: boolean;
+        tokenExpiration?: string;
       }>
     ) {
-      const { email, userId, token, tokenExpiration, isEmailVerified } =
-        action.payload;
+      const {
+        email,
+        userId,
+        token,
+        tokenExpiration,
+        isEmailVerified
+      } = action.payload;
 
       if (!email && !userId && !token && isEmailVerified === undefined) return;
 
-      const newTokenExpirationDate = tokenExpiration
+      const localTokenExpiration = tokenExpiration
         ? new Date(tokenExpiration)
         : new Date(
             new Date().getTime() + 1000 * 60 * Number(AUTH_TOKEN_EXPIRY)
@@ -56,8 +62,8 @@ const authSlice = createSlice({
         email,
         userId,
         token,
-        tokenExpiration: newTokenExpirationDate.toISOString(),
         isEmailVerified,
+        tokenExpiration: localTokenExpiration.toISOString()
       };
 
       if (isEmailVerified) {
@@ -66,7 +72,6 @@ const authSlice = createSlice({
     },
 
     logout(state) {
-      localStorage.removeItem("userData");
       state.isNavAuthClicked = false;
       state.userData = {
         email: "",
@@ -74,7 +79,7 @@ const authSlice = createSlice({
         token: "",
         isEmailVerified: false,
         tokenExpiration: undefined,
-        sessionExpireMsg: undefined,
+        sessionExpireMsg: undefined
       };
     },
 
@@ -85,5 +90,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { handleAuthClick, login, logout, updateUserData } = authSlice.actions;
+export const { handleAuthClick, login, logout, updateUserData } =
+  authSlice.actions;
 export default authSlice.reducer;

@@ -18,6 +18,7 @@ module.exports = {
         "custom-blue": "#1679AB",
         "custom-yellow": "#EEEBDD",
         "custom-pale-yellow": "#EBE4D1",
+        "custom-pale-orange": "#E4C087",
       },
       spacing: {
         "main-nav": "3rem",
@@ -49,9 +50,9 @@ module.exports = {
           cursor: "default",
         },
       });
-    }
+    },
   ],
   corePlugins: {
     preflight: true,
-  }
+  },
 };

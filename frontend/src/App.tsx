@@ -6,7 +6,6 @@ import Detail from "post/pages/Detail";
 import Category from "post/pages/Category";
 import ContactUs from "shared/pages/contactUs/ContactUs";
 import Saved from "./user/pages/Saved";
-import Profile from "./user/pages/account/Profile";
 import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
 
@@ -22,7 +21,6 @@ const App: React.FC = () => {
     token || !token
       ? [
           { path: "saved_exam", element: <Saved /> },
-          { path: "profile", element: <Profile /> },
           // { path: "setting", element: <Setting /> },
           {
             path: "account",
@@ -105,7 +103,6 @@ const App: React.FC = () => {
   return (
     <>
       <RouterProvider router={router} />
-      {/* <ActivateModal /> */}
     </>
   );
 };

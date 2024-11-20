@@ -3,6 +3,7 @@ export interface IUserData {
   userId: string;
   token: string;
   isEmailVerified: boolean;
+  navAccountDp?: string;
   tokenExpiration?: string;
   sessionExpireMsg?: string;
 }
