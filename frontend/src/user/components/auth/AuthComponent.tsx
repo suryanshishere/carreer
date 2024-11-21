@@ -13,6 +13,7 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import { handleAuthClick, login } from "shared/store/auth-slice";
+import axiosInstance from "shared/utils/api/axios-instance";
 
 // Validation schema using Yup
 const validationSchema = yup.object().shape({
@@ -43,14 +44,10 @@ const AuthComponent: React.FC<AuthProps> = () => {
   // Form submission handler
   const submitMutation = useMutation({
     mutationFn: async (data: IAuth) => {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/auth`,
+      const response = await axiosInstance.post(
+        `user/auth`,
         JSON.stringify(data),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        {}
       );
       return response.data;
     },

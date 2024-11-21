@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "shared/store/auth-slice";
 import { handleShowNavDropdown } from "shared/store/dropdown-slice";
 import { RootState } from "shared/store";
@@ -7,9 +7,11 @@ import NAV_ACCOUNT_LIST from "db/shared/nav/NavAccountList.json";
 
 const NavAccountList = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const logoutHandler = () => {
     dispatch(handleShowNavDropdown(false));
     dispatch(logout());
+    navigate("/");
   };
 
   const navItems = NAV_ACCOUNT_LIST.map(({ link, header }, index) => (

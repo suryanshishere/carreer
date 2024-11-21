@@ -43,7 +43,7 @@ export const sendPasswordResetLink = async (
 
     if (!existingUser || !existingUser.isEmailVerified) {
       //if user email not verified send user not found for password reset
-      return next(new HttpError("User not found", 404));
+      return next(new HttpError("User not found!", 404));
     }
 
     //check too many request to prevent reset link send to email

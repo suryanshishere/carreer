@@ -59,7 +59,7 @@ const Button: React.FC<ButtonProps> = ({
         !hasRoundedClass ? "rounded" : ""
       } ${
         outline &&
-        "border border-custom-grey hover:bg-custom-hover-faint p-button"
+        "outline outline-custom-super-less-grey p-button hover:bg-custom-super-less-grey"
       } min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
     >
       {children}

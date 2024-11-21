@@ -5,6 +5,7 @@ import { handleAuthClick } from "shared/store/auth-slice";
 import { handleShowNavDropdown } from "shared/store/dropdown-slice";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import NavAccountList from "../subMain/navAccount/NavAccountList";
+import Button from "shared/utils/form/Button";
 
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,15 +22,16 @@ const NavAccount = () => {
   let LoginSignup = (
     <>
       {!isNavAuthClicked && (
-        <button
-          className="relative text-sm"
+        <Button
+        auth
+          classProp="px-2 py-1 text-sm"
           onClick={() => dispatch(handleAuthClick(!isNavAuthClicked))}
         >
-          <span className="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-custom-black"></span>
-          <span className="relative inline-block h-full w-full rounded px-2 py-1 font-bold text-custom-white bg-custom-red hover:bg-custom-less-red">
+          {/* <span className="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-custom-black"></span>
+          <span className="relative inline-block h-full w-full rounded px-2 py-1 font-bold text-custom-white bg-custom-red hover:bg-custom-less-red"> */}
             Login / Signup
-          </span>
-        </button>
+          {/* </span> */}
+        </Button>
       )}
     </>
   );
@@ -38,7 +40,7 @@ const NavAccount = () => {
     <>
       <NavLink to="/user/saved_exam">
         {/* {({ isActive }) => (isActive ? <GradeIcon /> : <GradeOutlinedIcon />)} */}
-        Saved
+        Saved Exam
       </NavLink>
       <div className="flex justify-center items-center gap-2">
         <div>

@@ -18,7 +18,7 @@ export interface InputProps
   type?: string;
   classProp?: string;
   outerClassProp?: string;
-  errorClassProp?:string;
+  errorClassProp?: string;
 }
 
 // Forward ref to Input component
@@ -52,8 +52,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         return (
           <Button
             type="button"
-            style={{ cursor: "default" }}
-            classProp="cursor-default p-0 hover:text-custom-red absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-custom-grey"
+            classProp="p-0 hover:text-custom-red absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-custom-grey"
             onClick={togglePasswordVisibility}
           >
             {showPassword ? "Hide" : "Show"}
@@ -71,14 +70,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={`${outerClassProp}`}>
-        <div className="relative w-full">
           {label && (
             <label htmlFor={name} className="block text-sm font-medium mb-1">
-              {label || placeholder || name}
+              {formatWord(label)}
             </label>
           )}
+        <div className="relative w-full flex items-center">
           <input
-            ref={ref} // Use inputRef instead of ref
+            ref={ref}
             id={name}
             name={name}
             type={showPassword && type === "password" ? "text" : type}
@@ -86,14 +85,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder || formatWord(name)}
             value={value}
             onChange={onChange}
-            className={`w-full pl-2 py-2 border-2 border-custom-grey text-base rounded ${classProp} ${
-              error ? "border-custom-red" : ""
-            }  ${
+            className={`w-full pl-2 py-2 outline outline-2 outline-custom-less-grey text-base rounded ${classProp} ${
+              error ? "outline-custom-red" : ""
+            } ${
               error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"
             }`}
             style={style}
           />
-          {endAdornment}
+          {endAdornment && (
+            <div className="absolute right-1 flex items-center h-full">
+              {endAdornment}
+            </div>
+          )}
         </div>
         {helperText && (
           <p

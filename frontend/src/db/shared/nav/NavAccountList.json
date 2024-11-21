@@ -1,7 +1,10 @@
 [
   {
-    "header": "Setting",
-    "link": "/user/setting"
+    "header": "Change Password",
+    "link": "/user/change-password"
+  },{
+    "header": "Forgot Password",
+    "link": "/user/forgot-password"
   },
   {
     "header": "Logout"

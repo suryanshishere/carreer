@@ -1,18 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { AuthProps } from "user/pages/auth/Auth";
-import AuthForm from "user/components/auth/AuthForm";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
+import { useLocation } from "react-router-dom";
+import AuthForm from "user/components/auth/AuthForm";
+import { AuthProps } from "user/pages/auth/Auth";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -34,6 +34,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
     resolver: yupResolver(validationSchema),
     mode: "onSubmit",
   });
+  const location = useLocation();
 
   const submitMutation = useMutation({
     mutationFn: async (data: IForgotPassword) => {
@@ -65,16 +66,31 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
     submitMutation.mutate(data);
   };
 
+  // Reset `reached` after 5 seconds
+  useEffect(() => {
+    if (reached) {
+      const timer = setTimeout(() => setReached(false), 5000);
+      return () => clearTimeout(timer); // Cleanup timer on unmount or dependency change
+    }
+  }, [reached]);
+
   if (reached) {
     return (
-      <p className="text-base text-custom-green p-button font-bold">
+      <p className="text-base text-center text-custom-green p-button font-bold">
         Reset password link sent successfully!
       </p>
     );
   }
 
-  return (
-    <form onSubmit={handleSubmit(submitHandler)} className={`${classProp}`}>
+  const isForgotPassword = location.pathname === "/user/forgot-password";
+
+  const formContent = (
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className={
+        isForgotPassword ? "w-1/2 flex flex-col gap-2" : `${classProp}`
+      }
+    >
       <AuthForm
         forgotPassword
         inputClassProp="placeholder:text-sm"
@@ -85,9 +101,15 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
         pendingProp={submitMutation.isPending}
         buttonClassProp={`${
           submitMutation.isPending ? "bg-custom-black" : "bg-custom-grey"
-        } py-2 rounded-full  text-white font-bold px-3 hover:bg-custom-black`}
+        } py-2 rounded-full text-white font-bold px-3 hover:bg-custom-black`}
       />
     </form>
+  );
+
+  return isForgotPassword ? (
+    <div className="w-full flex justify-center">{formContent}</div>
+  ) : (
+    formContent
   );
 };
 

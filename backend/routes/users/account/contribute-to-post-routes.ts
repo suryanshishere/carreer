@@ -2,6 +2,8 @@ import {
   getUndefinedFields,
   contributeToPost,
 } from "@controllers/users/account/contribute-to-post-controllers";
+import { changePassword } from "@controllers/users/account/setting-controllers";
+import checkAuth from "@middleware/check-auth";
 import express from "express";
 import { check, header } from "express-validator";
 
@@ -27,6 +29,26 @@ router.post(
       .withMessage("User required to be logged in."),
   ],
   contributeToPost
+);
+
+// checkAuth
+
+router.post(
+  "/change-password",
+  [
+    check("old_password")
+      .trim()
+      .notEmpty()
+      .withMessage("Old password is required!"),
+    check("new_password")
+      .trim()
+      .isLength({ min: 6 })
+      .withMessage("New password must be minimum of 6 characters long."),
+    header("userid")
+      .isLength({ min: 24, max: 24 })
+      .withMessage("User required to be logged in."),
+  ],
+  changePassword
 );
 
 export default router;

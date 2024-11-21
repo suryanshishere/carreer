@@ -102,19 +102,19 @@ const ResetPassword: React.FC = () => {
     <div className="w-full flex justify-center">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="w-1/2 flex flex-col gap-2"
+        className="w-1/2 flex flex-col gap-3"
       >
         <Input
           {...register("new_password")}
           type="password"
-          // classProp=""
+          label="password"
           error={!!errors.new_password}
           helperText={errors.new_password?.message}
         />
         <Input
           {...register("confirm_new_password")}
           type="password"
-          // classProp=""
+          label="confirm_new_password"
           error={!!errors.confirm_new_password}
           helperText={errors.confirm_new_password?.message}
         />
