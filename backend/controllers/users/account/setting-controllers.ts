@@ -1,8 +1,9 @@
 import validationError from "@controllers/controllersHelpers/validation-error";
 import User from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import bcrypt from "bcryptjs";
+import { Request } from "express-jwt";
 
 export const changePassword = async (
   req: Request,
@@ -13,13 +14,13 @@ export const changePassword = async (
     validationError(req, res, next);
 
     const { old_password, new_password } = req.body;
-    const userid = req.headers.userid as string | undefined;
-
+    const { userId } = req.userData;
+    
     // Find the user by ID
-    const user = await User.findById(userid);
+    const user = await User.findById(userId);
 
     if (!user) {
-      return next(new HttpError("User not found.", 404));
+      return next(new HttpError("User not found!", 404));
     }
 
     // Verify the old password

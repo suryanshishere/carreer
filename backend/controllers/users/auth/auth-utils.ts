@@ -6,8 +6,8 @@ import { NextFunction, Response, Request } from "express";
 
 const JWT_KEY = process.env.JWT_KEY;
 const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "15";
-const EMAIL_VERIFICATION_TOKEN_EXPIRY =
-  Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY) || 3;
+// const EMAIL_VERIFICATION_TOKEN_EXPIRY =
+//   Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY) || 3;
 
 // Function to generate OTP as a verification token
 export const generateUniqueVerificationToken = () => {
@@ -31,7 +31,6 @@ export const sendVerificationResponse = async (
 ) => {
   const options = { userId: user.id, email: user.email, isDirect: true };
 
-  // Call sendVerificationOtp
   await sendVerificationOtp(req, res, next, options);
 
   return sendAuthenticatedResponse(res, user, false);
@@ -49,22 +48,27 @@ export const sendAuthenticatedResponse = (
   ).toISOString();
 
   return res.status(200).json({
-    email: user.email,
-    userId: user.id,
     token,
     isEmailVerified,
     tokenExpiration: tokenExpiration,
-    message: isEmailVerified ? "Logged in successfully!" : "An OTP verification being sent to your mail.",
+    message: isEmailVerified
+      ? "Logged in successfully!"
+      : "An OTP verification being sent to your mail.",
   });
 };
 
 // JWT Token generation function
 export const generateJWTToken = (userId: string, email: string): string => {
-  if (!JWT_KEY) throw new Error("JWT key not found");
-
+  if (!JWT_KEY) {
+    throw new Error("JWT_KEY environment variable is not defined!");
+  }
+  const expiryInMinutes = parseInt(JWT_KEY_EXPIRY, 10);
+  if (isNaN(expiryInMinutes)) {
+    throw new Error("JWT_KEY_EXPIRY must be a valid number!");
+  }
   return jwt.sign({ userId, email }, JWT_KEY, {
-    expiresIn: `${JWT_KEY_EXPIRY}m`,
-  }); // Specify expiry in minutes
+    expiresIn: `${expiryInMinutes}m`,
+  });
 };
 
 // Revised checkRequestDelay function

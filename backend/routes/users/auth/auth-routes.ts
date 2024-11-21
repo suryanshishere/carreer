@@ -11,7 +11,6 @@ import checkAuth from "@middleware/check-auth";
 
 const router = express.Router();
 
-const { NAME_LENGTH } = process.env;
 const PWD_LENGTH = Number(process.env.PWD_LENGTH);
 
 router.post(
@@ -27,22 +26,18 @@ router.post(
 
 //auth check then below
 
+router.use(checkAuth);
+
 router.post(
   "/verify_email",
   check("otp")
     .isInt({ min: 100000, max: 999999 })
     .withMessage("OTP must be a 6-digit number."),
-  header("userid")
-    .isLength({ min: 24, max: 24 })
-    .withMessage("User required to be logged in."),
   verifyEmail
 );
 
 router.post(
-  "/send_verification_otp",
-  header("userid")
-    .isLength({ min: 24, max: 24 })
-    .withMessage("User required to be logged in."),
+  "/send-verification-otp",
   sendVerificationOtp
 );
 
@@ -53,13 +48,12 @@ router.post(
 );
 
 router.post(
-  "/reset_password",
+  ["/reset-password", "/reset-password/:userId"],
   [
     check("resetPasswordToken")
       .isInt({ min: 100000, max: 999999 })
       .withMessage("Invalid link"),
     check("password").trim().isLength({ min: PWD_LENGTH }),
-    header("userid").isLength({ min: 24, max: 24 }),
   ],
   resetPassword
 );

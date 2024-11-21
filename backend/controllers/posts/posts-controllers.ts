@@ -5,7 +5,6 @@ import PostLink from "@models/post/overall/postLink";
 import PostCommon from "@models/post/section/postCommon";
 import Post from "@models/post/post-model";
 import HttpError from "@utils/http-errors";
-import { models } from "mongoose";
 import { fetchPosts, populateModels, MODEL_DATA } from "./posts-populate";
 import { convertToSnakeCase } from "@controllers/controllersHelpers/case-convert";
 

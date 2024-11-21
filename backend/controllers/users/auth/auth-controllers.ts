@@ -1,7 +1,6 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
 import bcrypt from "bcryptjs";
-import { v4 as uuidv4 } from "uuid";
 import sendEmail from "./send-email";
 import User, { IUser } from "@models/user/user-model";
 import {
@@ -12,6 +11,7 @@ import {
   updateUnverifiedUser,
 } from "./auth-utils";
 import validationError from "../../controllersHelpers/validation-error";
+import { Request } from "express-jwt";
 
 const FRONTEND_URL =
   `${process.env.FRONTEND_URL}/user/reset_password` ||
@@ -23,89 +23,26 @@ const EMAIL_VERIFICATION_TOKEN_EXPIRY =
 const PASSWORD_RESET_TOKEN_EXPIRY =
   Number(process.env.PASSWORD_RESET_TOKEN_EXPIRY) || 3;
 
-export const sendPasswordResetLink = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  validationError(req, res, next);
-  const { email } = req.body;
-  const userId = req.headers.userid as string;
-  try {
-    let existingUser: IUser | null;
-
-    //doing this to prevent extra processing time for email search
-    if (userId) {
-      existingUser = await User.findById(userId);
-    } else {
-      existingUser = await User.findOne({ email });
-    }
-
-    if (!existingUser || !existingUser.isEmailVerified) {
-      //if user email not verified send user not found for password reset
-      return next(new HttpError("User not found!", 404));
-    }
-
-    //check too many request to prevent reset link send to email
-    const delayInSeconds = existingUser.passwordResetTokenCreatedAt
-      ? checkRequestDelay(existingUser.passwordResetTokenCreatedAt, 60)
-      : null;
-
-    if (delayInSeconds !== null) {
-      return next(
-        new HttpError(
-          `Please wait ${delayInSeconds} second(s) or use the last reset link.`,
-          429,
-          delayInSeconds
-        )
-      );
-    }
-
-    existingUser.passwordResetToken = generateUniqueVerificationToken();
-    existingUser.passwordResetTokenCreatedAt = new Date();
-    await existingUser.save();
-
-    await sendEmail(
-      next,
-      existingUser.email,
-      "Reset your password (Valid for 3min)",
-      `${FRONTEND_URL}/${existingUser.id + existingUser.passwordResetToken}`
-    );
-
-    return res
-      .status(200)
-      .json({ message: "Reset password link sent successfully." });
-  } catch (err) {
-    return next(
-      new HttpError(
-        "An error occurred while sending the reset link. Please try again later.",
-        500
-      )
-    );
-  }
-};
-
 export const sendVerificationOtp = async (
   req: Request,
   res: Response,
   next: NextFunction,
-  options: { userId?: string; email?: string; isDirect?: boolean } = {}
+  options: { userId?: string; email?: string; isDirect?: boolean }={}
 ) => {
   if (!options.isDirect) {
     validationError(req, res, next);
   }
   // Use userId and email from options if provided, otherwise from req.body
-  const userId = options.userId || req.headers.userid;
+  const userId = options.userId || req.userData.userId;
 
   try {
-    // Find the user by ID if not directly passed as an email option
     let user: IUser | null = null;
     if (!options.email) {
       user = await User.findById(userId);
       if (!user) {
-        return next(new HttpError("User not found", 404));
+        return next(new HttpError("User not found!", 404));
       } else if (user.isEmailVerified) {
-        return next(new HttpError("User email already verified", 409));
+        return next(new HttpError("User email already verified!", 409));
       }
     }
 
@@ -154,6 +91,7 @@ export const sendVerificationOtp = async (
       message: "OTP sent to your email successfully",
     });
   } catch (error) {
+    console.log(error);
     return next(
       new HttpError("Error sending verification email, try again later", 500)
     );
@@ -258,7 +196,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     } else {
       const hashedPassword = await bcrypt.hash(password, 12);
       const newUser = new User({
-        username: uuidv4(), //TODO
         email,
         password: hashedPassword,
         emailVerificationToken: verificationToken,
@@ -273,6 +210,68 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+//forgot password
+export const sendPasswordResetLink = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  validationError(req, res, next);
+  const { email } = req.body;
+  const userId = req.headers.userid as string;
+  try {
+    let existingUser: IUser | null;
+
+    //doing this to prevent extra processing time for email search
+    if (userId) {
+      existingUser = await User.findById(userId);
+    } else {
+      existingUser = await User.findOne({ email });
+    }
+
+    if (!existingUser || !existingUser.isEmailVerified) {
+      //if user email not verified send user not found for password reset
+      return next(new HttpError("User not found!", 404));
+    }
+
+    //check too many request to prevent reset link send to email
+    const delayInSeconds = existingUser.passwordResetTokenCreatedAt
+      ? checkRequestDelay(existingUser.passwordResetTokenCreatedAt, 60)
+      : null;
+
+    if (delayInSeconds !== null) {
+      return next(
+        new HttpError(
+          `Please wait ${delayInSeconds} second(s) or use the last reset link.`,
+          429,
+          delayInSeconds
+        )
+      );
+    }
+
+    existingUser.passwordResetToken = generateUniqueVerificationToken();
+    existingUser.passwordResetTokenCreatedAt = new Date();
+    await existingUser.save();
+
+    await sendEmail(
+      next,
+      existingUser.email,
+      "Reset your password (Valid for 3min)",
+      `${FRONTEND_URL}/${existingUser.id + existingUser.passwordResetToken}`
+    );
+
+    return res
+      .status(200)
+      .json({ message: "Reset password link sent successfully." });
+  } catch (err) {
+    return next(
+      new HttpError(
+        "An error occurred while sending the reset link. Please try again later.",
+        500
+      )
+    );
+  }
+};
 export const resetPassword = async (
   req: Request,
   res: Response,
@@ -281,13 +280,12 @@ export const resetPassword = async (
   validationError(req, res, next);
 
   const { resetPasswordToken, password } = req.body;
-  const userId = req.headers.userid;
-
+  const { userId } = req.params;
   try {
     // Find user and validate existence and email verification
     const existingUser = await User.findById(userId);
     if (!existingUser || !existingUser.isEmailVerified) {
-      return next(new HttpError("User not found or email not verified", 404));
+      return next(new HttpError("User not found or email not verified!", 404));
     }
 
     // Check if password reset was requested and valid token exists
@@ -342,6 +340,15 @@ export const resetPassword = async (
       existingUser.password
     );
 
+    if (isPasswordSimilar) {
+      return next(
+        new HttpError(
+          "The new password cannot be the same as your current password. Please choose a different password or log in to update your credentials in the settings.",
+          400 // Bad Request
+        )
+      );
+    }
+
     // Update user password and clear reset data
     existingUser.password = hashedPassword;
     existingUser.passwordChangedAt = currentTime;
@@ -356,11 +363,7 @@ export const resetPassword = async (
 
     await existingUser.save();
 
-    const message = isPasswordSimilar
-      ? "Password updated successfully, but it resembles a previous password. We recommend choosing a new, unique password for added security."
-      : "Password updated successfully.";
-
-    return res.status(200).json({ message });
+    return res.status(200).json({ message: "Password updated successfully." });
   } catch (error) {
     return next(
       new HttpError(
