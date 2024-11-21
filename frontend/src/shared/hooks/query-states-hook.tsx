@@ -5,7 +5,7 @@ import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 interface QueryStateProps {
   isLoading: boolean;
   error: string | null;
-  empty: boolean;
+  empty?: boolean;
 }
 
 const useQueryStates = ({

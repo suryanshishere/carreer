@@ -3,14 +3,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
 const NavAccountImg = () => {
-  const {navAccountDp} = useSelector((state:RootState)=>state.auth.userData);
+  // const {navAccountDp} = useSelector((state:RootState)=>state.auth.userData);
   return (
     <>
-      <img
+      {/* <img
         src={`${navAccountDp}`}
         alt="account"
         className="h-full w-full rounded-full object-cover"
-      />
+      /> */}
     </>
   );
 };

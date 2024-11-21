@@ -1,18 +1,14 @@
-import SavedItem from "../components/item/SavedItem";
 import { IPostListData } from "models/post/IPostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import "./Saved.css";
 
-// Fetch function to get saved exams
 const fetchSavedPosts = async (
-  userId: string = "",
   token: string = ""
 ): Promise<IPostListData[]> => {
-  const response = await axiosInstance.get(`/users/${userId}/saved_exam`, {
+  const response = await axiosInstance.get(`/user/account/saved-posts`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -20,18 +16,16 @@ const fetchSavedPosts = async (
   return response.data;
 };
 
-const Saved = () => {
-    const { token, userId } = useSelector(
-    (state: RootState) => state.auth.userData
-  );
+const SavedPosts = () => {
+  const { token } = useSelector((state: RootState) => state.auth.userData);
 
   const {
-    data = [],
+    data = {},
     isLoading,
     error,
   } = useQuery<IPostListData[], Error>({
     queryKey: ["savedPosts"],
-    queryFn: () => fetchSavedPosts(userId, token),
+    queryFn: () => fetchSavedPosts(token),
   });
 
   const queryStateMessage = useQueryStates({
@@ -41,12 +35,10 @@ const Saved = () => {
   });
 
   if (queryStateMessage) return queryStateMessage;
-  
+
   return (
-    <div className="flex gap-3">
-      <SavedItem savedExamData={data} />
-    </div>
+    <div className="flex gap-3">{/* <SavedItem savedExamData={data} /> */}</div>
   );
 };
 
-export default Saved;
+export default SavedPosts;

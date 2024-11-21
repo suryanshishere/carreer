@@ -5,20 +5,20 @@ import HomePage from "post/pages/Home";
 import Detail from "post/pages/Detail";
 import Category from "post/pages/Category";
 import ContactUs from "shared/pages/contactUs/ContactUs";
-import Saved from "./user/pages/Saved";
 import NotFound from "./shared/pages/NotFound";
 import ResetPassword from "user/components/auth/ResetPassword";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import ChangePassword from "user/pages/account/ChangePassword";
 import ForgotPassword from "user/components/auth/ForgotPassword";
+import SavedPosts from "user/pages/account/SavedPosts";
 
 const App: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
 
   const authRoutes = token
     ? [
-        { path: "saved_exam", element: <Saved /> },
+        { path: "saved-posts", element: <SavedPosts /> },
         // { path: "setting", element: <Setting /> },
         {
           path: "account",
@@ -49,10 +49,10 @@ const App: React.FC = () => {
         { path: "*", element: <NotFound /> },
       ]
     : [
-        {
-          path: "reset_password/:resetPasswordToken",
-          element: <ResetPassword />,
-        },
+        // {
+        //   path: "reset_password/:resetPasswordToken",
+        //   element: <ResetPassword />,
+        // },
         // { path: "account/contribute_to_post", element: <ContributeToPost /> },
         // {
         //   path: "account/contribute_to_post/:post_section",

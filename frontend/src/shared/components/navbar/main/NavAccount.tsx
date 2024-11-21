@@ -15,7 +15,7 @@ const NavAccount = () => {
   const showNavDropdown = useSelector(
     (state: RootState) => state.dropdown.showNavDropdown
   );
-  const { userId, email, token } = useSelector(
+  const { token } = useSelector(
     (state: RootState) => state.auth.userData
   );
 
@@ -38,14 +38,14 @@ const NavAccount = () => {
 
   let onAuthenticated = (
     <>
-      <NavLink to="/user/saved_exam">
-        {/* {({ isActive }) => (isActive ? <GradeIcon /> : <GradeOutlinedIcon />)} */}
-        Saved Exam
+      <NavLink to="/user/saved-posts" className={({ isActive }) => (isActive ? "text-custom-pale-orange" : "")}> 
+      Saved Posts
       </NavLink>
       <div className="flex justify-center items-center gap-2">
         <div>
-          {email &&
-            `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`}
+          {/* {email &&
+            `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`}  */}
+            Cool
         </div>
         <div className="relative">
           <button
@@ -70,7 +70,7 @@ const NavAccount = () => {
 
   return (
     <div className="flex gap-3 items-center h-main-nav">
-      {!(token && email && userId) ? LoginSignup : onAuthenticated}
+      {!(token) ? LoginSignup : onAuthenticated}
     </div>
   );
 };

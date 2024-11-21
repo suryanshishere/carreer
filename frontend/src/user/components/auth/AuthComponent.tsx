@@ -52,15 +52,13 @@ const AuthComponent: React.FC<AuthProps> = () => {
       return response.data;
     },
     onSuccess: ({
-      email,
-      userId,
       token,
       tokenExpiration,
       isEmailVerified,
       message,
     }) => {
       dispatch(
-        login({ email, userId, token, tokenExpiration, isEmailVerified })
+        login({token, tokenExpiration, isEmailVerified })
       );
       dispatch(triggerSuccessMsg(message));
 

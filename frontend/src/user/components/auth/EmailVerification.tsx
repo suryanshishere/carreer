@@ -13,6 +13,7 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import { handleAuthClick, updateUserData } from "shared/store/auth-slice";
+import axiosInstance from "shared/utils/api/axios-instance";
 
 const otpSchema = Yup.object().shape({
   email_verification_otp: Yup.number()
@@ -35,7 +36,7 @@ type OTPFormInputs = {
 };
 
 const EmailVerification = () => {
-  const { token, email, userId, isEmailVerified } = useSelector(
+  const { token, isEmailVerified } = useSelector(
     (state: RootState) => state.auth.userData
   );
   const isOtpSent = useSelector((state: RootState) => state.auth.isOtpSent);
@@ -71,12 +72,11 @@ const EmailVerification = () => {
   // Mutation for sending OTP email
   const sendOtpMutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/send_verification_otp`,
+      const response = await axiosInstance.post(
+        `user/auth/send-verification-otp`,
         {},
         {
           headers: {
-            userid: userId,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -108,7 +108,7 @@ const EmailVerification = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            userid: userId,
+            
             Authorization: `Bearer ${token}`,
           },
         }
@@ -145,8 +145,8 @@ const EmailVerification = () => {
           ? "Enter your OTP for verification, which was sent to your email "
           : "Generate OTP for verification on your email "}
         <span className="text-custom-red">
-          {email &&
-            `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`}
+          {/* {email &&
+            `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`} */}
         </span>
       </div>
 

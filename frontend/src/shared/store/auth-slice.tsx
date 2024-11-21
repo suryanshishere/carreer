@@ -16,8 +16,6 @@ const initialState: IAuthSlice = {
   isNavAuthClicked: false,
   isOtpSent: false,
   userData: {
-    email: "",
-    userId: "",
     token: "",
     isEmailVerified: false,
   },
@@ -34,22 +32,18 @@ const authSlice = createSlice({
     login(
       state,
       action: PayloadAction<{
-        email: string;
-        userId: string;
         token: string;
         isEmailVerified: boolean;
         tokenExpiration?: string;
       }>
     ) {
       const {
-        email,
-        userId,
         token,
         tokenExpiration,
         isEmailVerified
       } = action.payload;
 
-      if (!email && !userId && !token && isEmailVerified === undefined) return;
+      if ( !token && isEmailVerified === undefined) return;
 
       const localTokenExpiration = tokenExpiration
         ? new Date(tokenExpiration)
@@ -59,8 +53,6 @@ const authSlice = createSlice({
 
       state.isOtpSent = true;
       state.userData = {
-        email,
-        userId,
         token,
         isEmailVerified,
         tokenExpiration: localTokenExpiration.toISOString()
@@ -74,8 +66,6 @@ const authSlice = createSlice({
     logout(state) {
       state.isNavAuthClicked = false;
       state.userData = {
-        email: "",
-        userId: "",
         token: "",
         isEmailVerified: false,
         tokenExpiration: undefined,

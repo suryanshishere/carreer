@@ -4,8 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "shared/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "shared/store";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
@@ -13,6 +13,7 @@ import {
 import { useLocation } from "react-router-dom";
 import AuthForm from "user/components/auth/AuthForm";
 import { AuthProps } from "user/pages/auth/Auth";
+import axiosInstance from "shared/utils/api/axios-instance";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -24,7 +25,7 @@ interface IForgotPassword {
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { userId } = useSelector((state: RootState) => state.auth.userData);
+  
   const [reached, setReached] = useState<boolean>(false);
   const {
     register,
@@ -38,13 +39,13 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
 
   const submitMutation = useMutation({
     mutationFn: async (data: IForgotPassword) => {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/send_password_reset_link`,
+      const response = await axiosInstance.post(
+        `user/auth/send_password_reset_link`,
         JSON.stringify(data),
         {
           headers: {
             "Content-Type": "application/json",
-            userid: userId,
+            
           },
         }
       );

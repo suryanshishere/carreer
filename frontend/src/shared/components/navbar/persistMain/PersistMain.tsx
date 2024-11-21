@@ -4,11 +4,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
 const PersistMain = () => {
-  const isNavAuthClicked = useSelector((state: RootState) => state.auth.isNavAuthClicked);
+  const { isNavAuthClicked, isOtpSent } = useSelector(
+    (state: RootState) => state.auth
+  );
+  const { isEmailVerified,token } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
 
   return (
     <AnimatePresence>
-      {isNavAuthClicked && (
+      {(isNavAuthClicked || token && !isEmailVerified) && (
         <motion.div
           initial={{ y: -40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ACCOUNT_SETTING from "db/userDb/AccountSetting.json";
-import ChangePassword from "user/components/account/setting/ChangePassword";
 import AccountInfo from "user/components/account/setting/AccountInfo";
 import Deactivate from "user/components/account/setting/Deactivate";
 import "./Setting.css";
@@ -66,9 +65,9 @@ const Setting = () => {
     case "ACCOUNT_INFORMATION":
       content = <AccountInfo />;
       break;
-    case "CHANGE_YOUR_PASSWORD":
-      content = <ChangePassword onMsg={msgHandler} />;
-      break;
+    // case "CHANGE_YOUR_PASSWORD":
+    //   content = <ChangePassword onMsg={msgHandler} />;
+    //   break;
     case "DEACTIVATE_YOUR_ACCOUNT":
       content = <Deactivate onMsg={msgHandler} />;
       break;

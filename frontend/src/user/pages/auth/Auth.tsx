@@ -27,7 +27,6 @@ const Auth: React.FC<AuthProps> = () => {
   const { token, isEmailVerified } = useSelector(
     (state: RootState) => state.auth.userData
   );
-  console.log(token, isEmailVerified);
   const handleStateChange = (newState: AuthState) => setAuthState(newState);
 
   const renderButtons = () => {

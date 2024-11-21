@@ -21,7 +21,7 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
     useState<AccountInfoData>(accountInfoData);
   const [editState, setEditState] = useState<string>("");
   const { error,  sendRequest, clearError } = useHttpClient();
-    const { token, userId } = useSelector(
+    const { token} = useSelector(
     (state: RootState) => state.auth.userData
   );
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
     const formattedHeader = header.toLowerCase().replace(/\s+/g, "_");
     try {
       const response = await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/users/${userId}/account-info`,
+        `${process.env.REACT_APP_BASE_URL}/users/account-info`,
         "PATCH",
         JSON.stringify({
           field: formattedHeader,
