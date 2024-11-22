@@ -11,7 +11,7 @@ import checkAuth from "@middleware/check-auth";
 
 const router = express.Router();
 
-const PWD_LENGTH = Number(process.env.PWD_LENGTH);
+const PWD_LENGTH = Number(process.env.PWD_LENGTH) || 6;
 
 router.post(
   "/",
@@ -19,30 +19,12 @@ router.post(
     check("email").trim().normalizeEmail().isEmail(),
     check("password")
       .trim()
-      .isLength({ min: Number(PWD_LENGTH) || 6 }),
+      .isLength({ min: Number(PWD_LENGTH) }),
   ],
   auth
 );
-
-//auth check then below
-
-router.use(checkAuth);
-
 router.post(
-  "/verify_email",
-  check("otp")
-    .isInt({ min: 100000, max: 999999 })
-    .withMessage("OTP must be a 6-digit number."),
-  verifyEmail
-);
-
-router.post(
-  "/send-verification-otp",
-  sendVerificationOtp
-);
-
-router.post(
-  "/send_password_reset_link",
+  "/send-password-reset-link",
   check("email").trim().normalizeEmail().isEmail(),
   sendPasswordResetLink
 );
@@ -57,6 +39,18 @@ router.post(
   ],
   resetPassword
 );
+router.use(checkAuth);
+
+router.post(
+  "/verify-email",
+  check("otp")
+    .isInt({ min: 100000, max: 999999 })
+    .withMessage("OTP must be a 6-digit number."),
+  verifyEmail
+);
+
+router.post("/send-verification-otp", sendVerificationOtp);
+
 export default router;
 
 // router.use(checkAuth);

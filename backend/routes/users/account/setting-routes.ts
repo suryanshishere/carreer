@@ -2,7 +2,7 @@ import express from "express";
 import { check } from "express-validator";
 import {
   changePassword,
-} from "../../../controllers/users/account/setting-controllers";
+} from "@controllers/users/account/setting-controllers";
 
 const router = express.Router();
 
@@ -24,8 +24,8 @@ router.post(
   "/change-password",
   [
     check("email").trim().not().isEmpty(),
-    check("password").trim().isLength({ min: 5 }),
-    check("newPassword").trim().isLength({ min: 5 }),
+    check("old_password").trim().isLength({ min: 5 }),
+    check("new_password").trim().isLength({ min: 5 }),
   ],
   changePassword
 );

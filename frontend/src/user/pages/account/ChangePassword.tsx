@@ -20,27 +20,20 @@ const validationSchema = yup.object().shape({
   new_password: yup
     .string()
     .min(6, "Password must be at least 6 characters")
-    .required("New password is required"),
+    .required("New password is required")
+    .test(
+      "not-same-as-old-password",
+      "New password must not be the same as the old password",
+      function (value) {
+        const { old_password } = this.parent;
+        return value !== old_password; // Ensure new_password and old_password are different
+      }
+    ),
   confirm_new_password: yup
     .string()
     .min(6, "Password must be at least 6 characters")
     .oneOf([yup.ref("new_password")], "Passwords must match")
     .required("Confirm password is required"),
-  old_password_not_match: yup
-    .string()
-    .test(
-      "not-same",
-      "Old password cannot be the same as new password",
-      function (value) {
-        const { old_password, new_password } = this.parent;
-
-        // Only compare if both old_password and new_password are longer than 6 characters
-        if (old_password.length > 6 && new_password.length > 6) {
-          return old_password !== new_password; // Check if old_password and new_password are not the same
-        }
-        return true; // Skip the check if the length is not greater than 6 characters
-      }
-    ),
 });
 
 interface IChangePasswordForm {
@@ -67,7 +60,7 @@ const ChangePassword: React.FC = () => {
   const changePasswordMutation = useMutation({
     mutationFn: async (data: IChangePasswordForm) => {
       const response = await axiosInstance.post(
-        `user/account/change-password`,
+        "user/account/setting/change-password",
         JSON.stringify(data),
         {
           headers: {
@@ -97,9 +90,11 @@ const ChangePassword: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col gap-4 items-center">
-      <p className="text-custom-red">
-        {errors.old_password_not_match?.message}
-      </p>
+      {errors.old_password_not_match?.message && (
+        <p className="text-custom-red">
+          {errors.old_password_not_match?.message}
+        </p>
+      )}
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="w-1/2 flex flex-col gap-4"
@@ -141,7 +136,7 @@ const ChangePassword: React.FC = () => {
             classProp="flex-1"
           >
             {changePasswordMutation.isPending
-              ? "Processing..."
+              ? "Changing password..."
               : "Change Password"}
           </Button>
         </div>

@@ -102,13 +102,11 @@ const EmailVerification = () => {
   // Mutation for verifying OTP
   const verifyOtpMutation = useMutation({
     mutationFn: async (otp: number) => {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/verify_email`,
+      const response = await axiosInstance.post(
+        `user/auth/verify-email`,
         { otp },
         {
           headers: {
-            "Content-Type": "application/json",
-            
             Authorization: `Bearer ${token}`,
           },
         }
@@ -116,7 +114,7 @@ const EmailVerification = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      dispatch(updateUserData({isEmailVerified: true}))
+      dispatch(updateUserData({ isEmailVerified: true }));
       dispatch(triggerSuccessMsg(data.message));
       dispatch(handleAuthClick(false));
     },

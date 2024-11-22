@@ -1,19 +1,14 @@
 import express from "express";
 import checkAuth from "../../middleware/check-auth";
 import authRoutes from "./auth/auth-routes";
-import accountPosts from "./account/account-posts-routes";
+import accountRoutes from "./account/account-routes";
 
 const router = express.Router();
 
+
 router.use("/auth", authRoutes);
-
-// router.use("/auth", verifyCheckAuthRoutes);
-
 router.use(checkAuth);
-router.use("/account", accountPosts); //rn, using before checkauth middleware but after testing shift it below
-
-
-// router.use("/", settingRoutes);
+router.use("/account", accountRoutes);
 
 // router.use("/", accountExamsRoutes);
 

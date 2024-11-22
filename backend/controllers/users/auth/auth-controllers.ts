@@ -27,7 +27,7 @@ export const sendVerificationOtp = async (
   req: Request,
   res: Response,
   next: NextFunction,
-  options: { userId?: string; email?: string; isDirect?: boolean }={}
+  options: { userId?: string; email?: string; isDirect?: boolean } = {}
 ) => {
   if (!options.isDirect) {
     validationError(req, res, next);
@@ -218,16 +218,11 @@ export const sendPasswordResetLink = async (
 ) => {
   validationError(req, res, next);
   const { email } = req.body;
-  const userId = req.headers.userid as string;
+
   try {
     let existingUser: IUser | null;
 
-    //doing this to prevent extra processing time for email search
-    if (userId) {
-      existingUser = await User.findById(userId);
-    } else {
-      existingUser = await User.findOne({ email });
-    }
+    existingUser = await User.findOne({ email });
 
     if (!existingUser || !existingUser.isEmailVerified) {
       //if user email not verified send user not found for password reset
@@ -272,6 +267,7 @@ export const sendPasswordResetLink = async (
     );
   }
 };
+
 export const resetPassword = async (
   req: Request,
   res: Response,

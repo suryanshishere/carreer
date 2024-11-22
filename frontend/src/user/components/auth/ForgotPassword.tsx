@@ -25,7 +25,7 @@ interface IForgotPassword {
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const [reached, setReached] = useState<boolean>(false);
   const {
     register,
@@ -40,14 +40,9 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
   const submitMutation = useMutation({
     mutationFn: async (data: IForgotPassword) => {
       const response = await axiosInstance.post(
-        `user/auth/send_password_reset_link`,
+        `user/auth/send-password-reset-link`,
         JSON.stringify(data),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            
-          },
-        }
+        {}
       );
       return response.data;
     },
@@ -71,7 +66,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
   useEffect(() => {
     if (reached) {
       const timer = setTimeout(() => setReached(false), 5000);
-      return () => clearTimeout(timer); // Cleanup timer on unmount or dependency change
+      return () => clearTimeout(timer);
     }
   }, [reached]);
 
