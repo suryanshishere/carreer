@@ -1,4 +1,9 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { postRefs } from "@models/post/post-model";
+import mongoose, { Schema, Types, Document } from "mongoose";
+
+interface SavedPosts {
+  [key: string]: Types.ObjectId[];
+}
 
 export interface IUser extends Document {
   // Authentication and verification fields
@@ -15,13 +20,13 @@ export interface IUser extends Document {
 
   // Timestamps and activity fields
   created_at: Date;
-  deactivated_at?: Date | null;
+  deactivated_at?: Date;
 
   // Relationships
   detail?: mongoose.Types.ObjectId;
 
   // Saved posts
-  savedPosts?: mongoose.Types.ObjectId[];
+  savedPosts?: SavedPosts;
 }
 
 const userSchema: Schema = new Schema<IUser>({
@@ -34,7 +39,7 @@ const userSchema: Schema = new Schema<IUser>({
   passwordChangedAt: { type: Date },
 
   // User identification fields
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true, index: true },
   password: { type: String, required: true },
 
   // Timestamps and activity fields
@@ -45,7 +50,16 @@ const userSchema: Schema = new Schema<IUser>({
   detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
 
   // Saved posts
-  savedPosts: [{ type: mongoose.Types.ObjectId, ref: "Post" }],
+  savedPosts: {
+    answerKeyRef: [{ type: Types.ObjectId, ref: "AnswerKey" }],
+    admissionRef: [{ type: Types.ObjectId, ref: "Admission" }],
+    admitCardRef: [{ type: Types.ObjectId, ref: "AdmitCard" }],
+    certificateRef: [{ type: Types.ObjectId, ref: "CertificateVerification" }],
+    postImportantRef: [{ type: Types.ObjectId, ref: "PostImportant" }],
+    latestJobRef: [{ type: Types.ObjectId, ref: "LatestJob" }],
+    resultRef: [{ type: Types.ObjectId, ref: "Result" }],
+    syllabusRef: [{ type: Types.ObjectId, ref: "Syllabus" }],
+  },
 });
 
 const User = mongoose.model<IUser>("User", userSchema);

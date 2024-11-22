@@ -8,7 +8,7 @@ import { RootState } from "shared/store";
 const fetchSavedPosts = async (
   token: string = ""
 ): Promise<IPostListData[]> => {
-  const response = await axiosInstance.get(`/user/account/saved-posts`, {
+  const response = await axiosInstance.get("user/account/post/saved-posts", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -27,6 +27,8 @@ const SavedPosts = () => {
     queryKey: ["savedPosts"],
     queryFn: () => fetchSavedPosts(token),
   });
+
+  console.log(data);
 
   const queryStateMessage = useQueryStates({
     isLoading,

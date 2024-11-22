@@ -70,11 +70,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={`${outerClassProp}`}>
-          {label && (
-            <label htmlFor={name} className="block text-sm font-medium mb-1">
-              {formatWord(label)}
-            </label>
-          )}
+        {label && (
+          <label htmlFor={name} className="block text-sm font-medium mb-1">
+            {formatWord(label)}
+          </label>
+        )}
         <div className="relative w-full flex items-center">
           <input
             ref={ref}
@@ -100,7 +100,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </div>
         {helperText && (
           <p
-            className={`ml-2 mt-0 bg-custom-white text-xs w-auto whitespace-nowrap ${
+            className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
               error ? "text-custom-red" : "text-grey"
             } ${errorClassProp}`}
           >

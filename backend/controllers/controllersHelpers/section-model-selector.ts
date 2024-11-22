@@ -18,7 +18,7 @@ import Admission from "@models/post/section/postAdmission";
 import AdmitCard from "@models/post/section/postAdmitCard";
 import AnswerKey from "@models/post/section/postAnswerKey";
 import CertificateVerification from "@models/post/section/postCertificateVerification";
-import PostCommon from "@models/post/section/postCommon";
+import PostCommon from "@models/post/common/postCommon";
 import PostImportant from "@models/post/section/postImportant";
 import LatestJob from "@models/post/section/postLatestJob";
 import Syllabus from "@models/post/section/postSyllabus";

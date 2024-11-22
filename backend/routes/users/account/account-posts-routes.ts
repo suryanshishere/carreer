@@ -19,7 +19,6 @@ router.get(
   getUndefinedFields
 );
 
-
 router.post(
   "/contribute_to_post",
   [
@@ -31,7 +30,6 @@ router.post(
   ],
   contributeToPost
 );
-
 
 router.get("/saved-posts", savedPosts);
 
@@ -45,7 +43,7 @@ router.post(
     check("new_password")
       .trim()
       .isLength({ min: 6 })
-      .withMessage("New password must be minimum of 6 characters long.")
+      .withMessage("New password must be minimum of 6 characters long."),
   ],
   changePassword
 );

@@ -1,6 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const { Schema } = mongoose;
+export const postRefs = [
+  "Admission",
+  "AdmitCard",
+  "AnswerKey",
+  "CertificateVerification",
+  "PostImportant",
+  "LatestJob",
+  "Result",
+  "Syllabus"
+] as const;
 
 const postSchema = new Schema({
   post_code: { type: String, unique: true, require: true },
