@@ -49,6 +49,24 @@ const Button: React.FC<ButtonProps> = ({
       </button>
     );
   }
+
+  if(classProp){
+    return <button
+    onClick={onClick}
+    type={type}
+    style={{ cursor: disabled ? "default" : "", ...style }}
+    disabled={disabled}
+    className={`flex items-center justify-center ${
+      !hasRoundedClass ? "rounded" : ""
+    } ${
+      outline &&
+      "outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray"
+    } min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
+  >
+    {children}
+  </button>
+  }
+  
   return (
     <button
       onClick={onClick}
@@ -59,8 +77,8 @@ const Button: React.FC<ButtonProps> = ({
         !hasRoundedClass ? "rounded" : ""
       } ${
         outline &&
-        "outline outline-custom-super-less-grey p-button hover:bg-custom-super-less-grey"
-      } min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
+        "outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray"
+      } min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden`}
     >
       {children}
     </button>

@@ -2,6 +2,7 @@ import { Response, NextFunction } from "express";
 import User from "@models/user/user-model";
 import { Request } from "express-jwt";
 import HttpError from "@utils/http-errors";
+import validationError from "@controllers/controllersHelpers/validation-error";
 
 export const savedPosts = async (
   req: Request,
@@ -33,4 +34,13 @@ export const savedPosts = async (
       new HttpError("Fetching saved posts failed, please try again.", 500)
     );
   }
+};
+
+export const bookmarkPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  validationError(req, res, next);
+  return res.status(200).json({ message: "Success!" });
 };

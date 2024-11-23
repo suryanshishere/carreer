@@ -153,7 +153,7 @@ const EmailVerification = () => {
           classProp={`py-2 px-3 font-bold rounded-full  text-custom-white ${
             sendOtpMutation.isPending
               ? "bg-custom-black"
-              : "bg-custom-grey hover:bg-custom-black"
+              : "bg-custom-gray hover:bg-custom-black"
           }`}
           onClick={handleOtpEmail}
           disabled={sendOtpMutation.isPending}
@@ -175,7 +175,7 @@ const EmailVerification = () => {
             classProp={`${
               verifyOtpMutation.isPending
                 ? "bg-custom-black"
-                : "hover:bg-custom-black bg-custom-grey"
+                : "hover:bg-custom-black bg-custom-gray"
             } py-2 rounded-full  text-white px-3  font-bold`}
             type="submit"
             disabled={verifyOtpMutation.isPending}
@@ -190,8 +190,8 @@ const EmailVerification = () => {
             sendOtpMutation.isPending
               ? "bg-custom-black"
               : resendTimer > 0
-              ? "bg-custom-super-less-grey"
-              : "bg-custom-grey hover:bg-custom-black"
+              ? "bg-custom-super-less-gray"
+              : "bg-custom-gray hover:bg-custom-black"
           } ml-2 py-2 rounded-full text-white px-3 font-bold`}
           onClick={handleOtpEmail}
           disabled={resendTimer > 0 || sendOtpMutation.isPending}

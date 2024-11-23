@@ -37,7 +37,7 @@ const NavAccountList = () => {
         </button>
       )}
       {index < NAV_ACCOUNT_LIST.length - 1 && (
-        <hr className="my-1 mx-[2px] border-custom-grey" />
+        <hr className="my-1 mx-[2px] border-custom-gray" />
       )}
     </div>
   ));

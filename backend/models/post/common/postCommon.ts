@@ -1,6 +1,6 @@
 import mongoose, { Schema, Types } from "mongoose";
 import { IPostCommon } from "../post-section-interface";
-import commonDataSchema from "../post-common";
+import commonDataSchema from "./post-common";
 
 const { ObjectId } = Schema.Types;
 
