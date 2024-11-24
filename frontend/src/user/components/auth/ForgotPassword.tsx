@@ -26,7 +26,6 @@ interface IForgotPassword {
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [successMsg, setSuccessMsg] = useState<string>("");
 
   const {
     register,
@@ -56,7 +55,6 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
       if (onBack) {
         onBack();
       }
-      setSuccessMsg(message);
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
@@ -67,10 +65,10 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
     submitMutation.mutate(data);
   };
 
-  if (successMsg.length > 0) {
+  if (submitMutation.isSuccess) {
     return (
       <p className="text-base text-center text-custom-green p-button font-bold">
-        {successMsg}
+        Password reset link sent successfully!
       </p>
     );
   }

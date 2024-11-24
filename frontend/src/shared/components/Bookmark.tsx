@@ -1,5 +1,4 @@
 import React from "react";
-import BookmarkBorderSharpIcon from "@mui/icons-material/BookmarkBorderSharp";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +7,8 @@ import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
+import BookmarkBorderSharpIcon from "@mui/icons-material/BookmarkBorderSharp";
+import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
 
 interface IBookmark {
   category: string;
@@ -17,6 +18,7 @@ interface IBookmark {
 const Bookmark: React.FC<IBookmark> = ({ category, postId }) => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const dispatch = useDispatch<AppDispatch>();
+
   const mutation = useMutation({
     mutationFn: async () => {
       const response = await axiosInstance.post(
@@ -40,15 +42,32 @@ const Bookmark: React.FC<IBookmark> = ({ category, postId }) => {
   });
 
   return (
-    <div
-      className="text-center flex items-center justify-center rounded-full hover:bg-custom-pale-yellow"
-      onClick={() => mutation.mutate()}
-    >
-      <BookmarkBorderSharpIcon
-        fontSize="small"
-        className="cursor-pointer text-custom-super-less-gray hover:text-custom-gray"
-      />
-    </div>
+    <>
+      {!mutation.isSuccess ? (
+        <div className="float-right flex items-center justify-center rounded-full hover:bg-custom-pale-yellow">
+          <BookmarkBorderSharpIcon
+            onClick={() => mutation.mutate()}
+            fontSize="small"
+            className={`cursor-pointer text-custom-super-less-gray hover:text-custom-gray ${
+              mutation.isPending && "text-custom-gray"
+            }`}
+          />
+        </div>
+      ) : (
+        <div className="float-right flex mt-1">
+          <button
+            className="relative text-custom-super-less-gray text-xs bg-transparent border-none cursor-pointer transition-all hover:font-semibold"
+            onMouseEnter={(e) => (e.currentTarget.textContent = "Unsave")}
+            onMouseLeave={(e) => (e.currentTarget.textContent = "Saved")}
+            onClick={() => {
+              // Add logic to handle "Unsave" action here
+            }}
+          >
+            Saved
+          </button>
+        </div>
+      )}
+    </>
   );
 };
 

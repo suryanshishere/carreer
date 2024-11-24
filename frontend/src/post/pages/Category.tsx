@@ -9,7 +9,7 @@ import useQueryStates from "shared/hooks/query-states-hook";
 
 // Fetch function with type annotations
 const fetchCategoryPostList = async (category: string): Promise<IPostList> => {
-  const { data } = await axiosInstance.get(`/category/${category}`);
+  const { data } = await axiosInstance.get(`category/${category}`);
   return data;
 };
 

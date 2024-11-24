@@ -12,14 +12,14 @@ const checkAuth = expressjwt({
   getToken: (req) => req.headers["authorization"]?.split(" ")[1], // Extract token from Authorization header
 }).unless({
   path: [
-    "/api",
-    "/api/home",
-    "/api/category/:category",
-    "/api/category/:category/:postId",
-    "/api/user/auth",
-    "/api/user/auth/send-password-reset-link",
-    "/api/user/auth/reset-password",
-    "/api/user/auth/reset-password/:userId",
+    { url: "/api", methods: ["GET"] },
+    { url: "/api/home", methods: ["GET"] },
+    { url: /^\/api\/category\/[^/]+$/, methods: ["GET"] }, // Match /api/category/:category
+    { url: /^\/api\/category\/[^/]+\/[^/]+$/, methods: ["GET"] }, // Match /api/category/:category/:postId
+    { url: "/api/user/auth", methods: ["POST"] },
+    { url: "/api/user/auth/send-password-reset-link", methods: ["POST"] },
+    { url: "/api/user/auth/reset-password", methods: ["POST"] },
+    { url: /^\/api\/user\/auth\/reset-password\/[^/]+$/, methods: ["POST"] }, // Match /api/user/auth/reset-password/:userId
   ],
 });
 
@@ -30,8 +30,6 @@ export const jwtErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-
-  console.log(req)
   if (err.name === "UnauthorizedError") {
     // Respond with your custom HttpError
     return res.status(401).json({

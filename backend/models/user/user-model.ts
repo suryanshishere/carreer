@@ -54,13 +54,26 @@ const userSchema: Schema = new Schema<IUser>({
     answerKeyRef: [{ type: Types.ObjectId, ref: "AnswerKey" }],
     admissionRef: [{ type: Types.ObjectId, ref: "Admission" }],
     admitCardRef: [{ type: Types.ObjectId, ref: "AdmitCard" }],
-    certificateRef: [{ type: Types.ObjectId, ref: "CertificateVerification" }],
-    postImportantRef: [{ type: Types.ObjectId, ref: "PostImportant" }],
+    certificateVerificationRef: [
+      { type: Types.ObjectId, ref: "CertificateVerification" },
+    ],
+    importantRef: [{ type: Types.ObjectId, ref: "PostImportant" }],
     latestJobRef: [{ type: Types.ObjectId, ref: "LatestJob" }],
     resultRef: [{ type: Types.ObjectId, ref: "Result" }],
     syllabusRef: [{ type: Types.ObjectId, ref: "Syllabus" }],
   },
 });
+
+export const allowedPostFields = [
+  "answerKeyRef",
+  "admissionRef",
+  "admitCardRef",
+  "certificateVerificationRef",
+  "importantRef",
+  "latestJobRef",
+  "resultRef",
+  "syllabusRef",
+];
 
 const User = mongoose.model<IUser>("User", userSchema);
 export default User;

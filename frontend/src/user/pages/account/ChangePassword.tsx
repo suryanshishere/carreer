@@ -46,7 +46,6 @@ interface IChangePasswordForm {
 const ChangePassword: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { token } = useSelector((state: RootState) => state.auth.userData);
-  const [successMsg, setSuccessMsg] = useState<string>("");
   // Set up React Hook Form
   const {
     register,
@@ -72,7 +71,7 @@ const ChangePassword: React.FC = () => {
       return response.data;
     },
     onSuccess: ({ message }) => {
-      setSuccessMsg(message || "Password changed successfully!");
+      // setSuccessMsg(message || "Password changed successfully!");
     },
     onError: (error: any) => {
       dispatch(
@@ -87,10 +86,10 @@ const ChangePassword: React.FC = () => {
     changePasswordMutation.mutate(data);
   };
 
-  if (successMsg.length > 0) {
+  if (changePasswordMutation.isSuccess) {
     return (
       <p className="text-base text-center text-custom-green p-button font-bold">
-        {successMsg}
+        Password changed successfully!
       </p>
     );
   }

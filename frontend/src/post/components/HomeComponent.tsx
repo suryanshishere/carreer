@@ -32,14 +32,14 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
         <ul className="flex flex-col gap-2 ml-0 pr-0">
           {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
             <React.Fragment key={index}>
-              <li className="w-full grid grid-cols-[91%_auto] gap-[2px] items-start">
+              <li className="w-full">
+                <Bookmark category={category} postId={item._id} />
                 <Link
                   to={`/category/${category}/${item._id}`}
                   className="text-custom-red underline decoration-1 underline-offset-2 hover:decoration-custom-gray"
                 >
                   {item.name_of_the_post}
                 </Link>
-                <Bookmark category={category} postId={item._id} />
               </li>
               {index !== ListItemData.length - 1 && (
                 <hr className="w-full border-t-1 border-custom-less-gray" />
