@@ -3,8 +3,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "shared/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
@@ -26,6 +26,7 @@ interface IForgotPassword {
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { token } = useSelector((state: RootState) => state.auth.userData);
 
   const {
     register,
@@ -44,7 +45,9 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
       const response = await axiosInstance.post(
         `user/auth/send-password-reset-link`,
         JSON.stringify(data),
-        {}
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
       return response.data;
     },

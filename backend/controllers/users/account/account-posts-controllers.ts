@@ -2,34 +2,35 @@ import { Response, NextFunction } from "express";
 import User, { allowedPostFields } from "@models/user/user-model";
 import { Request } from "express-jwt";
 import HttpError from "@utils/http-errors";
-import validationError from "@controllers/controllersHelpers/validation-error";
+import { snakeCase } from "lodash";
 
 export const savedPosts = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { userId } = req.userData;
+  const userId = req.userData.userId;
 
   try {
-    const user = await User.findById(userId).populate([
-      "savedPosts.answerKeyRef",
-      "savedPosts.admitCardRef",
-      "savedPosts.latestJobRef",
-      "savedPosts.admissionRef",
-      "savedPosts.certificateRef",
-      "savedPosts.postImportantRef",
-      "savedPosts.syllabusRef",
-      "savedPosts.resultRef",
-    ]);
+    const userSavedPost = await User.findById(userId)
+      .select("saved_posts -_id")
+      .populate([
+        "saved_posts.answer_key_ref",
+        "saved_posts.admit_card_ref",
+        "saved_posts.latest_job_ref",
+        "saved_posts.admission_ref",
+        "saved_posts.certificate_verification_ref",
+        "saved_posts.important_ref",
+        "saved_posts.syllabus_ref",
+        "saved_posts.result_ref",
+      ]);
 
-    if (!user) {
-      return next(new HttpError("User not found.", 404));
+    if (!userSavedPost) {
+      return next(new HttpError("No user saved post found!", 404));
     }
 
-    return res.status(200).json({ data: user });
+    return res.status(200).json({ data: userSavedPost });
   } catch (error) {
-    console.error("Error fetching saved posts:", error);
     return next(
       new HttpError("Fetching saved posts failed, please try again.", 500)
     );
@@ -42,32 +43,27 @@ export const bookmarkPost = async (
   next: NextFunction
 ) => {
   try {
-    // Validate input
     const { category, post_id } = req.body;
 
-    const fieldName = `${category.replace(
-      /_([a-z])/g,
-      (match: string, letter: string) => letter.toUpperCase()
-    )}Ref`;
-    
+    const fieldName = `${snakeCase(category)}_ref`;
+
     if (!allowedPostFields.includes(fieldName)) {
       return res.status(400).json({ message: "Invalid category provided." });
     }
 
     const userId = req.userData.userId;
-    // Update the user's savedPosts
+    // Find the user by ID
     const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
 
-
-    const currentPosts = user.savedPosts?.[fieldName] || [];
-    //not do for the same post_id again if it's present
+    const currentPosts = user.saved_posts?.[fieldName] || [];
+    // Avoid bookmarking the same post_id if it's already present
     if (!currentPosts.includes(post_id)) {
-      user.savedPosts = {
-        ...user.savedPosts,
+      user.saved_posts = {
+        ...user.saved_posts,
         [fieldName]: [...currentPosts, post_id],
       };
       await user.save();
@@ -75,7 +71,7 @@ export const bookmarkPost = async (
 
     return res.status(200).json({ message: "Post bookmarked successfully!" });
   } catch (error) {
-    console.error(error);
+    console.error("Error bookmarking post:", error);
     return res.status(500).json({ message: "Internal server error." });
   }
 };

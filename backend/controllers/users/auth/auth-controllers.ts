@@ -32,8 +32,12 @@ export const sendVerificationOtp = async (
   if (!options.isDirect) {
     validationError(req, res, next);
   }
-  // Use userId and email from options if provided, otherwise from req.body
-  const userId = options.userId || req.userData.userId;
+  // optional routes: since in backend action won't have token hence conditional not working
+  const userId = options.isDirect
+    ? options.userId
+    : req.headers["authorization"]?.split(" ")[1]
+    ? req.userData.userId
+    : undefined;
 
   try {
     let user: IUser | null = null;
@@ -65,7 +69,7 @@ export const sendVerificationOtp = async (
 
     const emailToSend = options.email || user?.email;
     if (!emailToSend) {
-      return next(new HttpError("Email address is required", 400));
+      return next(new HttpError("Email address is required!", 400));
     }
 
     // Generate a verification token and set expiration
@@ -91,7 +95,7 @@ export const sendVerificationOtp = async (
       message: "OTP sent to your email successfully",
     });
   } catch (error) {
-    console.log(error);
+  
     return next(
       new HttpError("Error sending verification email, try again later", 500)
     );
@@ -107,13 +111,13 @@ export const verifyEmail = async (
   validationError(req, res, next);
 
   const { otp } = req.body;
-  const userId = req.headers.userid as string;
+  const userId = req.userData.userId;
 
   try {
     // Find the user by ID and validate existence
     const existingUser = await User.findById(userId);
     if (!existingUser) {
-      return next(new HttpError("User not found. Please sign up again.", 404));
+      return next(new HttpError("User not found! Please sign up again.", 404));
     }
 
     // Verify the existence of the OTP and its creation date
@@ -175,7 +179,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
-    const verificationToken = generateUniqueVerificationToken();
+    const verificationToken = generateUniqueVerificationToken(); //garbage
 
     if (existingUser) {
       const isValidPassword = await bcrypt.compare(
@@ -206,6 +210,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
       return sendVerificationResponse(req, res, next, newUser);
     }
   } catch (err) {
+    console.log(err)
     return next(new HttpError("Authentication failed, please try again.", 500));
   }
 };
@@ -218,17 +223,28 @@ export const sendPasswordResetLink = async (
 ) => {
   validationError(req, res, next);
   const { email } = req.body;
+  const userId: string | undefined = req.headers["authorization"]?.split(" ")[1]
+    ? req.userData.userId
+    : undefined;
 
   try {
     let existingUser: IUser | null;
 
-    existingUser = await User.findOne({ email });
+    if (userId) {
+      existingUser = await User.findById(userId);
+    } else {
+      existingUser = await User.findOne({ email });
+    }
 
     if (!existingUser || !existingUser.isEmailVerified) {
-      //if user email not verified send user not found for password reset
       return next(new HttpError("User not found!", 404));
     }
 
+    if (userId && existingUser.email !== email) {
+      return next(
+        new HttpError("User does not match the provided email!", 404)
+      );
+    }
     //check too many request to prevent reset link send to email
     const delayInSeconds = existingUser.passwordResetTokenCreatedAt
       ? checkRequestDelay(existingUser.passwordResetTokenCreatedAt, 60)

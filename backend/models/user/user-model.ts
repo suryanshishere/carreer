@@ -26,7 +26,7 @@ export interface IUser extends Document {
   detail?: mongoose.Types.ObjectId;
 
   // Saved posts
-  savedPosts?: SavedPosts;
+  saved_posts?: SavedPosts;
 }
 
 const userSchema: Schema = new Schema<IUser>({
@@ -39,7 +39,7 @@ const userSchema: Schema = new Schema<IUser>({
   passwordChangedAt: { type: Date },
 
   // User identification fields
-  email: { type: String, required: true, unique: true, index: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 
   // Timestamps and activity fields
@@ -50,29 +50,29 @@ const userSchema: Schema = new Schema<IUser>({
   detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
 
   // Saved posts
-  savedPosts: {
-    answerKeyRef: [{ type: Types.ObjectId, ref: "AnswerKey" }],
-    admissionRef: [{ type: Types.ObjectId, ref: "Admission" }],
-    admitCardRef: [{ type: Types.ObjectId, ref: "AdmitCard" }],
-    certificateVerificationRef: [
+  saved_posts: {
+    answer_key_ref: [{ type: Types.ObjectId, ref: "AnswerKey" }],
+    admission_ref: [{ type: Types.ObjectId, ref: "Admission" }],
+    admit_card_ref: [{ type: Types.ObjectId, ref: "AdmitCard" }],
+    certificate_verification_ref: [
       { type: Types.ObjectId, ref: "CertificateVerification" },
     ],
-    importantRef: [{ type: Types.ObjectId, ref: "PostImportant" }],
-    latestJobRef: [{ type: Types.ObjectId, ref: "LatestJob" }],
-    resultRef: [{ type: Types.ObjectId, ref: "Result" }],
-    syllabusRef: [{ type: Types.ObjectId, ref: "Syllabus" }],
+    important_ref: [{ type: Types.ObjectId, ref: "PostImportant" }],
+    latest_job_ref: [{ type: Types.ObjectId, ref: "LatestJob" }],
+    result_ref: [{ type: Types.ObjectId, ref: "Result" }],
+    syllabus_ref: [{ type: Types.ObjectId, ref: "Syllabus" }],
   },
 });
 
 export const allowedPostFields = [
-  "answerKeyRef",
-  "admissionRef",
-  "admitCardRef",
-  "certificateVerificationRef",
-  "importantRef",
-  "latestJobRef",
-  "resultRef",
-  "syllabusRef",
+  "answer_key_ref",
+  "admission_ref",
+  "admit_card_ref",
+  "certificate_verification_ref",
+  "important_ref",
+  "latest_job_ref",
+  "result_ref",
+  "syllabus_ref",
 ];
 
 const User = mongoose.model<IUser>("User", userSchema);

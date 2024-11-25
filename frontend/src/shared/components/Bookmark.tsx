@@ -13,9 +13,10 @@ import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
 interface IBookmark {
   category: string;
   postId: string;
+  isSaved: boolean;
 }
 
-const Bookmark: React.FC<IBookmark> = ({ category, postId }) => {
+const Bookmark: React.FC<IBookmark> = ({ category, postId, isSaved }) => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -41,9 +42,25 @@ const Bookmark: React.FC<IBookmark> = ({ category, postId }) => {
     },
   });
 
+  if (isSaved || mutation.isSuccess) {
+    return (
+      <div className="float-right flex mt-1">
+        <button
+          className="relative text-custom-super-less-gray text-xs bg-transparent border-none cursor-pointer transition-all hover:font-semibold"
+          onMouseEnter={(e) => (e.currentTarget.textContent = "Unsave")}
+          onMouseLeave={(e) => (e.currentTarget.textContent = "Saved")}
+          onClick={() => {
+            // Add logic to handle "Unsave" action here
+          }}
+        >
+          Saved
+        </button>
+      </div>
+    );
+  }
   return (
     <>
-      {!mutation.isSuccess ? (
+      {!mutation.isSuccess && (
         <div className="float-right flex items-center justify-center rounded-full hover:bg-custom-pale-yellow">
           <BookmarkBorderSharpIcon
             onClick={() => mutation.mutate()}
@@ -52,19 +69,6 @@ const Bookmark: React.FC<IBookmark> = ({ category, postId }) => {
               mutation.isPending && "text-custom-gray"
             }`}
           />
-        </div>
-      ) : (
-        <div className="float-right flex mt-1">
-          <button
-            className="relative text-custom-super-less-gray text-xs bg-transparent border-none cursor-pointer transition-all hover:font-semibold"
-            onMouseEnter={(e) => (e.currentTarget.textContent = "Unsave")}
-            onMouseLeave={(e) => (e.currentTarget.textContent = "Saved")}
-            onClick={() => {
-              // Add logic to handle "Unsave" action here
-            }}
-          >
-            Saved
-          </button>
         </div>
       )}
     </>

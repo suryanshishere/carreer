@@ -33,7 +33,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
           {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
             <React.Fragment key={index}>
               <li className="w-full">
-                <Bookmark category={category} postId={item._id} />
+                <Bookmark category={category} postId={item._id} isSaved={item.is_saved}/>
                 <Link
                   to={`/category/${category}/${item._id}`}
                   className="text-custom-red underline decoration-1 underline-offset-2 hover:decoration-custom-gray"
