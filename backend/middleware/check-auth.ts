@@ -1,6 +1,6 @@
 import HttpError from "@utils/http-errors";
-import { Request, Response, NextFunction } from "express";
-import { expressjwt } from "express-jwt";
+import { Response, NextFunction } from "express";
+import { expressjwt, Request } from "express-jwt";
 
 const JWT_KEY = process.env.JWT_KEY || "";
 
@@ -9,6 +9,7 @@ const excludedPaths = [
   "/api",
   "/api/user/auth",
   "/api/user/auth/reset-password",
+  /^\/api\/user\/auth\/reset-password\/[^/]+$/, //TODO: regrex can be used to add check for mongodb id
 ];
 
 // Define paths that optionally require authorization (only if token is present)
@@ -47,28 +48,32 @@ export const jwtErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  if (err.name === "UnauthorizedError") {
-    // Check if the route is optional for token validation
-    const isOptionalRoute = optionalPaths.some((path) => {
-      // Use type guards to check the type of path
-      if (isRegExp(path)) {
-        return path.test(req.path); // Test the RegExp against the request path
-      } else if (isString(path)) {
-        return req.path === path; // Compare the string paths
-      }
-      return false; // If path is neither string nor RegExp, return false
-    });
-
-    // If it's an optional route, skip the error and allow the request to proceed without token
-    if (isOptionalRoute) {
-      return next(); // Proceed without setting userData
+  const isOptionalRoute = optionalPaths.some((path) => {
+    if (isRegExp(path)) {
+      return path.test(req.path);
+    } else if (isString(path)) {
+      return req.path === path;
     }
+    return false;
+  });
 
-    // Respond with a 401 Unauthorized error for non-optional routes
+  if (err.name === "UnauthorizedError" && !isOptionalRoute) {
     return next(
       new HttpError("Unauthorized user, please do login / signup!", 401)
     );
   }
+
+  return next();
+};
+
+export const getUserIdFromRequest = (req: Request): string | undefined => {
+  // Extract token and user data, ensuring safety against invalid tokens or expired sessions.
+  const authHeader = req.headers["authorization"];
+  const token = authHeader?.split(" ")[1];
+
+  return token && req.userData && req.userData.userId
+    ? req.userData.userId
+    : undefined;
 };
 
 // Export the checkAuth middleware

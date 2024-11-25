@@ -11,6 +11,7 @@ import { Request } from "express-jwt";
 import User from "@models/user/user-model";
 import { snakeCase } from "lodash";
 import { Types } from "mongoose";
+import { getUserIdFromRequest } from "@middleware/check-auth";
 
 const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 const CATEGORY_LIMIT =
@@ -32,11 +33,7 @@ export const getPostHomeList = async (
   next: NextFunction
 ) => {
   try {
-    const userId: string | undefined = req.headers["authorization"]?.split(
-      " "
-    )[1]
-      ? req.userData.userId
-      : undefined;
+    const userId = getUserIdFromRequest(req);
 
     // Fetch the user's saved_posts data only if the userId is present
     const user = userId
@@ -85,11 +82,7 @@ export const getPostCategoryList = async (
   const { category } = req.params;
 
   try {
-    const userId: string | undefined = req.headers["authorization"]?.split(
-      " "
-    )[1]
-      ? req.userData.userId
-      : undefined;
+    const userId = getUserIdFromRequest(req);
 
     // Check if the category is valid
     const model = MODEL_DATA[category];
@@ -156,11 +149,7 @@ export const getPostDetail = async (
 
     // Add is_saved field if user is authenticated
     let isSaved = false;
-    const userId: string | undefined = req.headers["authorization"]?.split(
-      " "
-    )[1]
-      ? req.userData.userId
-      : undefined;
+    const userId = getUserIdFromRequest(req);
 
     const { Types } = require("mongoose");
 

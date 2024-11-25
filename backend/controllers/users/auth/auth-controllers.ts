@@ -12,6 +12,7 @@ import {
 } from "./auth-utils";
 import validationError from "../../controllersHelpers/validation-error";
 import { Request } from "express-jwt";
+import { getUserIdFromRequest } from "@middleware/check-auth";
 
 const FRONTEND_URL =
   `${process.env.FRONTEND_URL}/user/reset_password` ||
@@ -32,12 +33,8 @@ export const sendVerificationOtp = async (
   if (!options.isDirect) {
     validationError(req, res, next);
   }
-  // optional routes: since in backend action won't have token hence conditional not working
-  const userId = options.isDirect
-    ? options.userId
-    : req.headers["authorization"]?.split(" ")[1]
-    ? req.userData.userId
-    : undefined;
+  // optional routes: since in backend action won't have token hence conditional not workin
+  const userId = options.isDirect ? options.userId : getUserIdFromRequest(req);
 
   try {
     let user: IUser | null = null;
@@ -95,7 +92,6 @@ export const sendVerificationOtp = async (
       message: "OTP sent to your email successfully",
     });
   } catch (error) {
-  
     return next(
       new HttpError("Error sending verification email, try again later", 500)
     );
@@ -210,7 +206,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
       return sendVerificationResponse(req, res, next, newUser);
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return next(new HttpError("Authentication failed, please try again.", 500));
   }
 };
@@ -223,9 +219,7 @@ export const sendPasswordResetLink = async (
 ) => {
   validationError(req, res, next);
   const { email } = req.body;
-  const userId: string | undefined = req.headers["authorization"]?.split(" ")[1]
-    ? req.userData.userId
-    : undefined;
+  const userId = getUserIdFromRequest(req);
 
   try {
     let existingUser: IUser | null;

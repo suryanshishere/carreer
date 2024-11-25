@@ -38,12 +38,13 @@ app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
 
   const response = {
     message: errorMessage,
-    ...(error.extraData && { extraData: error.extraData }), // Include extraData if it exists
+    ...(error.extraData && { extraData: error.extraData }), 
   };
 
   res.status(statusCode).json(response);
 });
 
+//todo
 userCleanupTask();
 
 mongoose

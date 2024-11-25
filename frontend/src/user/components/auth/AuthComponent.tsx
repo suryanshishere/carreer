@@ -62,6 +62,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
     },
+    retry: 3,
   });
 
   const submitHandler: SubmitHandler<IAuth> = async (data) => {
