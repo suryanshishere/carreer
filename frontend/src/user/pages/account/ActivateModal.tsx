@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from "shared/store";
 import { logout } from "shared/store/auth-slice";
 
 const ActivateModal = () => {
-  const { token, userId } = useSelector(
+  const { token} = useSelector(
     (state: RootState) => state.auth.userData
   );
   const dispatch = useDispatch<AppDispatch>();
@@ -19,7 +19,7 @@ const ActivateModal = () => {
   //     if (userId) {
   //       try {
   //         const response = await sendRequest(
-  //           `${process.env.REACT_APP_BASE_URL}/users/${userId}/deactivate-at`,
+  //           `${process.env.REACT_APP_BASE_URL}/users/deactivate-at`,
   //           "GET",
   //           null,
   //           {
@@ -48,7 +48,7 @@ const ActivateModal = () => {
     clearError();
     try {
       const response = await sendRequest(
-        `${process.env.REACT_APP_BASE_URL}/users/${userId}/reactivate`,
+        `${process.env.REACT_APP_BASE_URL}/users/reactivate`,
         "GET",
         null,
         {

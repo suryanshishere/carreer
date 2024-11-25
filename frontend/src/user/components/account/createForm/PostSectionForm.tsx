@@ -47,7 +47,7 @@ const formMap: Record<string, IContributeInputForm[]> = {
 
 const PostSectionForm: React.FC = () => {
   const { post_section, post_id } = useParams();
-    const {userId, token } = useSelector(
+    const { token } = useSelector(
     (state: RootState) => state.auth.userData
   );
   const navigate = useNavigate();
@@ -243,7 +243,7 @@ const PostSectionForm: React.FC = () => {
         JSON.stringify({ post_id, post_section, data: finalData }),
         {
           "Content-Type": "application/json",
-          userid: userId || "",
+          
           authorisation: "Bearer " + token,
         }
       );

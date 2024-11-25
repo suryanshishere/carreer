@@ -7,12 +7,10 @@ import {
   resetPassword,
   sendPasswordResetLink,
 } from "@controllers/users/auth/auth-controllers";
-import checkAuth from "@middleware/check-auth";
 
 const router = express.Router();
 
-const { NAME_LENGTH } = process.env;
-const PWD_LENGTH = Number(process.env.PWD_LENGTH);
+const PWD_LENGTH = Number(process.env.PWD_LENGTH) || 6;
 
 router.post(
   "/",
@@ -20,49 +18,37 @@ router.post(
     check("email").trim().normalizeEmail().isEmail(),
     check("password")
       .trim()
-      .isLength({ min: Number(PWD_LENGTH) || 6 }),
+      .isLength({ min: Number(PWD_LENGTH) }),
   ],
   auth
 );
-
-//auth check then below
-
 router.post(
-  "/verify_email",
-  check("otp")
-    .isInt({ min: 100000, max: 999999 })
-    .withMessage("OTP must be a 6-digit number."),
-  header("userid")
-    .isLength({ min: 24, max: 24 })
-    .withMessage("User required to be logged in."),
-  verifyEmail
-);
-
-router.post(
-  "/send_verification_otp",
-  header("userid")
-    .isLength({ min: 24, max: 24 })
-    .withMessage("User required to be logged in."),
-  sendVerificationOtp
-);
-
-router.post(
-  "/send_password_reset_link",
+  "/send-password-reset-link",
   check("email").trim().normalizeEmail().isEmail(),
   sendPasswordResetLink
 );
 
 router.post(
-  "/reset_password",
+  ["/reset-password", "/reset-password/:userId"],
   [
     check("resetPasswordToken")
       .isInt({ min: 100000, max: 999999 })
       .withMessage("Invalid link"),
     check("password").trim().isLength({ min: PWD_LENGTH }),
-    header("userid").isLength({ min: 24, max: 24 }),
   ],
   resetPassword
 );
-export default router;
 
-// router.use(checkAuth);
+//authenticated routes
+
+router.post(
+  "/verify-email",
+  check("otp")
+    .isInt({ min: 100000, max: 999999 })
+    .withMessage("OTP must be a 6-digit number."),
+  verifyEmail
+);
+
+router.post("/send-verification-otp", sendVerificationOtp);
+
+export default router;

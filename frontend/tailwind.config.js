@@ -9,15 +9,16 @@ module.exports = {
         "custom-white": "rgba(255, 255, 255, 1)",
         "custom-less-white": "rgba(255, 255, 255, 0.75)",
         "custom-black": "#000000",
-        "custom-grey": "#686D76",
-        // "custom-less-grey": "#C7C8CC",
-        "custom-super-less-grey": "rgba(128, 128, 128, 0.211)",
+        "custom-gray": "rgba(104, 109, 118)",
+        "custom-less-gray": "rgba(104, 109, 118, 0.75)",
+        "custom-super-less-gray": "rgba(104, 109, 118, 0.25)",
         // "custom-backdrop": "#2C3333",
         "custom-green": "#7F9F80",
         "custom-dark-blue": "#131921",
         "custom-blue": "#1679AB",
         "custom-yellow": "#EEEBDD",
         "custom-pale-yellow": "#EBE4D1",
+        "custom-pale-orange": "#E4C087",
       },
       spacing: {
         "main-nav": "3rem",
@@ -49,9 +50,15 @@ module.exports = {
           cursor: "default",
         },
       });
-    }
+    },
   ],
   corePlugins: {
     preflight: true,
-  }
+  },
+  variants: {
+    extend: {
+      textDecorationColor: ["visited"], // Enable visited variants
+      decoration: ["visited"], // Enable decoration color for visited
+    },
+  },
 };

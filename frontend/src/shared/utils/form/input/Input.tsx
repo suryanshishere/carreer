@@ -18,7 +18,7 @@ export interface InputProps
   type?: string;
   classProp?: string;
   outerClassProp?: string;
-  errorClassProp?:string;
+  errorClassProp?: string;
 }
 
 // Forward ref to Input component
@@ -50,14 +50,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const endAdornment = (() => {
       if (type === "password") {
         return (
-          <Button
+          <button
             type="button"
-            style={{ cursor: "default" }}
-            classProp="cursor-default p-0 hover:text-custom-red absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-custom-grey"
+            className="p-0 hover:text-custom-red absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-custom-gray"
             onClick={togglePasswordVisibility}
           >
             {showPassword ? "Hide" : "Show"}
-          </Button>
+          </button>
         );
       } else if (type === "search") {
         return (
@@ -71,14 +70,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={`${outerClassProp}`}>
-        <div className="relative w-full">
-          {label && (
-            <label htmlFor={name} className="block text-sm font-medium mb-1">
-              {label || placeholder || name}
-            </label>
-          )}
+        {label && (
+          <label htmlFor={name} className="block text-sm font-medium mb-1">
+            {formatWord(label)}
+          </label>
+        )}
+        <div className="relative w-full flex items-center">
           <input
-            ref={ref} // Use inputRef instead of ref
+            ref={ref}
             id={name}
             name={name}
             type={showPassword && type === "password" ? "text" : type}
@@ -86,18 +85,22 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder || formatWord(name)}
             value={value}
             onChange={onChange}
-            className={`w-full pl-2 py-2 border-2 border-custom-grey text-base rounded ${classProp} ${
-              error ? "border-custom-red" : ""
-            }  ${
-              error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"
+            className={`w-full pl-2 py-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
+              error ? "outline-custom-red" : ""
+            } ${
+              error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"
             }`}
             style={style}
           />
-          {endAdornment}
+          {endAdornment && (
+            <div className="absolute right-1 flex items-center h-full">
+              {endAdornment}
+            </div>
+          )}
         </div>
         {helperText && (
           <p
-            className={`ml-2 mt-0 bg-custom-white text-xs w-auto whitespace-nowrap ${
+            className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
               error ? "text-custom-red" : "text-grey"
             } ${errorClassProp}`}
           >
@@ -148,16 +151,16 @@ export const TextArea = forwardRef<
           disabled={disabled}
           value={value}
           onChange={onChange} // Now specific to HTMLTextAreaElement
-          className={`w-full pl-2 border-2 border-custom-less-grey rounded-md ${classProp} ${
+          className={`w-full pl-2 border-2 border-custom-less-gray rounded-md ${classProp} ${
             error ? "border-custom-red" : ""
           }  ${
-            error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"
+            error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"
           }`}
         />
         {helperText && (
           <p
             className={`ml-2 text-sm ${
-              error ? "text-custom-red" : "text-custom-grey"
+              error ? "text-custom-red" : "text-custom-gray"
             }`}
           >
             {helperText}

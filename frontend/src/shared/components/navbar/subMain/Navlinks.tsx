@@ -13,7 +13,7 @@ const Navlinks: React.FC = () => {
             to={item === "home" ? `/` : `/category/${item}`}
             className={({ isActive }) =>
               `no-underline p-1 min-w-fit whitespace-nowrap  ${
-                isActive ? "font-bold text-custom-red" : "hover:text-custom-red"
+                isActive ? "text-custom-red" : "hover:text-custom-red"
               }`
             }
           >

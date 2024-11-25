@@ -1,15 +1,10 @@
 [
   {
-    "header": "Contribute To Post",
-    "link": "/user/account/contribute_to_post"
-  },
-  {
-    "header": "Profile",
-    "link": "/user/profile"
-  },
-  {
-    "header": "Setting",
-    "link": "/user/setting"
+    "header": "Change Password",
+    "link": "/user/change-password"
+  },{
+    "header": "Forgot Password",
+    "link": "/user/forgot-password"
   },
   {
     "header": "Logout"

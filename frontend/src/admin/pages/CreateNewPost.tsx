@@ -36,9 +36,9 @@ interface ICreateNewPostForm {
 }
 
 const CreateNewPost: React.FC = () => {
-    const {userId, token } = useSelector(
-    (state: RootState) => state.auth.userData
-  );
+  //   const {userId, token } = useSelector(
+  //   (state: RootState) => state.auth.userData
+  // );
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -53,40 +53,40 @@ const CreateNewPost: React.FC = () => {
   });
 
   // Mutation for form submission
-  const submitMutation = useMutation({
-    mutationFn: async (data: ICreateNewPostForm) => {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/admin/private/create_new_post`,
-        JSON.stringify(data),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            userid: userId || "",
-          },
-        }
-      );
-      return response.data;
-    },
-    onSuccess: (data) => {
-      dispatch(triggerSuccessMsg(data.message));
-      navigate(0);
-    },
-    onError: (error: any) => {
-      dispatch(
-        triggerErrorMsg(error.response?.data?.message || "Submission failed!")
-      );
-    },
-  });
+  // const submitMutation = useMutation({
+  //   mutationFn: async (data: ICreateNewPostForm) => {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_BASE_URL}/admin/private/create_new_post`,
+  //       JSON.stringify(data),
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //           
+  //         },
+  //       }
+  //     );
+  //     return response.data;
+  //   },
+  //   onSuccess: (data) => {
+  //     dispatch(triggerSuccessMsg(data.message));
+  //     navigate(0);
+  //   },
+  //   onError: (error: any) => {
+  //     dispatch(
+  //       triggerErrorMsg(error.response?.data?.message || "Submission failed!")
+  //     );
+  //   },
+  // });
 
   // Submit handler for the form
-  const submitHandler: SubmitHandler<ICreateNewPostForm> = (data) => {
-    submitMutation.mutate(data);
-  };
+  // const submitHandler: SubmitHandler<ICreateNewPostForm> = (data) => {
+  //   submitMutation.mutate(data);
+  // };
 
   return (
     <form
-      onSubmit={handleSubmit(submitHandler)}
+      // onSubmit={handleSubmit(submitHandler)}
       className="flex flex-col gap-2"
     >
       <Input
@@ -111,9 +111,9 @@ const CreateNewPost: React.FC = () => {
         register={register}
       />
 
-      <Button type="submit" disabled={submitMutation.isPending}>
+      {/* <Button type="submit" disabled={submitMutation.isPending}>
         {submitMutation.isPending ? "Submitting..." : "Submit"}
-      </Button>
+      </Button> */}
     </form>
   );
 };

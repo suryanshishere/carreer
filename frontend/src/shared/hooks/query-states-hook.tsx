@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "shared/store";
 import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
@@ -5,7 +6,7 @@ import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 interface QueryStateProps {
   isLoading: boolean;
   error: string | null;
-  empty: boolean;
+  empty?: boolean;
 }
 
 const useQueryStates = ({
@@ -14,12 +15,16 @@ const useQueryStates = ({
   empty,
 }: QueryStateProps): JSX.Element | null => {
   const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    if (!isLoading && error) {
+      dispatch(triggerErrorMsg(error));
+    }
+  }, [dispatch, error, isLoading]);
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
   if (!isLoading && error) {
-    dispatch(triggerErrorMsg(error));
     return <p>Error: {error}</p>;
   }
   if (empty) {

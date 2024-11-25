@@ -9,11 +9,12 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import ForgotPassword from "./ForgotPassword";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "shared/store";
+import { AppDispatch, RootState } from "shared/store";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
+import axiosInstance from "shared/utils/api/axios-instance";
 
 const validationSchema = yup.object().shape({
   new_password: yup.string().required("New password is required"),
@@ -48,18 +49,13 @@ const ResetPassword: React.FC = () => {
   // Mutation for resetting the password
   const submitMutation = useMutation({
     mutationFn: async (data: IResetPasswordForm) => {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/reset_password`,
+      const response = await axiosInstance.post(
+        `user/auth/reset-password/${userId}`,
         JSON.stringify({
           resetPasswordToken: Number(resetPasswordToken?.slice(-6)),
           password: data.new_password,
         }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            userid: userId,
-          },
-        }
+        {}
       );
       return response.data;
     },
@@ -102,19 +98,19 @@ const ResetPassword: React.FC = () => {
     <div className="w-full flex justify-center">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="w-1/2 flex flex-col gap-2"
+        className="w-1/2 flex flex-col gap-3"
       >
         <Input
           {...register("new_password")}
           type="password"
-          // classProp=""
+          label="New password"
           error={!!errors.new_password}
           helperText={errors.new_password?.message}
         />
         <Input
           {...register("confirm_new_password")}
           type="password"
-          // classProp=""
+          label="Confirm new password"
           error={!!errors.confirm_new_password}
           helperText={errors.confirm_new_password?.message}
         />

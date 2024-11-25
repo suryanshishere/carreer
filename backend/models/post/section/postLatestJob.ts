@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { ILatestJob } from "../post-section-interface";
-import commonDataSchema from "../post-common";
+import commonDataSchema from "../common/post-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -18,7 +18,7 @@ const latestJobSchema = new Schema<ILatestJob>({
 
 latestJobSchema.add(commonDataSchema);
 
-export {latestJobSchema}
+export { latestJobSchema };
 
 const LatestJob = mongoose.model("LatestJob", latestJobSchema);
 

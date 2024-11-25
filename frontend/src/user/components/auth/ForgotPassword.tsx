@@ -1,18 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { AuthProps } from "user/pages/auth/Auth";
-import AuthForm from "user/components/auth/AuthForm";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
+import { useLocation } from "react-router-dom";
+import { AuthProps } from "user/pages/auth/Auth";
+import axiosInstance from "shared/utils/api/axios-instance";
+import Button from "shared/utils/form/Button";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Input } from "shared/utils/form/input/Input";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -24,8 +26,8 @@ interface IForgotPassword {
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { userId } = useSelector((state: RootState) => state.auth.userData);
-  const [reached, setReached] = useState<boolean>(false);
+  const { token } = useSelector((state: RootState) => state.auth.userData);
+
   const {
     register,
     handleSubmit,
@@ -35,26 +37,27 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
     mode: "onSubmit",
   });
 
+  const location = useLocation();
+  const isForgotPasswordPage = location.pathname === "/user/forgot-password";
+
   const submitMutation = useMutation({
     mutationFn: async (data: IForgotPassword) => {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/send_password_reset_link`,
+      const response = await axiosInstance.post(
+        `user/auth/send-password-reset-link`,
         JSON.stringify(data),
         {
-          headers: {
-            "Content-Type": "application/json",
-            userid: userId,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       return response.data;
     },
-    onSuccess: (data) => {
-      dispatch(triggerSuccessMsg(data.message));
+    onSuccess: ({ message }) => {
+      {
+        !isForgotPasswordPage && dispatch(triggerSuccessMsg(message));
+      }
       if (onBack) {
         onBack();
       }
-      setReached(true);
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
@@ -65,29 +68,58 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
     submitMutation.mutate(data);
   };
 
-  if (reached) {
+  if (submitMutation.isSuccess) {
     return (
-      <p className="text-base text-custom-green p-button font-bold">
-        Reset password link sent successfully!
+      <p className="text-base text-center text-custom-green p-button font-bold">
+        Password reset link sent successfully!
       </p>
     );
   }
 
-  return (
-    <form onSubmit={handleSubmit(submitHandler)} className={`${classProp}`}>
-      <AuthForm
-        forgotPassword
-        inputClassProp="placeholder:text-sm"
-        inputOuterClassProp="flex-1"
-        register={register}
-        errors={errors}
-        onBack={onBack}
-        pendingProp={submitMutation.isPending}
-        buttonClassProp={`${
-          submitMutation.isPending ? "bg-custom-black" : "bg-custom-grey"
-        } py-2 rounded-full  text-white font-bold px-3 hover:bg-custom-black`}
+  const formContent = (
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className={
+        isForgotPasswordPage ? "w-1/2 flex flex-col gap-2" : `${classProp}`
+      }
+    >
+      <Input
+        {...register("email")}
+        type="email"
+        label={isForgotPasswordPage ? "Email" : undefined}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+        placeholder="Email"
+        classProp={`placeholder:text-sm`}
+        outerClassProp={`flex-1`}
       />
+      {onBack && (
+        <button className="rounded-full p-1" onClick={onBack}>
+          <ArrowBackIcon />
+        </button>
+      )}
+      <Button
+        outline={isForgotPasswordPage ? true : undefined}
+        classProp={
+          !isForgotPasswordPage
+            ? `${
+                submitMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
+              } py-2 rounded-full text-white font-bold px-3 hover:bg-custom-black`
+            : undefined
+        }
+        type="submit"
+      >
+        {submitMutation.isPending
+          ? "Sending reset password link.."
+          : "Send reset password link"}
+      </Button>
     </form>
+  );
+
+  return isForgotPasswordPage ? (
+    <div className="w-full flex justify-center">{formContent}</div>
+  ) : (
+    formContent
   );
 };
 

@@ -13,6 +13,7 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import { handleAuthClick, updateUserData } from "shared/store/auth-slice";
+import axiosInstance from "shared/utils/api/axios-instance";
 
 const otpSchema = Yup.object().shape({
   email_verification_otp: Yup.number()
@@ -35,7 +36,7 @@ type OTPFormInputs = {
 };
 
 const EmailVerification = () => {
-  const { token, email, userId, isEmailVerified } = useSelector(
+  const { token, isEmailVerified } = useSelector(
     (state: RootState) => state.auth.userData
   );
   const isOtpSent = useSelector((state: RootState) => state.auth.isOtpSent);
@@ -71,12 +72,11 @@ const EmailVerification = () => {
   // Mutation for sending OTP email
   const sendOtpMutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/send_verification_otp`,
+      const response = await axiosInstance.post(
+        `user/auth/send-verification-otp`,
         {},
         {
           headers: {
-            userid: userId,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -102,13 +102,11 @@ const EmailVerification = () => {
   // Mutation for verifying OTP
   const verifyOtpMutation = useMutation({
     mutationFn: async (otp: number) => {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/verify_email`,
+      const response = await axiosInstance.post(
+        `user/auth/verify-email`,
         { otp },
         {
           headers: {
-            "Content-Type": "application/json",
-            userid: userId,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -116,7 +114,7 @@ const EmailVerification = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      dispatch(updateUserData({isEmailVerified: true}))
+      dispatch(updateUserData({ isEmailVerified: true }));
       dispatch(triggerSuccessMsg(data.message));
       dispatch(handleAuthClick(false));
     },
@@ -145,8 +143,8 @@ const EmailVerification = () => {
           ? "Enter your OTP for verification, which was sent to your email "
           : "Generate OTP for verification on your email "}
         <span className="text-custom-red">
-          {email &&
-            `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`}
+          {/* {email &&
+            `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`} */}
         </span>
       </div>
 
@@ -155,7 +153,7 @@ const EmailVerification = () => {
           classProp={`py-2 px-3 font-bold rounded-full  text-custom-white ${
             sendOtpMutation.isPending
               ? "bg-custom-black"
-              : "bg-custom-grey hover:bg-custom-black"
+              : "bg-custom-gray hover:bg-custom-black"
           }`}
           onClick={handleOtpEmail}
           disabled={sendOtpMutation.isPending}
@@ -177,7 +175,7 @@ const EmailVerification = () => {
             classProp={`${
               verifyOtpMutation.isPending
                 ? "bg-custom-black"
-                : "hover:bg-custom-black bg-custom-grey"
+                : "hover:bg-custom-black bg-custom-gray"
             } py-2 rounded-full  text-white px-3  font-bold`}
             type="submit"
             disabled={verifyOtpMutation.isPending}
@@ -192,8 +190,8 @@ const EmailVerification = () => {
             sendOtpMutation.isPending
               ? "bg-custom-black"
               : resendTimer > 0
-              ? "bg-custom-super-less-grey"
-              : "bg-custom-grey hover:bg-custom-black"
+              ? "bg-custom-super-less-gray"
+              : "bg-custom-gray hover:bg-custom-black"
           } ml-2 py-2 rounded-full text-white px-3 font-bold`}
           onClick={handleOtpEmail}
           disabled={resendTimer > 0 || sendOtpMutation.isPending}

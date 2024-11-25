@@ -7,13 +7,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { RootState } from "shared/store";
 
-
 const EditPostItem = () => {
   const { post_section, post_id } = useParams();
   const { sendRequest } = useHttpClient();
   const [data, setData] = useState<IPostDetail | null>(null);
   const navigate = useNavigate();
-    const {userId, token } = useSelector(
+  const { token } = useSelector(
     (state: RootState) => state.auth.userData
   );
 
@@ -25,7 +24,6 @@ const EditPostItem = () => {
           "GET",
           null,
           {
-            userid: userId || "",
             Authorization: "Bearer " + token,
           }
         );

@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
 
 const PostFinalizer = () => {
   const { sendRequest } = useHttpClient();
-    const {userId, token } = useSelector(
+    const { token } = useSelector(
     (state: RootState) => state.auth.userData
   );
   const [postIdData, setPostIdData] = useState<IPostAdminData[]>([]);
@@ -51,7 +51,7 @@ const PostFinalizer = () => {
           "GET",
           null,
           {
-            userid: userId || "",
+            
             Authorisation: "Bearer " + token,
           }
         );
@@ -70,7 +70,7 @@ const PostFinalizer = () => {
       } catch (err) {}
     };
     fetchData();
-  }, [post_section, sendRequest, userId, token, navigate]);
+  }, [post_section, sendRequest, token, navigate]);
 
   const submitHandler: SubmitHandler<{ post_id: string }> = async (data) => {
     const postId = data.post_id;
@@ -81,7 +81,7 @@ const PostFinalizer = () => {
         "GET",
         null,
         {
-          userid: userId || "",
+          
           authorisation: "Bearer " + token,
         }
       );

@@ -12,39 +12,39 @@ const EditPostComponent = () => {
   const { sendRequest, error } = useHttpClient();
   const [data, setData] = useState<IPostAdminData[]>([]);
   const navigate = useNavigate();
-  const { userId, token } = useSelector(
-    (state: RootState) => state.auth.userData
-  );
+  // const { userId, token } = useSelector(
+  //   (state: RootState) => state.auth.userData
+  // );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await sendRequest(
-          `${process.env.REACT_APP_BASE_URL}/admin/private/${post_section}/all_post_admin_data`,
-          "GET",
-          null,
-          {
-            userid: userId || "",
-            Authorisation: "Bearer " + token,
-          }
-        );
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await sendRequest(
+  //         `${process.env.REACT_APP_BASE_URL}/admin/private/${post_section}/all_post_admin_data`,
+  //         "GET",
+  //         null,
+  //         {
+  //           
+  //           Authorisation: "Bearer " + token,
+  //         }
+  //       );
 
-        const responseData = response.data as unknown as {
-          [key: string]: IPostAdminData[];
-        };
-        const firstKey = Object.keys(responseData)[0];
-        const responseDataValue = responseData[firstKey] || [];
+  //       const responseData = response.data as unknown as {
+  //         [key: string]: IPostAdminData[];
+  //       };
+  //       const firstKey = Object.keys(responseData)[0];
+  //       const responseDataValue = responseData[firstKey] || [];
 
-        if (responseDataValue.length > 0) {
-          setData(responseDataValue);
-        } else {
-          navigate(-1);
-        }
-      } catch (err) {}
-    };
+  //       if (responseDataValue.length > 0) {
+  //         setData(responseDataValue);
+  //       } else {
+  //         navigate(-1);
+  //       }
+  //     } catch (err) {}
+  //   };
 
-    fetchData();
-  }, [post_section]);
+  //   fetchData();
+  // }, [post_section]);
 
   return (
     <ul>

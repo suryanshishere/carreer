@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { IPostListData } from "models/post/IPostList";
 // import Delete from "../utils/Delete";
 import "./List.css";
+import Bookmark from "shared/components/Bookmark";
 // import { formatWord } from "shared/quick/format-word";
 
 interface ListProps {
@@ -17,7 +18,8 @@ interface ListProps {
 
 //since, same this list component can be used by various other page like saved, category.
 
-const CATEGORY_LIMIT = Number(process.env.REACT_APP_NUMBER_OF_POST_CATEGORYLIST) || 25
+const CATEGORY_LIMIT =
+  Number(process.env.REACT_APP_NUMBER_OF_POST_CATEGORYLIST) || 25;
 
 const List: React.FC<ListProps> = ({
   currentRecords,
@@ -27,11 +29,7 @@ const List: React.FC<ListProps> = ({
   showDelete,
   onSavedDelete,
 }) => {
-  const handleDelete = (id: string | number) => {
-    if (onSavedDelete) {
-      onSavedDelete(id);
-    }
-  };
+ console.log(currentRecords)
 
   return (
     <ul className="w-full self-start p-0 m-0">
@@ -42,6 +40,11 @@ const List: React.FC<ListProps> = ({
           <React.Fragment key={item._id}>
             <li className="flex items-center justify-between gap-4">
               <div className="flex gap-2 p-2">
+                <Bookmark
+                  category={category}
+                  postId={item._id}
+                  isSaved={item.is_saved}
+                />
                 <h6
                   className="m-0 mt-1 p-1"
                   style={{

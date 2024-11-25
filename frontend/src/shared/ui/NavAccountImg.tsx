@@ -1,13 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 
 const NavAccountImg = () => {
+  // const {navAccountDp} = useSelector((state:RootState)=>state.auth.userData);
   return (
     <>
-      <img
-        src="https://img.freepik.com/free-photo/background_53876-32170.jpg?t=st=1731672999~exp=1731676599~hmac=cb00e9bf593a1316e664346498665d96056b877fad011f05300c8c15ea6292cb&w=996"
+      {/* <img
+        src={`${navAccountDp}`}
         alt="account"
         className="h-full w-full rounded-full object-cover"
-      />
+      /> */}
     </>
   );
 };

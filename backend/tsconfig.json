@@ -10,11 +10,21 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@models/*": ["models/*"],
-      "@controllers/*": ["controllers/*"],
-      "@routes/*": ["routes/*"],
-      "@utils/*": ["utils/*"],
-      "@middleware/*": ["middleware/*"]
+      "@models/*": [
+        "models/*"
+      ],
+      "@controllers/*": [
+        "controllers/*"
+      ],
+      "@routes/*": [
+        "routes/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@middleware/*": [
+        "middleware/*"
+      ]
     }
   }
 }

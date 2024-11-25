@@ -12,11 +12,11 @@ const dropdownSlice = createSlice({
   name: "dropdown",
   initialState,
   reducers: {
-    setNavDropdown(state, action: PayloadAction<boolean>) {
+    handleShowNavDropdown(state, action: PayloadAction<boolean>) {
       state.showNavDropdown = action.payload;
     },
   },
 });
 
-export const { setNavDropdown } = dropdownSlice.actions;
+export const { handleShowNavDropdown } = dropdownSlice.actions;
 export default dropdownSlice.reducer;

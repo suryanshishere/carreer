@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { IResult } from "../post-section-interface";
-import createCommonDataModel from "../post-common";
-import commonDataSchema from "../post-common";
+// import createCommonDataModel from "../post-common";
+import commonDataSchema from "../common/post-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;

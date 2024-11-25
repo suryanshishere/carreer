@@ -14,7 +14,7 @@ interface DeactivateProps {
 const Deactivate: React.FC<DeactivateProps> = ({ onMsg }) => {
   const [contentState, setContentState] = useState(false);
   const { error, sendRequest, isLoading } = useHttpClient();
-  const { token, userId } = useSelector(
+  const { token} = useSelector(
     (state: RootState) => state.auth.userData
   );
   const dispatch = useDispatch<AppDispatch>();
@@ -30,7 +30,7 @@ const Deactivate: React.FC<DeactivateProps> = ({ onMsg }) => {
     if (passwordValue.trim().length > 5) {
       try {
         const response = await sendRequest(
-          `${process.env.REACT_APP_BASE_URL}/users/${userId}/deactivate`,
+          `${process.env.REACT_APP_BASE_URL}/users/deactivate`,
           "POST",
           JSON.stringify({
             password: passwordValue,

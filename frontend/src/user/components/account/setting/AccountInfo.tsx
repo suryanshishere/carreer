@@ -21,7 +21,7 @@ export interface AccountInfoData {
 
 const AccountInfo = () => {
   const { sendRequest, error, clearError } = useHttpClient();
-  const { token, userId } = useSelector(
+  const { token} = useSelector(
     (state: RootState) => state.auth.userData
   );
   const [contentState, setContentState] = useState(false);
@@ -38,7 +38,7 @@ const AccountInfo = () => {
     if (passwordValue.trim().length > 5) {
       try {
         const response = await sendRequest(
-          `${process.env.REACT_APP_BASE_URL}/users/${userId}/account-info`,
+          `${process.env.REACT_APP_BASE_URL}/users/account-info`,
           "POST",
           JSON.stringify({
             password: passwordValue,

@@ -5,56 +5,60 @@ import HomePage from "post/pages/Home";
 import Detail from "post/pages/Detail";
 import Category from "post/pages/Category";
 import ContactUs from "shared/pages/contactUs/ContactUs";
-import Saved from "./user/pages/Saved";
-import Profile from "./user/pages/account/Profile";
-import ActivateModal from "./user/pages/account/ActivateModal";
 import NotFound from "./shared/pages/NotFound";
-
 import ResetPassword from "user/components/auth/ResetPassword";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
+import ChangePassword from "user/pages/account/ChangePassword";
+import ForgotPassword from "user/components/auth/ForgotPassword";
+import SavedPosts from "user/pages/account/SavedPosts";
 
 const App: React.FC = () => {
-  //context won't work here
   const { token } = useSelector((state: RootState) => state.auth.userData);
 
-  const authRoutes =
-    token || !token
-      ? [
-          { path: "saved_exam", element: <Saved /> },
-          { path: "profile", element: <Profile /> },
-          // { path: "setting", element: <Setting /> },
-          {
-            path: "account",
-            children: [
-              // { path: "contribute_to_post", element: <ContributeToPost /> },
-              // {
-              //   path: "contribute_to_post/:post_section",
-              //   element: <PostFinalizer />,
-              // },
-              // {
-              //   path: "contribute_to_post/:post_section/:post_id",
-              //   element: <PostSectionForm />,
-              // },
-            ],
-          },
-          {
-            path: "reset_password/:resetPasswordToken",
-            element: <ResetPassword />,
-          },
-          { path: "*", element: <NotFound /> },
-        ]
-      : [
-          {
-            path: "reset_password/:resetPasswordToken",
-            element: <ResetPassword />,
-          },
-          // { path: "account/contribute_to_post", element: <ContributeToPost /> },
-          // {
-          //   path: "account/contribute_to_post/:post_section",
-          //   element: <PostSectionForm />,
-          // },
-        ];
+  const authRoutes = token
+    ? [
+        { path: "saved-posts", element: <SavedPosts /> },
+        // { path: "setting", element: <Setting /> },
+        {
+          path: "account",
+          children: [
+            // { path: "contribute_to_post", element: <ContributeToPost /> },
+            // {
+            //   path: "contribute_to_post/:post_section",
+            //   element: <PostFinalizer />,
+            // },
+            // {
+            //   path: "contribute_to_post/:post_section/:post_id",
+            //   element: <PostSectionForm />,
+            // },
+          ],
+        },
+        {
+          path: "reset_password/:resetPasswordToken",
+          element: <ResetPassword />,
+        },
+        {
+          path: "change-password",
+          element: <ChangePassword />,
+        },
+        {
+          path: "forgot-password",
+          element: <ForgotPassword />,
+        },
+        { path: "*", element: <NotFound /> },
+      ]
+    : [
+        // {
+        //   path: "reset_password/:resetPasswordToken",
+        //   element: <ResetPassword />,
+        // },
+        // { path: "account/contribute_to_post", element: <ContributeToPost /> },
+        // {
+        //   path: "account/contribute_to_post/:post_section",
+        //   element: <PostSectionForm />,
+        // },
+      ];
 
   const router = createBrowserRouter([
     {
@@ -105,7 +109,6 @@ const App: React.FC = () => {
   return (
     <>
       <RouterProvider router={router} />
-      {/* <ActivateModal /> */}
     </>
   );
 };

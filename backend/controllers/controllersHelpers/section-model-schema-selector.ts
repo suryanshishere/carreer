@@ -7,7 +7,7 @@ import { admissionSchema } from "@models/post/section/postAdmission";
 import { admitCardSchema } from "@models/post/section/postAdmitCard";
 import { answerKeySchema } from "@models/post/section/postAnswerKey";
 import { certificateVerificationSchema } from "@models/post/section/postCertificateVerification";
-import { postCommonSchema } from "@models/post/section/postCommon";
+import { postCommonSchema } from "@models/post/common/postCommon";
 import { postImportantSchema } from "@models/post/section/postImportant";
 import { latestJobSchema } from "@models/post/section/postLatestJob";
 import { syllabusSchema } from "@models/post/section/postSyllabus";
