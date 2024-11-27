@@ -1,0 +1,13 @@
+[
+  {
+    "header": "Change password",
+    "link": "/user/account/setting/change-password"
+  },
+  {
+    "header": "Forgot password",
+    "link": "/user/account/setting/forgot-password"
+  },{
+    "header": "Deactivate account",
+    "link": "/user/account/setting/deactivate-account"
+  }
+]

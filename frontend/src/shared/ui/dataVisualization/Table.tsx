@@ -1,5 +1,5 @@
 import React from "react";
-import { formatWord } from "shared/quick/format-word";
+import { startCase } from "lodash";
 import "./Table.css";
 
 interface TableProps {
@@ -14,7 +14,7 @@ const Table: React.FC<TableProps> = ({ tableObject, tableArray }) => {
         <tbody>
           {Object.entries(obj).map(([key, value]) => (
             <tr key={key}>
-              <td className="table-key">{formatWord(key)}</td>
+              <td className="table-key">{startCase(key)}</td>
               <td className="table-value">
                 {Array.isArray(value) ? (
                   value.map((item, index) => (
@@ -49,7 +49,7 @@ const Table: React.FC<TableProps> = ({ tableObject, tableArray }) => {
           <tr>
             {headers.map((header) => (
               <th key={`header-${header}`} className="table-header">
-                {formatWord(header)}
+                {startCase(header)}
               </th>
             ))}
           </tr>

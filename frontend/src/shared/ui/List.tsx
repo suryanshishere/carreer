@@ -5,7 +5,7 @@ import { IPostListData } from "models/post/IPostList";
 // import Delete from "../utils/Delete";
 import "./List.css";
 import Bookmark from "shared/components/Bookmark";
-// import { formatWord } from "shared/quick/format-word";
+// import { startCase } from "lodash";
 
 interface ListProps {
   currentRecords: IPostListData[];
@@ -64,7 +64,7 @@ const List: React.FC<ListProps> = ({
                 </div>
               </div>
               <div className="list_li_util flex content-center">
-                {/* {showCategory && <header>{formatWord(item.category)}</header>}
+                {/* {showCategory && <header>{startCase(item.category)}</header>}
                 {showDelete && (
                   <Delete itemId={item._id} onDelete={handleDelete} />
                 )} */}

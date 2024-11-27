@@ -6,7 +6,7 @@ import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch, useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
-import { formatWord } from "shared/quick/format-word";
+import { startCase } from "lodash";
 import { RootState } from "shared/store";
 
 
@@ -100,7 +100,7 @@ const AccountInfoForm: React.FC<AccountInfoFormProps> = ({
             onSubmit={(e) => submitHandler(e, header as keyof AccountInfoData)}
           >
             <li className="account_info_li grow overflow-hidden list-none flex flex-col justify-center gap-1 pl-4">
-              <span className="capitalize font-bold ">{formatWord(header)}</span>
+              <span className="capitalize font-bold ">{startCase(header)}</span>
               {editState === header ? (
                 <div className="w-full flex justify-between mr-6">
                   <input

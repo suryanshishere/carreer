@@ -38,7 +38,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
   });
 
   const location = useLocation();
-  const isForgotPasswordPage = location.pathname === "/user/forgot-password";
+  const isForgotPasswordPage = location.pathname === "/user/account/setting/forgot-password";
 
   const submitMutation = useMutation({
     mutationFn: async (data: IForgotPassword) => {
@@ -94,11 +94,12 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
         outerClassProp={`flex-1`}
       />
       {onBack && (
-        <button className="rounded-full p-1" onClick={onBack}>
+        <button className="rounded-full flex items-center justify-center p-1 hover:bg-custom-super-less-gray" onClick={onBack}>
           <ArrowBackIcon />
         </button>
       )}
       <Button
+        authButtonType={!isForgotPasswordPage}
         outline={isForgotPasswordPage ? true : undefined}
         classProp={
           !isForgotPasswordPage

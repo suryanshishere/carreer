@@ -36,21 +36,6 @@ router.post(
 
 router.get("/saved-posts", savedPosts);
 
-router.post(
-  "/change-password",
-  [
-    check("old_password")
-      .trim()
-      .notEmpty()
-      .withMessage("Old password is required!"),
-    check("new_password")
-      .trim()
-      .isLength({ min: 6 })
-      .withMessage("New password must be minimum of 6 characters long."),
-  ],
-  changePassword
-);
-
 const bookmarkMiddleware = [
   check("post_id").trim().isLength({ min: 24, max: 24 }),
   check("category")

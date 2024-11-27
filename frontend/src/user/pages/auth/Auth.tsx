@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import ForgotPassword from "../../components/auth/ForgotPassword";
+import ForgotPassword from "./ForgotPassword";
 import AuthComponent from "user/components/auth/AuthComponent";
 import Button from "shared/utils/form/Button";
 import EmailVerification from "user/components/auth/EmailVerification";
 import { AppDispatch, RootState } from "shared/store";
 import { useDispatch, useSelector } from "react-redux";
 import { handleAuthClick, logout } from "shared/store/auth-slice";
+import { Link } from "react-router-dom";
 
 enum AuthState {
   LOGIN,
@@ -30,29 +31,35 @@ const Auth: React.FC<AuthProps> = () => {
   const handleStateChange = (newState: AuthState) => setAuthState(newState);
 
   const renderButtons = () => {
+    const needHelpLink = (
+      <Link
+        to="/contact-us"
+        className="hover:text-custom-less-red p-0 m-0 text-xs"
+      >
+        Need help?
+      </Link>
+    );
+
+    const closeButton = (
+      <button
+        onClick={() => dispatch(handleAuthClick(false))}
+        className="hover:text-custom-less-red p-0 m-0 text-xs"
+      >
+        Close
+      </button>
+    );
+
     if (authState === AuthState.LOGIN && !token) {
       return (
         <>
-          <Button
-            style={{ cursor: "default" }}
-            classProp="text-custom-red hover:text-custom-less-red p-0 m-0 text-xs"
+          <button
+            className="text-custom-red hover:text-custom-less-red p-0 m-0 text-xs"
             onClick={() => handleStateChange(AuthState.FORGOT_PASSWORD)}
           >
             Forgot Password?
-          </Button>
-          <Button
-            style={{ cursor: "default" }}
-            classProp="hover:text-custom-less-red p-0 m-0 text-xs"
-          >
-            Need help?
-          </Button>
-          <Button
-            style={{ cursor: "default" }}
-            onClick={() => dispatch(handleAuthClick(false))}
-            classProp="hover:text-custom-less-red p-0 m-0 text-xs"
-          >
-            Close
-          </Button>
+          </button>
+          {needHelpLink}
+          {closeButton}
         </>
       );
     }
@@ -60,29 +67,15 @@ const Auth: React.FC<AuthProps> = () => {
     if (authState === AuthState.FORGOT_PASSWORD) {
       return (
         <>
-          <Button
-            style={{ cursor: "default" }}
-            classProp="text-custom-red hover:text-custom-less-red p-0 m-0 text-xs"
+          <button
+            className="text-custom-red hover:text-custom-less-red p-0 m-0 text-xs"
             type="button"
             onClick={() => handleStateChange(AuthState.LOGIN)}
           >
             Login / Signup
-          </Button>
-          <Button
-            style={{ cursor: "default" }}
-            classProp="hover:text-custom-less-red p-0 m-0 text-xs"
-            type="button"
-          >
-            Need help?
-          </Button>
-          <Button
-            style={{ cursor: "default" }}
-            onClick={() => dispatch(handleAuthClick(false))}
-            classProp="hover:text-custom-less-red p-0 m-0 text-xs"
-            type="button"
-          >
-            Close
-          </Button>
+          </button>
+          {needHelpLink}
+          {closeButton}
         </>
       );
     }
@@ -90,19 +83,13 @@ const Auth: React.FC<AuthProps> = () => {
     if (token && !isEmailVerified) {
       return (
         <>
-          <Button
-            style={{ cursor: "default" }}
-            classProp="hover:text-custom-less-red p-0 m-0 text-xs"
-          >
-            Need help?
-          </Button>
-          <Button
-            style={{ cursor: "default" }}
-            classProp="hover:text-custom-less-red p-0 m-0 ml-auto text-xs"
+          {needHelpLink}
+          <button
+            className="hover:text-custom-less-red p-0 m-0 ml-auto text-xs"
             onClick={() => dispatch(logout())}
           >
             Logout
-          </Button>
+          </button>
         </>
       );
     }

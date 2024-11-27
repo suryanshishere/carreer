@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react"; 
 import { Autocomplete, FormControl, TextField } from "@mui/material";
 import { IPostAdminData } from "models/admin/IPostAdminData";
-import { formatWord } from "shared/quick/format-word";
+import { startCase } from "lodash";
 
 interface IDropdown {
   name: string;
@@ -49,15 +49,15 @@ export const Dropdown = forwardRef<HTMLDivElement, IDropdown>(({
           return (
             <li key={key} {...restProps}>
               {typeof option === "string"
-                ? formatWord(option)
-                : formatWord(option.name_of_the_post)}
+                ? startCase(option)
+                : startCase(option.name_of_the_post)}
             </li>
           );
         }}
         renderInput={(params) => (
           <TextField
             {...params}
-            label={label ? formatWord(label) : formatWord(name)}
+            label={label ? startCase(label) : startCase(name)}
             name={name}
             required={required}
             error={error}

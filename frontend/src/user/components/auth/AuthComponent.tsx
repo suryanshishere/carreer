@@ -93,6 +93,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
         outerClassProp={`flex-1`}
       />
       <Button
+        authButtonType
         classProp={`${
           submitMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
         } py-2 rounded-full  text-white font-bold px-3 hover:bg-custom-black`}

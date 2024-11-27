@@ -1,0 +1,14 @@
+[
+  { "header": "home", "link": "/" },
+  { "header": "result", "link": "/category/result" },
+  { "header": "admit_card", "link": "/category/admit_card" },
+  { "header": "latest_job", "link": "/category/latest_job" },
+  { "header": "answer_key", "link": "/category/answer_key" },
+  { "header": "syllabus", "link": "/category/syllabus" },
+  {
+    "header": "certificate_verification",
+    "link": "/category/certificate_verification"
+  },
+  { "header": "admission", "link": "/category/admission" },
+  { "header": "important", "link": "/category/important" }
+]

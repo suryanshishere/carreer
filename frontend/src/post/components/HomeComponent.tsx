@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IPostListData } from "models/post/IPostList";
-import { formatWord } from "shared/quick/format-word";
+import { startCase } from "lodash";
 import Bookmark from "shared/components/Bookmark";
 
 interface HomeListItemProps {
@@ -24,7 +24,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
     >
       <div className="w-full">
         <h5 className="text-center font-bold capitalize py-2">
-          {formatWord(category)}
+          {startCase(category)}
         </h5>
         <hr className="w-full border-t-2 border-custom-less-gray" />
       </div>

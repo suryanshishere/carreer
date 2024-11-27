@@ -1,5 +1,5 @@
 import React from "react";
-import { formatWord } from "shared/quick/format-word";
+import { startCase } from "lodash";
 import { IPostDetail } from "models/post/IPostDetail";
 import Table from "shared/ui/dataVisualization/Table";
 import "./DetailItem.css";
@@ -57,7 +57,7 @@ const DetailItem: React.FC<DetailItemProps> = ({
         {Object.entries(detailPageData).map(([key, value], index) => (
           <div key={index} className="detail_topic flex flex-col gap-1 w-full">
             <h5 className="self-start font-bold capitalize">
-              {formatWord(key)}
+              {startCase(key)}
             </h5>
             <div className="flex flex-col gap-3">
               <div>{renderValue(value)}</div>

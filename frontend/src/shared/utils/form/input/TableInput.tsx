@@ -13,7 +13,7 @@ import {
   Paper,
 } from "@mui/material";
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
-import { formatWord } from "shared/quick/format-word";
+import { startCase } from "lodash";
 import { TextArea } from "./Input";
 import Button from "../Button";
 
@@ -124,7 +124,7 @@ const TableInput: React.FC<TableInputProps> = ({ data, tableInputData }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <h3 className="text-lg font-semibold mb-4">{formatWord(data.name)}</h3>
+      <h3 className="text-lg font-semibold mb-4">{startCase(data.name)}</h3>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

@@ -12,7 +12,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   // commonLoading?: boolean;
   disabled?: boolean;
   style?: React.CSSProperties;
-  auth?: boolean;
+  loginSignupType?: boolean;
+  authButtonType?: boolean;
+  warning?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -24,15 +26,11 @@ const Button: React.FC<ButtonProps> = ({
   type = "button",
   onClick,
   outline,
-  auth,
-  // href,
+  loginSignupType,
+  authButtonType,
+  warning
 }) => {
-  // Check if classProp contains any rounded-related classes
-  const hasRoundedClass = classProp
-    ?.split(" ")
-    .some((cls) => cls.includes("rounded"));
-
-  if (auth) {
+  if (loginSignupType) {
     return (
       <button
         type={type}
@@ -50,35 +48,42 @@ const Button: React.FC<ButtonProps> = ({
     );
   }
 
-  if(classProp){
+  if (authButtonType) {
+    return (
+      <button
+        onClick={onClick}
+        type={type}
+        style={{ cursor: disabled ? "default" : "", ...style }}
+        disabled={disabled}
+        className={`flex items-center justify-center ${
+          outline &&
+          "outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray"
+        } min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  if(warning){
     return <button
     onClick={onClick}
     type={type}
     style={{ cursor: disabled ? "default" : "", ...style }}
     disabled={disabled}
-    className={`flex items-center justify-center ${
-      !hasRoundedClass ? "rounded" : ""
-    } ${
-      outline &&
-      "outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray"
-    } min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
+    className={`text-custom-red  flex items-center justify-center rounded outline outline-custom-red p-button hover:text-custom-white hover:bg-custom-red min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
   >
     {children}
   </button>
   }
-  
+
   return (
     <button
       onClick={onClick}
       type={type}
       style={{ cursor: disabled ? "default" : "", ...style }}
       disabled={disabled}
-      className={`flex items-center justify-center ${
-        !hasRoundedClass ? "rounded" : ""
-      } ${
-        outline &&
-        "outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray"
-      } min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden`}
+      className={`flex items-center justify-center rounded outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
     >
       {children}
     </button>

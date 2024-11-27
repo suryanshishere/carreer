@@ -15,21 +15,19 @@ const NavAccount = () => {
   const showNavDropdown = useSelector(
     (state: RootState) => state.dropdown.showNavDropdown
   );
-  const { token } = useSelector(
-    (state: RootState) => state.auth.userData
-  );
+  const { token } = useSelector((state: RootState) => state.auth.userData);
 
   let LoginSignup = (
     <>
       {!isNavAuthClicked && (
         <Button
-        auth
+          loginSignupType
           classProp="px-2 py-1 text-sm"
           onClick={() => dispatch(handleAuthClick(!isNavAuthClicked))}
         >
           {/* <span className="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-custom-black"></span>
           <span className="relative inline-block h-full w-full rounded px-2 py-1 font-bold text-custom-white bg-custom-red hover:bg-custom-less-red"> */}
-            Login / Signup
+          Login / Signup
           {/* </span> */}
         </Button>
       )}
@@ -38,14 +36,19 @@ const NavAccount = () => {
 
   let onAuthenticated = (
     <>
-      <NavLink to="/user/saved-posts" className={({ isActive }) => (isActive ? "text-custom-pale-orange" : "")}> 
-      Saved Posts
+      <NavLink
+        to="/user/account/saved-posts"
+        className={({ isActive }) =>
+          isActive ? "text-custom-pale-orange" : ""
+        }
+      >
+        Saved Posts
       </NavLink>
       <div className="flex justify-center items-center gap-2">
         <div>
           {/* {email &&
             `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`}  */}
-            Cool
+          Cool
         </div>
         <div className="relative">
           <button
@@ -70,7 +73,7 @@ const NavAccount = () => {
 
   return (
     <div className="flex gap-3 items-center h-main-nav">
-      {!(token) ? LoginSignup : onAuthenticated}
+      {!token ? LoginSignup : onAuthenticated}
     </div>
   );
 };
