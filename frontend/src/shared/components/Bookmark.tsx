@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,59 +19,72 @@ interface IBookmark {
 const Bookmark: React.FC<IBookmark> = ({ category, postId, isSaved }) => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const dispatch = useDispatch<AppDispatch>();
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(isSaved);
 
-  const mutation = useMutation({
-    mutationFn: async () => {
-      const response = await axiosInstance.post(
-        "user/account/post/bookmark",
-        JSON.stringify({ category, post_id: postId }),
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  interface MutationVariables {
+    url: string;
+    bookmarkState: boolean;
+  }
 
-      return response.data;
-    },
-    onSuccess: ({ message }) => {
+  const handleMutation = async ({ url, bookmarkState }: MutationVariables) => {
+    setIsBookmarked(bookmarkState);
+    const response = await axiosInstance.post(
+      url,
+      { category, post_id: postId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  };
+
+  const mutation = useMutation<any, any, MutationVariables>({
+    mutationFn: handleMutation,
+    onSuccess: ({ message }, { bookmarkState }) => {
+      setIsBookmarked(bookmarkState);
       dispatch(triggerSuccessMsg(message));
     },
-    onError: (error: any) => {
+    onError: (error: any, { bookmarkState }) => {
+      setIsBookmarked(!bookmarkState); // Revert state on error
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
     },
   });
 
-  if (isSaved || mutation.isSuccess) {
-    return (
-      <div className="float-right flex mt-1">
-        <button
-          className="relative text-custom-super-less-gray text-xs bg-transparent border-none cursor-pointer transition-all hover:font-semibold"
-          onMouseEnter={(e) => (e.currentTarget.textContent = "Unsave")}
-          onMouseLeave={(e) => (e.currentTarget.textContent = "Saved")}
-          onClick={() => {
-            // Add logic to handle "Unsave" action here
-          }}
-        >
-          Saved
-        </button>
-      </div>
-    );
-  }
+  const handleClick = (url: string, bookmarkState: boolean) => {
+    mutation.mutate({ url, bookmarkState });
+  };
+
+  const bookmarkButtonProps = {
+    className: "p-1 m-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-custom-pale-yellow",
+    disabled: mutation.isPending,
+  };
+
   return (
-    <>
-      {!mutation.isSuccess && (
-        <div className="float-right flex items-center justify-center rounded-full hover:bg-custom-pale-yellow">
-          <BookmarkBorderSharpIcon
-            onClick={() => mutation.mutate()}
+    <div className="float-right flex items-center">
+      {isBookmarked ? (
+        <button
+          {...bookmarkButtonProps}
+          onClick={() => handleClick("user/account/post/un-bookmark", false)}
+        >
+          <BookmarkSharpIcon
             fontSize="small"
-            className={`cursor-pointer text-custom-super-less-gray hover:text-custom-gray ${
-              mutation.isPending && "text-custom-gray"
-            }`}
+            className="text-custom-super-less-gray hover:text-custom-gray"
           />
-        </div>
+        </button>
+      ) : (
+        <button
+          {...bookmarkButtonProps}
+          onClick={() => handleClick("user/account/post/bookmark", true)}
+        >
+          <BookmarkBorderSharpIcon
+            fontSize="small"
+            className="text-custom-super-less-gray hover:text-custom-gray"
+          />
+        </button>
       )}
-    </>
+    </div>
   );
 };
 

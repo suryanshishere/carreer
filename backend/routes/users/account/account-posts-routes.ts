@@ -1,6 +1,7 @@
 import {
   bookmarkPost,
   savedPosts,
+  unBookmarkPost,
 } from "@controllers/users/account/account-posts-controllers";
 import {
   getUndefinedFields,
@@ -10,6 +11,7 @@ import { changePassword } from "@controllers/users/account/setting-controllers";
 import { postRefs } from "@models/post/post-model";
 import express from "express";
 import { check } from "express-validator";
+import _ from "lodash";
 
 const router = express.Router();
 
@@ -32,32 +34,6 @@ router.post(
   contributeToPost
 );
 
-router.post(
-  "/bookmark",
-  [
-    check("post_id").trim().isLength({ min: 24, max: 24 }),
-    check("category")
-      .trim()
-      .notEmpty()
-      .custom((value) => {
-        const lowerCaseCategory = value.toLowerCase();
-        // Check against both camelCase and snake_case categories
-        const acceptedCategories = postRefs
-          .map((category: string) => [
-            category.toLowerCase(), // snake_case version
-            category.replace(/([A-Z])/g, "_$1").toLowerCase(), // snake_case format
-          ])
-          .flat();
-
-        if (!acceptedCategories.includes(lowerCaseCategory)) {
-          throw new Error("Invalid category");
-        }
-        return true;
-      }),
-  ],
-  bookmarkPost
-);
-
 router.get("/saved-posts", savedPosts);
 
 router.post(
@@ -74,5 +50,30 @@ router.post(
   ],
   changePassword
 );
+
+const bookmarkMiddleware = [
+  check("post_id").trim().isLength({ min: 24, max: 24 }),
+  check("category")
+    .trim()
+    .notEmpty()
+    .custom((value) => {
+      const lowerCaseCategory = value.toLowerCase();
+
+      // Generate the list of accepted categories
+      const acceptedCategories = _.flatMap(postRefs, (category) => [
+        _.toLower(category), // Lowercase version
+        _.snakeCase(category), // snake_case version
+      ]);
+
+      if (!acceptedCategories.includes(lowerCaseCategory)) {
+        throw new Error("Invalid category");
+      }
+      return true;
+    }),
+];
+
+router.post("/bookmark", bookmarkMiddleware, bookmarkPost);
+
+router.post("/un-bookmark", bookmarkMiddleware, unBookmarkPost);
 
 export default router;

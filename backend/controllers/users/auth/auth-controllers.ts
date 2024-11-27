@@ -28,7 +28,12 @@ export const sendVerificationOtp = async (
   req: Request,
   res: Response,
   next: NextFunction,
-  options: { userId?: string; email?: string; isDirect?: boolean } = {}
+  options: {
+    userId?: string;
+    email?: string;
+    token?: number;
+    isDirect?: boolean;
+  } = {}
 ) => {
   if (!options.isDirect) {
     validationError(req, res, next);
@@ -70,7 +75,10 @@ export const sendVerificationOtp = async (
     }
 
     // Generate a verification token and set expiration
-    const verificationToken = generateUniqueVerificationToken();
+    const verificationToken = options.token
+      ? options.token
+      : generateUniqueVerificationToken();
+      
     if (user) {
       user.emailVerificationToken = verificationToken;
       user.emailVerificationTokenCreatedAt = new Date();
@@ -170,13 +178,13 @@ export const verifyEmail = async (
 };
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
+  validationError(req, res, next);
+
+  const { email, password } = req.body;
+  const existingUser = await User.findOne({ email });
+  const verificationToken = generateUniqueVerificationToken(); //garbage
+
   try {
-    validationError(req, res, next);
-
-    const { email, password } = req.body;
-    const existingUser = await User.findOne({ email });
-    const verificationToken = generateUniqueVerificationToken(); //garbage
-
     if (existingUser) {
       const isValidPassword = await bcrypt.compare(
         password,

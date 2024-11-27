@@ -29,7 +29,12 @@ export const sendVerificationResponse = async (
   next: NextFunction,
   user: IUser
 ) => {
-  const options = { userId: user.id, email: user.email, isDirect: true };
+  const options = {
+    userId: user.id,
+    email: user.email,
+    token: user.emailVerificationToken,
+    isDirect: true,
+  };
 
   await sendVerificationOtp(req, res, next, options);
 

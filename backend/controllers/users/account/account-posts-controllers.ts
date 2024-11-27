@@ -3,6 +3,7 @@ import User, { allowedPostFields } from "@models/user/user-model";
 import { Request } from "express-jwt";
 import HttpError from "@utils/http-errors";
 import { snakeCase } from "lodash";
+import mongoose from "mongoose";
 
 export const savedPosts = async (
   req: Request,
@@ -73,5 +74,51 @@ export const bookmarkPost = async (
   } catch (error) {
     console.error("Error bookmarking post:", error);
     return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+export const unBookmarkPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { category, post_id } = req.body;
+
+    const fieldName = `${snakeCase(category)}_ref`;
+
+    if (!allowedPostFields.includes(fieldName)) {
+      return next(new HttpError("Invalid category provided.", 400));
+    }
+
+    const userId = req.userData.userId;
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return next(new HttpError("User not found!", 404));
+    }
+
+    const currentPosts = user.saved_posts?.[fieldName] || [];
+    // Remove the post_id from the saved posts if it exists
+    const updatedPosts = currentPosts.filter(
+      (id: mongoose.Types.ObjectId) => id.toString() !== post_id
+    );
+
+    if (updatedPosts.length < currentPosts.length) {
+      user.saved_posts = {
+        ...user.saved_posts,
+        [fieldName]: updatedPosts,
+      };
+      await user.save();
+
+      return res
+        .status(200)
+        .json({ message: "Post Un-bookmarked!" });
+    } else {
+      return next(new HttpError("Post not found in saved posts.",404));
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Un-bookmarking failed, try again!" });
   }
 };
