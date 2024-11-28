@@ -100,7 +100,6 @@ const Auth: React.FC<AuthProps> = () => {
       return (
         <ForgotPassword
           onBack={() => handleStateChange(AuthState.LOGIN)}
-          classProp="h-5/6 flex-1 flex items-center gap-2 justify-end"
         />
       );
     }
@@ -114,7 +113,7 @@ const Auth: React.FC<AuthProps> = () => {
 
   return (
     <div className="w-full grid grid-cols-[85%_15%] items-center">
-      {renderComponents()}
+      <div className="h-5/6 flex items-center">{renderComponents()}</div>
       <div className="pl-8 flex flex-col gap-[3px] items-start">
         {renderButtons()}
       </div>

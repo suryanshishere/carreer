@@ -21,17 +21,6 @@ const optionalPaths = [
   "/api/user/auth/send-verification-otp",
 ];
 
-// Middleware to handle authorization
-const checkAuth = expressjwt({
-  secret: JWT_KEY,
-  algorithms: ["HS256"],
-  requestProperty: "userData", // Add user data to request if token is valid
-  credentialsRequired: true, //default needed authorisation
-  getToken: (req) => req.headers["authorization"]?.split(" ")[1], // Extract token from Authorization header
-}).unless({
-  path: excludedPaths, // These paths don't require token validation at all
-});
-
 // Error handler for JWT issues
 function isRegExp(path: any): path is RegExp {
   return path instanceof RegExp;
@@ -42,28 +31,39 @@ function isString(path: any): path is string {
   return typeof path === "string";
 }
 
-export const jwtErrorHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const isOptionalRoute = optionalPaths.some((path) => {
-    if (isRegExp(path)) {
-      return path.test(req.path);
-    } else if (isString(path)) {
-      return req.path === path;
-    }
-    return false;
+const checkAuth = (req: Request, res: Response, next: NextFunction) => {
+  const checkAuth = expressjwt({
+    secret: JWT_KEY,
+    algorithms: ["HS256"],
+    requestProperty: "userData",
+    credentialsRequired: true, // Default: authorization required
+    getToken: (req) => req.headers["authorization"]?.split(" ")[1], // Extract token
+  }).unless({
+    path: excludedPaths, // Exclude paths from requiring authorization
   });
 
-  if (err.name === "UnauthorizedError" && !isOptionalRoute) {
-    return next(
-      new HttpError("Unauthorized user, please do login / signup!", 401)
-    );
-  }
+  // Execute express-jwt middleware
+  checkAuth(req, res, (err: any) => {
+    if (err) {
+      const isOptionalRoute = optionalPaths.some((path) => {
+        if (isRegExp(path)) {
+          return path.test(req.path);
+        } else if (isString(path)) {
+          return req.path === path;
+        }
+        return false;
+      });
 
-  return next();
+      // Handle unauthorized errors for non-optional routes
+      if (err.name === "UnauthorizedError" && !isOptionalRoute) {
+        return next(
+          new HttpError("Unauthorized user, please do login / signup!", 401)
+        );
+      }
+    }
+    // Proceed to the next middleware if no errors
+    next();
+  });
 };
 
 export const getUserIdFromRequest = (req: Request): string | undefined => {

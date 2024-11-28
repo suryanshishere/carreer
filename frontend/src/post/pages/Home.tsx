@@ -9,14 +9,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
 const fetchHomePostList = async (token?: string): Promise<IPostList> => {
-  const headers: { Authorization?: string } = {};
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
   const { data } = await axiosInstance.get("home", {
-    headers: headers, // Pass headers here, which may or may not include Authorization
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   return data;
@@ -46,8 +42,6 @@ const Home: React.FC = () => {
     error: error ? error.message : null,
     empty: Object.keys(data).length === 0,
   });
-
-  console.log(data);
 
   if (queryStateMessage) return queryStateMessage;
 

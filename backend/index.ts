@@ -5,12 +5,13 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-import postsRoutes from "./routes/posts/posts-routes";
-import adminRoutes from "./routes/admin/admin-routes";
-import usersRoutes from "./routes/users/user-routes";
+import postsRoutes from "@routes/posts/posts-routes";
+import adminRoutes from "@routes/admin/admin-routes";
+import usersRoutes from "@routes/users/user-routes";
 import HttpError from "@utils/http-errors";
 import userCleanupTask from "@middleware/cronJobs/user-cleanup-task";
-import checkAuth, { jwtErrorHandler } from "@middleware/check-auth";
+import checkAuth from "@middleware/check-auth";
+import checkAccountStatus from "@middleware/check-account-status";
 
 const MONGO_URL: string = process.env.MONGO_URL || "";
 const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
@@ -18,16 +19,20 @@ const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    exposedHeaders: ["x-deactivated-at"],
+  })
+);
 app.use(checkAuth);
-app.use(jwtErrorHandler);
+app.use(checkAccountStatus);
 
 app.use("/api", postsRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", usersRoutes);
 
 //Error showing if none of the routes found!
-app.use(( next: NextFunction) => {
+app.use((next: NextFunction) => {
   return next(new HttpError("Could not find this route.", 404));
 });
 
@@ -38,7 +43,7 @@ app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
 
   const response = {
     message: errorMessage,
-    ...(error.extraData && { extraData: error.extraData }), 
+    ...(error.extraData && { extraData: error.extraData }),
   };
 
   res.status(statusCode).json(response);

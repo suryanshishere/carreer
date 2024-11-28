@@ -24,7 +24,7 @@ interface IForgotPassword {
   email: string;
 }
 
-const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
+const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { token } = useSelector((state: RootState) => state.auth.userData);
 
@@ -80,7 +80,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack, classProp }) => {
     <form
       onSubmit={handleSubmit(submitHandler)}
       className={
-        isForgotPasswordPage ? "w-1/2 flex flex-col gap-2" : `${classProp}`
+        isForgotPasswordPage ? "w-1/2 flex flex-col gap-2" : "flex-1 flex items-center gap-2 justify-end"
       }
     >
       <Input

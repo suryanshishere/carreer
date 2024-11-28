@@ -28,7 +28,7 @@ const Button: React.FC<ButtonProps> = ({
   outline,
   loginSignupType,
   authButtonType,
-  warning
+  warning,
 }) => {
   if (loginSignupType) {
     return (
@@ -55,26 +55,27 @@ const Button: React.FC<ButtonProps> = ({
         type={type}
         style={{ cursor: disabled ? "default" : "", ...style }}
         disabled={disabled}
-        className={`flex items-center justify-center ${
-          outline &&
-          "outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray"
-        } min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
+        className={`flex items-center justify-center min-w-fit whitespace-nowrap text-base overflow-hidden py-2 rounded-full text-white font-bold px-3 hover:bg-custom-black ${
+          classProp || "bg-custom-gray"
+        }`}
       >
         {children}
       </button>
     );
   }
 
-  if(warning){
-    return <button
-    onClick={onClick}
-    type={type}
-    style={{ cursor: disabled ? "default" : "", ...style }}
-    disabled={disabled}
-    className={`text-custom-red  flex items-center justify-center rounded outline outline-custom-red p-button hover:text-custom-white hover:bg-custom-red min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
-  >
-    {children}
-  </button>
+  if (warning) {
+    return (
+      <button
+        onClick={onClick}
+        type={type}
+        style={{ cursor: disabled ? "default" : "", ...style }}
+        disabled={disabled}
+        className={`text-custom-red  flex items-center justify-center rounded outline outline-custom-red p-button hover:text-custom-white hover:bg-custom-red min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
+      >
+        {children}
+      </button>
+    );
   }
 
   return (

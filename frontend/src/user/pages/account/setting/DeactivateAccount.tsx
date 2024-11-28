@@ -53,11 +53,11 @@ const DeactivateAccount: React.FC = () => {
       return response.data;
     },
     onSuccess: ({ message }) => {
-      dispatch(logout());
       navigate("/");
       dispatch(
         triggerSuccessMsg(message || "Account deactivated successfully!")
       );
+      dispatch(logout());
     },
     onError: (error: any) => {
       dispatch(

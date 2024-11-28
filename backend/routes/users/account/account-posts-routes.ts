@@ -41,6 +41,7 @@ const bookmarkMiddleware = [
   check("category")
     .trim()
     .notEmpty()
+    .withMessage("Category is required") // Custom error message for empty value
     .custom((value) => {
       const lowerCaseCategory = value.toLowerCase();
 
@@ -50,11 +51,10 @@ const bookmarkMiddleware = [
         _.snakeCase(category), // snake_case version
       ]);
 
-      if (!acceptedCategories.includes(lowerCaseCategory)) {
-        throw new Error("Invalid category");
-      }
-      return true;
-    }),
+      return acceptedCategories.includes(lowerCaseCategory);
+    })
+    .withMessage("Invalid category!")
+    .customSanitizer((value) => _.snakeCase(value) + "_ref"),
 ];
 
 router.post("/bookmark", bookmarkMiddleware, bookmarkPost);

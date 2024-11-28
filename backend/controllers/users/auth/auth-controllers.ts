@@ -5,7 +5,6 @@ import sendEmail from "./send-email";
 import User, { IUser } from "@models/user/user-model";
 import {
   checkRequestDelay,
-  generateUniqueVerificationToken,
   sendAuthenticatedResponse,
   sendVerificationResponse,
   updateUnverifiedUser,
@@ -13,6 +12,7 @@ import {
 import validationError from "../../controllersHelpers/validation-error";
 import { Request } from "express-jwt";
 import { getUserIdFromRequest } from "@middleware/check-auth";
+import { random } from "lodash";
 
 const FRONTEND_URL =
   `${process.env.FRONTEND_URL}/user/reset_password` ||
@@ -24,166 +24,11 @@ const EMAIL_VERIFICATION_TOKEN_EXPIRY =
 const PASSWORD_RESET_TOKEN_EXPIRY =
   Number(process.env.PASSWORD_RESET_TOKEN_EXPIRY) || 3;
 
-export const sendVerificationOtp = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-  options: {
-    userId?: string;
-    email?: string;
-    token?: number;
-    isDirect?: boolean;
-  } = {}
-) => {
-  if (!options.isDirect) {
-    validationError(req, res, next);
-  }
-  // optional routes: since in backend action won't have token hence conditional not workin
-  const userId = options.isDirect ? options.userId : getUserIdFromRequest(req);
-
-  try {
-    let user: IUser | null = null;
-    if (!options.email) {
-      user = await User.findById(userId);
-      if (!user) {
-        return next(new HttpError("User not found!", 404));
-      } else if (user.isEmailVerified) {
-        return next(new HttpError("User email already verified!", 409));
-      }
-    }
-
-    const delayInSeconds = checkRequestDelay(
-      user?.emailVerificationTokenCreatedAt,
-      60
-    );
-
-    if (delayInSeconds !== null) {
-      return next(
-        new HttpError(
-          "Please wait for " +
-            delayInSeconds +
-            " second(s) or verify your last OTP sent",
-          429,
-          delayInSeconds
-        )
-      );
-    }
-
-    const emailToSend = options.email || user?.email;
-    if (!emailToSend) {
-      return next(new HttpError("Email address is required!", 400));
-    }
-
-    // Generate a verification token and set expiration
-    const verificationToken = options.token
-      ? options.token
-      : generateUniqueVerificationToken();
-      
-    if (user) {
-      user.emailVerificationToken = verificationToken;
-      user.emailVerificationTokenCreatedAt = new Date();
-      await user.save();
-    }
-
-    // Define email content
-    const emailSubject = "Verify your email through OTP (Valid for 3min)";
-    const emailContent = `${verificationToken}`;
-
-    // Send email
-    await sendEmail(next, emailToSend, emailSubject, emailContent);
-
-    // If `isDirect`, skip the response
-    if (options.isDirect) return;
-
-    // Respond to client
-    res.status(200).json({
-      message: "OTP sent to your email successfully",
-    });
-  } catch (error) {
-    return next(
-      new HttpError("Error sending verification email, try again later", 500)
-    );
-  }
-};
-
-export const verifyEmail = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  // Validate request
-  validationError(req, res, next);
-
-  const { otp } = req.body;
-  const userId = req.userData.userId;
-
-  try {
-    // Find the user by ID and validate existence
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
-      return next(new HttpError("User not found! Please sign up again.", 404));
-    }
-
-    // Verify the existence of the OTP and its creation date
-    if (
-      !existingUser.emailVerificationToken ||
-      !existingUser.emailVerificationTokenCreatedAt
-    ) {
-      return next(
-        new HttpError(
-          "OTP verification was not requested. Please resend the OTP and try again.",
-          400
-        )
-      );
-    }
-
-    // Validate OTP
-    if (existingUser.emailVerificationToken !== otp) {
-      return next(new HttpError("Invalid OTP. Please try again.", 400));
-    }
-
-    // Check if the OTP has expired (e.g., 15 minutes)
-    const tokenExpirationTime = new Date(
-      existingUser.emailVerificationTokenCreatedAt.getTime() +
-        EMAIL_VERIFICATION_TOKEN_EXPIRY * 60 * 1000
-    );
-    const currentTime = new Date();
-
-    if (currentTime > tokenExpirationTime) {
-      return next(
-        new HttpError(
-          "The OTP has expired. Please request a new verification email.",
-          410
-        )
-      );
-    }
-
-    // Mark email as verified and clear the verification token data
-    existingUser.isEmailVerified = true;
-    existingUser.emailVerificationToken = undefined;
-    existingUser.emailVerificationTokenCreatedAt = undefined;
-
-    await existingUser.save();
-    return res
-      .status(200)
-      .json({ message: "Your email has been successfully verified." });
-  } catch (error) {
-    return next(
-      new HttpError(
-        "An unexpected error occurred. Please try again later.",
-        500
-      )
-    );
-  }
-};
-
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   validationError(req, res, next);
 
   const { email, password } = req.body;
-  const existingUser = await User.findOne({ email });
-  const verificationToken = generateUniqueVerificationToken(); //garbage
-
+  const existingUser: IUser | null = await User.findOne({ email });
   try {
     if (existingUser) {
       const isValidPassword = await bcrypt.compare(
@@ -206,7 +51,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
       const newUser = new User({
         email,
         password: hashedPassword,
-        emailVerificationToken: verificationToken,
+        emailVerificationToken: random(100000, 999999),
         emailVerificationTokenCreatedAt: new Date(),
       });
       await newUser.save();
@@ -214,7 +59,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
       return sendVerificationResponse(req, res, next, newUser);
     }
   } catch (err) {
-    console.log(err);
     return next(new HttpError("Authentication failed, please try again.", 500));
   }
 };
@@ -262,7 +106,7 @@ export const sendPasswordResetLink = async (
       );
     }
 
-    existingUser.passwordResetToken = generateUniqueVerificationToken();
+    existingUser.passwordResetToken = random(100000, 999999);
     existingUser.passwordResetTokenCreatedAt = new Date();
     await existingUser.save();
 
@@ -378,6 +222,160 @@ export const resetPassword = async (
     await existingUser.save();
 
     return res.status(200).json({ message: "Password updated successfully." });
+  } catch (error) {
+    return next(
+      new HttpError(
+        "An unexpected error occurred. Please try again later.",
+        500
+      )
+    );
+  }
+};
+
+//authenticated
+export const sendVerificationOtp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  options: {
+    userId?: string;
+    email?: string;
+    token?: number;
+    isDirect?: boolean;
+  } = {}
+) => {
+  if (!options.isDirect) {
+    validationError(req, res, next);
+  }
+  // optional routes: since in backend action won't have token hence conditional not workin
+  const userId = options.isDirect ? options.userId : getUserIdFromRequest(req);
+
+  try {
+    let user: IUser | null = null;
+    if (!options.email) {
+      user = await User.findById(userId);
+      if (!user) {
+        return next(new HttpError("User not found!", 404));
+      } else if (user.isEmailVerified) {
+        return next(new HttpError("User email already verified!", 409));
+      }
+    }
+
+    const delayInSeconds = checkRequestDelay(
+      user?.emailVerificationTokenCreatedAt,
+      60
+    );
+
+    if (delayInSeconds !== null) {
+      return next(
+        new HttpError(
+          "Please wait for " +
+            delayInSeconds +
+            " second(s) or verify your last OTP sent",
+          429,
+          delayInSeconds
+        )
+      );
+    }
+
+    const emailToSend = options.email || user?.email;
+    if (!emailToSend) {
+      return next(new HttpError("Email address is required!", 400));
+    }
+
+    // Generate a verification token and set expiration
+    const verificationToken = options.token
+      ? options.token
+      : random(100000, 999999);
+
+    if (user) {
+      user.emailVerificationToken = verificationToken;
+      user.emailVerificationTokenCreatedAt = new Date();
+      await user.save();
+    }
+
+    // Define email content
+    const emailSubject = "Verify your email through OTP (Valid for 3min)";
+    const emailContent = `${verificationToken}`;
+
+    // Send email
+    await sendEmail(next, emailToSend, emailSubject, emailContent);
+
+    // If `isDirect`, skip the response
+    if (options.isDirect) return;
+
+    // Respond to client
+    res.status(200).json({
+      message: "OTP sent to your email successfully",
+    });
+  } catch (error) {
+    return next(
+      new HttpError("Error sending verification email, try again later", 500)
+    );
+  }
+};
+
+export const verifyEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // Validate request
+  validationError(req, res, next);
+
+  const { otp } = req.body;
+  const userId = req.userData.userId;
+
+  try {
+    // Find the user by ID and validate existence
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+      return next(new HttpError("User not found! Please sign up again.", 404));
+    }
+
+    // Verify the existence of the OTP and its creation date
+    if (
+      !existingUser.emailVerificationToken ||
+      !existingUser.emailVerificationTokenCreatedAt
+    ) {
+      return next(
+        new HttpError(
+          "OTP verification was not requested. Please resend the OTP and try again.",
+          400
+        )
+      );
+    }
+
+    // Validate OTP
+    if (existingUser.emailVerificationToken !== otp) {
+      return next(new HttpError("Invalid OTP. Please try again.", 400));
+    }
+
+    // Check if the OTP has expired (e.g., 15 minutes)
+    const tokenExpirationTime = new Date(
+      existingUser.emailVerificationTokenCreatedAt.getTime() +
+        EMAIL_VERIFICATION_TOKEN_EXPIRY * 60 * 1000
+    );
+    const currentTime = new Date();
+
+    if (currentTime > tokenExpirationTime) {
+      return next(
+        new HttpError(
+          "The OTP has expired. Please request a new verification email.",
+          410
+        )
+      );
+    }
+
+    // Mark email as verified and clear the verification token data
+    existingUser.isEmailVerified = true;
+    existingUser.emailVerificationToken = undefined;
+    existingUser.emailVerificationTokenCreatedAt = undefined;
+
+    await existingUser.save();
+    return res
+      .status(200)
+      .json({ message: "Your email has been successfully verified." });
   } catch (error) {
     return next(
       new HttpError(

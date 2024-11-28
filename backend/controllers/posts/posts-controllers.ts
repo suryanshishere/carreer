@@ -116,7 +116,6 @@ export const getPostCategoryList = async (
 
     // Structure the response
     const responseData = { [snakeCase(category)]: postsWithSavedStatus };
-
     return res.status(200).json(responseData);
   } catch (err) {
     console.error("Error fetching posts for category:", err);

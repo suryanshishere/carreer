@@ -3,21 +3,17 @@ import { sendVerificationOtp } from "./auth-controllers";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { NextFunction, Response, Request } from "express";
+import { random } from "lodash";
 
 const JWT_KEY = process.env.JWT_KEY;
 const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "15";
 // const EMAIL_VERIFICATION_TOKEN_EXPIRY =
 //   Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY) || 3;
 
-// Function to generate OTP as a verification token
-export const generateUniqueVerificationToken = () => {
-  return Math.floor(100000 + Math.random() * 900000);
-};
-
 // Update unverified user fields with new password and verification token
 export const updateUnverifiedUser = async (user: IUser, password: string) => {
   user.password = await bcrypt.hash(password, 12);
-  user.emailVerificationToken = generateUniqueVerificationToken();
+  user.emailVerificationToken = random(100000, 999999);
   user.emailVerificationTokenCreatedAt = new Date();
   await user.save();
 };

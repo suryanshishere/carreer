@@ -115,8 +115,9 @@ const EmailVerification = () => {
     },
     onSuccess: (data) => {
       dispatch(updateUserData({ isEmailVerified: true }));
-      dispatch(triggerSuccessMsg(data.message));
       dispatch(handleAuthClick(false));
+      dispatch(triggerSuccessMsg(data.message));
+      window.location.reload();
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
@@ -136,7 +137,7 @@ const EmailVerification = () => {
   return (
     <form
       onSubmit={handleSubmit(verifyOtp)}
-      className="h-5/6 flex-1 flex items-center gap-2 justify-between "
+      className="h-full flex-1 flex items-center gap-2 justify-between "
     >
       <div className="flex-wrap w-fit">
         {isSendOnce

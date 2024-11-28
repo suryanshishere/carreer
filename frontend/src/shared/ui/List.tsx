@@ -29,7 +29,6 @@ const List: React.FC<ListProps> = ({
   showDelete,
   onSavedDelete,
 }) => {
- console.log(currentRecords)
 
   return (
     <ul className="w-full self-start p-0 m-0">
