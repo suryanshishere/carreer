@@ -16,7 +16,7 @@ const fetchPostDetail = async (
   postId: string,
   token?: string
 ): Promise<IPostDetailData> => {
-  const { data } = await axiosInstance.get(`/category/${category}/${postId}`, {
+  const { data } = await axiosInstance.get(`/public/category/${category}/${postId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

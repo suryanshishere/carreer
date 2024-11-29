@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import store, { AppDispatch, RootState } from "shared/store";
-import { logout, setAccountDeactivated } from "shared/store/auth-slice";
+import { logout, handleAccountDeactivatedAt } from "shared/store/auth-slice";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
@@ -38,7 +38,7 @@ const ActivateAccount = () => {
       return response.data;
     },
     onSuccess: ({ message }) => {
-      dispatch(setAccountDeactivated(undefined));
+      // dispatch(handleAccountDeactivatedAt(undefined));
       dispatch(triggerSuccessMsg(message));
     },
     onError: (error: any) => {

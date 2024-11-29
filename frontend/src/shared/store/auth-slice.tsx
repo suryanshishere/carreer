@@ -77,7 +77,7 @@ const authSlice = createSlice({
       state.userData = { ...state.userData, ...updatedData };
     },
 
-    setAccountDeactivated(state, action: PayloadAction<string | undefined>) {
+    handleAccountDeactivatedAt(state, action: PayloadAction<string | undefined>) {
       state.userData.deactivatedAt = action.payload;
     },
   },
@@ -88,7 +88,7 @@ export const {
   login,
   logout,
   updateUserData,
-  setAccountDeactivated,
+  handleAccountDeactivatedAt,
 } = authSlice.actions;
 
 export default authSlice.reducer;

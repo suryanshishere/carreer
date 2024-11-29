@@ -66,7 +66,7 @@ export const getPostHomeList = async (
       return { ...acc, ...curr };
     }, {});
 
-    return res.status(200).json(response);
+    return res.status(200).json({ data: response });
   } catch (err) {
     console.error("Error fetching posts for home list:", err);
     return next(new HttpError("An error occurred while fetching posts", 500));
@@ -115,7 +115,9 @@ export const getPostCategoryList = async (
     );
 
     // Structure the response
-    const responseData = { [snakeCase(category)]: postsWithSavedStatus };
+    const responseData = {
+      data: { [snakeCase(category)]: postsWithSavedStatus },
+    };
     return res.status(200).json(responseData);
   } catch (err) {
     console.error("Error fetching posts for category:", err);

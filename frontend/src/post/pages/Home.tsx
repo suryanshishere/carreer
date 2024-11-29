@@ -4,12 +4,11 @@ import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import { IPostList } from "models/post/IPostList";
 import useQueryStates from "shared/hooks/query-states-hook";
-import "./Home.css";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
 const fetchHomePostList = async (token?: string): Promise<IPostList> => {
-  const { data } = await axiosInstance.get("home", {
+  const { data } = await axiosInstance.get("/public/home", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -28,7 +27,7 @@ const heights: Record<string, string> = {
 const Home: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const {
-    data = {},
+    data = { data: {} },
     isLoading,
     error,
   } = useQuery<IPostList, Error>({
@@ -40,17 +39,17 @@ const Home: React.FC = () => {
   const queryStateMessage = useQueryStates({
     isLoading,
     error: error ? error.message : null,
-    empty: Object.keys(data).length === 0,
+    empty: Object.keys(data.data).length === 0,
   });
 
   if (queryStateMessage) return queryStateMessage;
 
   return (
     <div className="grid grid-cols-3 gap-3">
-      {Object.keys(data).map((key) => (
+      {Object.keys(data.data).map((key) => (
         <HomeListItem
           key={key}
-          ListItemData={data[key] || []}
+          ListItemData={data.data[key] || []}
           category={key}
           height={heights[key] || heights.default}
         />

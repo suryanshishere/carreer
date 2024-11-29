@@ -1,5 +1,7 @@
 import axios from "axios";
 import store from "shared/store";
+import { handleAccountDeactivatedAt } from "shared/store/auth-slice";
+import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 
 const DEACTIVATED_ACCOUNT_DAYS =
   Number(process.env.REACT_APP_DEACTIVATED_ACCOUNT_DAYS) || 30;
@@ -12,14 +14,13 @@ const axiosInstance = axios.create({
   },
 });
 
-// const deactivatedAt = store.getState().auth.userData.deactivatedAt;
-
 //prevent any !get request before hand only
 axiosInstance.interceptors.request.use((config) => {
+  const deactivatedAt = store.getState().auth.userData.deactivatedAt;
   const authHeader =
     config.headers["Authorization"] || config.headers["authorization"];
-
   if (
+    deactivatedAt &&
     config.method !== "get" &&
     authHeader &&
     config.url &&
@@ -37,15 +38,18 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-//setting deactivateAt field after looking from the header
-axiosInstance.interceptors.response.use((response) => {
-  const headerDeactivatedAt = response.headers["x-deactivated-at"];
-  if (headerDeactivatedAt) {
-    console.log(headerDeactivatedAt);
-    // store.dispatch(setAccountDeactivated(headerDeactivatedAt));
+axiosInstance.interceptors.response.use(
+  (response) => {
+    if (response.data) {
+      const deactivatedAt = response.data.deactivated_at;
+      store.dispatch(handleAccountDeactivatedAt(deactivatedAt));
+    }
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return response;
-});
+);
 
 export default axiosInstance;
 

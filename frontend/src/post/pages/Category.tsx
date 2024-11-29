@@ -14,7 +14,7 @@ const fetchCategoryPostList = async (
   category: string,
   token?: string
 ): Promise<IPostList> => {
-  const { data } = await axiosInstance.get(`category/${category}`, {
+  const { data } = await axiosInstance.get(`/public/category/${category}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -26,7 +26,7 @@ const Category: React.FC = () => {
   const { category = "" } = useParams<{ category: string }>();
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const {
-    data = {},
+    data = { data: {} },
     isLoading,
     error,
   } = useQuery<IPostList, Error>({
@@ -39,15 +39,15 @@ const Category: React.FC = () => {
   const queryStateMessage = useQueryStates({
     isLoading,
     error: error ? error.message : null,
-    empty: Object.keys(data).length === 0,
+    empty: Object.keys(data.data).length === 0,
   });
 
   if (queryStateMessage) return queryStateMessage;
 
   return (
     <div className="flex gap-3">
-      {Object.keys(data).map((key) => (
-        <List key={key} currentRecords={data[key]} category={key} />
+      {Object.keys(data.data).map((key) => (
+        <List key={key} currentRecords={data.data[key] || []} category={key} />
       ))}
     </div>
   );

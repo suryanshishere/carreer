@@ -1,66 +1,73 @@
-import User, { IUser } from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Response } from "express";
 import { Request } from "express-jwt";
-import { getUserIdFromRequest } from "./check-auth";
+import User, { IUser } from "@models/user/user-model";
+import {
+  excludedPaths,
+  getUserIdFromRequest,
+  optionalPaths,
+} from "./check-auth";
+import { isRegExp } from "lodash";
 
 const checkAccountStatus = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const userId = getUserIdFromRequest(req);
   try {
-    const userId = getUserIdFromRequest(req);
-    const user = await User.findById(userId);
+    const user: IUser | null = await User.findById(userId);
+    if (!user) {
+      return next();
+    }
+    req.user = user;
+    //todo: check for 30 days
+    //append the res for deactivated account
+    if (user && user.deactivated_at) {
+      const originalSend = res.send;
 
-    // If user is deactivated and the request is for account activation (POST)
-    if (
-      user &&
-      req.originalUrl === "/api/user/account/activate-account" &&
-      req.method === "POST"
-    ) {
-      if (!user.deactivated_at)
-        return next(
-          new HttpError("Your account is already being activated.", 400)
-        );
-      //todo: store the deactivate dates all the and find the gap between to stop the user mood swings
-      user.deactivated_at = undefined;
-      await user.save();
+      res.send = function (body: any) {
+        const modifiedBody = {
+          ...JSON.parse(body),
+          deactivated_at: req.user.deactivated_at,
+        };
 
-      return res.status(200).json({
-        message: "Account successfully activated.",
+        return originalSend.call(this, JSON.stringify(modifiedBody));
+      };
+
+      const isOptional = optionalPaths.some((path) => {
+        if (isRegExp(path)) {
+          return path.test(req.path);
+        } else if (typeof path === "string") {
+          return req.path === path;
+        }
+        return false;
       });
-    } else if (user && user.deactivated_at) {
-      res.setHeader("x-deactivated-at", user.deactivated_at.toISOString());
-      if (
-        req.method !== "GET" &&
-        req.originalUrl &&
-        !EXEMPT_URLS.includes(req.originalUrl)
-      ) {
+
+      const isExcluded = excludedPaths.some((path) => {
+        if (isRegExp(path)) {
+          return path.test(req.path);
+        } else if (typeof path === "string") {
+          return req.path === path;
+        }
+        return false;
+      });
+
+      if (!isExcluded && !isOptional) {
         return next(
           new HttpError(
-            "Your account is deactivated. Please activate your account or login again.",
-            403 // Forbidden
+            "Your account is deactivated, activate or login again.",
+            403
           )
         );
       }
-    }else {
-      // If the account is not deactivated, remove the deactivated header if set previously
-      res.removeHeader("x-deactivated-at");
     }
-
-    req.user = user;
     next();
-    // Pass the user object to the next middleware or route handler
   } catch (error) {
-    console.error(error);
     return next(
-      new HttpError("An error occurred while checking account status.", 500)
+      new HttpError("Checking account status failed, please try again.", 500)
     );
   }
 };
 
 export default checkAccountStatus;
-
-//
-const EXEMPT_URLS = ["/api/contact-us"];
