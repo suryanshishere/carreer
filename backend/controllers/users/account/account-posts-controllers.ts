@@ -60,8 +60,12 @@ export const bookmarkPost = async (
       };
       await user.save();
     }
+    
+    const message = user.isEmailVerified
+      ? "Post bookmarked successfully!"
+      : "Post bookmarked successfully! Verify your email to save it permanently.";
 
-    return res.status(200).json({ message: "Post bookmarked successfully!" });
+    return res.status(200).json({ message });
   } catch (error) {
     console.error("Error bookmarking post:", error);
     return res.status(500).json({ message: "Internal server error." });

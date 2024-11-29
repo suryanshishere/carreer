@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import NAVLINKS from "db/shared/nav/NavLinks.json";
+import NAVLINKS from "db/shared/nav/navlinks.json";
 import { startCase } from "lodash";
 import { ICommonMap } from "models/quick/ICommonMap";
 

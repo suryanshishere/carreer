@@ -55,7 +55,7 @@ const Button: React.FC<ButtonProps> = ({
         type={type}
         style={{ cursor: disabled ? "default" : "", ...style }}
         disabled={disabled}
-        className={`flex items-center justify-center min-w-fit whitespace-nowrap text-base overflow-hidden py-2 rounded-full text-white font-bold px-3 hover:bg-custom-black ${
+        className={`flex items-center justify-center min-w-fit whitespace-nowrap text-base overflow-hidden py-2 rounded-full text-custom-white font-bold px-3 hover:bg-custom-black ${
           classProp || "bg-custom-gray"
         }`}
       >

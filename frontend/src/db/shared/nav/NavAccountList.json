@@ -1,9 +1,5 @@
-[
-  {
-    "header": "Setting",
-    "link": "/user/account/setting"
-  },
-  {
-    "header": "Logout"
-  }
-]
+{
+  "contribute post": "/user/contribute-post",
+  "setting": null,
+  "logout": null
+}

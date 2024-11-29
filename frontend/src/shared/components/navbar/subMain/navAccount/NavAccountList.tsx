@@ -1,42 +1,60 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "shared/store/auth-slice";
-import { handleShowNavDropdown } from "shared/store/dropdown-slice";
+import {
+  closeAllDropdowns,
+  toggleDropdownState,
+} from "shared/store/dropdown-slice";
+import { startCase } from "lodash";
 import { RootState } from "shared/store";
-import NAV_ACCOUNT_LIST from "db/shared/nav/NavAccountList.json";
 
-const NavAccountList = () => {
+interface NavAccountListProps {
+  data: {
+    [key: string]: string | null;
+  };
+}
+
+const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const logoutHandler = () => {
-    dispatch(handleShowNavDropdown(false));
     dispatch(logout());
+    dispatch(closeAllDropdowns());
     navigate("/");
   };
 
-  const navItems = NAV_ACCOUNT_LIST.map(({ link, header }, index) => (
-    <div key={header} className="w-full">
+  const dropdownStates = useSelector(
+    (state: RootState) => state.dropdown.dropdownStates
+  );
+
+  const navItems = Object.entries(data).map(([header, link], index) => (
+    <div key={header} className="w-full text-center">
       {link ? (
+        // If there is a link, render a NavLink
         <NavLink
           to={link}
           className={({ isActive }) =>
-            `py-1 px-2 rounded block ${
-              isActive ? "bg-custom-less-white" : "hover:bg-custom-less-white"
-            }`
+            `py-1 px-2 rounded block ${isActive ? "bg-custom-less-white" : "hover:bg-custom-less-white"}`
           }
-          onClick={() => dispatch(handleShowNavDropdown(false))}
+          onClick={() => dispatch(closeAllDropdowns())}
         >
-          {header}
+          {startCase(header)}
         </NavLink>
       ) : (
+        // If no link, render a button for logout or other actions
         <button
-          onClick={logoutHandler}
-          className="py-1 px-2 rounded w-full text-left hover:bg-custom-less-white"
+          onClick={
+            header === "logout" ? logoutHandler : () => dispatch(toggleDropdownState(header))
+          }
+          className={`py-1 px-2 rounded w-full hover:bg-custom-less-white ${
+            dropdownStates[header] ? "bg-custom-less-white" : ""
+          }`}
         >
-          {header}
+          {startCase(header)}
         </button>
       )}
-      {index < NAV_ACCOUNT_LIST.length - 1 && (
+      {index < Object.entries(data).length - 1 && (
         <hr className="my-1 mx-[2px] border-custom-gray" />
       )}
     </div>

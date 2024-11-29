@@ -1,0 +1,5 @@
+{
+  "change_password": "/user/account/setting/change-password",
+  "forgot_password": "/user/account/setting/forgot-password",
+  "deactivate_account": "/user/account/setting/deactivate-account"
+}
