@@ -1,4 +1,3 @@
-import { postRefs } from "@models/post/post-model";
 import mongoose, { Schema, Types, Document } from "mongoose";
 
 interface SavedPosts {
@@ -47,7 +46,7 @@ const userSchema: Schema = new Schema<IUser>({
   deactivated_at: { type: Date },
 
   // Relationships
-  detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
+  // detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
 
   // Saved posts
   saved_posts: {
@@ -57,23 +56,12 @@ const userSchema: Schema = new Schema<IUser>({
     certificate_verification_ref: [
       { type: Types.ObjectId, ref: "CertificateVerification" },
     ],
-    important_ref: [{ type: Types.ObjectId, ref: "PostImportant" }],
+    important_ref: [{ type: Types.ObjectId, ref: "Important" }],
     latest_job_ref: [{ type: Types.ObjectId, ref: "LatestJob" }],
     result_ref: [{ type: Types.ObjectId, ref: "Result" }],
     syllabus_ref: [{ type: Types.ObjectId, ref: "Syllabus" }],
   },
 });
-
-export const allowedPostFields = [
-  "answer_key_ref",
-  "admission_ref",
-  "admit_card_ref",
-  "certificate_verification_ref",
-  "important_ref",
-  "latest_job_ref",
-  "result_ref",
-  "syllabus_ref",
-];
 
 const User = mongoose.model<IUser>("User", userSchema);
 export default User;

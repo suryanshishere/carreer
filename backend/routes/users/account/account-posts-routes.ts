@@ -7,8 +7,7 @@ import {
   getUndefinedFields,
   contributeToPost,
 } from "@controllers/users/account/contribute-to-post-controllers";
-import { changePassword } from "@controllers/users/account/setting-controllers";
-import { postRefs } from "@models/post/post-model";
+import { sections } from "@models/post/post-model";
 import express from "express";
 import { check } from "express-validator";
 import _ from "lodash";
@@ -38,22 +37,21 @@ router.get("/saved-posts", savedPosts);
 
 const bookmarkMiddleware = [
   check("post_id").trim().isLength({ min: 24, max: 24 }),
-  check("category")
+  check("section")
     .trim()
     .notEmpty()
-    .withMessage("Category is required") // Custom error message for empty value
+    .withMessage("Section is required!")
     .custom((value) => {
       const lowerCaseCategory = value.toLowerCase();
 
-      // Generate the list of accepted categories
-      const acceptedCategories = _.flatMap(postRefs, (category) => [
-        _.toLower(category), // Lowercase version
-        _.snakeCase(category), // snake_case version
+      const acceptedCategories = _.flatMap(sections, (section) => [
+        _.toLower(section), 
+        _.snakeCase(section), 
       ]);
 
       return acceptedCategories.includes(lowerCaseCategory);
     })
-    .withMessage("Invalid category!")
+    .withMessage("Invalid section!")
     .customSanitizer((value) => _.snakeCase(value) + "_ref"),
 ];
 

@@ -50,7 +50,7 @@ const Home: React.FC = () => {
         <HomeListItem
           key={key}
           ListItemData={data.data[key] || []}
-          category={key}
+          section={key}
           height={heights[key] || heights.default}
         />
       ))}

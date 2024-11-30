@@ -5,16 +5,15 @@ import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
-import "./Category.css";
 import { RootState } from "shared/store";
 import { useSelector } from "react-redux";
 
 // Fetch function with type annotations
 const fetchCategoryPostList = async (
-  category: string,
+  section: string,
   token?: string
 ): Promise<IPostList> => {
-  const { data } = await axiosInstance.get(`/public/category/${category}`, {
+  const { data } = await axiosInstance.get(`/public/sections/${section}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -22,17 +21,17 @@ const fetchCategoryPostList = async (
   return data;
 };
 
-const Category: React.FC = () => {
-  const { category = "" } = useParams<{ category: string }>();
+const Section: React.FC = () => {
+  const { section = "" } = useParams<{ section: string }>();
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const {
     data = { data: {} },
     isLoading,
     error,
   } = useQuery<IPostList, Error>({
-    queryKey: ["categoryPostList", category],
-    queryFn: () => fetchCategoryPostList(category, token),
-    enabled: Boolean(category),
+    queryKey: ["categoryPostList", section],
+    queryFn: () => fetchCategoryPostList(section, token),
+    enabled: Boolean(section),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -47,10 +46,10 @@ const Category: React.FC = () => {
   return (
     <div className="flex gap-3">
       {Object.keys(data.data).map((key) => (
-        <List key={key} currentRecords={data.data[key] || []} category={key} />
+        <List key={key} currentRecords={data.data[key] || []} section={key} />
       ))}
     </div>
   );
 };
 
-export default Category;
+export default Section;

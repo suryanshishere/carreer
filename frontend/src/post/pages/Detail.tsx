@@ -12,11 +12,11 @@ import { RootState } from "shared/store";
 import Bookmark from "shared/components/Bookmark";
 
 const fetchPostDetail = async (
-  category: string,
+  section: string,
   postId: string,
   token?: string
 ): Promise<IPostDetailData> => {
-  const { data } = await axiosInstance.get(`/public/category/${category}/${postId}`, {
+  const { data } = await axiosInstance.get(`/public/sections/${section}/${postId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -26,9 +26,9 @@ const fetchPostDetail = async (
 
 const Detail: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
-  const { category = "", postId = "" } = useParams<{
+  const { section = "", postId = "" } = useParams<{
     postId: string;
-    category: string;
+    section: string;
   }>();
   const {
     data = { data: {}, is_saved: false },
@@ -36,7 +36,7 @@ const Detail: React.FC = () => {
     error,
   } = useQuery<IPostDetailData, Error>({
     queryKey: ["detailPost"],
-    queryFn: () => fetchPostDetail(category, postId, token),
+    queryFn: () => fetchPostDetail(section, postId, token),
   });
 
   const queryStateMessage = useQueryStates({
@@ -51,7 +51,7 @@ const Detail: React.FC = () => {
     <div className="detail_page_sec flex flex-col items-center">
       <DetailItemHeader />
       <h3>postId</h3>
-      <Bookmark category={category} postId={postId} isSaved={data.is_saved} />
+      <Bookmark section={section} postId={postId} isSaved={data.is_saved} />
       {data && <DetailItem detailPageData={data.data} />}
     </div>
   );

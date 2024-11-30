@@ -16,6 +16,6 @@ postImportantSchema.add(commonDataSchema);
 
 export {postImportantSchema}
 
-const PostImportant = mongoose.model("PostImportant", postImportantSchema);
+const Important = mongoose.model("Important", postImportantSchema);
 
-export default PostImportant;
+export default Important;

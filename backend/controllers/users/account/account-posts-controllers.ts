@@ -43,7 +43,7 @@ export const bookmarkPost = async (
   next: NextFunction
 ) => {
   try {
-    const { category, post_id } = req.body;
+    const { section, post_id } = req.body;
 
     const user = req.user;
 
@@ -51,15 +51,16 @@ export const bookmarkPost = async (
       return next(new HttpError("User not found!", 404));
     }
 
-    const currentPosts = user.saved_posts?.[category] || [];
+    const currentPosts = user.saved_posts?.[section] || [];
     // Avoid bookmarking the same post_id if it's already present
     if (!currentPosts.includes(post_id)) {
       user.saved_posts = {
         ...user.saved_posts,
-        [category]: [...currentPosts, post_id],
+        [section]: [...currentPosts, post_id],
       };
       await user.save();
     }
+
     
     const message = user.isEmailVerified
       ? "Post bookmarked successfully!"
@@ -78,7 +79,7 @@ export const unBookmarkPost = async (
   next: NextFunction
 ) => {
   try {
-    const { category, post_id } = req.body;
+    const { section, post_id } = req.body;
 
     const user = req.user;
 
@@ -86,7 +87,7 @@ export const unBookmarkPost = async (
       return next(new HttpError("User not found!", 404));
     }
 
-    const currentPosts = user.saved_posts?.[category] || [];
+    const currentPosts = user.saved_posts?.[section] || [];
     // Remove the post_id from the saved posts if it exists
     const updatedPosts = currentPosts.filter(
       (id: mongoose.Types.ObjectId) => id.toString() !== post_id
@@ -95,7 +96,7 @@ export const unBookmarkPost = async (
     if (updatedPosts.length < currentPosts.length) {
       user.saved_posts = {
         ...user.saved_posts,
-        [category]: updatedPosts,
+        [section]: updatedPosts,
       };
       await user.save();
 

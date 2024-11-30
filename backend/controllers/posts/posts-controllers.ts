@@ -27,7 +27,7 @@ export const helpless = () => {
 };
 
 // Get the list of posts for the home page
-export const getPostHomeList = async (
+export const home = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -35,7 +35,6 @@ export const getPostHomeList = async (
   try {
     const userId = getUserIdFromRequest(req);
 
-    // Fetch the user's saved_posts data only if the userId is present
     const user = userId
       ? await User.findById(userId).select("saved_posts").lean()
       : null;
@@ -48,7 +47,7 @@ export const getPostHomeList = async (
       // Convert category to snake_case and append "_ref" to check saved_posts
       const savedField = `${snakeCase(key)}_ref`;
       const savedIds = user?.saved_posts?.[savedField]?.map(String) || [];
-
+      
       return {
         [snakeCase(key)]: posts.map(({ name_of_the_post, post_code, _id }) => ({
           name_of_the_post,
@@ -73,82 +72,73 @@ export const getPostHomeList = async (
   }
 };
 
-// Get the list of posts for a specific category
-export const getPostCategoryList = async (
+export const section = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { category } = req.params;
+  const { section } = req.params;
 
   try {
     const userId = getUserIdFromRequest(req);
-
-    // Check if the category is valid
-    const model = MODEL_DATA[category];
+    const model = MODEL_DATA[section];
     if (!model) {
       return next(new HttpError("Invalid category specified.", 400));
     }
-
-    // Fetch posts for the specified category
+    
     const response = await fetchPosts(model, CATEGORY_LIMIT);
-
-    // Check if the user is authenticated and fetch saved posts for the category
+   
     let savedIds: string[] = [];
     if (userId) {
       const user = await User.findById(userId).select("saved_posts").lean();
-      const savedField = `${snakeCase(category)}_ref`; // Convert category to snake_case and append `_ref`
+      const savedField = `${snakeCase(section)}_ref`; 
 
       if (user?.saved_posts?.[savedField]) {
-        savedIds = user.saved_posts[savedField].map(String); // Extract saved IDs for the category
+        savedIds = user.saved_posts[savedField].map(String); 
       }
     }
 
-    // Map posts and add `is_saved` field based on the user's saved posts
     const postsWithSavedStatus = response.map(
       ({ name_of_the_post, post_code, _id }) => ({
         name_of_the_post,
         post_code,
         _id,
-        is_saved: savedIds.includes(String(_id)), // Check if the post is saved
+        is_saved: savedIds.includes(String(_id)), 
       })
     );
 
-    // Structure the response
     const responseData = {
-      data: { [snakeCase(category)]: postsWithSavedStatus },
+      data: { [snakeCase(section)]: postsWithSavedStatus },
     };
     return res.status(200).json(responseData);
   } catch (err) {
-    console.error("Error fetching posts for category:", err);
     return next(new HttpError("An error occurred while fetching posts!", 500));
   }
 };
 
 // Get the detailed information of a specific post
-export const getPostDetail = async (
+export const sectionDetail = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { category, postId } = req.params;
+  const { section, postId } = req.params;
 
   try {
-    const model = MODEL_DATA[category];
+    const model = MODEL_DATA[section];
     if (!model) {
-      return next(new HttpError("Invalid category specified.", 400));
+      return next(new HttpError("Invalid section specified.", 400));
     }
 
     // Fetch post details
     const response = await model
       .findById(postId)
-      .populate(populateModels[category]);
+      .populate(populateModels[section]);
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));
     }
 
-    // Add is_saved field if user is authenticated
     let isSaved = false;
     const userId = getUserIdFromRequest(req);
 
@@ -157,23 +147,13 @@ export const getPostDetail = async (
     if (userId) {
       const user = await User.findById(userId).select("saved_posts").lean();
       if (user?.saved_posts) {
-        const savedField = `${snakeCase(category)}_ref`; // Convert category to snake_case and append `_ref`
-        // console.log(savedField); // Debug the field name
-
+        const savedField = `${snakeCase(section)}_ref`; 
         const savedPosts = user.saved_posts[savedField] || [];
-        // console.log(savedPosts); // Debug the array of saved post IDs
-
-        // Use new keyword to create ObjectId
-        const postIdObj = new Types.ObjectId(postId); // Convert postId to ObjectId
-
-        // Use `.equals()` for ObjectId comparison
+        const postIdObj = new Types.ObjectId(postId);
         isSaved = savedPosts.some((savedPost) => savedPost.equals(postIdObj));
-
-        // console.log(isSaved); // Check if isSaved is correctly set to true or false
       }
     }
 
-    // Attach the `is_saved` field to the response
     const responseWithSavedStatus = {
       data: response.toObject(),
       is_saved: isSaved,
@@ -181,12 +161,8 @@ export const getPostDetail = async (
 
     return res.status(200).json(responseWithSavedStatus);
   } catch (err) {
-    console.error(
-      `Error fetching post detail for postId ${postId} in category ${category}:`,
-      err
-    );
     return next(
-      new HttpError("An error occurred while fetching the post", 500)
+      new HttpError("An error occurred while fetching the post.", 500)
     );
   }
 };

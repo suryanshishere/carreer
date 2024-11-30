@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import HomePage from "post/pages/Home";
 import Detail from "post/pages/Detail";
-import Category from "post/pages/Category";
+import Section from "post/pages/Section";
 import ContactUs from "shared/pages/contactUs/ContactUs";
 import NotFound from "./shared/pages/NotFound";
 import ResetPassword from "user/pages/auth/ResetPassword";
@@ -62,9 +62,9 @@ const App: React.FC = () => {
       children: [
         { index: true, element: <HomePage /> },
         {
-          path: "category/:category",
+          path: "sections/:section",
           children: [
-            { index: true, element: <Category /> },
+            { index: true, element: <Section /> },
             { path: ":postId", element: <Detail /> },
           ],
         },

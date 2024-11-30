@@ -6,7 +6,7 @@ import Bookmark from "shared/components/Bookmark";
 
 interface HomeListItemProps {
   ListItemData: IPostListData[];
-  category: string;
+  section: string;
   height?: string;
 }
 
@@ -14,7 +14,7 @@ const HOME_LIMIT = Number(process.env.REACT_APP_NUMBER_OF_POST_HOMELIST) || 12;
 
 const HomeComponent: React.FC<HomeListItemProps> = ({
   ListItemData,
-  category,
+  section,
   height,
 }) => {
   return (
@@ -24,7 +24,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
     >
       <div className="w-full">
         <h5 className="text-center font-bold capitalize py-2">
-          {startCase(category)}
+          {startCase(section)}
         </h5>
         <hr className="w-full border-t-2 border-custom-less-gray" />
       </div>
@@ -33,9 +33,9 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
           {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
             <React.Fragment key={index}>
               <li className="w-full">
-                <Bookmark category={category} postId={item._id} isSaved={item.is_saved}/>
+                <Bookmark section={section} postId={item._id} isSaved={item.is_saved}/>
                 <Link
-                  to={`/category/${category}/${item._id}`}
+                  to={`/sections/${section}/${item._id}`}
                   className="text-custom-red underline decoration-1 underline-offset-2 hover:decoration-custom-gray"
                 >
                   {item.name_of_the_post}
@@ -49,7 +49,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
         </ul>
         <Link
           className="text-custom-blue text-sm font-semibold pr-2 h-auto text-right"
-          to={`/category/${category}`}
+          to={`/sections/${section}`}
         >
           Read More
         </Link>

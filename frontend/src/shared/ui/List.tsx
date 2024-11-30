@@ -9,7 +9,7 @@ import Bookmark from "shared/components/Bookmark";
 
 interface ListProps {
   currentRecords: IPostListData[];
-  category: string;
+  section: string;
   showBookmark?: boolean;
   showCategory?: boolean;
   showDelete?: boolean;
@@ -23,7 +23,7 @@ const CATEGORY_LIMIT =
 
 const List: React.FC<ListProps> = ({
   currentRecords,
-  category,
+  section,
   showCategory,
   showBookmark = true,
   showDelete,
@@ -40,7 +40,7 @@ const List: React.FC<ListProps> = ({
             <li className="flex items-center justify-between gap-4">
               <div className="flex gap-2 p-2">
                 <Bookmark
-                  category={category}
+                  section={section}
                   postId={item._id}
                   isSaved={item.is_saved}
                 />
@@ -54,7 +54,7 @@ const List: React.FC<ListProps> = ({
                   11/11/2003
                 </h6>
                 <div className="list_link flex items-center gap-1">
-                  <Link to={`/category/${category}/${item._id}`}>
+                  <Link to={`/sections/${section}/${item._id}`}>
                     {item.name_of_the_post}
                   </Link>
                   {/* {showBookmark && (

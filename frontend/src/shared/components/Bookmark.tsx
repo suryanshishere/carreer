@@ -11,12 +11,12 @@ import BookmarkBorderSharpIcon from "@mui/icons-material/BookmarkBorderSharp";
 import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
 
 interface IBookmark {
-  category: string;
+  section: string;
   postId: string;
   isSaved: boolean;
 }
 
-const Bookmark: React.FC<IBookmark> = ({ category, postId, isSaved }) => {
+const Bookmark: React.FC<IBookmark> = ({ section, postId, isSaved }) => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const dispatch = useDispatch<AppDispatch>();
   const [isBookmarked, setIsBookmarked] = useState<boolean>(isSaved);
@@ -30,7 +30,7 @@ const Bookmark: React.FC<IBookmark> = ({ category, postId, isSaved }) => {
     setIsBookmarked(bookmarkState);
     const response = await axiosInstance.post(
       url,
-      { category, post_id: postId },
+      { section, post_id: postId },
       {
         headers: {
           Authorization: `Bearer ${token}`,
