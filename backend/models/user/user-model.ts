@@ -13,6 +13,9 @@ export interface IUser extends Document {
   passwordResetTokenCreatedAt?: Date;
   passwordChangedAt?: Date;
 
+  // Role
+  role?: "admin" | "approver";
+
   // User identification fields
   email: string;
   password: string;
@@ -37,6 +40,14 @@ const userSchema: Schema = new Schema<IUser>({
   passwordResetTokenCreatedAt: { type: Date },
   passwordChangedAt: { type: Date },
 
+  //role
+  role: {
+    type: String,
+    enum: ["admin", "approver"],
+    default: undefined,
+    index: true, //for better fitlering
+  },
+
   // User identification fields
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -46,7 +57,7 @@ const userSchema: Schema = new Schema<IUser>({
   deactivated_at: { type: Date },
 
   // Relationships
-  // detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
+  detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
 
   // Saved posts
   saved_posts: {
