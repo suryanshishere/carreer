@@ -27,12 +27,11 @@ app.post("/api/user/account/activate-account", activateAccount);
 app.use(checkAccountStatus);
 
 app.use("/api/public", postsRoutes);
-app.use("/api/admin", adminRoutes);
 app.use("/api/user", usersRoutes);
 
 //Error showing if none of the routes found!
-app.use((next: NextFunction) => {
-  return next(new HttpError("Could not find this route.", 404));
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next(new HttpError("Could not find this route.", 404));
 });
 
 //httperror middleware use here to return a valid json error instead any html error page

@@ -1,5 +1,9 @@
 {
-  "contribute post": "/user/contribute-post",
+  "create_new_post": {
+    "role": "publisher",
+    "link": "/publisher/create-new-post"
+  },
+  "contribute_post": { "link": "/user/contribute-post" },
   "setting": null,
   "logout": null
 }

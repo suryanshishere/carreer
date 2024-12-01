@@ -43,8 +43,8 @@ const userSchema: Schema = new Schema<IUser>({
   //role
   role: {
     type: String,
-    enum: ["admin", "approver"],
-    default: undefined,
+    enum: ["publisher", "approver", "contributor"],
+    default: "contributor",
     index: true, //for better fitlering
   },
 

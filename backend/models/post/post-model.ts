@@ -11,7 +11,7 @@ export const sections = [
   "syllabus",
 ] as const;
 
-const POST_CODE_LENGTH = Number(process.env.POST_CODE_LENGTH) || 6;
+const POST_CODE_MIN = Number(process.env.POST_CODE_MIN) || 6;
 
 const sectionFields = sections.reduce((fields, section) => {
   fields[section] = {
@@ -29,24 +29,20 @@ const sectionFields = sections.reduce((fields, section) => {
         },
         message: (props) => `'approved' can only be true if 'exist' is true.`,
       },
-    } as SchemaTypeOptions<boolean>, 
+    } as SchemaTypeOptions<boolean>,
   };
   return fields;
 }, {} as Record<string, { exist: { type: BooleanConstructor; default: boolean }; approved: SchemaTypeOptions<boolean> }>);
-
 
 const postSchema = new Schema({
   post_code: {
     type: String,
     unique: true,
     required: true,
-    minlength: [
-      POST_CODE_LENGTH,
-      "Post code must be at least 6 characters long.",
-    ],
+    minlength: [POST_CODE_MIN, "Post code must be at least 6 characters long."],
   },
   sections: {
-    type: new Schema(sectionFields, { _id: false }), 
+    type: new Schema(sectionFields, { _id: false }),
   },
 });
 

@@ -37,27 +37,6 @@ export const sendVerificationResponse = async (
   return sendAuthenticatedResponse(res, user, false);
 };
 
-// Send authenticated response for verified users
-export const sendAuthenticatedResponse = (
-  res: Response,
-  user: IUser,
-  isEmailVerified: boolean = true
-) => {
-  const token = generateJWTToken(user.id, user.email);
-  const tokenExpiration = new Date(
-    Date.now() + Number(JWT_KEY_EXPIRY) * 60000
-  ).toISOString();
-
-  return res.status(200).json({
-    token,
-    isEmailVerified,
-    tokenExpiration: tokenExpiration,
-    message: isEmailVerified
-      ? "Logged in successfully!"
-      : "An OTP verification being sent to your mail.",
-  });
-};
-
 // JWT Token generation function
 export const generateJWTToken = (userId: string, email: string): string => {
   if (!JWT_KEY) {
@@ -95,4 +74,26 @@ export const checkRequestDelay = (
 
   // No delay needed, enough time has passed
   return null;
+};
+
+// Send authenticated response for verified users
+export const sendAuthenticatedResponse = (
+  res: Response,
+  user: IUser,
+  isEmailVerified: boolean = true
+) => {
+  const token = generateJWTToken(user.id, user.email);
+  const tokenExpiration = new Date(
+    Date.now() + Number(JWT_KEY_EXPIRY) * 60000
+  ).toISOString();
+
+  return res.status(200).json({
+    role: user.role,
+    token,
+    isEmailVerified,
+    tokenExpiration: tokenExpiration,
+    message: isEmailVerified
+      ? "Logged in successfully!"
+      : "An OTP verification being sent to your mail.",
+  });
 };
