@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "shared/store";
+import { useEffect } from "react";
+import store from "shared/store";
 import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 
 interface QueryStateProps {
@@ -13,13 +13,16 @@ const useQueryStates = ({
   error,
   empty,
 }: QueryStateProps): JSX.Element | null => {
-  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    if (!isLoading && error) {
+      store.dispatch(triggerErrorMsg(error));
+    }
+  }, [ error, isLoading]);
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
   if (!isLoading && error) {
-    dispatch(triggerErrorMsg(error));
     return <p>Error: {error}</p>;
   }
   if (empty) {

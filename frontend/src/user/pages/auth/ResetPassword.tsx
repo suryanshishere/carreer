@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import ForgotPassword from "./ForgotPassword";
+import ForgotPassword from "../../pages/auth/ForgotPassword";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import {

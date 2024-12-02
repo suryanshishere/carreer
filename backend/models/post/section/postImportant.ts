@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { IPostImportant } from "../post-section-interface";
-import commonDataSchema from "../post-common";
+import commonDataSchema from "../common/post-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -16,6 +16,6 @@ postImportantSchema.add(commonDataSchema);
 
 export {postImportantSchema}
 
-const PostImportant = mongoose.model("PostImportant", postImportantSchema);
+const Important = mongoose.model("Important", postImportantSchema);
 
-export default PostImportant;
+export default Important;

@@ -9,9 +9,9 @@ module.exports = {
         "custom-white": "rgba(255, 255, 255, 1)",
         "custom-less-white": "rgba(255, 255, 255, 0.75)",
         "custom-black": "#000000",
-        "custom-grey": "rgba(104, 109, 118)",
-        "custom-less-grey": "rgba(104, 109, 118, 0.75)",
-        "custom-super-less-grey": "rgba(104, 109, 118, 0.25)",
+        "custom-gray": "rgba(104, 109, 118)",
+        "custom-less-gray": "rgba(104, 109, 118, 0.75)",
+        "custom-super-less-gray": "rgba(104, 109, 118, 0.25)",
         // "custom-backdrop": "#2C3333",
         "custom-green": "#7F9F80",
         "custom-dark-blue": "#131921",
@@ -54,5 +54,11 @@ module.exports = {
   ],
   corePlugins: {
     preflight: true,
+  },
+  variants: {
+    extend: {
+      textDecorationColor: ["visited"], // Enable visited variants
+      decoration: ["visited"], // Enable decoration color for visited
+    },
   },
 };

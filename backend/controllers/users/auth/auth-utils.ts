@@ -3,21 +3,17 @@ import { sendVerificationOtp } from "./auth-controllers";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { NextFunction, Response, Request } from "express";
+import { random } from "lodash";
 
 const JWT_KEY = process.env.JWT_KEY;
 const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "15";
 // const EMAIL_VERIFICATION_TOKEN_EXPIRY =
 //   Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY) || 3;
 
-// Function to generate OTP as a verification token
-export const generateUniqueVerificationToken = () => {
-  return Math.floor(100000 + Math.random() * 900000);
-};
-
 // Update unverified user fields with new password and verification token
 export const updateUnverifiedUser = async (user: IUser, password: string) => {
   user.password = await bcrypt.hash(password, 12);
-  user.emailVerificationToken = generateUniqueVerificationToken();
+  user.emailVerificationToken = random(100000, 999999);
   user.emailVerificationTokenCreatedAt = new Date();
   await user.save();
 };
@@ -29,32 +25,16 @@ export const sendVerificationResponse = async (
   next: NextFunction,
   user: IUser
 ) => {
-  const options = { userId: user.id, email: user.email, isDirect: true };
+  const options = {
+    userId: user.id,
+    email: user.email,
+    token: user.emailVerificationToken,
+    isDirect: true,
+  };
 
   await sendVerificationOtp(req, res, next, options);
 
   return sendAuthenticatedResponse(res, user, false);
-};
-
-// Send authenticated response for verified users
-export const sendAuthenticatedResponse = (
-  res: Response,
-  user: IUser,
-  isEmailVerified: boolean = true
-) => {
-  const token = generateJWTToken(user.id, user.email);
-  const tokenExpiration = new Date(
-    Date.now() + Number(JWT_KEY_EXPIRY) * 60000
-  ).toISOString();
-
-  return res.status(200).json({
-    token,
-    isEmailVerified,
-    tokenExpiration: tokenExpiration,
-    message: isEmailVerified
-      ? "Logged in successfully!"
-      : "An OTP verification being sent to your mail.",
-  });
 };
 
 // JWT Token generation function
@@ -94,4 +74,26 @@ export const checkRequestDelay = (
 
   // No delay needed, enough time has passed
   return null;
+};
+
+// Send authenticated response for verified users
+export const sendAuthenticatedResponse = (
+  res: Response,
+  user: IUser,
+  isEmailVerified: boolean = true
+) => {
+  const token = generateJWTToken(user.id, user.email);
+  const tokenExpiration = new Date(
+    Date.now() + Number(JWT_KEY_EXPIRY) * 60000
+  ).toISOString();
+
+  return res.status(200).json({
+    role: user.role,
+    token,
+    isEmailVerified,
+    tokenExpiration: tokenExpiration,
+    message: isEmailVerified
+      ? "Logged in successfully!"
+      : "An OTP verification being sent to your mail.",
+  });
 };

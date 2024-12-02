@@ -141,3 +141,8 @@ export interface IPostDetail {
   how_to_download_admit_card?: string[];
   how_to_fill_the_form?: string[];
 }
+
+export interface IPostDetailData{
+  data: IPostDetail;
+  is_saved: boolean;
+}

@@ -7,7 +7,6 @@ import {
   resetPassword,
   sendPasswordResetLink,
 } from "@controllers/users/auth/auth-controllers";
-import checkAuth from "@middleware/check-auth";
 
 const router = express.Router();
 
@@ -39,7 +38,8 @@ router.post(
   ],
   resetPassword
 );
-router.use(checkAuth);
+
+//authenticated routes
 
 router.post(
   "/verify-email",
@@ -52,5 +52,3 @@ router.post(
 router.post("/send-verification-otp", sendVerificationOtp);
 
 export default router;
-
-// router.use(checkAuth);

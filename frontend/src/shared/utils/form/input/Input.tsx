@@ -1,6 +1,5 @@
+import { startCase } from "lodash";
 import React, { useState, ChangeEvent, CSSProperties, forwardRef } from "react";
-import Button from "../Button";
-import { formatWord } from "shared/quick/format-word";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -39,7 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       outerClassProp,
       errorClassProp,
     },
-    ref // Accept ref here
+    ref 
   ) => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -50,13 +49,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const endAdornment = (() => {
       if (type === "password") {
         return (
-          <Button
+          <button
             type="button"
-            classProp="p-0 hover:text-custom-red absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-custom-grey"
+            className="p-0 hover:text-custom-red absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-custom-gray"
             onClick={togglePasswordVisibility}
           >
             {showPassword ? "Hide" : "Show"}
-          </Button>
+          </button>
         );
       } else if (type === "search") {
         return (
@@ -69,10 +68,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     })();
 
     return (
-      <div className={`${outerClassProp}`}>
+      <div className={`${outerClassProp} flex flex-col`}>
         {label && (
           <label htmlFor={name} className="block text-sm font-medium mb-1">
-            {formatWord(label)}
+            {startCase(label)}
           </label>
         )}
         <div className="relative w-full flex items-center">
@@ -82,13 +81,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             name={name}
             type={showPassword && type === "password" ? "text" : type}
             required={required}
-            placeholder={placeholder || formatWord(name)}
+            placeholder={placeholder || startCase(name)}
             value={value}
             onChange={onChange}
-            className={`w-full pl-2 py-2 outline outline-2 outline-custom-less-grey text-base rounded ${classProp} ${
+            className={`w-full pl-2 py-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
               error ? "outline-custom-red" : ""
             } ${
-              error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"
+              error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"
             }`}
             style={style}
           />
@@ -143,7 +142,7 @@ export const TextArea = forwardRef<
           {placeholder || name}
         </label>
         <textarea
-          ref={ref} // Now specific to HTMLTextAreaElement
+          ref={ref} 
           id={name}
           name={name}
           rows={row}
@@ -151,16 +150,14 @@ export const TextArea = forwardRef<
           disabled={disabled}
           value={value}
           onChange={onChange} // Now specific to HTMLTextAreaElement
-          className={`w-full pl-2 border-2 border-custom-less-grey rounded-md ${classProp} ${
-            error ? "border-custom-red" : ""
-          }  ${
-            error ? "focus:ring-custom-red" : "focus:ring-custom-less-grey"
-          }`}
+          className={`w-full pl-2 py-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
+            error ? "outline-custom-red" : ""
+          } ${error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"}`}
         />
         {helperText && (
           <p
             className={`ml-2 text-sm ${
-              error ? "text-custom-red" : "text-custom-grey"
+              error ? "text-custom-red" : "text-custom-gray"
             }`}
           >
             {helperText}

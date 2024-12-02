@@ -35,15 +35,12 @@ const authSlice = createSlice({
         token: string;
         isEmailVerified: boolean;
         tokenExpiration?: string;
+        role?: string;
       }>
     ) {
-      const {
-        token,
-        tokenExpiration,
-        isEmailVerified
-      } = action.payload;
+      const { token, tokenExpiration, isEmailVerified, role } = action.payload;
 
-      if ( !token && isEmailVerified === undefined) return;
+      if (!token && isEmailVerified === undefined) return;
 
       const localTokenExpiration = tokenExpiration
         ? new Date(tokenExpiration)
@@ -55,11 +52,13 @@ const authSlice = createSlice({
       state.userData = {
         token,
         isEmailVerified,
-        tokenExpiration: localTokenExpiration.toISOString()
+        tokenExpiration: localTokenExpiration.toISOString(),
+        role,
       };
 
       if (isEmailVerified) {
         state.isNavAuthClicked = false;
+        // window.location.reload();
       }
     },
 
@@ -69,17 +68,31 @@ const authSlice = createSlice({
         token: "",
         isEmailVerified: false,
         tokenExpiration: undefined,
-        sessionExpireMsg: undefined
+        sessionExpireMsg: undefined,
       };
+      // window.location.reload();
     },
 
     updateUserData(state, action: PayloadAction<Partial<IUserData>>) {
       const updatedData = action.payload;
       state.userData = { ...state.userData, ...updatedData };
     },
+
+    handleAccountDeactivatedAt(
+      state,
+      action: PayloadAction<string | undefined>
+    ) {
+      state.userData.deactivatedAt = action.payload;
+    },
   },
 });
 
-export const { handleAuthClick, login, logout, updateUserData } =
-  authSlice.actions;
+export const {
+  handleAuthClick,
+  login,
+  logout,
+  updateUserData,
+  handleAccountDeactivatedAt,
+} = authSlice.actions;
+
 export default authSlice.reducer;

@@ -36,9 +36,7 @@ type OTPFormInputs = {
 };
 
 const EmailVerification = () => {
-  const { token, isEmailVerified } = useSelector(
-    (state: RootState) => state.auth.userData
-  );
+  const { token } = useSelector((state: RootState) => state.auth.userData);
   const isOtpSent = useSelector((state: RootState) => state.auth.isOtpSent);
   const [isSendOnce, setIsSendOnce] = useState<boolean>(isOtpSent);
   const dispatch = useDispatch<AppDispatch>();
@@ -115,8 +113,9 @@ const EmailVerification = () => {
     },
     onSuccess: (data) => {
       dispatch(updateUserData({ isEmailVerified: true }));
-      dispatch(triggerSuccessMsg(data.message));
       dispatch(handleAuthClick(false));
+      dispatch(triggerSuccessMsg(data.message));
+      window.location.reload();
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
@@ -136,7 +135,7 @@ const EmailVerification = () => {
   return (
     <form
       onSubmit={handleSubmit(verifyOtp)}
-      className="h-5/6 flex-1 flex items-center gap-2 justify-between "
+      className="h-full flex-1 flex items-center gap-2 justify-between "
     >
       <div className="flex-wrap w-fit">
         {isSendOnce
@@ -150,13 +149,12 @@ const EmailVerification = () => {
 
       {!isSendOnce ? (
         <Button
-          classProp={`py-2 px-3 font-bold rounded-full  text-custom-white ${
-            sendOtpMutation.isPending
-              ? "bg-custom-black"
-              : "bg-custom-grey hover:bg-custom-black"
-          }`}
+          authButtonType
           onClick={handleOtpEmail}
           disabled={sendOtpMutation.isPending}
+          classProp={`${
+            sendOtpMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
+          }`}
         >
           {sendOtpMutation.isPending ? "Generating..." : "Generate OTP"}
         </Button>
@@ -172,11 +170,10 @@ const EmailVerification = () => {
             outerClassProp="flex-1"
           />
           <Button
+            authButtonType
             classProp={`${
-              verifyOtpMutation.isPending
-                ? "bg-custom-black"
-                : "hover:bg-custom-black bg-custom-grey"
-            } py-2 rounded-full  text-white px-3  font-bold`}
+              verifyOtpMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
+            }`}
             type="submit"
             disabled={verifyOtpMutation.isPending}
           >
@@ -186,13 +183,14 @@ const EmailVerification = () => {
       )}
       {isSendOnce && (
         <Button
+        authButtonType
           classProp={`${
             sendOtpMutation.isPending
               ? "bg-custom-black"
               : resendTimer > 0
-              ? "bg-custom-super-less-grey"
-              : "bg-custom-grey hover:bg-custom-black"
-          } ml-2 py-2 rounded-full text-white px-3 font-bold`}
+              ? "bg-custom-super-less-gray"
+              : "bg-custom-gray"
+          } ml-2`}
           onClick={handleOtpEmail}
           disabled={resendTimer > 0 || sendOtpMutation.isPending}
         >

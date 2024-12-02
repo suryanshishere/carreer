@@ -3,9 +3,7 @@ import { AuthProps } from "user/pages/auth/Auth";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import AuthForm from "./AuthForm";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "shared/store";
 import {
@@ -14,6 +12,8 @@ import {
 } from "shared/store/thunks/response-thunk";
 import { handleAuthClick, login } from "shared/store/auth-slice";
 import axiosInstance from "shared/utils/api/axios-instance";
+import { Input } from "shared/utils/form/input/Input";
+import Button from "shared/utils/form/Button";
 
 // Validation schema using Yup
 const validationSchema = yup.object().shape({
@@ -45,30 +45,20 @@ const AuthComponent: React.FC<AuthProps> = () => {
   const submitMutation = useMutation({
     mutationFn: async (data: IAuth) => {
       const response = await axiosInstance.post(
-        `user/auth`,
+        `/user/auth`,
         JSON.stringify(data),
         {}
       );
       return response.data;
     },
-    onSuccess: ({
-      token,
-      tokenExpiration,
-      isEmailVerified,
-      message,
-    }) => {
-      dispatch(
-        login({token, tokenExpiration, isEmailVerified })
-      );
+    onSuccess: ({ token, tokenExpiration, isEmailVerified, role, message }) => {
       dispatch(triggerSuccessMsg(message));
-
-      if (isEmailVerified) {
-        dispatch(handleAuthClick(false));
-      }
+      dispatch(login({ token, tokenExpiration, isEmailVerified, role }));
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
     },
+    retry: 3,
   });
 
   const submitHandler: SubmitHandler<IAuth> = async (data) => {
@@ -78,18 +68,35 @@ const AuthComponent: React.FC<AuthProps> = () => {
   return (
     <form
       onSubmit={handleSubmit(submitHandler)}
-      className="h-5/6 flex-1 flex items-center gap-2 justify-end"
+      className="flex-1 flex items-center gap-2 justify-end"
     >
-      <AuthForm
-        register={register}
-        errors={errors}
-        inputClassProp="placeholder:text-sm"
-        inputOuterClassProp="flex-1"
-        pendingProp={submitMutation.isPending}
-        buttonClassProp={`${
-          submitMutation.isPending ? "bg-custom-black" : "bg-custom-grey"
-        } py-2 rounded-full  text-white font-bold px-3 hover:bg-custom-black`}
+      <Input
+        type="email"
+        {...register("email")}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+        placeholder="Email"
+        classProp={`placeholder:text-sm`}
+        outerClassProp={`flex-1`}
       />
+      <Input
+        {...register("password")}
+        type="password"
+        error={!!errors.password}
+        helperText={errors.password?.message}
+        placeholder="Password / Create new password"
+        classProp={`placeholder:text-sm`}
+        outerClassProp={`flex-1`}
+      />
+      <Button
+        authButtonType
+        classProp={`${
+          submitMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
+        }`}
+        type="submit"
+      >
+        {submitMutation.isPending ? "Authenticating..." : "Authenticate"}
+      </Button>
     </form>
   );
 };

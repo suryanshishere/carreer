@@ -2,7 +2,7 @@ import * as crypto from "crypto";
 import Admission from "@models/post/section/postAdmission";
 import AdmitCard from "@models/post/section/postAdmitCard";
 import CertificateVerification from "@models/post/section/postCertificateVerification";
-import PostImportant from "@models/post/section/postImportant";
+import Important from "@models/post/section/postImportant";
 import LatestJob from "@models/post/section/postLatestJob";
 import Result from "@models/post/section/postResult";
 import Syllabus from "@models/post/section/postSyllabus";
@@ -33,7 +33,7 @@ export const MODEL_DATA: Models = {
   syllabus: Syllabus,
   answer_key: AnswerKey,
   certificate_verification: CertificateVerification,
-  important: PostImportant,
+  important: Important,
   admission: Admission,
 };
 

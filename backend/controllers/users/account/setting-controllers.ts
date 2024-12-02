@@ -10,14 +10,10 @@ export const changePassword = async (
   res: Response,
   next: NextFunction
 ) => {
+  validationError(req, res, next);
   try {
-    validationError(req, res, next);
-
     const { old_password, new_password } = req.body;
-    const { userId } = req.userData;
-    
-    // Find the user by ID
-    const user = await User.findById(userId);
+    const user = req.user;
 
     if (!user) {
       return next(new HttpError("User not found!", 404));
@@ -45,4 +41,24 @@ export const changePassword = async (
       )
     );
   }
+};
+
+export const deactivateAccount = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  validationError(req, res, next);
+  try {
+    const user = req.user;
+    if (!user) {
+      return next(new HttpError("User not found!", 404));
+    }
+    user.deactivated_at = new Date();
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "Account deactivated successfully!" });
+  } catch (error) {}
 };

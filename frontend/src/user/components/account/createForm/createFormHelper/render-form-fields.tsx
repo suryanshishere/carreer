@@ -1,7 +1,7 @@
 import React from "react";
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
-import { formatWord } from "shared/quick/format-word";
-import { Dropdown } from "shared/utils/form/input/Dropdown";
+import { startCase } from "lodash";
+import Dropdown  from "shared/utils/form/input/Dropdown";
 import { Input, TextArea } from "shared/utils/form/input/Input";
 import TableInput from "shared/utils/form/input/TableInput";
 import { ITableFormData } from "./interfaceHelper";
@@ -20,7 +20,7 @@ const renderFormFields = (
     if (item.type === "object" && item.subItem) {
       return (
         <div key={index} className="flex flex-col gap-2">
-          <h3>{formatWord(item.name)}</h3>
+          <h3>{startCase(item.name)}</h3>
           {renderFormFields(
             item.subItem,
             handleTableInputData,
@@ -35,7 +35,7 @@ const renderFormFields = (
         <TextArea
           key={index}
           name={fieldName}
-          placeholder={formatWord(item.name)}
+          placeholder={startCase(item.name)}
           {...(register ? register(fieldName) : {})}
           error={errors ? !!errors[fieldName] : false}
           helperText={errors?.[fieldName]?.message}
@@ -46,7 +46,7 @@ const renderFormFields = (
         <Dropdown
           key={index}
           name={fieldName}
-          dropdownData={item.value}
+          data={item.value}
           error={errors ? !!errors[fieldName] : false}
           helperText={errors?.[fieldName]?.message}
           register={register}
@@ -66,7 +66,7 @@ const renderFormFields = (
           key={index}
           name={fieldName}
           type={item.type}
-          placeholder={formatWord(item.name)}
+          placeholder={startCase(item.name)}
           {...(register ? register(fieldName) : {})}
           error={errors ? !!errors[fieldName] : false}
           helperText={errors?.[fieldName]?.message}

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { ISyllabus } from "../post-section-interface";
-import commonDataSchema from "../post-common";
+import commonDataSchema from "../common/post-common";
 
 const { Schema } = mongoose;
 const { ObjectId, Mixed } = Schema.Types;

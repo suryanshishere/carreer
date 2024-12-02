@@ -1,4 +1,3 @@
-import { postRefs } from "@models/post/post-model";
 import mongoose, { Schema, Types, Document } from "mongoose";
 
 interface SavedPosts {
@@ -14,6 +13,9 @@ export interface IUser extends Document {
   passwordResetTokenCreatedAt?: Date;
   passwordChangedAt?: Date;
 
+  // Role
+  role?: "admin" | "approver";
+
   // User identification fields
   email: string;
   password: string;
@@ -26,7 +28,7 @@ export interface IUser extends Document {
   detail?: mongoose.Types.ObjectId;
 
   // Saved posts
-  savedPosts?: SavedPosts;
+  saved_posts?: SavedPosts;
 }
 
 const userSchema: Schema = new Schema<IUser>({
@@ -38,8 +40,16 @@ const userSchema: Schema = new Schema<IUser>({
   passwordResetTokenCreatedAt: { type: Date },
   passwordChangedAt: { type: Date },
 
+  //role
+  role: {
+    type: String,
+    enum: ["publisher", "approver", "contributor"],
+    default: "contributor",
+    index: true, //for better fitlering
+  },
+
   // User identification fields
-  email: { type: String, required: true, unique: true, index: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 
   // Timestamps and activity fields
@@ -50,15 +60,17 @@ const userSchema: Schema = new Schema<IUser>({
   detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
 
   // Saved posts
-  savedPosts: {
-    answerKeyRef: [{ type: Types.ObjectId, ref: "AnswerKey" }],
-    admissionRef: [{ type: Types.ObjectId, ref: "Admission" }],
-    admitCardRef: [{ type: Types.ObjectId, ref: "AdmitCard" }],
-    certificateRef: [{ type: Types.ObjectId, ref: "CertificateVerification" }],
-    postImportantRef: [{ type: Types.ObjectId, ref: "PostImportant" }],
-    latestJobRef: [{ type: Types.ObjectId, ref: "LatestJob" }],
-    resultRef: [{ type: Types.ObjectId, ref: "Result" }],
-    syllabusRef: [{ type: Types.ObjectId, ref: "Syllabus" }],
+  saved_posts: {
+    answer_key_ref: [{ type: Types.ObjectId, ref: "AnswerKey" }],
+    admission_ref: [{ type: Types.ObjectId, ref: "Admission" }],
+    admit_card_ref: [{ type: Types.ObjectId, ref: "AdmitCard" }],
+    certificate_verification_ref: [
+      { type: Types.ObjectId, ref: "CertificateVerification" },
+    ],
+    important_ref: [{ type: Types.ObjectId, ref: "Important" }],
+    latest_job_ref: [{ type: Types.ObjectId, ref: "LatestJob" }],
+    result_ref: [{ type: Types.ObjectId, ref: "Result" }],
+    syllabus_ref: [{ type: Types.ObjectId, ref: "Syllabus" }],
   },
 });
 

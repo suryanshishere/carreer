@@ -38,7 +38,7 @@ const SavedItem: React.FC<SavedProps> = ({ savedExamData }) => {
         <>
           <List
             currentRecords={currentRecords}
-            category={""}
+            section={""}
             showBookmark={false}
             showCategory={true}
             showDelete={true}

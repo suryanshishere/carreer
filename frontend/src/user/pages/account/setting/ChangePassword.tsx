@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -26,7 +26,7 @@ const validationSchema = yup.object().shape({
       "New password must not be the same as the old password",
       function (value) {
         const { old_password } = this.parent;
-        return value !== old_password; // Ensure new_password and old_password are different
+        return value !== old_password;
       }
     ),
   confirm_new_password: yup
@@ -70,15 +70,13 @@ const ChangePassword: React.FC = () => {
       );
       return response.data;
     },
-    onSuccess: (data) => {
-      dispatch(
-        triggerSuccessMsg(data.message || "Password changed successfully")
-      );
+    onSuccess: ({ message }) => {
+      // setSuccessMsg(message || "Password changed successfully!");
     },
     onError: (error: any) => {
       dispatch(
         triggerErrorMsg(
-          `${error.response?.data?.message || "Something went wrong"}`
+          `${error.response?.data?.message || "Something went wrong!"}`
         )
       );
     },
@@ -87,6 +85,14 @@ const ChangePassword: React.FC = () => {
   const submitHandler: SubmitHandler<IChangePasswordForm> = (data) => {
     changePasswordMutation.mutate(data);
   };
+
+  if (changePasswordMutation.isSuccess) {
+    return (
+      <p className="text-base text-center text-custom-green p-button font-bold">
+        Password changed successfully!
+      </p>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col gap-4 items-center">

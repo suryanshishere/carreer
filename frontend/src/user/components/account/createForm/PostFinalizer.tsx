@@ -4,13 +4,11 @@ import { yupResolver } from "@hookform/resolvers/yup"; // Import yupResolver
 import * as Yup from "yup"; // Import Yup
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import Button from "shared/utils/form/Button";
-import { Dropdown } from "shared/utils/form/input/Dropdown";
+import  Dropdown  from "shared/utils/form/input/Dropdown";
 import { undefinedFieldActions } from "shared/store/undefined-fields-slice";
-import { formatWord } from "shared/quick/format-word";
-
+import { startCase } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
@@ -104,10 +102,10 @@ const PostFinalizer = () => {
       onSubmit={handleSubmit(submitHandler)}
       className="flex flex-col gap-2"
     >
-      <h3>{formatWord(`${post_section}`)}</h3>
+      <h3>{startCase(`${post_section}`)}</h3>
       <Dropdown
         name="post_id"
-        dropdownData={postIdData}
+        data={postIdData}
         required
         register={register} // Pass register to the Dropdown
         error={!!errors.post_id} // Pass error status
