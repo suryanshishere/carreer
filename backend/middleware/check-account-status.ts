@@ -1,10 +1,10 @@
 import HttpError from "@utils/http-errors";
-import { NextFunction, Response } from "express";
-import { Request } from "express-jwt";
+import { NextFunction, Response, Request } from "express";
 import User, { IUser } from "@models/user/user-model";
 import {
   excludedPaths,
   getUserIdFromRequest,
+  JWTRequest,
   optionalPaths,
 } from "./check-auth";
 import { isRegExp } from "lodash";
@@ -14,7 +14,7 @@ const checkAccountStatus = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = getUserIdFromRequest(req);
+  const userId = getUserIdFromRequest(req as JWTRequest);
   try {
     const user: IUser | null = await User.findById(userId);
     if (!user) {
@@ -29,7 +29,7 @@ const checkAccountStatus = async (
       res.send = function (body: any) {
         const modifiedBody = {
           ...JSON.parse(body),
-          deactivated_at: req.user.deactivated_at,
+          deactivated_at: (req as JWTRequest).user.deactivated_at,
         };
 
         return originalSend.call(this, JSON.stringify(modifiedBody));

@@ -1,6 +1,5 @@
 import validationError from "@controllers/controllersHelpers/validation-error";
-import { NextFunction, Response } from "express";
-import { Request } from "express-jwt";
+import { NextFunction, Response,Request } from "express";
 import {
   checkAuthorisedPublisher,
   modelMap,
@@ -9,6 +8,7 @@ import {
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import PostModel from "@models/post/post-model";
+import { JWTRequest } from "@middleware/check-auth";
 
 export const createNewPost = async (
   req: Request,
@@ -17,7 +17,7 @@ export const createNewPost = async (
 ) => {
   validationError(req, res, next);
   const { section, name_of_the_post, post_code } = req.body;
-  const userId = req.userData.userId;
+  const userId = (req as JWTRequest).userData.userId;
   checkAuthorisedPublisher(req, res, next);
   const postId = await postIdGeneration(post_code);
   if (!postId)

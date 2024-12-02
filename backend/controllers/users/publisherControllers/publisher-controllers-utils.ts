@@ -1,6 +1,5 @@
 import HttpError from "@utils/http-errors";
-import { Response, NextFunction } from "express";
-import { Request } from "express-jwt";
+import { Response, NextFunction, Request } from "express";
 import crypto from "crypto";
 import Result from "@models/post/section/postResult";
 import Admission from "@models/post/section/postAdmission";
@@ -12,13 +11,14 @@ import PostImportant from "@models/post/section/postImportant";
 import LatestJob from "@models/post/section/postLatestJob";
 import Syllabus from "@models/post/section/postSyllabus";
 import { Model } from "mongoose";
+import { JWTRequest } from "@middleware/check-auth";
 
 export const checkAuthorisedPublisher = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const user = req.user;
+  const user = (req as JWTRequest).user;
   if (user.role != "publisher") {
     return next(new HttpError("Unauthorized access!", 403));
   }

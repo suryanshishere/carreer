@@ -1,4 +1,4 @@
-import { Response, NextFunction } from "express";
+import { Response, NextFunction, Request } from "express";
 import HttpError from "@utils/http-errors";
 import bcrypt from "bcryptjs";
 import sendEmail from "./send-email";
@@ -10,8 +10,7 @@ import {
   updateUnverifiedUser,
 } from "./auth-utils";
 import validationError from "../../controllersHelpers/validation-error";
-import { Request } from "express-jwt";
-import { getUserIdFromRequest } from "@middleware/check-auth";
+import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import { random } from "lodash";
 
 const FRONTEND_URL =
@@ -71,7 +70,7 @@ export const sendPasswordResetLink = async (
 ) => {
   validationError(req, res, next);
   const { email } = req.body;
-  const userId = getUserIdFromRequest(req);
+  const userId = getUserIdFromRequest((req as JWTRequest));
 
   try {
     let existingUser: IUser | null;
@@ -248,7 +247,7 @@ export const sendVerificationOtp = async (
     validationError(req, res, next);
   }
   // optional routes: since in backend action won't have token hence conditional not workin
-  const userId = options.isDirect ? options.userId : getUserIdFromRequest(req);
+  const userId = options.isDirect ? options.userId : getUserIdFromRequest(req as JWTRequest);
 
   try {
     let user: IUser | null = null;
@@ -324,7 +323,7 @@ export const verifyEmail = async (
   validationError(req, res, next);
 
   const { otp } = req.body;
-  const userId = req.userData.userId;
+  const userId = (req as JWTRequest).userData.userId;
 
   try {
     // Find the user by ID and validate existence

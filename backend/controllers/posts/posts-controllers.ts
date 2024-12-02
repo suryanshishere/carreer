@@ -6,12 +6,10 @@ import PostCommon from "@models/post/common/postCommon";
 import Post from "@models/post/post-model";
 import HttpError from "@utils/http-errors";
 import { fetchPosts, populateModels, MODEL_DATA } from "./posts-populate";
-import { convertToSnakeCase } from "@controllers/controllersHelpers/case-convert";
 import { Request } from "express-jwt";
 import User from "@models/user/user-model";
 import { snakeCase } from "lodash";
-import { Types } from "mongoose";
-import { getUserIdFromRequest } from "@middleware/check-auth";
+import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 
 const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 const CATEGORY_LIMIT =
@@ -33,7 +31,7 @@ export const home = async (
   next: NextFunction
 ) => {
   try {
-    const userId = getUserIdFromRequest(req);
+    const userId = getUserIdFromRequest(req as JWTRequest);
 
     const user = userId
       ? await User.findById(userId).select("saved_posts").lean()
@@ -80,7 +78,7 @@ export const section = async (
   const { section } = req.params;
 
   try {
-    const userId = getUserIdFromRequest(req);
+    const userId = getUserIdFromRequest(req as JWTRequest);
     const model = MODEL_DATA[section];
     if (!model) {
       return next(new HttpError("Invalid category specified.", 400));
@@ -140,7 +138,7 @@ export const sectionDetail = async (
     }
 
     let isSaved = false;
-    const userId = getUserIdFromRequest(req);
+    const userId = getUserIdFromRequest(req as JWTRequest);
 
     const { Types } = require("mongoose");
 

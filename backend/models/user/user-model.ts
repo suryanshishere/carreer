@@ -14,7 +14,7 @@ export interface IUser extends Document {
   passwordChangedAt?: Date;
 
   // Role
-  role?: "admin" | "approver";
+  role?: "publisher" | "approver" | "contributer";
 
   // User identification fields
   email: string;
