@@ -1,15 +1,15 @@
-import { Response, NextFunction } from "express";
+import { Response, NextFunction, Request } from "express";
 import User from "@models/user/user-model";
-import { Request } from "express-jwt";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
+import { JWTRequest } from "@middleware/check-auth";
 
 export const savedPosts = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const userId = req.userData.userId;
+  const userId = (req as JWTRequest).userData.userId;
 
   try {
     const userSavedPost = await User.findById(userId)
@@ -45,7 +45,7 @@ export const bookmarkPost = async (
   try {
     const { section, post_id } = req.body;
 
-    const user = req.user;
+    const user = (req as JWTRequest).user;
 
     if (!user) {
       return next(new HttpError("User not found!", 404));
@@ -61,7 +61,6 @@ export const bookmarkPost = async (
       await user.save();
     }
 
-    
     const message = user.isEmailVerified
       ? "Post bookmarked successfully!"
       : "Post bookmarked successfully! Verify your email to save it permanently.";
@@ -81,7 +80,7 @@ export const unBookmarkPost = async (
   try {
     const { section, post_id } = req.body;
 
-    const user = req.user;
+    const user = (req as JWTRequest).user;
 
     if (!user) {
       return next(new HttpError("User not found!", 404));

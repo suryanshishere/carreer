@@ -1,9 +1,9 @@
 import validationError from "@controllers/controllersHelpers/validation-error";
 import User from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
-import { NextFunction, Response } from "express";
+import { NextFunction, Response,Request } from "express";
 import bcrypt from "bcryptjs";
-import { Request } from "express-jwt";
+import { JWTRequest } from "@middleware/check-auth";
 
 export const changePassword = async (
   req: Request,
@@ -13,7 +13,7 @@ export const changePassword = async (
   validationError(req, res, next);
   try {
     const { old_password, new_password } = req.body;
-    const user = req.user;
+    const user = (req as JWTRequest).user;
 
     if (!user) {
       return next(new HttpError("User not found!", 404));
@@ -50,7 +50,7 @@ export const deactivateAccount = async (
 ) => {
   validationError(req, res, next);
   try {
-    const user = req.user;
+    const user = (req as JWTRequest).user;
     if (!user) {
       return next(new HttpError("User not found!", 404));
     }
