@@ -1,21 +1,19 @@
 import React from "react";
-import DetailItem from "post/components/DetailItem";
-import DetailItemHeader from "post/components/DetailItemHeader";
-import { IPostDetail, IPostDetailData } from "models/postModels/IPostDetail";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import "./Detail.css";
 import useQueryStates from "shared/hooks/query-states-hook";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import Bookmark from "shared/components/Bookmark";
+import { ILatestJob } from "models/postModels/sectionInterfaces/ILatestJob";
+import DetailItem from "post/components/DetailItem";
 
 const fetchPostDetail = async (
   section: string,
   postId: string,
   token?: string
-): Promise<IPostDetailData> => {
+): Promise<{ data: ILatestJob; is_saved: boolean }> => {
   const { data } = await axiosInstance.get(
     `/public/sections/${section}/${postId}`,
     {
@@ -37,7 +35,7 @@ const Detail: React.FC = () => {
     data = { data: {}, is_saved: false },
     isLoading,
     error,
-  } = useQuery<IPostDetailData, Error>({
+  } = useQuery<{ data: ILatestJob; is_saved: boolean }, Error>({
     queryKey: ["detailPost"],
     queryFn: () => fetchPostDetail(section, postId, token),
   });
@@ -50,15 +48,14 @@ const Detail: React.FC = () => {
 
   if (queryStateMessage) return queryStateMessage;
 
-  console.log(data)
+  console.log(data);
 
   return (
-    <div className="detail_page_sec flex flex-col items-center">
-      <DetailItemHeader />
-      <h3>postId</h3>
+    <div className="flex flex-col items-center">
+      {/* <DetailItemHeader /> */}
+      {/* <h3>postId</h3> */}
       <Bookmark section={section} postId={postId} isSaved={data.is_saved} />
-      {/* {data.data.toString()} */}
-      {/* {data && <DetailItem detailPageData={data.data} />} */}
+      {data && <DetailItem data={data.data} />}
     </div>
   );
 };

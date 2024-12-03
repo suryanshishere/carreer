@@ -1,67 +1,97 @@
 import React from "react";
 import { startCase } from "lodash";
-import { IPostDetail } from "models/postModels/IPostDetail";
-import Table from "shared/ui/dataVisualization/Table";
-import "./DetailItem.css";
+import { ILatestJob } from "models/postModels/sectionInterfaces/ILatestJob";
+import { ILinks } from "models/postModels/overallInterfaces/ILinks";
+import { IDates } from "models/postModels/overallInterfaces/IDates";
 
 interface DetailItemProps {
-  detailPageData: IPostDetail;
-  editMode?: boolean;
+  data: ILatestJob | {};
 }
 
-const DetailItem: React.FC<DetailItemProps> = ({
-  detailPageData,
-  editMode,
-}) => {
-  const renderValue = (value: any, key?: string) => {
-    if (
-      typeof value === "string" ||
-      typeof value === "number" ||
-      value instanceof Date
-    ) {
-      return <p key={key}>{value.toString()}</p>;
-    } else if (Array.isArray(value)) {
-      if (
-        value.length > 0 &&
-        typeof value[0] === "object" &&
-        value.every((item) => typeof item === "object" && item !== null)
-      ) {
-        return (
-          <div key={key}>
-            <Table tableArray={value} />
-          </div>
-        );
-      } else {
-        return (
-          <div key={key}>
-            {value.map((item, index) => (
-              <p key={index}>{item.toString()}</p>
+const renderValue = (value: any, key: string) => {
+  if (key === "important_dates" && value && typeof value === "object") {
+    return (
+      <td colSpan={2} className="border border-gray-300 px-2 py-1">
+        <table className="w-full">
+          <tbody>
+            {Object.entries(value as IDates).map(([subKey, subValue]) => (
+              <tr key={subKey}>
+                <td className="border border-gray-300 px-2 py-1">
+                  {startCase(subKey)}
+                </td>
+                <td className="border border-gray-300 px-2 py-1">
+                  {subValue.current_year != null ||
+                  typeof subValue === "string" ? (
+                    <a
+                      href={subValue}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline"
+                    >
+                      {subValue.current_year || subValue}
+                    </a>
+                  ) : (
+                    renderValue(subValue, subKey || "important_dates")
+                  )}
+                </td>
+              </tr>
             ))}
-          </div>
-        );
-      }
-    } else if (typeof value === "object" && value !== null) {
-      return (
-        <div key={key}>
-          <Table tableObject={value} />
-        </div>
-      );
-    } else {
-      return null;
-    }
-  };
+          </tbody>
+        </table>
+      </td>
+    );
+  }
+  if (
+    (key === "important_links" || key === "application_fee") &&
+    value &&
+    typeof value === "object"
+  ) {
+    return (
+      <td colSpan={2} className="border border-gray-300 px-2 py-1">
+        <table className="w-full">
+          <tbody>
+            {Object.entries(value).map(([subKey, subValue]) => (
+              <tr key={subKey}>
+                <td className="border border-gray-300 px-2 py-1">
+                  {startCase(subKey)}
+                </td>
+                <td className="border border-gray-300 px-2 py-1">
+                  {typeof subValue === "string" ? (
+                    <a
+                      href={subValue}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline"
+                    >
+                      {subValue}
+                    </a>
+                  ) : typeof subValue === "number" ? (
+                    subValue.toString()
+                  ) : (
+                    renderValue(subValue, "important_links")
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </td>
+    );
+  }
 
+  return null;
+};
+
+const DetailItem: React.FC<DetailItemProps> = ({ data }) => {
   return (
     <div className="flex gap-3">
       <div className="w-full flex flex-col gap-4">
-        {Object.entries(detailPageData).map(([key, value], index) => (
+        {Object.entries(data).map(([key, value], index) => (
           <div key={index} className="detail_topic flex flex-col gap-1 w-full">
             <h5 className="self-start font-bold capitalize">
               {startCase(key)}
             </h5>
-            <div className="flex flex-col gap-3">
-              <div>{renderValue(value)}</div>
-            </div>
+            <div className="flex flex-col gap-3">{renderValue(value, key)}</div>
           </div>
         ))}
       </div>

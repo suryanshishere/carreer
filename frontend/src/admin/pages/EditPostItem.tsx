@@ -47,7 +47,7 @@ const EditPostItem = () => {
   return (
     <div className="detail_page_sec flex flex-col items-center">
       <DetailItemHeader />
-      {data && <DetailItem detailPageData={data} />}
+      {/* {data && <DetailItem detailPageData={data} />} */}
     </div>
   );
 };
