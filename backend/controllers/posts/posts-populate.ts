@@ -56,7 +56,7 @@ export const populateModels: PopulateModels = {
     },
     {
       path: "post_common",
-      select: "-post_code -post_exam_duration -age_criteria -eligibility",
+      select: " -post_exam_duration -age_criteria -eligibility",
     },
   ],
   admit_card: [
@@ -70,25 +70,25 @@ export const populateModels: PopulateModels = {
       select:
         "official_website admit_card_download_link sample_paper_download_link custom_links",
     },
-    { path: "post_common", select: "-post_code -eligibility" },
+    { path: "post_common", select: " -eligibility" },
     { path: "result_data", select: "result_data" },
     { path: "syllabus", select: "syllabus_data" },
   ],
   latest_job: [
-    { path: "result_data", select: "result_data" },
+    // { path: "result_data", select: "result_data" },
     {
       path: "important_links",
       select:
-        "application_link registration_link official_website sample_paper_download_link custom_links",
+        "apply_online register_now official_website download_sample_papers additional_resources",
     },
-    { path: "important_dates", select: "-post_code" },
-    { path: "application_fee", select: "-post_code" },
-    { path: "syllabus", select: "syllabus_data" },
-    { path: "post_common", select: "-post_code" },
+    { path: "important_dates" },
+    { path: "application_fee" },
+    // { path: "syllabus", select: "syllabus_data" },
+    { path: "common" },
   ],
   syllabus: [{ path: "important_links", select: "official_website" }],
   answer_key: [
-    { path: "post_common", select: "-post_code -eligibility" },
+    { path: "post_common", select: " -eligibility" },
     {
       path: "important_dates",
       select:
@@ -119,7 +119,7 @@ export const populateModels: PopulateModels = {
     {
       path: "post_common",
       select:
-        "-post_code -age_criteria -eligibility -post_exam_duration -post_exam_toughness_ranking",
+        " -age_criteria -eligibility -post_exam_duration -post_exam_toughness_ranking",
     },
     {
       path: "important_dates",

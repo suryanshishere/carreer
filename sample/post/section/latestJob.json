@@ -1,260 +1,34 @@
 {
+  "_id": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
   "created_by": {
-    "$oid": "66afaaf24d8bd472905fcf7e"
+    "$oid": "6749e5ec8100dfa1958e9573"
   },
   "contributors": [
     {
-      "$oid": "66afaaf24d8bd472905fcf7e"
+      "$oid": "6749e5ec8100dfa1958e9573"
     }
   ],
-  "approved":true,
+  "approved": true,
   "name_of_the_post": "UPSSSC Stenographer Recruitment 2024 Apply Online for 661 Post",
   "createdAt": "2024-08-08T12:00:00Z",
   "updatedAt": "2024-09-08T12:00:00Z",
-  "short_information": "Uttar Pradesh Subordinate Service Selection Commission (UPSSSC) Uttar Pradesh Advertisement No.13-Exam/2024, Advertisement of Stenographer Main Examination Recruitment Notification. Those candidates who are interested in this UPSSSC 10+2 Steno Vacancy 2024 can apply online from 26 December 2024 to 25 January 2025. Read the notification for recruitment eligibility, post information, selection procedure, Department Wise Vacancy, pay scale and all other information.",
-  "highlighted_information": "Uttar Pradesh Subordinate Service Selection Commission (UPSSSC), Uttar Pradesh UPSSSC Stenographer Recruitment 2024 Mains Exam, UPSSSC Steno Advt No. : 13-Exam/2024 Short Details of Notification",
-  "important_dates": {
-    "application_start_date": {
-      "current_year": "2024-01-01T00:00:00.000Z",
-      "previous_year": "2023-01-01T00:00:00.000Z"
-    },
-    "application_end_date": {
-      "current_year": "2024-03-15T23:59:59.000Z",
-      "previous_year": "2023-03-15T23:59:59.000Z"
-    },
-    "exam_fee_payment_end_date": {
-      "current_year": "2024-03-20T23:59:59.000Z",
-      "previous_year": "2023-03-20T23:59:59.000Z"
-    },
-    "form_correction_start_date": {
-      "current_year": "2024-04-01T00:00:00.000Z",
-      "previous_year": "2023-04-01T00:00:00.000Z"
-    },
-    "form_correction_end_date": {
-      "current_year": "2024-04-07T23:59:59.000Z",
-      "previous_year": "2023-04-07T23:59:59.000Z"
-    },
-    "exam_date": {
-      "current_year": "2024-05-15T00:00:00.000Z",
-      "previous_year": "2023-05-15T00:00:00.000Z"
-    },
-    "admit_card_release_date": {
-      "current_year": "2024-05-01T00:00:00.000Z",
-      "previous_year": "2023-05-01T00:00:00.000Z"
-    },
-    "exam_city_details_release_date": {
-      "current_year": "2024-05-10T00:00:00.000Z",
-      "previous_year": "2023-05-10T00:00:00.000Z"
-    },
-    "answer_key_release_date": {
-      "current_year": "2024-06-01T00:00:00.000Z",
-      "previous_year": "2023-06-01T00:00:00.000Z"
-    },
-    "result_announcement_date": {
-      "current_year": "2024-07-01T00:00:00.000Z",
-      "previous_year": "2023-07-01T00:00:00.000Z"
-    },
-    "counseling_start_date": {
-      "current_year": "2024-07-01T00:00:00.000Z",
-      "previous_year": "2023-07-01T00:00:00.000Z"
-    },
-    "counseling_end_date": {
-      "current_year": "2024-07-01T00:00:00.000Z",
-      "previous_year": "2023-07-01T00:00:00.000Z"
-    },
-    "counseling_result_announcement_date": {
-      "current_year": "2024-07-01T00:00:00.000Z",
-      "previous_year": "2023-07-01T00:00:00.000Z"
-    },
-
-    "additional_resources": "https://jeemain.nta.nic.in/important-dates"
-  },
-  "application_fee": {
-    "male": {
-      "general": 125,
-      "obc": 125,
-      "ews": 125,
-      "sc": 1125,
-      "st": 25,
-      "ph_(dviyang)": 125
-    },
-    "female": {
-      "general": 125,
-      "obc": 125,
-      "ews": 125,
-      "sc": 125,
-      "st": 125,
-      "ph_(dviyang)": 125
-    },
-    "other": {
-      "general": 125,
-      "obc": 125,
-      "ews": 125,
-      "sc": 125,
-      "st": 125,
-      "ph_(dviyang)": 125
-    },
-    "additional_resources": "Fee details for other categories and payment modes can be found on the official website."
-  },
-  "age_criteria": {
-    "male": {
-      "general": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "obc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ews": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "sc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "st": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ph_(dviyang)": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      }
-    },
-    "female": {
-      "general": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "obc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ews": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "sc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "st": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ph_(dviyang)": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      }
-    },
-    "other": {
-      "general": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "obc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ews": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "sc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "st": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ph_(dviyang)": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      }
-    },
-    "additional_resources": "Age Relaxation Extra as per UPSSSC UP  Advertisement No.-13-Exam/2024, Stenographer Main Examination 2024"
-  },
-  "vacancy": {
-    "detail": [
-      {
-        "post_name": "HR Manager",
-        "total_post": 10,
-        "post_eligibility": "Postgraduate degree in HR or related field"
-      },
-      {
-        "post_name": "Recruitment Officer",
-        "total_post": 5,
-        "post_eligibility": "Bachelor's degree in HR or related field"
-      }
-    ],
-    "category_wise": {
-      "male": {
-        "general": 321,
-        "obc": 124,
-        "ews": 46,
-        "sc": 155,
-        "st": 14,
-        "ph_(dviyang)": null
-      },
-      "female": {
-        "general": 321,
-        "obc": 124,
-        "ews": 46,
-        "sc": 155,
-        "st": 14,
-        "ph_(dviyang)": null
-      },
-      "other": {
-        "general": 321,
-        "obc": 124,
-        "ews": 46,
-        "sc": 155,
-        "st": 14,
-        "ph_(dviyang)": null
-      }
-    },
-    "additional_resources": null
-  },
   "how_to_fill_the_form": {
     "registration": "Visit the official website. Click on the registration link. Fill in the required details. Submit the form.",
     "apply": "Log in to your account.,Navigate to the application form.,Upload the necessary documents.,Submit your application.",
     "video_link": null
   },
+  "common": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "important_dates": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "application_fee": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
   "important_links": {
-    "official_website": "https://jeemain.nta.nic.in",
-    "apply_online": "https://jeemain.nta.nic.in/application-form",
-    "register_now": "https://jeemain.nta.nic.in/registration",
-    "download_sample_papers": "https://jeemain.nta.nic.in/sample-papers",
-    "get_admit_card": "https://jeemain.nta.nic.in/admit-card",
-    "view_results": "https://jeemain.nta.nic.in/results",
-    "check_answer_key": "https://jeemain.nta.nic.in/answer-key",
-    "counseling_portal": "https://jeemain.nta.nic.in/counselling",
-    "verify_certificates": "https://jeemain.nta.nic.in/certificate-verification",
-    "additional_resources": {
-      "faq": "https://jeemain.nta.nic.in/faq",
-      "contact_us": "https://jeemain.nta.nic.in/contact",
-      "important_dates": "https://jeemain.nta.nic.in/important-dates"
-    }
+    "$oid": "d88e5fd5a7ffa35584f39c26"
   }
 }

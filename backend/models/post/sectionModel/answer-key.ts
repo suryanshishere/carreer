@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { IAnswerKey } from "../post-section-interface";
-import commonDataSchema from "../overallModel/section-common";
+import commonDataSchema from "./section-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;

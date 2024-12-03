@@ -1,6 +1,15 @@
-import mongoose, { Document, Schema, Types } from "mongoose";
+import { Document, Schema, Types } from "mongoose";
 
 const { ObjectId } = Schema.Types;
+
+export interface ICommonData extends Document {
+  createdAt: Date;
+  updatedAt: Date;
+  created_by: Types.ObjectId;
+  contributors?: Types.ObjectId[];
+  approved: boolean;
+  name_of_the_post: string;
+}
 
 const commonDataSchema = new Schema<ICommonData>(
   {
@@ -13,12 +22,3 @@ const commonDataSchema = new Schema<ICommonData>(
 );
 
 export default commonDataSchema;
-
-export interface ICommonData extends Document {
-  createdAt: Date;
-  updatedAt: Date;
-  created_by: Types.ObjectId;
-  contributors?: Types.ObjectId[];
-  approved: boolean;
-  name_of_the_post: string;
-}

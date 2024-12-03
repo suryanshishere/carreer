@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import commonDataSchema, { ICommonData } from "./section-common";
+import commonDataSchema, { ICommonData } from "../sectionModel/section-common";
 
 // AgeCriteria Schema
 const AgeCriteriaSchema: Schema = new Schema({
@@ -9,7 +9,7 @@ const AgeCriteriaSchema: Schema = new Schema({
 });
 
 // ICategory Schema
-const ICategorySchema: Schema = new Schema({
+const CategorySchema: Schema = new Schema({
   general: { type: AgeCriteriaSchema, required: false },
   obc: { type: AgeCriteriaSchema, required: false },
   ews: { type: AgeCriteriaSchema, required: false },
@@ -30,10 +30,10 @@ const ICategoryVacancySchema: Schema = new Schema({
 
 // CategoryAgeCriteria Schema
 const CategoryAgeCriteriaSchema: Schema = new Schema({
-  male: { type: ICategorySchema, required: false },
-  female: { type: ICategorySchema, required: false },
-  other: { type: ICategorySchema, required: false },
-  additional_resources: { type: String, required: false },
+  male: CategorySchema,
+  female: CategorySchema,
+  other: CategorySchema,
+  additional_resources: { type: String },
 });
 
 // VacancyDetail Schema

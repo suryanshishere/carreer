@@ -1,6 +1,5 @@
-import mongoose, { Document } from "mongoose";
-import { ILatestJob } from "../post-section-interface";
-import commonDataSchema from "../overallModel/section-common";
+import mongoose, { Document, ObjectId } from "mongoose";
+import commonDataSchema, { ICommonData } from "./section-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -11,6 +10,16 @@ interface HowToFillForm extends Document {
   video_link: string | null;
 }
 
+export interface ILatestJob extends ICommonData {
+  how_to_fill_the_form?: HowToFillForm;
+  common?: ObjectId;
+  syllabus?: ObjectId;
+  application_fee?: ObjectId;
+  important_dates?: ObjectId;
+  important_links?: ObjectId;
+  result_data?: ObjectId;
+}
+
 const HowToFillFormSchema = new Schema<HowToFillForm>({
   registration: { type: String, required: true },
   apply: { type: String, required: true },
@@ -19,7 +28,7 @@ const HowToFillFormSchema = new Schema<HowToFillForm>({
 
 const latestJobSchema = new Schema<ILatestJob>({
   how_to_fill_the_form: HowToFillFormSchema,
-  post_common: { type: ObjectId, ref: "Common" },
+  common: { type: ObjectId, ref: "Common" },
   important_dates: { type: ObjectId, ref: "Date" },
   application_fee: { type: ObjectId, ref: "Fee" },
   important_links: { type: ObjectId, ref: "Link" },

@@ -29,7 +29,6 @@ const validationSchema = Yup.object().shape({
       /^[A-Za-z0-9_]+$/,
       "Post code can only contain letters, numbers, and underscores, with no spaces."
     )
-    .matches(/^[A-Za-z0-9_-]{3,15}$/, "Invalid post code format.")
     .required("Post code is required"),
   section: Yup.string().required("Please select an option."),
 });

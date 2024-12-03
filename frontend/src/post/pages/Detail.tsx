@@ -16,11 +16,14 @@ const fetchPostDetail = async (
   postId: string,
   token?: string
 ): Promise<IPostDetailData> => {
-  const { data } = await axiosInstance.get(`/public/sections/${section}/${postId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const { data } = await axiosInstance.get(
+    `/public/sections/${section}/${postId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return data;
 };
 
@@ -47,14 +50,17 @@ const Detail: React.FC = () => {
 
   if (queryStateMessage) return queryStateMessage;
 
+  console.log(data)
+
   return (
     <div className="detail_page_sec flex flex-col items-center">
       <DetailItemHeader />
       <h3>postId</h3>
       <Bookmark section={section} postId={postId} isSaved={data.is_saved} />
-      {data && <DetailItem detailPageData={data.data} />}
+      {data.data.toString()}
     </div>
   );
 };
+// {data && <DetailItem detailPageData={data.data} />}
 
 export default Detail;

@@ -115,7 +115,7 @@ export const section = async (
 };
 
 // Get the detailed information of a specific post
-export const sectionDetail = async (
+export const postDetail = async (
   req: Request,
   res: Response,
   next: NextFunction

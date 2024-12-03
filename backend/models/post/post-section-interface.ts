@@ -56,15 +56,6 @@ interface HowToFillForm {
   video_link: string | null;
 }
 
-export interface ILatestJob extends IBasePost {
-  how_to_fill_the_form?: HowToFillForm;
-  post_common?: Types.ObjectId;
-  syllabus?: Types.ObjectId;
-  application_fee?: Types.ObjectId;
-  important_dates?: Types.ObjectId;
-  important_links?: Types.ObjectId;
-  result_data?: Types.ObjectId;
-}
 
 export interface IResult extends IBasePost {
   how_to_download_result?: string;
