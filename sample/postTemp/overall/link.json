@@ -1,0 +1,16 @@
+{
+  "official_website": "https://jeemain.nta.nic.in",
+  "apply_online": "https://jeemain.nta.nic.in/application-form",
+  "register_now": "https://jeemain.nta.nic.in/registration",
+  "download_sample_papers": "https://jeemain.nta.nic.in/sample-papers",
+  "get_admit_card": "https://jeemain.nta.nic.in/admit-card",
+  "view_results": "https://jeemain.nta.nic.in/results",
+  "check_answer_key": "https://jeemain.nta.nic.in/answer-key",
+  "counseling_portal": "https://jeemain.nta.nic.in/counselling",
+  "verify_certificates": "https://jeemain.nta.nic.in/certificate-verification",
+  "additional_resources": {
+    "faq": "https://jeemain.nta.nic.in/faq",
+    "contact_us": "https://jeemain.nta.nic.in/contact",
+    "important_dates": "https://jeemain.nta.nic.in/important-dates"
+  }
+}

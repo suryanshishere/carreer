@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { IAnswerKey } from "../post-section-interface";
-import commonDataSchema from "../common/post-common";
+import commonDataSchema from "../overallModel/section-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -17,6 +17,6 @@ answerKeySchema.add(commonDataSchema);
 
 export { answerKeySchema };
 
-const AnswerKey = mongoose.model("AnswerKey", answerKeySchema);
+const AnswerKeyModel = mongoose.model("AnswerKey", answerKeySchema);
 
-export default AnswerKey;
+export default AnswerKeyModel;

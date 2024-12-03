@@ -1,5 +1,5 @@
 import validationError from "@controllers/controllersHelpers/validation-error";
-import { NextFunction, Response,Request } from "express";
+import { NextFunction, Response, Request } from "express";
 import {
   checkAuthorisedPublisher,
   modelMap,
@@ -19,13 +19,14 @@ export const createNewPost = async (
   const { section, name_of_the_post, post_code } = req.body;
   const userId = (req as JWTRequest).userData.userId;
   checkAuthorisedPublisher(req, res, next);
-  const postId = await postIdGeneration(post_code);
-  if (!postId)
-    return next(
-      new HttpError("Post Id generation failed, please try again.", 400)
-    );
 
   try {
+    const postId = await postIdGeneration(post_code);
+    if (!postId)
+      return next(
+        new HttpError("Post Id generation failed, please try again.", 400)
+      );
+
     const model = modelMap[section];
     if (!model) {
       return next(

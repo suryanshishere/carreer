@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { IResult } from "../post-section-interface";
 // import createCommonDataModel from "../post-common";
-import commonDataSchema from "../common/post-common";
+import commonDataSchema from "../overallModel/section-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -17,6 +17,6 @@ resultSchema.add(commonDataSchema);
 
 export { resultSchema };
 
-const Result = mongoose.model("Result", resultSchema);
+const ResultModel = mongoose.model("Result", resultSchema);
 
-export default Result;
+export default ResultModel;

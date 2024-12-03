@@ -1,0 +1,36 @@
+{
+  "_id": {
+    "$oid": "06219de446e10e16e91b7260"
+  },
+  "created_by": {
+    "$oid": "66afaaf24d8bd472905fcf7e"
+  },
+  "createdAt": "2024-08-08T12:00:00Z",
+  "updatedAt": "2024-09-08T12:00:00Z",
+  "name_of_the_post": "JEE Main Application",
+  "how_to_fill_the_form": "Visit the official website. Click on the registration link. Fill in the required details. Submit the form.",
+  "how_to_apply": "Log in to your account.,Navigate to the application form.,Upload the necessary documents.,Submit your application.",
+  "post_common": {
+    "$oid": "06219de446e10e16e91b7260"
+  },
+  "syllabus": {
+    "$oid": "06219de446e10e16e91b7260"
+  },
+  "application_fee": {
+    "$oid": "06219de446e10e16e91b7260"
+  },
+  "important_dates": {
+    "$oid": "06219de446e10e16e91b7260"
+  },
+  "important_links": {
+    "$oid": "06219de446e10e16e91b7260"
+  },
+  "result_data": {
+    "$oid": "06219de446e10e16e91b7260"
+  },
+  "contributors": [
+    {
+      "$oid": "66afaaf24d8bd472905fcf7e"
+    }
+  ]
+}

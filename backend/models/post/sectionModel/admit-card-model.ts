@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { IAdmitCard } from "../post-section-interface";
-import commonDataSchema from "../common/post-common";
+import commonDataSchema from "../overallModel/section-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -18,6 +18,6 @@ admitCardSchema.add(commonDataSchema);
 
 export { admitCardSchema };
 
-const AdmitCard = mongoose.model("AdmitCard", admitCardSchema);
+const AdmitCardModel = mongoose.model("AdmitCard", admitCardSchema);
 
-export default AdmitCard;
+export default AdmitCardModel;

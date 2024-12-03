@@ -2,16 +2,15 @@
   "_id": {
     "$oid": "66b86fe14d528c942de38c3a"
   },
-  "post_code": "JEE2024",
   "application_start_date": {
     "current_year": "2024-01-01T00:00:00.000Z",
     "previous_year": "2023-01-01T00:00:00.000Z"
   },
-  "application_deadline": {
+  "application_end_date": {
     "current_year": "2024-03-15T23:59:59.000Z",
     "previous_year": "2023-03-15T23:59:59.000Z"
   },
-  "exam_fee_payment_deadline": {
+  "exam_fee_payment_end_date": {
     "current_year": "2024-03-20T23:59:59.000Z",
     "previous_year": "2023-03-20T23:59:59.000Z"
   },
@@ -39,7 +38,7 @@
     "current_year": "2024-06-01T00:00:00.000Z",
     "previous_year": "2023-06-01T00:00:00.000Z"
   },
-  "result_release_date": {
+  "result_announcement_date": {
     "current_year": "2024-07-01T00:00:00.000Z",
     "previous_year": "2023-07-01T00:00:00.000Z"
   },
@@ -47,15 +46,14 @@
     "current_year": "2024-07-01T00:00:00.000Z",
     "previous_year": "2023-07-01T00:00:00.000Z"
   },
-  "counseling_deadline": {
+  "counseling_end_date": {
     "current_year": "2024-07-01T00:00:00.000Z",
     "previous_year": "2023-07-01T00:00:00.000Z"
   },
-  "counseling_result_release_date": {
+  "counseling_result_announcement_date": {
     "current_year": "2024-07-01T00:00:00.000Z",
     "previous_year": "2023-07-01T00:00:00.000Z"
   },
-  "custom_dates": {
-    "additional_information": "https://jeemain.nta.nic.in/important-dates"
-  }
+
+  "additional_information": "https://jeemain.nta.nic.in/important-dates"
 }

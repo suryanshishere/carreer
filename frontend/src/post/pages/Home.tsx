@@ -13,7 +13,6 @@ const fetchHomePostList = async (token?: string): Promise<IPostList> => {
       Authorization: `Bearer ${token}`,
     },
   });
-
   return data;
 };
 

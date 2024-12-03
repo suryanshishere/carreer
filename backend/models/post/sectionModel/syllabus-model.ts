@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { ISyllabus } from "../post-section-interface";
-import commonDataSchema from "../common/post-common";
+import commonDataSchema from "../overallModel/section-common";
 
 const { Schema } = mongoose;
 const { ObjectId, Mixed } = Schema.Types;
@@ -14,6 +14,6 @@ syllabusSchema.add(commonDataSchema);
 
 export { syllabusSchema };
 
-const Syllabus = mongoose.model("Syllabus", syllabusSchema);
+const SyllabusModel = mongoose.model("Syllabus", syllabusSchema);
 
-export default Syllabus;
+export default SyllabusModel;

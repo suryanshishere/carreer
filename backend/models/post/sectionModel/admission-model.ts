@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { IAdmission } from "../post-section-interface";
-import commonDataSchema from "../common/post-common";
+import commonDataSchema from "../overallModel/section-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -15,6 +15,6 @@ admissionSchema.add(commonDataSchema);
 
 export { admissionSchema };
 
-const Admission = mongoose.model("Admission", admissionSchema);
+const AdmissionModel = mongoose.model("Admission", admissionSchema);
 
-export default Admission;
+export default AdmissionModel;

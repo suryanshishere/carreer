@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { ICertificateVerification } from "../post-section-interface";
-import commonDataSchema from "../common/post-common";
+import commonDataSchema from "../overallModel/section-common";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -16,9 +16,9 @@ certificateVerificationSchema.add(commonDataSchema);
 
 export { certificateVerificationSchema };
 
-const CertificateVerification = mongoose.model(
+const CertificateVerificationModel = mongoose.model(
   "CertificateVerification",
   certificateVerificationSchema
 );
 
-export default CertificateVerification;
+export default CertificateVerificationModel;

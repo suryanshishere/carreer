@@ -1,0 +1,27 @@
+{
+  "male": {
+    "general": 25,
+    "obc": 25,
+    "ews": 25,
+    "sc": 25,
+    "st": 25,
+    "ph_(dviyang)": 25
+  },
+  "female": {
+    "general": 25,
+    "obc": 25,
+    "ews": 25,
+    "sc": 25,
+    "st": 25,
+    "ph_(dviyang)": 25
+  },
+  "other": {
+    "general": 25,
+    "obc": 25,
+    "ews": 25,
+    "sc": 25,
+    "st": 25,
+    "ph_(dviyang)": 25
+  },
+  "additional_resources": "Fee details for other categories and payment modes can be found on the official website."
+}

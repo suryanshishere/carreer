@@ -1,13 +1,13 @@
 import mongoose, { Schema } from "mongoose";
-import { admissionSchema } from "@models/post/section/postAdmission";
-import { admitCardSchema } from "@models/post/section/postAdmitCard";
-import { answerKeySchema } from "@models/post/section/postAnswerKey";
-import { certificateVerificationSchema } from "@models/post/section/postCertificateVerification";
-import { postCommonSchema } from "@models/post/common/postCommon";
-import { postImportantSchema } from "@models/post/section/postImportant";
-import { latestJobSchema } from "@models/post/section/postLatestJob";
-import { resultSchema } from "@models/post/section/postResult";
-import { syllabusSchema } from "@models/post/section/postSyllabus";
+import { admissionSchema } from "@models/post/sectionModel/admission-model";
+import { admitCardSchema } from "@models/post/sectionModel/admit-card-model";
+import { answerKeySchema } from "@models/post/sectionModel/answer-key";
+import { certificateVerificationSchema } from "@models/post/sectionModel/certificate-verification-model";
+import { postCommonSchema } from "@models/post/overallModel/common-model";
+import { postImportantSchema } from "@models/post/sectionModel/important-model";
+import { latestJobSchema } from "@models/post/sectionModel/latest-job-model";
+import { resultSchema } from "@models/post/sectionModel/result-model";
+import { syllabusSchema } from "@models/post/sectionModel/syllabus-model";
 
 // Generic function to create admin data schema and model
 const createAdminDataModel = (name: string, schemaDefinition: Schema) => {
