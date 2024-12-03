@@ -2,7 +2,7 @@ import React from "react";
 import HomeListItem from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import { IPostList } from "models/post/IPostList";
+import { IPostList } from "models/postModels/IPostList";
 import useQueryStates from "shared/hooks/query-states-hook";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";

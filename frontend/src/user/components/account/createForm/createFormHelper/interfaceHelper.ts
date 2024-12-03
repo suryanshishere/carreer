@@ -1,5 +1,5 @@
 import { IPostAdminData } from "models/admin/IPostAdminData";
-import { IPostDetail } from "models/post/IPostDetail";
+import { IPostDetail } from "models/postModels/IPostDetail";
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 
 export interface ICreateSection {

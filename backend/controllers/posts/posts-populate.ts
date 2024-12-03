@@ -1,12 +1,12 @@
 import * as crypto from "crypto";
-import Admission from "@models/post/sectionModel/admission-model";
-import AdmitCard from "@models/post/sectionModel/admit-card-model";
-import CertificateVerification from "@models/post/sectionModel/certificate-verification-model";
-import Important from "@models/post/sectionModel/important-model";
-import LatestJob from "@models/post/sectionModel/latest-job-model";
-import Result from "@models/post/sectionModel/result-model";
-import Syllabus from "@models/post/sectionModel/syllabus-model";
-import AnswerKey from "@models/post/sectionModel/answer-key";
+import Admission from "@models/post/sectionModels/admission-model";
+import AdmitCard from "@models/post/sectionModels/admit-card-model";
+import CertificateVerification from "@models/post/sectionModels/certificate-verification-model";
+import Important from "@models/post/sectionModels/important-model";
+import LatestJob from "@models/post/sectionModels/latest-job-model";
+import Result from "@models/post/sectionModels/result-model";
+import Syllabus from "@models/post/sectionModels/syllabus-model";
+import AnswerKey from "@models/post/sectionModels/answer-key";
 import { Model } from "mongoose";
 
 // Define the PostModel interface

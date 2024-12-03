@@ -1,5 +1,5 @@
 import mongoose, { Document, ObjectId } from "mongoose";
-import commonDataSchema, { ICommonData } from "./section-common";
+import commonDataSchema, { ICommonData } from "./section-common-data";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;

@@ -2,15 +2,15 @@ import mongoose, { Schema } from "mongoose";
 import { convertToSnakeCase } from "./case-convert";
 import HttpError from "../../utils/http-errors";
 import { NextFunction } from "express";
-import { resultSchema } from "@models/post/sectionModel/result-model";
-import { admissionSchema } from "@models/post/sectionModel/admission-model";
-import { admitCardSchema } from "@models/post/sectionModel/admit-card-model";
-import { answerKeySchema } from "@models/post/sectionModel/answer-key";
-import { certificateVerificationSchema } from "@models/post/sectionModel/certificate-verification-model";
-import { postCommonSchema } from "@models/post/overallModel/common-model";
-import { postImportantSchema } from "@models/post/sectionModel/important-model";
-import { latestJobSchema } from "@models/post/sectionModel/latest-job-model";
-import { syllabusSchema } from "@models/post/sectionModel/syllabus-model";
+import { resultSchema } from "@models/post/sectionModels/result-model";
+import { admissionSchema } from "@models/post/sectionModels/admission-model";
+import { admitCardSchema } from "@models/post/sectionModels/admit-card-model";
+import { answerKeySchema } from "@models/post/sectionModels/answer-key";
+import { certificateVerificationSchema } from "@models/post/sectionModels/certificate-verification-model";
+import { postCommonSchema } from "@models/post/overallModels/common-model";
+import { postImportantSchema } from "@models/post/sectionModels/important-model";
+import { latestJobSchema } from "@models/post/sectionModels/latest-job-model";
+import { syllabusSchema } from "@models/post/sectionModels/syllabus-model";
 
 export const POST_SECTION_DATA = [
   "post_common",

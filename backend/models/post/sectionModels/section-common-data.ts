@@ -1,20 +1,18 @@
-import { Document, Schema, Types } from "mongoose";
-
-const { ObjectId } = Schema.Types;
+import { Document, ObjectId, Schema, Types } from "mongoose";
 
 export interface ICommonData extends Document {
   createdAt: Date;
   updatedAt: Date;
-  created_by: Types.ObjectId;
-  contributors?: Types.ObjectId[];
+  created_by: ObjectId;
+  contributors?: ObjectId[];
   approved: boolean;
   name_of_the_post: string;
 }
 
 const commonDataSchema = new Schema<ICommonData>(
   {
-    created_by: { type: ObjectId, ref: "User", required: true },
-    contributors: [{ type: ObjectId, ref: "User" }],
+    created_by: { type: Types.ObjectId, ref: "User", required: true },
+    contributors: [{ type: Types.ObjectId, ref: "User" }],
     approved: { type: Boolean, default: false, required: true },
     name_of_the_post: { type: String, unique: true, required: true },
   },

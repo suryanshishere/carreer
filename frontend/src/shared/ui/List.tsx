@@ -1,7 +1,7 @@
 import React from "react";
 // import Bookmark from "../utils/Bookmark";
 import { Link } from "react-router-dom";
-import { IPostListData } from "models/post/IPostList";
+import { IPostListData } from "models/postModels/IPostList";
 // import Delete from "../utils/Delete";
 import "./List.css";
 import Bookmark from "shared/components/Bookmark";

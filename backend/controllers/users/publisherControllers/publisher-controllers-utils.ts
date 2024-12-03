@@ -1,15 +1,15 @@
 import HttpError from "@utils/http-errors";
 import { Response, NextFunction, Request } from "express";
 import crypto from "crypto";
-import Result from "@models/post/sectionModel/result-model";
-import Admission from "@models/post/sectionModel/admission-model";
-import AdmitCard from "@models/post/sectionModel/admit-card-model";
-import AnswerKey from "@models/post/sectionModel/answer-key";
-import CertificateVerification from "@models/post/sectionModel/certificate-verification-model";
-import PostCommon from "@models/post/overallModel/common-model";
-import PostImportant from "@models/post/sectionModel/important-model";
-import LatestJob from "@models/post/sectionModel/latest-job-model";
-import Syllabus from "@models/post/sectionModel/syllabus-model";
+import Result from "@models/post/sectionModels/result-model";
+import Admission from "@models/post/sectionModels/admission-model";
+import AdmitCard from "@models/post/sectionModels/admit-card-model";
+import AnswerKey from "@models/post/sectionModels/answer-key";
+import CertificateVerification from "@models/post/sectionModels/certificate-verification-model";
+import PostCommon from "@models/post/overallModels/common-model";
+import PostImportant from "@models/post/sectionModels/important-model";
+import LatestJob from "@models/post/sectionModels/latest-job-model";
+import Syllabus from "@models/post/sectionModels/syllabus-model";
 import { Model } from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
 

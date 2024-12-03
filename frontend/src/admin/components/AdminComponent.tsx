@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttpClient } from "shared/hooks/http-hook";
 
-import { IPostDetail } from "models/post/IPostDetail";
+import { IPostDetail } from "models/postModels/IPostDetail";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 

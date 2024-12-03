@@ -1,8 +1,8 @@
 import { Response, NextFunction } from "express";
-import PostDate from "@models/post/overallModel/date-model";
-import PostFee from "@models/post/overallModel/fee-model";
-import PostLink from "@models/post/overallModel/link-model";
-import PostCommon from "@models/post/overallModel/common-model";
+import PostDate from "@models/post/overallModels/date-model";
+import PostFee from "@models/post/overallModels/fee-model";
+import PostLink from "@models/post/overallModels/link-model";
+import PostCommon from "@models/post/overallModels/common-model";
 import Post from "@models/post/post-model";
 import HttpError from "@utils/http-errors";
 import { fetchPosts, populateModels, MODEL_DATA } from "./posts-populate";

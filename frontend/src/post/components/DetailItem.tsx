@@ -1,6 +1,6 @@
 import React from "react";
 import { startCase } from "lodash";
-import { IPostDetail } from "models/post/IPostDetail";
+import { IPostDetail } from "models/postModels/IPostDetail";
 import Table from "shared/ui/dataVisualization/Table";
 import "./DetailItem.css";
 

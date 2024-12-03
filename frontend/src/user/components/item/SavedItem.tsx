@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IPostListData } from "models/post/IPostList";
+import { IPostListData } from "models/postModels/IPostList";
 import List from "shared/ui/List";
 import Pagination from "shared/utils/postUtils/Pagination";
 import usePagination from "shared/hooks/pagination-hook";

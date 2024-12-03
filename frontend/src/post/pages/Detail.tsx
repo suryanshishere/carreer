@@ -1,7 +1,7 @@
 import React from "react";
 import DetailItem from "post/components/DetailItem";
 import DetailItemHeader from "post/components/DetailItemHeader";
-import { IPostDetail, IPostDetailData } from "models/post/IPostDetail";
+import { IPostDetail, IPostDetailData } from "models/postModels/IPostDetail";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -57,10 +57,10 @@ const Detail: React.FC = () => {
       <DetailItemHeader />
       <h3>postId</h3>
       <Bookmark section={section} postId={postId} isSaved={data.is_saved} />
-      {data.data.toString()}
+      {/* {data.data.toString()} */}
+      {/* {data && <DetailItem detailPageData={data.data} />} */}
     </div>
   );
 };
-// {data && <DetailItem detailPageData={data.data} />}
 
 export default Detail;

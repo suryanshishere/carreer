@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import commonDataSchema, { ICommonData } from "../sectionModel/section-common";
+import commonDataSchema from "../sectionModels/section-common-data";
 
 // AgeCriteria Schema
 const AgeCriteriaSchema: Schema = new Schema({
@@ -143,7 +143,7 @@ interface CategoryWiseVacancy {
   additional_resources?: string;
 }
 
-interface ICommon extends ICommonData {
+interface ICommon {
   short_information?: string;
   highlighted_information?: string;
   department?: string;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IPostListData } from "models/post/IPostList";
+import { IPostListData } from "models/postModels/IPostList";
 import { startCase } from "lodash";
 import Bookmark from "shared/components/Bookmark";
 

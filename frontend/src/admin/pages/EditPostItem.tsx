@@ -1,4 +1,4 @@
-import { IPostDetail } from "models/post/IPostDetail";
+import { IPostDetail } from "models/postModels/IPostDetail";
 import DetailItem from "post/components/DetailItem";
 import DetailItemHeader from "post/components/DetailItemHeader";
 import React, { useEffect, useState } from "react";

@@ -1,4 +1,4 @@
-import { IPostListData } from "models/post/IPostList";
+import { IPostListData } from "models/postModels/IPostList";
 import { useEffect, useState } from "react";
 
 const usePagination = (data: IPostListData[]) => {
