@@ -131,7 +131,8 @@ export const postDetail = async (
     // Fetch post details
     const response = await model
       .findById(postId)
-      .populate(populateModels[section]);
+      .populate(populateModels[section])
+      .select("-approved")
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));

@@ -25,7 +25,7 @@ const fetchPostDetail = async (
   return data;
 };
 
-const Detail: React.FC = () => {
+const PostDetail: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const { section = "", postId = "" } = useParams<{
     postId: string;
@@ -60,4 +60,4 @@ const Detail: React.FC = () => {
   );
 };
 
-export default Detail;
+export default PostDetail;

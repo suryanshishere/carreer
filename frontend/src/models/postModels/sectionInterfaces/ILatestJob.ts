@@ -4,14 +4,14 @@ import { IFees } from "../overallInterfaces/IFees";
 import { ILinks } from "../overallInterfaces/ILinks";
 import { ICommonData } from "./ICommonData";
 
-interface HowToFillForm extends Document {
+export interface IHowToFillForm  {
   registration: string;
   apply: string;
   video_link: string | null;
 }
 
 export interface ILatestJob extends ICommonData {
-  how_to_fill_the_form?: HowToFillForm;
+  how_to_fill_the_form?: IHowToFillForm;
   common?: ICommon;
   // syllabus?: ObjectId;
   application_fee?: IFees;
