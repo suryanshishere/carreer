@@ -19,172 +19,179 @@ const excludedKeys = [
   "contributors",
 ];
 
+const tableRequired = ["age_criteria","male","female","other", "category_wise", "important_links", "important_dates"];
+
+const renderTable = (value: any, key: string) => {
+  if (value && (typeof value === "number" || typeof value === "string")) {
+    return (
+      <div>
+        {moment(value).isValid()
+          ? moment(value).format("Do MMMM YYYY")
+          : value.toString()}
+      </div>
+    );
+  }
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    return (
+      <div>
+        {Object.entries(value as IDates | ILinks | IFees | ICommon).map(
+          ([subKey, subValue]) => (
+            <tr key={subKey}>
+              <td className="border border-gray-300 px-2 py-1">
+                {startCase(subKey)}
+              </td>
+              <td className="border border-gray-300 px-2 py-1">
+                {typeof subValue === "string" && subValue.startsWith("https://") ? (
+                  <a
+                    href={subValue}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline font-bold"
+                  >
+                    Click here
+                  </a>
+                ) : subValue?.current_year != null ? (
+                  <p>
+                    {moment(subValue.current_year).isValid()
+                      ? moment(subValue.current_year).format("Do MMMM YYYY")
+                      : subValue.current_year}
+                  </p>
+                ) : typeof subValue === "string" ||
+                  typeof subValue === "number" ? (
+                  <p>
+                    {moment(subValue).isValid()
+                      ? moment(subValue).format("Do MMMM YYYY")
+                      : subValue.toString()}
+                  </p>
+                ) : (
+                  renderTable(subValue, subKey)
+                )}
+              </td>
+            </tr>
+          )
+        )}
+      </div>
+    );
+  }
+
+  // Return null if value is not a valid object or array
+  return null;
+};
+
 const renderValue = (value: any, key: string) => {
+  if (excludedKeys.includes(key)) {
+    return null;
+  }
 
   if (
-    (key === "important_links" || key==="common" ||
-      key === "application_fee" ||
-      key === "important_dates") &&
-    value &&
-    typeof value === "object"
+    Array.isArray(value) &&
+    value.length > 0 &&
+    typeof value[0] === "object"
   ) {
+    // // Get column headers from the first object keys
+    const headers = Object.keys(value[0]).filter(
+      (header) => !excludedKeys.includes(header)
+    );
 
-    // const filteredEntries = Object.entries(value).filter(
-    //   ([subKey]) => subKey !== "_id"
-    // );
+    return (
+      <table className="border-collapse border border-gray-300 w-full">
+        <thead>
+          <tr>
+            {headers.map((header) => (
+              <th key={header} className="border border-gray-300 px-2 py-1">
+                {startCase(header)}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {value.map((item, rowIndex) => (
+            <tr key={rowIndex}>
+              {headers.map((header) => (
+                <td key={header} className="border border-gray-300 px-2 py-1">
+                  {typeof item[header] === "string" &&
+                  item[header].startsWith("https://") ? (
+                    <a
+                      href={item[header]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline"
+                    >
+                      {item[header]}
+                    </a>
+                  ) : moment(item[header]).isValid() ? (
+                    moment(item[header]).format("Do MMMM YYYY")
+                  ) : (
+                    item[header]?.toString() || "-"
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
+  if (tableRequired.includes(key) && value && typeof value === "object") {
+    return renderTable(value, key);
+  }
+
+  if (value && typeof value === "object") {
     return (
       <td colSpan={2} className="border border-gray-300 px-2 py-1">
-        <table className="w-full">
-          <tbody>
-            {Object.entries(value as IDates | ILinks | IFees | ICommon).map(
-              ([subKey, subValue]) => (
-                <tr key={subKey}>
-                  <td className="border border-gray-300 px-2 py-1">
-                    {startCase(subKey)}
-                  </td>
-                  <td className="border border-gray-300 px-2 py-1">
-                    {typeof subValue === "string" ? (
-                      <a
-                        href={subValue}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 underline"
-                      >
-                        {subValue}
-                      </a>
-                    )  : typeof subValue === "number" ? (
-                      <p>{subValue.toString()}</p>
-                    ): subValue?.current_year != null ? (
-                      <p>
-                        {moment(subValue.current_year).isValid()
-                          ? moment(subValue.current_year).format("Do MMMM YYYY")
-                          : subValue.current_year}
-                      </p>
-                    ) : (
-                      renderValue(subValue, "important_links")
-                    )}
-                  </td>
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
+        <div className="w-full">
+          {Object.entries(value as IDates | ILinks | IFees | ICommon).map(
+            ([subKey, subValue]) => (
+              <div key={subKey} className="flex flex-col gap-1">
+                <div className="px-2 py-1 text-xl font-bold">
+                  {startCase(subKey)}
+                </div>
+                <div className="">
+                  {typeof subValue === "string" &&
+                  subValue.startsWith("https://") ? (
+                    <a
+                      href={subValue}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline font-bold"
+                    >
+                      Click here
+                    </a>
+                  ) : subValue?.current_year != null ? (
+                    <p>
+                      {moment(subValue.current_year).isValid()
+                        ? moment(subValue.current_year).format("Do MMMM YYYY")
+                        : subValue.current_year}
+                    </p>
+                  ) : typeof subValue === "string" ||
+                    typeof subValue === "number" ? (
+                    <p>
+                      {moment(subValue).isValid()
+                        ? moment(subValue).format("Do MMMM YYYY")
+                        : subValue.toString()}
+                    </p>
+                  ) : (
+                    renderValue(subValue, subKey)
+                  )}
+                </div>
+              </div>
+            )
+          )}
+        </div>
       </td>
     );
   }
 
-  // if (value && typeof value === "object") {
-  //   return (
-  //     <div>
-  //       {Object.entries(value).map(([subKey, subValue]) => (
-  //         <div key={subKey} className="flex flex-col gap-1">
-  //           <div>{subKey}</div>
-  //           <div>
-  //             {subValue && typeof subValue === "object"
-  //               ? renderValue(subValue, subKey)
-  //               : subValue?.toString() || "-"}
-  //           </div>
-  //         </div>
-  //       ))}
-  //     </div>
-  //   );
-  // }
-
-  // if (excludedKeys.includes(key)) return null;
-
-  // Handle string and number values
-  // if ((value && typeof value === "string") || typeof value === "number") {
-  //   return moment(value).isValid()
-  //     ? moment(value).format("Do MMMM YYYY")
-  //     : value.toString();
-  // }
-
-  // if (
-  //   Array.isArray(value) &&
-  //   value.length > 0 &&
-  //   typeof value[0] === "object"
-  // ) {
-  //   // Get column headers from the first object keys
-  //   const headers = Object.keys(value[0]).filter(
-  //     (header) => !excludedKeys.includes(header)
-  //   );
-
-  //   return (
-  //     <table className="border-collapse border border-gray-300 w-full">
-  //       <thead>
-  //         <tr>
-  //           {headers.map((header) => (
-  //             <th key={header} className="border border-gray-300 px-2 py-1">
-  //               {startCase(header)}
-  //             </th>
-  //           ))}
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         {value.map((item, rowIndex) => (
-  //           <tr key={rowIndex}>
-  //             {headers.map((header) => (
-  //               <td key={header} className="border border-gray-300 px-2 py-1">
-  //                 {typeof item[header] === "string" ? (
-  //                   <a
-  //                     href={item[header]}
-  //                     target="_blank"
-  //                     rel="noopener noreferrer"
-  //                     className="text-blue-500 underline"
-  //                   >
-  //                     {item[header]}
-  //                   </a>
-  //                 ) : moment(item[header]).isValid() ? (
-  //                   moment(item[header]).format("Do MMMM YYYY")
-  //                 ) : (
-  //                   item[header]?.toString() || "-"
-  //                 )}
-  //               </td>
-  //             ))}
-  //           </tr>
-  //         ))}
-  //       </tbody>
-  //     </table>
-  //   );
-  // }
-  // if ( value && typeof value === "object") {
-  //   const filteredEntries = Object.entries(value).filter(
-  //     ([subKey]) => !excludedKeys.includes(subKey)
-  //   );
-  //     return (
-  //       <div>
-  //         {filteredEntries.map(
-  //           ([subKey, subValue]) => (
-  //             <tr key={subKey}>
-  //               <td className="border border-gray-300 px-2 py-1">
-  //                 {startCase(subKey)}
-  //               </td>
-  //               <td className="border border-gray-300 px-2 py-1">
-  //                 {typeof subValue === "string" ? (
-  //                   <a
-  //                     href={subValue}
-  //                     target="_blank"
-  //                     rel="noopener noreferrer"
-  //                     className="text-blue-500 underline"
-  //                   >
-  //                     {subValue}
-  //                   </a>
-  //                 ) : typeof subValue === "number" ? (
-  //                   <p>{subValue.toString()}</p>
-  //                 ) : (
-  //                   renderValue(subValue, subKey)
-  //                 )}
-  //               </td>
-  //             </tr>
-  //           )
-  //         )}
-  //       </div>
-  //     );
-  //   }
-  // Handle nested objects for specific keys
-  
-
-  // Handle generic objects
+  if (value && (typeof value === "number" || typeof value === "string")) {
+    return (
+      <div>
+        {moment(value).isValid()
+          ? moment(value).format("Do MMMM YYYY")
+          : value.toString()}
+      </div>
+    );
+  }
 
   return null;
 };
