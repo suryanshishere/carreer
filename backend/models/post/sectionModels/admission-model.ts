@@ -1,14 +1,12 @@
-import mongoose from "mongoose";
-import { IAdmission } from "../post-section-interface";
-import commonDataSchema from "./section-common-data";
-
-const { Schema } = mongoose;
-const { ObjectId } = Schema.Types;
+import mongoose, { Types } from "mongoose";
+import commonDataSchema, { ICommonData } from "./section-common-data";
+import { Schema } from "mongoose";
+import { ObjectId } from "mongoose";
 
 const admissionSchema = new Schema<IAdmission>({
-  post_common: { type: ObjectId, ref: "PostCommon" },
-  important_dates: { type: ObjectId, ref: "PostDate" },
-  important_links: { type: ObjectId, ref: "PostLink" },
+  common: { type: Types.ObjectId, ref: "Common" },
+  important_dates: { type: Types.ObjectId, ref: "Date" },
+  important_links: { type: Types.ObjectId, ref: "Link" },
 });
 
 admissionSchema.add(commonDataSchema);
@@ -18,3 +16,9 @@ export { admissionSchema };
 const AdmissionModel = mongoose.model("Admission", admissionSchema);
 
 export default AdmissionModel;
+
+export interface IAdmission extends ICommonData {
+  common?: ObjectId;
+  important_dates?: ObjectId;
+  important_links?: ObjectId;
+}

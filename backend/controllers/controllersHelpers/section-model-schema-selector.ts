@@ -5,7 +5,7 @@ import { NextFunction } from "express";
 import { resultSchema } from "@models/post/sectionModels/result-model";
 import { admissionSchema } from "@models/post/sectionModels/admission-model";
 import { admitCardSchema } from "@models/post/sectionModels/admit-card-model";
-import { answerKeySchema } from "@models/post/sectionModels/answer-key";
+import { answerKeySchema } from "@models/post/sectionModels/answer-key-model";
 import { certificateVerificationSchema } from "@models/post/sectionModels/certificate-verification-model";
 import { postCommonSchema } from "@models/post/overallModels/common-model";
 import { postImportantSchema } from "@models/post/sectionModels/important-model";
@@ -13,7 +13,7 @@ import { latestJobSchema } from "@models/post/sectionModels/latest-job-model";
 import { syllabusSchema } from "@models/post/sectionModels/syllabus-model";
 
 export const POST_SECTION_DATA = [
-  "post_common",
+  "common",
   "result",
   "admit_card",
   "latest_job",

@@ -13,18 +13,15 @@
     }
   ],
   "approved": true,
-  "name_of_the_post": "Jee Answer",
-  "how_to_download_answer_key": "Visit the official website. //Click on the registration link. //Fill in the required details. //Submit the form.",
-  "common": {
+  "name_of_the_post": "Jee Important Question Bank",
+  "how_to_fill_the_form": "Visit the official website.//Navigate to the application form.//Enter your personal details.//Upload the required documents.//Submit the form.",
+  "important_links": {
     "$oid": "d88e5fd5a7ffa35584f39c26"
   },
   "important_dates": {
     "$oid": "d88e5fd5a7ffa35584f39c26"
   },
-  "important_links": {
-    "$oid": "d88e5fd5a7ffa35584f39c26"
-  },
-  "syllabus": {
+  "common": {
     "$oid": "d88e5fd5a7ffa35584f39c26"
   }
 }

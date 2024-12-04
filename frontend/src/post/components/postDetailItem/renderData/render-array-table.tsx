@@ -25,7 +25,7 @@ export const renderArrayTable = (value: any, key: string) => {
     );
 
     return (
-      <table className="border-collapse border-2 border-custom-gray w-full">
+      <table className="border-collapse border-2 border-custom-gray w-full mt-3">
         <thead>
           <tr>
             {headers.map((header) => (

@@ -1,6 +1,6 @@
 export const latestJobPopulate = [
   // { path: "result_data", select: "result_data" },
-  // { path: "syllabus", select: "syllabus_data" },
+  // { path: "syllabus", select: "syllabus" },
   {
     path: "important_links",
     select:

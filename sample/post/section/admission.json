@@ -13,8 +13,7 @@
     }
   ],
   "approved": true,
-  "name_of_the_post": "Jee Answer",
-  "how_to_download_answer_key": "Visit the official website. //Click on the registration link. //Fill in the required details. //Submit the form.",
+  "name_of_the_post": "JEE counselling and admission",
   "common": {
     "$oid": "d88e5fd5a7ffa35584f39c26"
   },
@@ -22,9 +21,6 @@
     "$oid": "d88e5fd5a7ffa35584f39c26"
   },
   "important_links": {
-    "$oid": "d88e5fd5a7ffa35584f39c26"
-  },
-  "syllabus": {
     "$oid": "d88e5fd5a7ffa35584f39c26"
   }
 }

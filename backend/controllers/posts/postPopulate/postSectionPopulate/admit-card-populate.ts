@@ -11,5 +11,5 @@ export const admitCardPopulate = [
   },
   { path: "common", select: "-eligibility" }
 //   { path: "result", select: "result_data" },
-//   { path: "syllabus", select: "syllabus_data" },
+//   { path: "syllabus", select: "syllabus" },
 ];

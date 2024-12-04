@@ -15,7 +15,7 @@ const addPostToAllSections = async (
   res: Response
 ) => {
   const ALL_POST_SECTIONS = [
-    "post_common",
+    "common",
     "result",
     "admit_card",
     "latest_job",
