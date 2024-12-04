@@ -72,12 +72,12 @@ const AdminComponent: React.FC = () => {
 
   return (
     <ul>
-      {data.map((item) => (
+      {/* {data.map((item) => (
         <li key={item._id}>
           {item._id}: {item.name_of_the_post}
           <button >Approved</button>
         </li>
-      ))}
+      ))} */}
     </ul>
   );
 };

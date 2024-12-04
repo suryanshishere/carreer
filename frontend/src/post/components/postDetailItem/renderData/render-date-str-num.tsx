@@ -27,15 +27,21 @@ export const renderDateStrNum = (value: any, key: string) => {
     );
   }
 
-  if (typeof value !== "number") {
-    return (
-      <p>
-        {moment(value).isValid()
-          ? moment(value).format("Do MMMM YYYY")
-          : value.toString()}
-      </p>
-    );
+  if (typeof value === "string") {
+    // Check if value is a valid ISO date
+    const isoDate = moment(value, moment.ISO_8601, true).isValid();
+
+    if (isoDate) {
+      return <p>{moment(value).format("Do MMMM YYYY")}</p>;
+    }
+
+    // Return the string as-is if not an ISO date
+    return <p>{value}</p>;
   }
 
-  return <p>{value.toString()}</p>;
+  if (typeof value !== "number") {
+    return <p>{value.toString()}</p>;
+  }
+
+  return <p>{value}</p>;
 };

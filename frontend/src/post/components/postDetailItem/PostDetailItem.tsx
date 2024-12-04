@@ -1,12 +1,11 @@
 import React from "react";
 import { startCase } from "lodash";
-import { ILatestJob } from "models/postModels/sectionInterfaces/ILatestJob";
 import { renderValue } from "./renderData/render-data";
 import { excludedKeys } from "./post-render-define";
-import { IResult } from "models/postModels/sectionInterfaces/IResult";
+import { IPostDetail } from "models/postModels/IPostDetail";
 
 interface DetailItemProps {
-  data: ILatestJob | IResult;
+  data: IPostDetail;
 }
 
 const DetailItem: React.FC<DetailItemProps> = ({ data }) => {

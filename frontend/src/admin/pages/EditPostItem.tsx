@@ -16,29 +16,29 @@ const EditPostItem = () => {
     (state: RootState) => state.auth.userData
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await sendRequest(
-          `${process.env.REACT_APP_BASE_URL}/admin/private/edit_post/${post_section}/${post_id}`,
-          "GET",
-          null,
-          {
-            Authorization: "Bearer " + token,
-          }
-        );
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await sendRequest(
+  //         `${process.env.REACT_APP_BASE_URL}/admin/private/edit_post/${post_section}/${post_id}`,
+  //         "GET",
+  //         null,
+  //         {
+  //           Authorization: "Bearer " + token,
+  //         }
+  //       );
 
-        const responseData = response.data as IPostDetail;
-        if (responseData) {
-          setData(responseData);
-        } else {
-          navigate(-1);
-        }
-      } catch (err) {}
-    };
+  //       const responseData = response.data as IPostDetail;
+  //       if (responseData) {
+  //         setData(responseData);
+  //       } else {
+  //         navigate(-1);
+  //       }
+  //     } catch (err) {}
+  //   };
 
-    fetchData();
-  }, [post_section, post_id]);
+  //   fetchData();
+  // }, [post_section, post_id]);
 
   if (!data) {
     return null;
