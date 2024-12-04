@@ -57,12 +57,6 @@ interface HowToFillForm {
 }
 
 
-export interface IResult extends IBasePost {
-  how_to_download_result?: string;
-  result_data?: any[]; // Use `any` if the structure of result data is unknown or varies
-  post_common?: Types.ObjectId;
-  important_links?: Types.ObjectId;
-}
 
 export interface ISyllabus extends IBasePost {
   syllabus_data?: any[]; // Use `any` if the structure of syllabus data is unknown or varies

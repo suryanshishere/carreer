@@ -8,7 +8,8 @@ import Result from "@models/post/sectionModels/result-model";
 import Syllabus from "@models/post/sectionModels/syllabus-model";
 import AnswerKey from "@models/post/sectionModels/answer-key";
 import { Model } from "mongoose";
-import { detailLatestJob } from "./postPopulate/latest-job-populate";
+import { populateLatestJob } from "./postSectionPopulate/latest-job-populate";
+import { populateResult } from "./postSectionPopulate/result-populate";
 
 // Define the PostModel interface
 interface PostModel extends Model<any> {}
@@ -50,16 +51,7 @@ interface PopulateModels {
 }
 
 export const populateModels: PopulateModels = {
-  result: [
-    {
-      path: "important_links",
-      select: "result_download_link official_website custom_links",
-    },
-    {
-      path: "post_common",
-      select: "-_id -post_exam_duration -age_criteria -eligibility",
-    },
-  ],
+  result: populateResult,
   admit_card: [
     {
       path: "important_dates",
@@ -75,7 +67,7 @@ export const populateModels: PopulateModels = {
     { path: "result_data", select: "result_data" },
     { path: "syllabus", select: "syllabus_data" },
   ],
-  latest_job: detailLatestJob,
+  latest_job: populateLatestJob,
   syllabus: [{ path: "important_links", select: "official_website" }],
   answer_key: [
     { path: "post_common", select: " -eligibility" },

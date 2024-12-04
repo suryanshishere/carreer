@@ -49,6 +49,6 @@ export const LinksSchema = new Schema<ILinks>(
   { timestamps: true }
 );
 
-const PostLinkModel = model<ILinks>("Link", LinksSchema);
+const LinkModel = model<ILinks>("Link", LinksSchema);
 
-export default PostLinkModel;
+export default LinkModel;

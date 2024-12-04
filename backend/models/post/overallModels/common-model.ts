@@ -3,29 +3,29 @@ import { ObjectId } from "mongoose";
 
 // AgeCriteria Schema
 const AgeCriteriaSchema: Schema = new Schema({
-  minimum_age: { type: Number, required: false },
-  maximum_age: { type: Number, required: false },
-  age_relaxation: { type: String, required: false },
+  minimum_age: { type: Number },
+  maximum_age: { type: Number },
+  age_relaxation: { type: String },
 });
 
 // ICategory Schema
 const CategorySchema: Schema = new Schema({
-  general: { type: AgeCriteriaSchema, required: false },
-  obc: { type: AgeCriteriaSchema, required: false },
-  ews: { type: AgeCriteriaSchema, required: false },
-  sc: { type: AgeCriteriaSchema, required: false },
-  st: { type: AgeCriteriaSchema, required: false },
-  "ph_(dviyang)": { type: AgeCriteriaSchema, required: false },
+  general: { type: AgeCriteriaSchema },
+  obc: { type: AgeCriteriaSchema },
+  ews: { type: AgeCriteriaSchema },
+  sc: { type: AgeCriteriaSchema },
+  st: { type: AgeCriteriaSchema },
+  "ph_(dviyang)": { type: AgeCriteriaSchema },
 });
 
 // ICategoryVacancy Schema
-const ICategoryVacancySchema: Schema = new Schema({
-  general: { type: Number, required: false },
-  obc: { type: Number, required: false },
-  ews: { type: Number, required: false },
-  sc: { type: Number, required: false },
-  st: { type: Number, required: false },
-  "ph_(dviyang)": { type: Number, required: false },
+const CategoryVacancySchema: Schema = new Schema({
+  general: { type: Number },
+  obc: { type: Number },
+  ews: { type: Number },
+  sc: { type: Number },
+  st: { type: Number },
+  "ph_(dviyang)": { type: Number },
 });
 
 // CategoryAgeCriteria Schema
@@ -44,17 +44,17 @@ const VacancyDetailSchema: Schema = new Schema({
 });
 
 // CategoryWiseVacancy Schema
-const CategoryWiseVacancySchema: Schema = new Schema({
-  male: { type: ICategoryVacancySchema, required: false },
-  female: { type: ICategoryVacancySchema, required: false },
-  other: { type: ICategoryVacancySchema, required: false },
-  additional_resources: { type: String, required: false },
+export const CategoryWiseVacancySchema: Schema = new Schema({
+  male: { type: CategoryVacancySchema },
+  female: { type: CategoryVacancySchema },
+  other: { type: CategoryVacancySchema },
+  additional_resources: { type: String },
 });
 
 // Applicants Schema
 const ApplicantsSchema: Schema = new Schema({
-  number_of_applicants_each_year: { type: Number, required: false },
-  number_of_applicants_selected: { type: Number, required: false },
+  number_of_applicants_each_year: { type: Number },
+  number_of_applicants_selected: { type: Number },
 });
 
 // ICommon Schema
@@ -63,23 +63,23 @@ const commonSchema: Schema = new Schema<ICommon>(
     created_by: { type: Types.ObjectId, ref: "User", required: true },
     contributors: [{ type: Types.ObjectId, ref: "User" }],
     approved: { type: Boolean, default: false, required: true },
-    short_information: { type: String, required: false },
-    highlighted_information: { type: String, required: false },
-    department: { type: String, required: false },
-    stage_level: { type: String, required: false },
-    applicants: { type: ApplicantsSchema, required: false },
-    post_importance: { type: String, required: false },
-    post_exam_toughness_ranking: { type: Number, required: false },
-    job_type: { type: String, required: false },
-    post_exam_duration: { type: Number, required: false },
-    age_criteria: { type: CategoryAgeCriteriaSchema, required: false },
+    short_information: { type: String },
+    highlighted_information: { type: String },
+    department: { type: String },
+    stage_level: { type: String },
+    applicants: { type: ApplicantsSchema },
+    post_importance: { type: String },
+    post_exam_toughness_ranking: { type: Number },
+    job_type: { type: String },
+    post_exam_duration: { type: Number },
+    age_criteria: { type: CategoryAgeCriteriaSchema },
     vacancy: {
-      detail: { type: [VacancyDetailSchema], required: false },
-      category_wise: { type: CategoryWiseVacancySchema, required: false },
+      detail: { type: [VacancyDetailSchema] },
+      category_wise: { type: CategoryWiseVacancySchema },
     },
     eligibility: {
-      minimum_qualification: { type: String, required: false },
-      other_qualification: { type: String, required: false },
+      minimum_qualification: { type: String },
+      other_qualification: { type: String },
     },
     post_exam_mode: {
       type: String,
@@ -140,7 +140,7 @@ interface VacancyDetail {
   post_eligibility: string;
 }
 
-interface CategoryWiseVacancy {
+export interface ICategoryWiseVacancy {
   male?: ICategoryVacany;
   female?: ICategoryVacany;
   other?: ICategoryVacany;
@@ -168,7 +168,7 @@ interface ICommon {
   age_criteria?: CategoryAgeCriteria;
   vacancy?: {
     detail?: VacancyDetail[];
-    category_wise?: CategoryWiseVacancy;
+    category_wise?: ICategoryWiseVacancy;
   };
   eligibility?: {
     minimum_qualification?: string;

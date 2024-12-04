@@ -43,6 +43,6 @@ const FeeSchema: Schema = new Schema<IFee>(
   { timestamps: true }
 );
 
-const FeeDetailsModel = mongoose.model<IFee>("Fee", FeeSchema);
+const FeeModel = mongoose.model<IFee>("Fee", FeeSchema);
 
-export default FeeDetailsModel;
+export default FeeModel;

@@ -1,15 +1,19 @@
 import { Response, NextFunction } from "express";
-import PostDate from "@models/post/overallModels/date-model";
-import PostFee from "@models/post/overallModels/fee-model";
-import PostLink from "@models/post/overallModels/link-model";
-import PostCommon from "@models/post/overallModels/common-model";
-import Post from "@models/post/post-model";
 import HttpError from "@utils/http-errors";
-import { fetchPosts, populateModels, MODEL_DATA } from "./posts-populate";
+import {
+  fetchPosts,
+  populateModels,
+  MODEL_DATA,
+} from "./postPopulate/posts-populate";
 import { Request } from "express-jwt";
 import User from "@models/user/user-model";
 import { snakeCase } from "lodash";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
+import CommonModel from "@models/post/overallModels/common-model";
+import FeeModel from "@models/post/overallModels/fee-model";
+import DateModel from "@models/post/overallModels/date-model";
+import LinkModel from "@models/post/overallModels/link-model";
+import PostModel from "@models/post/post-model";
 
 const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 const CATEGORY_LIMIT =
@@ -17,19 +21,15 @@ const CATEGORY_LIMIT =
 
 // Example utility function (unused)
 export const helpless = () => {
-  const cool = PostLink.find({});
-  const cool1 = PostDate.find({});
-  const cool2 = PostFee.find({});
-  const cool3 = PostCommon.find({});
-  const cool5 = Post.find({});
+  const cool = LinkModel.find({});
+  const cool1 = DateModel.find({});
+  const cool2 = FeeModel.find({});
+  const cool3 = CommonModel.find({});
+  const cool5 = PostModel.find({});
 };
 
 // Get the list of posts for the home page
-export const home = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const home = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = getUserIdFromRequest(req as JWTRequest);
 
@@ -45,7 +45,7 @@ export const home = async (
       // Convert category to snake_case and append "_ref" to check saved_posts
       const savedField = `${snakeCase(key)}_ref`;
       const savedIds = user?.saved_posts?.[savedField]?.map(String) || [];
-      
+
       return {
         [snakeCase(key)]: posts.map(({ name_of_the_post, post_code, _id }) => ({
           name_of_the_post,
@@ -83,16 +83,16 @@ export const section = async (
     if (!model) {
       return next(new HttpError("Invalid category specified.", 400));
     }
-    
+
     const response = await fetchPosts(model, CATEGORY_LIMIT);
-   
+
     let savedIds: string[] = [];
     if (userId) {
       const user = await User.findById(userId).select("saved_posts").lean();
-      const savedField = `${snakeCase(section)}_ref`; 
+      const savedField = `${snakeCase(section)}_ref`;
 
       if (user?.saved_posts?.[savedField]) {
-        savedIds = user.saved_posts[savedField].map(String); 
+        savedIds = user.saved_posts[savedField].map(String);
       }
     }
 
@@ -101,7 +101,7 @@ export const section = async (
         name_of_the_post,
         post_code,
         _id,
-        is_saved: savedIds.includes(String(_id)), 
+        is_saved: savedIds.includes(String(_id)),
       })
     );
 
@@ -128,11 +128,10 @@ export const postDetail = async (
       return next(new HttpError("Invalid section specified.", 400));
     }
 
-    // Fetch post details
     const response = await model
       .findById(postId)
       .populate(populateModels[section])
-      .select("-approved")
+      .select("-approved");
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));
@@ -146,7 +145,7 @@ export const postDetail = async (
     if (userId) {
       const user = await User.findById(userId).select("saved_posts").lean();
       if (user?.saved_posts) {
-        const savedField = `${snakeCase(section)}_ref`; 
+        const savedField = `${snakeCase(section)}_ref`;
         const savedPosts = user.saved_posts[savedField] || [];
         const postIdObj = new Types.ObjectId(postId);
         isSaved = savedPosts.some((savedPost) => savedPost.equals(postIdObj));
@@ -160,6 +159,7 @@ export const postDetail = async (
 
     return res.status(200).json(responseWithSavedStatus);
   } catch (err) {
+    console.log(err)
     return next(
       new HttpError("An error occurred while fetching the post.", 500)
     );

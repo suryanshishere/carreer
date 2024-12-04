@@ -3,9 +3,10 @@ import { startCase } from "lodash";
 import { ILatestJob } from "models/postModels/sectionInterfaces/ILatestJob";
 import { renderValue } from "./renderData/render-data";
 import { excludedKeys } from "./post-render-define";
+import { IResult } from "models/postModels/sectionInterfaces/IResult";
 
 interface DetailItemProps {
-  data: ILatestJob;
+  data: ILatestJob | IResult;
 }
 
 const DetailItem: React.FC<DetailItemProps> = ({ data }) => {
@@ -23,7 +24,7 @@ const DetailItem: React.FC<DetailItemProps> = ({ data }) => {
               <hr className="flex-1 border-t-[2px] mb-1 border-custom-less-gray" />
             </h2>
 
-            <div className="flex flex-col gap-3 ">
+            <div className="flex flex-col gap-3 pl-2">
               {renderValue(value, key)}
             </div>
           </div>

@@ -1,0 +1,51 @@
+{
+  "_id": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "createdAt": "2024-08-08T12:00:00Z",
+  "updatedAt": "2024-09-08T12:00:00Z",
+  "created_by": {
+    "$oid": "6749e5ec8100dfa1958e9573"
+  },
+  "contributors": [
+    {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    }
+  ],
+  "approved": true,
+  "name_of_the_post": "Jee result 2024",
+  "how_to_download_result": "Visit the official website//Navigate to the results section//Enter your registration number//Click on the download button.",
+  "result": {
+    "additional_resources":"Total mark out of 145.",
+    "male": {
+      "general": 122,
+      "obc": 124,
+      "ews": 46,
+      "sc": 11,
+      "st": 11,
+      "ph_(dviyang)": null
+    },
+    "female": {
+      "general": 321,
+      "obc": 124,
+      "ews": 46,
+      "sc": 155,
+      "st": 14,
+      "ph_(dviyang)": null
+    },
+    "other": {
+      "general": 321,
+      "obc": 124,
+      "ews": 46,
+      "sc": 155,
+      "st": 14,
+      "ph_(dviyang)": null
+    }
+  },
+  "common": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "important_links": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  }
+}

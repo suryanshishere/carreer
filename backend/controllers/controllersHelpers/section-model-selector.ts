@@ -23,29 +23,29 @@ import PostImportant from "@models/post/sectionModels/important-model";
 import LatestJob from "@models/post/sectionModels/latest-job-model";
 import Syllabus from "@models/post/sectionModels/syllabus-model";
 
-export const POST_SECTION_DATA = [
-  "post_common",
-  "result",
-  "admit_card",
-  "latest_job",
-  "answer_key",
-  "syllabus",
-  "certificate_verification",
-  "admission",
-  "important",
-];
+// export const POST_SECTION_DATA = [
+//   "post_common",
+//   "result",
+//   "admit_card",
+//   "latest_job",
+//   "answer_key",
+//   "syllabus",
+//   "certificate_verification",
+//   "admission",
+//   "important",
+// ];
 
-const modelMap: { [key: string]: Model<any> } = {
-  result: Result,
-  admission: Admission,
-  admit_card: AdmitCard,
-  answer_key: AnswerKey,
-  certificate_verification: CertificateVerification,
-  post_common: PostCommon,
-  important: PostImportant,
-  latest_job: LatestJob,
-  syllabus: Syllabus,
-};
+// const modelMap: { [key: string]: Model<any> } = {
+//   result: Result,
+//   admission: Admission,
+//   admit_card: AdmitCard,
+//   answer_key: AnswerKey,
+//   certificate_verification: CertificateVerification,
+//   common: PostCommon,
+//   important: PostImportant,
+//   latest_job: LatestJob,
+//   syllabus: Syllabus,
+// };
 
 // const adminDataModelMap: { [key: string]: Model<any> } = {
 //   result: ResultAdminData,
@@ -80,23 +80,23 @@ const modelMap: { [key: string]: Model<any> } = {
 //   return Model;
 // };
 
-export const sectionModelSelector = (
-  post_section: string,
-  next: NextFunction
-): mongoose.Model<any> | undefined => {
-  // Convert post_section to snake_case
-  const sectionData = convertToSnakeCase(post_section);
+// export const sectionModelSelector = (
+//   post_section: string,
+//   next: NextFunction
+// ): mongoose.Model<any> | undefined => {
+//   // Convert post_section to snake_case
+//   const sectionData = convertToSnakeCase(post_section);
 
-  // Check if the section data is valid
-  if (!POST_SECTION_DATA.includes(sectionData)) {
-    return undefined;
-  }
+//   // Check if the section data is valid
+//   if (!POST_SECTION_DATA.includes(sectionData)) {
+//     return undefined;
+//   }
 
-  // Retrieve the model corresponding to the section
-  const Model = modelMap[sectionData];
-  if (!Model) {
-    return undefined;
-  }
+//   // Retrieve the model corresponding to the section
+//   const Model = modelMap[sectionData];
+//   if (!Model) {
+//     return undefined;
+//   }
 
-  return Model;
-};
+//   return Model;
+// };

@@ -35,7 +35,7 @@ interface VacancyDetail {
   post_eligibility: string;
 }
 
-interface CategoryWiseVacancy {
+export interface ICategoryWiseVacancy {
   male?: ICategoryVacany;
   female?: ICategoryVacany;
   other?: ICategoryVacany;
@@ -62,7 +62,7 @@ export interface ICommon {
   age_criteria?: CategoryAgeCriteria;
   vacancy?: {
     detail?: VacancyDetail[];
-    category_wise?: CategoryWiseVacancy;
+    category_wise?: ICategoryWiseVacancy;
   };
   eligibility?: {
     minimum_qualification?: string;

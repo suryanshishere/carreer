@@ -1,22 +1,27 @@
-import mongoose from "mongoose";
-import { IResult } from "../post-section-interface";
-// import createCommonDataModel from "../post-common";
-import commonDataSchema from "./section-common-data";
-
-const { Schema } = mongoose;
-const { ObjectId } = Schema.Types;
+import mongoose, { ObjectId, Schema, Types } from "mongoose";
+import commonDataSchema, { ICommonData } from "./section-common-data";
+import {
+  ICategoryWiseVacancy,
+  CategoryWiseVacancySchema,
+} from "../overallModels/common-model";
 
 const resultSchema = new Schema<IResult>({
   how_to_download_result: { type: String },
-  result_data: [{ type: Schema.Types.Mixed }],
-  post_common: { type: ObjectId, ref: "PostCommon" },
-  important_links: { type: ObjectId, ref: "PostLink" },
+  result: CategoryWiseVacancySchema,
+  common: { type: Types.ObjectId, ref: "Common" },
+  important_links: { type: Types.ObjectId, ref: "Link" },
 });
 
 resultSchema.add(commonDataSchema);
 
 export { resultSchema };
-
 const ResultModel = mongoose.model("Result", resultSchema);
-
 export default ResultModel;
+
+
+export interface IResult extends ICommonData {
+  how_to_download_result?: string;
+  result?: ICategoryWiseVacancy;
+  common?: ObjectId;
+  important_links?: Types.ObjectId;
+}
