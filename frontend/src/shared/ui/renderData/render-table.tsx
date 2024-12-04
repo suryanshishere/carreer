@@ -1,0 +1,47 @@
+import moment from "moment";
+import { excludedKeys } from "post/components/DetailItem";
+import { ICommon } from "models/postModels/overallInterfaces/ICommon";
+import { IDates } from "models/postModels/overallInterfaces/IDates";
+import { IFees } from "models/postModels/overallInterfaces/IFees";
+import { ILinks } from "models/postModels/overallInterfaces/ILinks";
+import { startCase } from "lodash";
+import { renderDateStrNum } from "./render-date-str-num";
+
+export const renderTable = (value: any, key: string) => {
+  if (excludedKeys.includes(key)) return null;
+
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+
+    return (
+      <div>
+        {Object.entries(value as IDates | ILinks | IFees | ICommon).map(
+          ([subKey, subValue]) => {
+            if (excludedKeys.includes(subKey)) {
+              return null;
+            }
+
+            return (
+              <tr key={subKey}>
+                <td className="border border-gray-300 px-2 py-1">
+                  {startCase(subKey)}
+                </td>
+                <td className="border border-gray-300 px-2 py-1">
+                  {subValue &&
+                  typeof subValue !== "object" &&
+                  !subValue?.current_year
+                    ? renderDateStrNum(subValue, subKey)
+                    : subValue?.current_year != null
+                    ? renderDateStrNum(subValue.current_year, subKey)
+                    : renderTable(subValue, subKey)}
+                </td> 
+              </tr>
+            );
+          }
+        )}
+      </div>
+    );
+  }
+
+  // Return null if value is not a valid object or array
+  return null;
+};
