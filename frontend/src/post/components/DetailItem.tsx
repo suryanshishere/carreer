@@ -4,7 +4,7 @@ import { ILatestJob } from "models/postModels/sectionInterfaces/ILatestJob";
 import { renderValue } from "shared/ui/renderData/render-data";
 
 interface DetailItemProps {
-  data: ILatestJob | {};
+  data: ILatestJob;
 }
 
 export const excludedKeys = [

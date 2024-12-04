@@ -10,6 +10,6 @@ export const detailLatestJob = [
   { path: "application_fee" },
   {
     path: "common",
-    select: "-approved ",
+    select: "-approved",
   },
 ];
