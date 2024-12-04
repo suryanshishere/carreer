@@ -14,11 +14,28 @@ export const renderDateStrNum = (value: any, key: string) => {
     );
   }
 
-  if (typeof value !== "number") {
-    return moment(value).isValid()
-      ? moment(value).format("Do MMMM YYYY")
-      : value.toString();
+  if (typeof value === "string" && value.includes("//")) {
+    return (
+      <p>
+        {value.split("//").map((part, index) => (
+          <span key={index}>
+            {part}
+            {index !== value.split("//").length - 1 && <br />}
+          </span>
+        ))}
+      </p>
+    );
   }
 
-  return value.toString();
+  if (typeof value !== "number") {
+    return (
+      <p>
+        {moment(value).isValid()
+          ? moment(value).format("Do MMMM YYYY")
+          : value.toString()}
+      </p>
+    );
+  }
+
+  return <p>{value.toString()}</p>;
 };

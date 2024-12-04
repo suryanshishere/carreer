@@ -1,11 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId, Types } from "mongoose";
 
 interface DateRange {
   current_year?: Date;
   previous_year?: Date;
 }
 
-interface IDates extends Document{
+interface IDates extends Document {
+  createdAt: Date;
+  updatedAt: Date;
+  created_by: ObjectId;
+  contributors?: ObjectId[];
+  approved: boolean;
   application_start_date?: DateRange;
   application_end_date?: DateRange;
   exam_fee_payment_end_date?: DateRange;
@@ -29,22 +34,28 @@ const DateRangeSchema = new mongoose.Schema({
   previous_year: { type: Date },
 });
 
-export const dateSchema = new Schema<IDates>({
-  application_start_date: { type: DateRangeSchema },
-  application_end_date: { type: DateRangeSchema },
-  exam_fee_payment_end_date: { type: DateRangeSchema },
-  form_correction_start_date: { type: DateRangeSchema },
-  form_correction_end_date: { type: DateRangeSchema },
-  exam_date: { type: DateRangeSchema },
-  admit_card_release_date: { type: DateRangeSchema },
-  exam_city_details_release_date: { type: DateRangeSchema },
-  answer_key_release_date: { type: DateRangeSchema },
-  result_announcement_date: { type: DateRangeSchema },
-  counseling_start_date: { type: DateRangeSchema },
-  counseling_end_date: { type: DateRangeSchema },
-  counseling_result_announcement_date: { type: DateRangeSchema },
-  additional_resources: { type: String },
-});
+export const dateSchema = new Schema<IDates>(
+  {
+    created_by: { type: Types.ObjectId, ref: "User", required: true },
+    contributors: [{ type: Types.ObjectId, ref: "User" }],
+    approved: { type: Boolean, default: false, required: true },
+    application_start_date: { type: DateRangeSchema },
+    application_end_date: { type: DateRangeSchema },
+    exam_fee_payment_end_date: { type: DateRangeSchema },
+    form_correction_start_date: { type: DateRangeSchema },
+    form_correction_end_date: { type: DateRangeSchema },
+    exam_date: { type: DateRangeSchema },
+    admit_card_release_date: { type: DateRangeSchema },
+    exam_city_details_release_date: { type: DateRangeSchema },
+    answer_key_release_date: { type: DateRangeSchema },
+    result_announcement_date: { type: DateRangeSchema },
+    counseling_start_date: { type: DateRangeSchema },
+    counseling_end_date: { type: DateRangeSchema },
+    counseling_result_announcement_date: { type: DateRangeSchema },
+    additional_resources: { type: String },
+  },
+  { timestamps: true }
+);
 
 const DateModel = mongoose.model("Date", dateSchema);
 

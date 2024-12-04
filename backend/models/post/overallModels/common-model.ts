@@ -1,5 +1,5 @@
-import mongoose, { Schema } from "mongoose";
-import commonDataSchema from "../sectionModels/section-common-data";
+import mongoose, { Schema, Types } from "mongoose";
+import { ObjectId } from "mongoose";
 
 // AgeCriteria Schema
 const AgeCriteriaSchema: Schema = new Schema({
@@ -58,39 +58,43 @@ const ApplicantsSchema: Schema = new Schema({
 });
 
 // ICommon Schema
-const commonSchema: Schema = new Schema<ICommon>({
-  short_information: { type: String, required: false },
-  highlighted_information: { type: String, required: false },
-  department: { type: String, required: false },
-  stage_level: { type: String, required: false },
-  applicants: { type: ApplicantsSchema, required: false },
-  post_importance: { type: String, required: false },
-  post_exam_toughness_ranking: { type: Number, required: false },
-  job_type: { type: String, required: false },
-  post_exam_duration: { type: Number, required: false },
-  age_criteria: { type: CategoryAgeCriteriaSchema, required: false },
-  vacancy: {
-    detail: { type: [VacancyDetailSchema], required: false },
-    category_wise: { type: CategoryWiseVacancySchema, required: false },
+const commonSchema: Schema = new Schema<ICommon>(
+  {
+    created_by: { type: Types.ObjectId, ref: "User", required: true },
+    contributors: [{ type: Types.ObjectId, ref: "User" }],
+    approved: { type: Boolean, default: false, required: true },
+    short_information: { type: String, required: false },
+    highlighted_information: { type: String, required: false },
+    department: { type: String, required: false },
+    stage_level: { type: String, required: false },
+    applicants: { type: ApplicantsSchema, required: false },
+    post_importance: { type: String, required: false },
+    post_exam_toughness_ranking: { type: Number, required: false },
+    job_type: { type: String, required: false },
+    post_exam_duration: { type: Number, required: false },
+    age_criteria: { type: CategoryAgeCriteriaSchema, required: false },
+    vacancy: {
+      detail: { type: [VacancyDetailSchema], required: false },
+      category_wise: { type: CategoryWiseVacancySchema, required: false },
+    },
+    eligibility: {
+      minimum_qualification: { type: String, required: false },
+      other_qualification: { type: String, required: false },
+    },
+    post_exam_mode: {
+      type: String,
+      enum: ["online", "offline_paper_based", "offline_computer_based"],
+      required: false,
+    },
+    applicants_gender: {
+      type: String,
+      enum: ["male", "female", "both"],
+      required: false,
+    },
   },
-  eligibility: {
-    minimum_qualification: { type: String, required: false },
-    other_qualification: { type: String, required: false },
-  },
-  post_exam_mode: {
-    type: String,
-    enum: ["online", "offline_paper_based", "offline_computer_based"],
-    required: false,
-  },
-  applicants_gender: {
-    type: String,
-    enum: ["male", "female", "both"],
-    required: false,
-  },
-});
+  { timestamps: true }
+);
 
-// Add the common data schema
-commonSchema.add(commonDataSchema);
 export { commonSchema };
 
 // Export the model
@@ -144,6 +148,11 @@ interface CategoryWiseVacancy {
 }
 
 interface ICommon {
+  createdAt: Date;
+  updatedAt: Date;
+  created_by: ObjectId;
+  contributors?: ObjectId[];
+  approved: boolean;
   short_information?: string;
   highlighted_information?: string;
   department?: string;

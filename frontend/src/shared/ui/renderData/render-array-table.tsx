@@ -2,6 +2,18 @@ import { startCase } from "lodash";
 import { excludedKeys } from "post/components/DetailItem";
 import { renderDateStrNum } from "./render-date-str-num";
 
+export const bgColors = [
+  "bg-red-100",
+  "bg-blue-100",
+  "bg-green-100",
+  "bg-yellow-100",
+  "bg-purple-100",
+  "bg-pink-100",
+  "bg-gray-100",
+];
+
+// Select a random color from the array
+
 export const renderArrayTable = (value: any, key: string) => {
   if (
     Array.isArray(value) &&
@@ -13,30 +25,34 @@ export const renderArrayTable = (value: any, key: string) => {
     );
 
     return (
-      <div className="flex flex-col ">
-        <table className="border-collapse border border-gray-300 w-full">
-          <thead>
-            <tr>
-              {headers.map((header) => (
-                <th key={header} className="border border-gray-300 px-2 py-1">
-                  {startCase(header)}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {value.map((item, rowIndex) => (
+      <table className="border-collapse border-2 border-custom-gray w-full">
+        <thead>
+          <tr>
+            {headers.map((header) => (
+              <th key={header} className="border-2 border-custom-gray px-2 py-1">
+                {startCase(header)}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {value.map((item, rowIndex) => {
+            const randomBgColor = bgColors[rowIndex % bgColors.length];
+            return (
               <tr key={rowIndex}>
                 {headers.map((header) => (
-                  <td key={header} className="border border-gray-300 px-2 py-1">
+                  <td
+                    key={header}
+                    className={`border-2 border-custom-gray px-2 py-1 ${randomBgColor}`}
+                  >
                     {renderDateStrNum(item[header], key)}
                   </td>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            );
+          })}
+        </tbody>
+      </table>
     );
   }
 };

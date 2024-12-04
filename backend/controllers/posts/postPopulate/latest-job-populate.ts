@@ -7,10 +7,9 @@ export const detailLatestJob = [
       "apply_online register_now official_website download_sample_papers additional_resources",
   },
   { path: "important_dates" },
-  { path: "application_fee"},
+  { path: "application_fee" },
   {
     path: "common",
-    select:
-      "-approved ",
+    select: "-approved ",
   },
 ];

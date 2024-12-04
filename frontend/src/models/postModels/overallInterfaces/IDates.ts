@@ -4,6 +4,10 @@ interface DateRange {
 }
 
 export interface IDates {
+  createdAt: string;
+  updatedAt: string;
+  created_by: string;
+  contributors?: string[];
   application_start_date?: DateRange;
   application_end_date?: DateRange;
   exam_fee_payment_end_date?: DateRange;

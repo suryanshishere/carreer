@@ -1,4 +1,4 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, ObjectId, Types } from "mongoose";
 
 interface AdditionalResources extends Document {
   faq: string;
@@ -7,6 +7,11 @@ interface AdditionalResources extends Document {
 }
 
 interface ILinks extends Document {
+  createdAt: Date;
+  updatedAt: Date;
+  created_by: ObjectId;
+  contributors?: ObjectId[];
+  approved: boolean;
   official_website?: string;
   apply_online?: string;
   register_now?: string;
@@ -25,18 +30,24 @@ const AdditionalResourcesSchema = new Schema<AdditionalResources>({
   important_dates: { type: String },
 });
 
-export const LinksSchema = new Schema<ILinks>({
-  official_website: { type: String },
-  apply_online: { type: String },
-  register_now: { type: String },
-  download_sample_papers: { type: String },
-  get_admit_card: { type: String },
-  view_results: { type: String },
-  check_answer_key: { type: String },
-  counseling_portal: { type: String },
-  verify_certificates: { type: String },
-  additional_resources: { type: AdditionalResourcesSchema },
-});
+export const LinksSchema = new Schema<ILinks>(
+  {
+    created_by: { type: Types.ObjectId, ref: "User", required: true },
+    contributors: [{ type: Types.ObjectId, ref: "User" }],
+    approved: { type: Boolean, default: false, required: true },
+    official_website: { type: String },
+    apply_online: { type: String },
+    register_now: { type: String },
+    download_sample_papers: { type: String },
+    get_admit_card: { type: String },
+    view_results: { type: String },
+    check_answer_key: { type: String },
+    counseling_portal: { type: String },
+    verify_certificates: { type: String },
+    additional_resources: { type: AdditionalResourcesSchema },
+  },
+  { timestamps: true }
+);
 
 const PostLinkModel = model<ILinks>("Link", LinksSchema);
 

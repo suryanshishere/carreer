@@ -14,7 +14,7 @@ export const renderValue = (value: any, key: string) => {
   }
 
   if (tableRequired.includes(key) && value && typeof value === "object") {
-    return renderTable(value, key);
+    return <div className="mt-3 w-full"> {renderTable(value, key)}</div>;
   }
 
   if (value && typeof value === "object") {

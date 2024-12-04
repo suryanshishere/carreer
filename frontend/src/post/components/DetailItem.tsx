@@ -15,6 +15,10 @@ export const excludedKeys = [
   "contributors",
 ];
 
+export const notDisplayKeys = [
+]
+
+// "common"
 export const tableRequired = [
   "age_criteria",
   "male",
@@ -29,8 +33,7 @@ export const tableRequired = [
 
 const DetailItem: React.FC<DetailItemProps> = ({ data }) => {
   return (
-    <div className="flex gap-3">
-      <div className="w-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-8">
         {Object.entries(data).map(([key, value], index) => {
           if (excludedKeys.includes(key)) {
             return null;
@@ -39,20 +42,21 @@ const DetailItem: React.FC<DetailItemProps> = ({ data }) => {
           return (
             <div
               key={index}
-              className="detail_topic flex flex-col gap-1 w-full"
+              className="flex flex-col gap-1 w-full text-base"
             >
-              <h2 className="self-start font-bold capitalize">
+            <h2 className="self-start font-bold text-custom-red w-full flex items-end gap-2">
                 {startCase(key)}
+                <hr className="flex-1 border-t-[2px] mb-1 border-custom-less-gray" />
               </h2>
-              <div className="flex flex-col gap-3">
+              
+              <div className="flex flex-col gap-3 ">
                 {renderValue(value, key)}
               </div>
-              <hr />
+              {/* <hr /> */}
             </div>
           );
         })}
       </div>
-    </div>
   );
 };
 

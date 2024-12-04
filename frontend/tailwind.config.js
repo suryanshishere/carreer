@@ -29,7 +29,7 @@ module.exports = {
         footer: "5.5rem",
       },
       padding: {
-        page: "10vw",
+        page: "15vw",
         button: ".25rem .5rem", //y,x
       },
       gap: {},
