@@ -17,14 +17,7 @@ export interface IAdmission extends IBasePost {
   important_links?: Types.ObjectId;
 }
 
-export interface IAdmitCard extends IBasePost {
-  how_to_download_admit_card?: string;
-  syllabus?: Types.ObjectId;
-  post_common?: Types.ObjectId;
-  important_dates?: Types.ObjectId;
-  important_links?: Types.ObjectId;
-  result_data?: Types.ObjectId;
-}
+
 
 export interface IAnswerKey extends IBasePost {
   answer_key_link?: string;

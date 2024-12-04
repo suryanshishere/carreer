@@ -28,9 +28,21 @@ export const result_priority = [
   "common.vacancy",
 ];
 
+export const admit_card_priority = [
+  "name_of_the_post",
+  "common.short_information",
+  "common.department",
+  "common.stage_level",
+  "common.applicants",
+  "how_to_download_admit_card",
+  "important_dates",
+  "important_links",
+];
+
 const allPriorities: { [key: string]: string[] } = {
   latest_job_priority,
   result_priority,
+  admit_card_priority,
 };
 
 const priorityMap: { [key: string]: string[] } = {};

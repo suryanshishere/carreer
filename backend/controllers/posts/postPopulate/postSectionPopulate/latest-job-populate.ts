@@ -1,4 +1,4 @@
-export const populateLatestJob = [
+export const latestJobPopulate = [
   // { path: "result_data", select: "result_data" },
   // { path: "syllabus", select: "syllabus_data" },
   {
