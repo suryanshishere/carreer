@@ -7,7 +7,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import Bookmark from "shared/components/Bookmark";
 import { ILatestJob } from "models/postModels/sectionInterfaces/ILatestJob";
-import DetailItem from "post/components/DetailItem";
+import DetailItem from "post/components/postDetailItem/PostDetailItem";
+import { priorityLatestKeys } from "./post-priority-order";
 
 const fetchPostDetail = async (
   section: string,
@@ -48,11 +49,9 @@ const PostDetail: React.FC = () => {
 
   if (queryStateMessage) return queryStateMessage;
 
-  console.log(data);
-
   const orderData = rearrangeObjectByPriority(
     data.data as ILatestJob,
-    priorityKeys
+    priorityLatestKeys
   );
 
   return (
@@ -66,21 +65,6 @@ const PostDetail: React.FC = () => {
 };
 
 export default PostDetail;
-
-const priorityKeys = [
-  "name_of_the_post",
-  "common.short_information",
-  "common.department",
-  "common.stage_level",
-  "common.eligibility",
-  "common.applicants",
-  "common.age_criteria",
-  "common.vacancy",
-  "how_to_fill_the_form",
-  "important_dates",
-  "important_links",
-  "application_fee",
-];
 
 const rearrangeObjectByPriority = (
   data: ILatestJob,

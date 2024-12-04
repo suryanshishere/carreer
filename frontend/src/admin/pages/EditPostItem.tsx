@@ -1,5 +1,5 @@
 import { IPostDetail } from "models/postModels/IPostDetail";
-import DetailItem from "post/components/DetailItem";
+import DetailItem from "post/components/postDetailItem/PostDetailItem";
 import DetailItemHeader from "post/components/DetailItemHeader";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";

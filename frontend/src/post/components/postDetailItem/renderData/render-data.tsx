@@ -1,4 +1,4 @@
-import {  tableRequired } from "post/components/DetailItem";
+import { tableRequired } from "../post-render-define";
 import { renderTable } from "./render-table";
 import { renderObject } from "./render-object";
 import { renderArrayTable } from "./render-array-table";

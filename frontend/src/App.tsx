@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import HomePage from "post/pages/Home";
-import Detail from "post/pages/PostDetail";
+import Detail from "post/pages/postDetail/PostDetail";
 import Section from "post/pages/Section";
 import ContactUs from "shared/pages/contactUs/ContactUs";
 import NotFound from "./shared/pages/NotFound";

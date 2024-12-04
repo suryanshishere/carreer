@@ -6,7 +6,7 @@ import DeactivateAccount from "user/pages/account/setting/DeactivateAccount";
 import Setting from "user/pages/account/setting/Setting";
 import ResetPassword from "user/pages/auth/ResetPassword";
 import Section from "post/pages/Section";
-import Detail from "post/pages/PostDetail";
+import Detail from "post/pages/postDetail/PostDetail";
 import Home from "post/pages/Home";
 import publisherRoutes from "./publisher-routes";
 

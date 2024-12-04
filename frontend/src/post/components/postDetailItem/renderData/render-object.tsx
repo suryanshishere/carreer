@@ -3,7 +3,7 @@ import { ICommon } from "models/postModels/overallInterfaces/ICommon";
 import { IDates } from "models/postModels/overallInterfaces/IDates";
 import { IFees } from "models/postModels/overallInterfaces/IFees";
 import { ILinks } from "models/postModels/overallInterfaces/ILinks";
-import { excludedKeys } from "post/components/DetailItem";
+import { excludedKeys } from "../post-render-define";
 import { renderValue } from "./render-data";
 import { renderDateStrNum } from "./render-date-str-num";
 
