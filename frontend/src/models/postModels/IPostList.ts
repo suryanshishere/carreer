@@ -32,4 +32,3 @@ export type IPostList = Array<
     )
 >;
 
-//info: select will be merge in list or detail so not need here. while not need for list/detail in case of overall

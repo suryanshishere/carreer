@@ -1,7 +1,7 @@
 import React from "react";
 import { startCase } from "lodash";
 import { renderValue } from "./renderData/render-data";
-import { excludedKeys } from "./post-render-define";
+import { excludedKeys } from "../../post-render-define";
 import { IPostDetail } from "models/postModels/IPostDetail";
 
 interface DetailItemProps {

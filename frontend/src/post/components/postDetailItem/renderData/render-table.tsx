@@ -1,11 +1,11 @@
 import moment from "moment";
-import { excludedKeys } from "../post-render-define";
+import { excludedKeys } from "../../../post-render-define";
 import { ICommon } from "models/postModels/overallInterfaces/ICommon";
 import { IDates } from "models/postModels/overallInterfaces/IDates";
 import { IFees } from "models/postModels/overallInterfaces/IFees";
 import { ILinks } from "models/postModels/overallInterfaces/ILinks";
 import { startCase } from "lodash";
-import { renderDateStrNum } from "../../../../shared/ui/render-date-str-num";
+import { renderDateStrNum } from "../../../../shared/quick/render-date-str-num";
 import { bgColors } from "./render-array-table";
 
 export const renderTable = (value: any, key: string) => {

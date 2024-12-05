@@ -46,8 +46,6 @@ export type Models = {
   [key: string]: PostModel;
 };
 
-
-
 export const MODEL_DATA: Models = {
   result: Result,
   admit_card: AdmitCard,

@@ -1,33 +1,84 @@
 import React from "react";
-// import Bookmark from "../utils/Bookmark";
 import { Link } from "react-router-dom";
 import { IPostList } from "models/postModels/IPostList";
-// import Delete from "../utils/Delete";
-import "./List.css";
 import Bookmark from "shared/components/Bookmark";
-import { renderDateStrNum } from "./render-date-str-num";
-// import { startCase } from "lodash";
+import { renderDateStrNum } from "../quick/render-date-str-num";
+import flattenToLastKeys from "shared/quick/flatten-object";
+import { startCase } from "lodash";
+import { excludedKeys } from "post/post-render-define";
 
 interface ListProps {
   data: IPostList;
   section: string;
 }
 
-//since, same this list component can be used by various other page like saved, category.
-
 const CATEGORY_LIMIT =
   Number(process.env.REACT_APP_NUMBER_OF_POST_CATEGORYLIST) || 25;
 
 const List: React.FC<ListProps> = ({ data, section }) => {
+  const rearrangedData = data.map((item) =>
+    flattenToLastKeys(item, ["important_dates"])
+  );
+
+  const renderObject = (obj: Record<string, any>) => {
+    return Object.entries(obj)
+      .filter(
+        ([key]) => !excludedKeys.includes(key) && key !== "name_of_the_post"
+      )
+      .map(([key, value]) => {
+        // Check if the value is an object and not the last-level object
+        if (typeof value === "object" && value !== null) {
+          // If value is a nested object, check its entries
+          const nestedEntries = Object.entries(value);
+
+          // If the nested object is the last level (doesn't contain any other nested objects)
+          if (
+            nestedEntries.every(
+              ([_, nestedValue]) =>
+                typeof nestedValue !== "object" || nestedValue === null
+            )
+          ) {
+            return (
+              <span key={key}>
+                <span className="text-custom-less-gray text-sm">
+                  {startCase(key)}:
+                </span>
+                <span className="pl-2">{renderObject(value)}</span>
+              </span>
+            );
+          } else {
+            return (
+              <span key={key}>
+                {renderObject(value)} {/* Recursively render nested values */}
+              </span>
+            );
+          }
+        } else {
+          // Directly render key-value pair for non-object values
+          return (
+            <span key={key} className="text-custom-less-gray text-sm mr-2">
+              <span className=" whitespace-nowrap">
+                <span>{startCase(key)}:</span>
+                <span className="text-custom-black ml-1">
+                  {renderDateStrNum(value)}
+                </span>
+              </span>
+              <span> </span> {/* Add a space for separation */}
+            </span>
+          );
+        }
+      });
+  };
+
   return (
     <ul className="w-full self-start p-0 m-0 text-base">
-      {data.map((item, index) => (
+      {(rearrangedData as IPostList).map((item, index) => (
         <React.Fragment key={item._id}>
           <li className="w-fit flex flex-col">
             <div className="flex gap-2 items-center">
               <Link
                 to={`/sections/${section}/${item._id}?is_saved=${item.is_saved}`}
-                className="text-custom-red underline decoration-1 underline-offset-2 hover:decoration-custom-gray"
+                className="text-custom-red underline decoration-1 underline-offset-2 hover:text-custom-blue"
               >
                 {item.name_of_the_post}
               </Link>
@@ -39,16 +90,7 @@ const List: React.FC<ListProps> = ({ data, section }) => {
                 />
               </div>
             </div>
-
-            <h5 className="text-custom-less-gray no-whitespace-nowrap w-fit flex gap-1 text-sm pt-1 pl-2">
-              Last Updated:{" "}
-              <span className="text-custom-black">
-                {renderDateStrNum(item.updatedAt)}
-              </span>
-            </h5>
-            {/* <p className="text-custom-less-gray no-whitespace-nowrap w-fit flex gap-1 text-sm pt-1 pl-2">
-             {renderDateStrNum(item.short_information)}
-            </p> */}
+            <div className="pl-2">{renderObject(item)}</div>
           </li>
           {index !== data.length - 1 && (
             <hr className="w-full border-t-1 border-custom-less-gray" />

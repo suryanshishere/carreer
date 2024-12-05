@@ -53,7 +53,7 @@ const Section: React.FC = () => {
   });
 
   if (queryStateMessage) return queryStateMessage;
-  console.log(data.data);
+
   return (
     <div className="flex gap-3">
       {Object.keys(data.data).map((key) => (

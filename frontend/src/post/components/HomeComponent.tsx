@@ -42,7 +42,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                 </div>
                 <Link
                   to={`/sections/${section}/${item._id}?is_saved=${item.is_saved}`}
-                  className="text-custom-red underline decoration-1 underline-offset-2 hover:decoration-custom-gray"
+                  className="text-custom-red underline decoration-1 underline-offset-2 hover:text-custom-blue"
                 >
                   {item.name_of_the_post}
                 </Link>

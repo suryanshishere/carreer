@@ -10,6 +10,7 @@ const resultSchema = new Schema<IResultDetail>({
   result: CategoryWiseVacancySchema,
   common: { type: Types.ObjectId, ref: "Common" },
   important_links: { type: Types.ObjectId, ref: "Link" },
+  important_dates: { type: Types.ObjectId, ref: "Date" },
 });
 
 resultSchema.add(commonDataSchema);
@@ -18,10 +19,10 @@ export { resultSchema };
 const ResultModel = mongoose.model("Result", resultSchema);
 export default ResultModel;
 
-
 export interface IResultDetail extends ICommonDetailData {
   how_to_download_result?: string;
   result?: ICommonCategoryWise;
   common?: ObjectId;
   important_links?: Types.ObjectId;
+  important_dates?: Types.ObjectId;
 }

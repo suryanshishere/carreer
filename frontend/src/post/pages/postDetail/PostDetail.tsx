@@ -7,9 +7,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import Bookmark from "shared/components/Bookmark";
 import PostDetailItem from "post/components/postDetailItem/PostDetailItem";
-import rearrangeObjectByPriority, { priorityMap } from "./post-priority-order";
+import rearrangeObjectByPriority, {
+  priorityMapping,
+} from "./post-priority-order";
 import { snakeCase } from "lodash";
 import { IPostDetail } from "models/postModels/IPostDetail";
+import { postDetailPriorities } from "./post-priority-array";
 
 const fetchPostDetail = async (
   section: string,
@@ -56,8 +59,10 @@ const PostDetail: React.FC = () => {
 
   const orderData = rearrangeObjectByPriority(
     data.data as IPostDetail,
-    priorityMap[snakeCase(section)]
+    //todo: improve the system
+    priorityMapping(postDetailPriorities)[snakeCase(section)]
   );
+  console.log(orderData)
 
   return (
     <div className="flex flex-col items-center">

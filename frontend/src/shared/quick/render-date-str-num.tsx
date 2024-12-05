@@ -7,7 +7,7 @@ export const renderDateStrNum = (value: any, key?: string) => {
         href={value}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-custom-red underline font-bold"
+        className="text-custom-red underline whitespace-nowrap font-semibold hover:text-custom-blue"
       >
         Click here
       </a>
@@ -16,14 +16,14 @@ export const renderDateStrNum = (value: any, key?: string) => {
 
   if (value && typeof value === "string" && value.includes("//")) {
     return (
-      <>
+      <p>
         {value.split("//").map((part, index) => (
           <span key={index}>
             {part}
             {index !== value.split("//").length - 1 && <br />}
           </span>
         ))}
-      </>
+      </p>
     );
   }
 
@@ -39,9 +39,5 @@ export const renderDateStrNum = (value: any, key?: string) => {
     return <>{value}</>;
   }
 
-  if ( value && typeof value !== "number") {
-    return <>{value.toString()}</>;
-  }
-
-  return null;
+  return value.toString();
 };

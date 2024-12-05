@@ -1,4 +1,4 @@
-export const latest_job_priority = [
+ const latest_job_priority = [
   "name_of_the_post",
   "common.short_information",
   "common.department",
@@ -13,7 +13,7 @@ export const latest_job_priority = [
   "application_fee",
 ];
 
-export const result_priority = [
+ const result_priority = [
   "name_of_the_post",
   "common.short_information",
   "common.department",
@@ -25,7 +25,7 @@ export const result_priority = [
   "common.vacancy",
 ];
 
-export const admit_card_priority = [
+ const admit_card_priority = [
   "name_of_the_post",
   "common.short_information",
   "common.department",
@@ -37,7 +37,7 @@ export const admit_card_priority = [
   "important_links",
 ];
 
-export const answer_key_priority = [
+ const answer_key_priority = [
   "name_of_the_post",
   "common.short_information",
   "common.department",
@@ -49,7 +49,7 @@ export const answer_key_priority = [
   "common.vacancy",
 ];
 
-export const admission_priority = [
+ const admission_priority = [
   "name_of_the_post",
   "common.short_information",
   "common.department",
@@ -59,7 +59,7 @@ export const admission_priority = [
   "important_links",
 ];
 
-export const certificate_verification_priority = [
+ const certificate_verification_priority = [
   "name_of_the_post",
   "common.short_information",
   "common.department",
@@ -67,7 +67,7 @@ export const certificate_verification_priority = [
   "important_links",
 ];
 
-export const important_priority = [
+ const important_priority = [
   "name_of_the_post",
   "common.short_information",
   "common.department",
@@ -77,7 +77,7 @@ export const important_priority = [
   "important_links",
 ];
 
-export const syllabus_priority = [
+const syllabus_priority = [
   "name_of_the_post",
   "common.short_information",
   "common.department",
@@ -86,3 +86,14 @@ export const syllabus_priority = [
   "important_dates",
   "important_links",
 ];
+
+export const postDetailPriorities: { [key: string]: string[] } = {
+  latest_job_priority,
+  result_priority,
+  admit_card_priority,
+  answer_key_priority,
+  admission_priority,
+  certificate_verification_priority,
+  important_priority,
+  syllabus_priority,
+};
