@@ -12,7 +12,11 @@ import { useSelector } from "react-redux";
 const fetchCategoryPostList = async (
   section: string,
   token?: string
-): Promise<IPostList> => {
+): Promise<{
+  data: {
+    [key: string]: IPostList;
+  };
+}> => {
   const { data } = await axiosInstance.get(`/public/sections/${section}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -28,7 +32,14 @@ const Section: React.FC = () => {
     data = { data: {} },
     isLoading,
     error,
-  } = useQuery<IPostList, Error>({
+  } = useQuery<
+    {
+      data: {
+        [key: string]: IPostList;
+      };
+    },
+    Error
+  >({
     queryKey: ["categoryPostList", section],
     queryFn: () => fetchCategoryPostList(section, token),
     enabled: Boolean(section),
@@ -42,11 +53,11 @@ const Section: React.FC = () => {
   });
 
   if (queryStateMessage) return queryStateMessage;
-
+  console.log(data.data);
   return (
     <div className="flex gap-3">
       {Object.keys(data.data).map((key) => (
-        <List key={key} currentRecords={data.data[key] || []} section={key} />
+        <List key={key} data={data.data[key] || []} section={key} />
       ))}
     </div>
   );

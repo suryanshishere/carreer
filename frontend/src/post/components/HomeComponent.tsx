@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IPostListData } from "models/postModels/IPostList";
+import { IPostList } from "models/postModels/IPostList";
 import { startCase } from "lodash";
 import Bookmark from "shared/components/Bookmark";
 
 interface HomeListItemProps {
-  ListItemData: IPostListData[];
+  ListItemData: IPostList;
   section: string;
   height?: string;
 }
@@ -33,9 +33,15 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
           {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
             <React.Fragment key={index}>
               <li className="w-full">
-                <Bookmark section={section} postId={item._id} isSaved={item.is_saved}/>
+                <div className="float-right">
+                  <Bookmark
+                    section={section}
+                    postId={item._id}
+                    isSaved={item.is_saved}
+                  />
+                </div>
                 <Link
-                  to={`/sections/${section}/${item._id}`}
+                  to={`/sections/${section}/${item._id}?is_saved=${item.is_saved}`}
                   className="text-custom-red underline decoration-1 underline-offset-2 hover:decoration-custom-gray"
                 >
                   {item.name_of_the_post}

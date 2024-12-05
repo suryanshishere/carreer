@@ -1,10 +1,10 @@
 import mongoose,{Types, ObjectId} from "mongoose";
-import commonDataSchema, { ICommonData } from "./section-common-data";
+import commonDataSchema, { ICommonDetailData } from "./section-common-data";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-const postImportantSchema = new Schema<IImportant>({
+const postImportantSchema = new Schema<IImportantDetail>({
   how_to_fill_the_form: { type: String },
   important_links: { type: Types.ObjectId, ref: "Link" },
   common: { type: Types.ObjectId, ref: "Common" },
@@ -20,7 +20,7 @@ const ImportantModel = mongoose.model("Important", postImportantSchema);
 export default ImportantModel;
 
 
-export interface IImportant extends ICommonData {
+export interface IImportantDetail extends ICommonDetailData {
   how_to_fill_the_form?: string;
   important_links?: ObjectId;
   common?: ObjectId;

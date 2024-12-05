@@ -1,5 +1,5 @@
 import mongoose, { Document, ObjectId } from "mongoose";
-import commonDataSchema, { ICommonData } from "./section-common-data";
+import commonDataSchema, { ICommonDetailData } from "./section-common-data";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
@@ -10,7 +10,7 @@ interface HowToFillForm extends Document {
   video_link: string | null;
 }
 
-export interface ILatestJob extends ICommonData {
+export interface ILatestJobDetail extends ICommonDetailData {
   how_to_fill_the_form?: HowToFillForm;
   common?: ObjectId;
   syllabus?: ObjectId;
@@ -26,7 +26,7 @@ const HowToFillFormSchema = new Schema<HowToFillForm>({
   video_link: { type: String, required: false },
 });
 
-const latestJobSchema = new Schema<ILatestJob>({
+const latestJobSchema = new Schema<ILatestJobDetail>({
   how_to_fill_the_form: HowToFillFormSchema,
   common: { type: ObjectId, ref: "Common" },
   important_dates: { type: ObjectId, ref: "Date" },

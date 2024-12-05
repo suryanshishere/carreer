@@ -62,7 +62,7 @@ const Bookmark: React.FC<IBookmark> = ({ section, postId, isSaved }) => {
   };
 
   return (
-    <div className="float-right flex items-center">
+    <div className="flex items-center">
       {isBookmarked ? (
         <button
           {...bookmarkButtonProps}

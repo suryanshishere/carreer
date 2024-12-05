@@ -7,7 +7,13 @@ import useQueryStates from "shared/hooks/query-states-hook";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
-const fetchHomePostList = async (token?: string): Promise<IPostList> => {
+const fetchHomePostList = async (
+  token?: string
+): Promise<{
+  data: {
+    [key: string]: IPostList;
+  };
+}> => {
   const { data } = await axiosInstance.get("/public/home", {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -29,7 +35,14 @@ const Home: React.FC = () => {
     data = { data: {} },
     isLoading,
     error,
-  } = useQuery<IPostList, Error>({
+  } = useQuery<
+    {
+      data: {
+        [key: string]: IPostList;
+      };
+    },
+    Error
+  >({
     queryKey: ["homePostList"],
     queryFn: () => fetchHomePostList(token),
     retry: 3,

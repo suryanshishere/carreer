@@ -1,12 +1,12 @@
 import React from "react";
 import axiosInstance from "shared/utils/api/axios-instance";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import Bookmark from "shared/components/Bookmark";
-import DetailItem from "post/components/postDetailItem/PostDetailItem";
+import PostDetailItem from "post/components/postDetailItem/PostDetailItem";
 import rearrangeObjectByPriority, { priorityMap } from "./post-priority-order";
 import { snakeCase } from "lodash";
 import { IPostDetail } from "models/postModels/IPostDetail";
@@ -33,6 +33,10 @@ const PostDetail: React.FC = () => {
     postId: string;
     section: string;
   }>();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const isSaved = params.get("is_saved");
+
   const {
     data = { data: {}, is_saved: false },
     isLoading,
@@ -57,10 +61,14 @@ const PostDetail: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center">
-      {/* <DetailItemHeader /> */}
-      {/* <h3>postId</h3> */}
-      <Bookmark section={section} postId={postId} isSaved={data.is_saved} />
-      {data && <DetailItem data={orderData as IPostDetail} />}
+      <div className="self-end">
+        <Bookmark
+          section={section}
+          postId={postId}
+          isSaved={isSaved === "true" || data.is_saved}
+        />
+      </div>
+      {data && <PostDetailItem data={orderData as IPostDetail} />}
     </div>
   );
 };

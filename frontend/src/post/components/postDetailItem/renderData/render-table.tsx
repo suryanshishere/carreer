@@ -5,7 +5,7 @@ import { IDates } from "models/postModels/overallInterfaces/IDates";
 import { IFees } from "models/postModels/overallInterfaces/IFees";
 import { ILinks } from "models/postModels/overallInterfaces/ILinks";
 import { startCase } from "lodash";
-import { renderDateStrNum } from "./render-date-str-num";
+import { renderDateStrNum } from "../../../../shared/ui/render-date-str-num";
 import { bgColors } from "./render-array-table";
 
 export const renderTable = (value: any, key: string) => {

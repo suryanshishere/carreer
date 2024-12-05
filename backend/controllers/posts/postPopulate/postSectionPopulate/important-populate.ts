@@ -3,3 +3,6 @@ export const importantPopulate = [
   { path: "important_dates", select: "additional_resources" },
   { path: "important_links", select: "official_website additional_resources" },
 ];
+
+export const importantListPopulate = [  { path: "important_dates", select: "additional_resources" },
+  { path: "important_links", select: "official_website additional_resources" },];

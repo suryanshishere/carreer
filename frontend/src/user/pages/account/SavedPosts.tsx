@@ -1,4 +1,4 @@
-import { IPostListData } from "models/postModels/IPostList";
+import { IPostList } from "models/postModels/IPostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
@@ -7,7 +7,7 @@ import { RootState } from "shared/store";
 
 const fetchSavedPosts = async (
   token: string = ""
-): Promise<IPostListData[]> => {
+): Promise<IPostList> => {
   const response = await axiosInstance.get("user/account/post/saved-posts", {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -23,7 +23,7 @@ const SavedPosts = () => {
     data = {},
     isLoading,
     error,
-  } = useQuery<IPostListData[], Error>({
+  } = useQuery<IPostList, Error>({
     queryKey: ["savedPosts"],
     queryFn: () => fetchSavedPosts(token),
   });

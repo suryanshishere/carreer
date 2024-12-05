@@ -13,3 +13,11 @@ export const latestJobPopulate = [
     select: "-approved",
   },
 ];
+
+export const latestJobListPopulate = [  {
+  path: "important_links",
+  select:
+    "apply_online register_now official_website download_sample_papers additional_resources",
+},
+{ path: "important_dates" },
+{ path: "application_fee" },];

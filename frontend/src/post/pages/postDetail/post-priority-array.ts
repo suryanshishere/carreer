@@ -33,6 +33,7 @@ export const admit_card_priority = [
   "common.applicants",
   "how_to_download_admit_card",
   "important_dates",
+  "syllabus",
   "important_links",
 ];
 

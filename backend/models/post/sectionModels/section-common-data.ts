@@ -1,6 +1,6 @@
 import { Document, ObjectId, Schema, Types } from "mongoose";
 
-export interface ICommonData extends Document {
+export interface ICommonDetailData extends Document {
   createdAt: Date;
   updatedAt: Date;
   created_by: ObjectId;
@@ -9,7 +9,7 @@ export interface ICommonData extends Document {
   name_of_the_post: string;
 }
 
-const commonDataSchema = new Schema<ICommonData>(
+const commonDataSchema = new Schema<ICommonDetailData>(
   {
     created_by: { type: Types.ObjectId, ref: "User", required: true },
     contributors: [{ type: Types.ObjectId, ref: "User" }],

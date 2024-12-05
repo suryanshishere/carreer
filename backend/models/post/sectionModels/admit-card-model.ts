@@ -1,10 +1,10 @@
 import mongoose, { Types } from "mongoose";
-import commonDataSchema, { ICommonData } from "./section-common-data";
+import commonDataSchema, { ICommonDetailData } from "./section-common-data";
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-const admitCardSchema = new Schema<IAdmitCard>({
+const admitCardSchema = new Schema<IAdmitCardDetail>({
   how_to_download_admit_card: { type: String },
   syllabus: { type: ObjectId, ref: "Syllabus" },
   common: { type: ObjectId, ref: "Common" },
@@ -20,7 +20,7 @@ const AdmitCardModel = mongoose.model("AdmitCard", admitCardSchema);
 
 export default AdmitCardModel;
 
-export interface IAdmitCard extends ICommonData {
+export interface IAdmitCardDetail extends ICommonDetailData {
   how_to_download_admit_card?: string;
   syllabus?: Types.ObjectId;
   common?: Types.ObjectId;

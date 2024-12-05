@@ -1,6 +1,5 @@
 import { IPostDetail } from "models/postModels/IPostDetail";
 import DetailItem from "post/components/postDetailItem/PostDetailItem";
-import DetailItemHeader from "post/components/DetailItemHeader";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -46,7 +45,7 @@ const EditPostItem = () => {
 
   return (
     <div className="detail_page_sec flex flex-col items-center">
-      <DetailItemHeader />
+      {/* <DetailItemHeader /> */}
       {/* {data && <DetailItem detailPageData={data} />} */}
     </div>
   );

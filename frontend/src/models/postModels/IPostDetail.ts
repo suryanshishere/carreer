@@ -1,18 +1,18 @@
-import { IAdmission } from "./sectionInterfaces/IAdmission";
-import { IAdmitCard } from "./sectionInterfaces/IAdmitCard";
-import { IAnswerKey } from "./sectionInterfaces/IAnswerKey";
-import { ICertificateVerification } from "./sectionInterfaces/ICertificateVerification";
-import { IImportant } from "./sectionInterfaces/IImportant";
-import { ILatestJob } from "./sectionInterfaces/ILatestJob";
-import { IResult } from "./sectionInterfaces/IResult";
-import { ISyllabus } from "./sectionInterfaces/ISyllabus";
+import { IAdmissionDetail } from "./sectionInterfaces/sectionDetailInterfaces/IAdmissionDetail";
+import { IAdmitCardDetail } from "./sectionInterfaces/sectionDetailInterfaces/IAdmitCardDetail";
+import { IAnswerKeyDetail } from "./sectionInterfaces/sectionDetailInterfaces/IAnswerKeyDetail";
+import { ICertificateVerificationDetail } from "./sectionInterfaces/sectionDetailInterfaces/ICertificateVerificationDetail";
+import { IImportantDetail } from "./sectionInterfaces/sectionDetailInterfaces/IImportantDetail";
+import { ILatestJobDetail } from "./sectionInterfaces/sectionDetailInterfaces/ILatestJobDetail";
+import { IResultDetail } from "./sectionInterfaces/sectionDetailInterfaces/IResultDetail";
+import { ISyllabusDetail } from "./sectionInterfaces/sectionDetailInterfaces/ISyllabusDetail";
 
 export type IPostDetail =
-  | ILatestJob
-  | IResult
-  | IAdmitCard
-  | ISyllabus
-  | IImportant
-  | ICertificateVerification
-  | IAnswerKey
-  | IAdmission;
+  | ILatestJobDetail
+  | IResultDetail
+  | IAdmitCardDetail
+  | ISyllabusDetail
+  | IImportantDetail
+  | ICertificateVerificationDetail
+  | IAnswerKeyDetail
+  | IAdmissionDetail;

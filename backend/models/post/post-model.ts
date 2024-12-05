@@ -34,6 +34,15 @@ const sectionFields = sections.reduce((fields, section) => {
   return fields;
 }, {} as Record<string, { exist: { type: BooleanConstructor; default: boolean }; approved: SchemaTypeOptions<boolean> }>);
 
+const createdByFields = sections.reduce((fields, section) => {
+  fields[section] = {
+    type: Schema.Types.ObjectId,
+    ref: "User", // Replace "User" with the name of your user model if different.
+    required: false,
+  };
+  return fields;
+}, {} as Record<string, { type: typeof Schema.Types.ObjectId; ref: string; required: boolean }>);
+
 const postSchema = new Schema({
   post_code: {
     type: String,
@@ -43,6 +52,9 @@ const postSchema = new Schema({
   },
   sections: {
     type: new Schema(sectionFields, { _id: false }),
+  },
+  created_by: {
+    type: new Schema(createdByFields, { _id: false }),
   },
 });
 

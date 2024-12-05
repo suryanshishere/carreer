@@ -1,6 +1,6 @@
 import { startCase } from "lodash";
 import { excludedKeys } from "../post-render-define";
-import { renderDateStrNum } from "./render-date-str-num";
+import { renderDateStrNum } from "../../../../shared/ui/render-date-str-num";
 
 export const bgColors = [
   "bg-red-100",

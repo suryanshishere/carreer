@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { IPostListData } from "models/postModels/IPostList";
+import { IPostList } from "models/postModels/IPostList";
 import List from "shared/ui/List";
 import Pagination from "shared/utils/postUtils/Pagination";
 import usePagination from "shared/hooks/pagination-hook";
 import "./SavedItem.css";
 
 interface SavedProps {
-  savedExamData: IPostListData[];
+  savedExamData: IPostList;
 }
 
 const SavedItem: React.FC<SavedProps> = ({ savedExamData }) => {
-  const [filteredData, setFilteredData] = useState<IPostListData[]>([]);
+  const [filteredData, setFilteredData] = useState<IPostList>([]);
 
   useEffect(() => {
     // Set filteredData initially
@@ -37,11 +37,8 @@ const SavedItem: React.FC<SavedProps> = ({ savedExamData }) => {
       ) : (
         <>
           <List
-            currentRecords={currentRecords}
+            data={currentRecords}
             section={""}
-            showBookmark={false}
-            showCategory={true}
-            showDelete={true}
             // onSavedDelete={savedDeleteHandler}
           />
           {filteredData.length !== 0 && (

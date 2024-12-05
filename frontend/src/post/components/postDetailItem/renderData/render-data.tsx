@@ -2,7 +2,7 @@ import { tableRequired } from "../post-render-define";
 import { renderTable } from "./render-table";
 import { renderObject } from "./render-object";
 import { renderArrayTable } from "./render-array-table";
-import { renderDateStrNum } from "./render-date-str-num";
+import { renderDateStrNum } from "../../../../shared/ui/render-date-str-num";
 
 export const renderValue = (value: any, key: string) => {
   if (

@@ -1,5 +1,5 @@
 
-export interface ICommonData extends Document {
+export interface ICommonDetailData {
     createdAt: string;
     updatedAt: string;
     created_by: string;

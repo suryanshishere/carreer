@@ -5,7 +5,7 @@ import { IFees } from "models/postModels/overallInterfaces/IFees";
 import { ILinks } from "models/postModels/overallInterfaces/ILinks";
 import { excludedKeys } from "../post-render-define";
 import { renderValue } from "./render-data";
-import { renderDateStrNum } from "./render-date-str-num";
+import { renderDateStrNum } from "../../../../shared/ui/render-date-str-num";
 
 export const renderObject = (value: any, key: string) => (
   <div className="w-full flex flex-col gap-4 pt-3 pl-4 ">
