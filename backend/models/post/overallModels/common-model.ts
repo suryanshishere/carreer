@@ -58,7 +58,7 @@ const ApplicantsSchema: Schema = new Schema({
 });
 
 // ICommon Schema
-const commonSchema: Schema = new Schema<ICommon>(
+export const commonSchema: Schema = new Schema<ICommon>(
   {
     created_by: { type: Types.ObjectId, ref: "User", required: true },
     contributors: [{ type: Types.ObjectId, ref: "User" }],
@@ -86,7 +86,7 @@ const commonSchema: Schema = new Schema<ICommon>(
       enum: ["online", "offline_paper_based", "offline_computer_based"],
       required: false,
     },
-    applicants_gender: {
+    applicants_gender_that_can_apply: {
       type: String,
       enum: ["male", "female", "both"],
       required: false,
@@ -94,8 +94,6 @@ const commonSchema: Schema = new Schema<ICommon>(
   },
   { timestamps: true }
 );
-
-export { commonSchema };
 
 // Export the model
 const CommonModel = mongoose.model("Common", commonSchema);
@@ -175,5 +173,5 @@ interface ICommon {
     other_qualification?: string;
   };
   post_exam_mode?: "online" | "offline_paper_based" | "offline_computer_based";
-  applicants_gender?: "male" | "female" | "both";
+  applicants_gender_that_can_apply?: "male" | "female" | "both";
 }

@@ -47,16 +47,9 @@ export const createNewPost = async (
     const postInPostModel = await PostModel.findById(postId);
 
     if (postInPostModel) {
-      const updatedSections = {
-        ...postInPostModel.sections,
-        [section]: {
-          exist: true,
-          approved: false,
-        },
-      };
       await PostModel.updateOne(
         { _id: postId },
-        { $set: { sections: updatedSections } }
+        { $set: { [`sections.${section}`]: { exist: true, approved: false } } }
       );
     } else {
       const newPostInPostModel = new PostModel({
@@ -74,6 +67,7 @@ export const createNewPost = async (
 
     return res.status(201).json({ message: "Created new post successfully!" });
   } catch (error) {
+    console.log(error);
     return next(new HttpError("Error occurred while creating new post.", 500));
   }
 };

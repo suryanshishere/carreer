@@ -14,10 +14,14 @@ export const latestJobPopulate = [
   },
 ];
 
-export const latestJobListPopulate = [  {
-  path: "important_links",
-  select:
-    "apply_online register_now official_website download_sample_papers additional_resources",
-},
-{ path: "important_dates" },
-{ path: "application_fee" },];
+export const latestJobListPopulate = [
+  {
+    path: "important_links",
+    select: "apply_online register_now official_website",
+  },
+  {
+    path: "important_dates",
+    select:
+      "application_start_date application_end_date exam_date",
+  }
+];

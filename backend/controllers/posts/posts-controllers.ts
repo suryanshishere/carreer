@@ -1,6 +1,9 @@
 import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
-import { sectionDetailPopulateModels, MODEL_DATA } from "./postPopulate/posts-populate";
+import {
+  sectionDetailPopulateModels,
+  MODEL_DATA,
+} from "./postPopulate/posts-populate";
 import { Request } from "express-jwt";
 import { snakeCase } from "lodash";
 import { JWTRequest } from "@middleware/check-auth";
@@ -30,13 +33,14 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
     const savedPost = user?.saved_posts || null;
 
     const dataPromises = Object.keys(MODEL_DATA).map(async (key: string) => {
-      const savedField = `${snakeCase(key)}_ref`;
+      const snakeKey = snakeCase(key);
+      const savedField = `${snakeKey}_ref`;
       const savedIds = savedPost?.[savedField]?.map(String) || [];
-      const posts = await fetchPostList(snakeCase(key));
+      const posts = await fetchPostList(snakeKey, false);
 
       //todo: improve error handling
       return {
-        [snakeCase(key)]: posts?.map(({ _id, ...rest }) => ({
+        [snakeKey]: posts?.map(({ _id, ...rest }) => ({
           _id,
           is_saved: savedIds.includes(String(_id)),
           ...rest,

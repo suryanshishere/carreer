@@ -17,6 +17,7 @@ const CATEGORY_LIMIT =
   Number(process.env.REACT_APP_NUMBER_OF_POST_CATEGORYLIST) || 25;
 
 const List: React.FC<ListProps> = ({ data, section }) => {
+  console.log(data)
   const renderObject = (obj: Record<string, any>) => {
     return Object.entries(obj)
       .filter(([key]) => !excludedPostListKeys.includes(key))
@@ -86,7 +87,7 @@ const List: React.FC<ListProps> = ({ data, section }) => {
               </div>
             </div>
             <span className="text-custom-less-gray text-sm mr-2">
-              <span className=" whitespace-nowrap">
+              <span className="bg-custom-pale-yellow px-1 whitespace-nowrap">
                 <span>Updated At:</span>
                 <span className="text-custom-black ml-1">
                   {renderDateStrNum(item.updatedAt)}

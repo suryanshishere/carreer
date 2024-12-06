@@ -3,4 +3,6 @@ export const excludedPostListKeys = [
   "name_of_the_post",
   "updatedAt",
   "is_saved",
+  "approved",
+  "contributors"
 ];

@@ -1,5 +1,5 @@
 import React from "react";
-import List from "post/components/List";
+import PostList from "post/components/List";
 import { IPostList } from "models/postModels/IPostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
@@ -57,7 +57,7 @@ const Section: React.FC = () => {
   return (
     <div className="flex gap-3">
       {Object.keys(data.data).map((key) => (
-        <List key={key} data={data.data[key] || []} section={key} />
+        <PostList key={key} data={data.data[key] || []} section={key} />
       ))}
     </div>
   );

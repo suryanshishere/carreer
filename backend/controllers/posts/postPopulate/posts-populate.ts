@@ -1,6 +1,6 @@
 import Admission from "@models/post/sectionModels/admission-model";
 import AdmitCard from "@models/post/sectionModels/admit-card-model";
-import CertificateVerification from "@models/post/sectionModels/certificate-verification-model";
+import CertificateVerificationModel from "@models/post/sectionModels/certificate-verification-model";
 import Important from "@models/post/sectionModels/important-model";
 import LatestJob from "@models/post/sectionModels/latest-job-model";
 import Result from "@models/post/sectionModels/result-model";
@@ -52,7 +52,7 @@ export const MODEL_DATA: Models = {
   latest_job: LatestJob,
   syllabus: Syllabus,
   answer_key: AnswerKey,
-  certificate_verification: CertificateVerification,
+  certificate_verification: CertificateVerificationModel,
   important: Important,
   admission: Admission,
 };

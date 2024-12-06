@@ -16,7 +16,7 @@ export const answerKeyPopulate = [
   export const answerKeyListPopulate = [{
     path: "important_dates",
     select:
-      "answer_key_release_date result_announcement_date counseling_start_date counseling_end_date counseling_result_announcement_date",
+      "answer_key_release_date result_announcement_date",
   },
   {
     path: "important_links",

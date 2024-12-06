@@ -4,12 +4,16 @@ import {
   sectionPostListSelect,
 } from "./postSelect/sectionPostListSelect";
 
-export const fetchPostList = async (section: string) => {
+export const fetchPostList = async (
+  section: string,
+  includePopulate: boolean = true
+) => {
   const model = MODEL_DATA[section];
   if (!model) {
     return null;
   }
 
+  // Combine select fields
   const selectFields = [
     COMMON_SELECT_FIELDS,
     sectionPostListSelect[section] || "",
@@ -17,12 +21,17 @@ export const fetchPostList = async (section: string) => {
     .filter(Boolean)
     .join(" ");
 
-  const posts = await model
+  let query = model
     .find({ approved: true })
-    .sort({ last_updated: -1 })
-    .select(selectFields)
-    .populate(sectionListPopulate[section])
-    .exec();
+    .sort({ updatedAt: -1 })
+    .select(selectFields);
+
+  // Conditionally add population logic
+  if (includePopulate && sectionListPopulate[section]) {
+    query = query.populate(sectionListPopulate[section]);
+  }
+
+  const posts = await query.exec();
 
   // Return only the _doc part of each document
   return posts.map((post) => post._doc);
