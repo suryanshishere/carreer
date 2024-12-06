@@ -23,7 +23,6 @@ export const fetchPostList = async (
 
   let query = model
     .find({ approved: true })
-    .sort({ updatedAt: -1 })
     .select(selectFields);
 
   // Conditionally add population logic
@@ -32,6 +31,15 @@ export const fetchPostList = async (
   }
 
   const posts = await query.exec();
+
+  const currentDate = new Date();
+
+  // Sort by nearest to the current date
+  posts.sort((a, b) => {
+    const diffA = Math.abs(new Date(a.updatedAt).getTime() - currentDate.getTime());
+    const diffB = Math.abs(new Date(b.updatedAt).getTime() - currentDate.getTime());
+    return diffA - diffB;
+  });
 
   // Return only the _doc part of each document
   return posts.map((post) => post._doc);

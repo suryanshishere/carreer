@@ -1,4 +1,4 @@
-import mongoose, { ObjectId, Types } from "mongoose";
+import mongoose, { Types, Schema } from "mongoose";
 
 interface DateRange {
   current_year?: Date;
@@ -8,8 +8,8 @@ interface DateRange {
 interface IDates extends Document {
   createdAt: Date;
   updatedAt: Date;
-  created_by: ObjectId;
-  contributors?: ObjectId[];
+  created_by: Types.ObjectId;
+  contributors?: Types.ObjectId[];
   approved: boolean;
   application_start_date?: DateRange;
   application_end_date?: DateRange;
@@ -27,8 +27,6 @@ interface IDates extends Document {
   additional_resources?: string;
 }
 
-const { Schema } = mongoose;
-
 const DateRangeSchema = new mongoose.Schema({
   current_year: { type: Date },
   previous_year: { type: Date },
@@ -36,8 +34,8 @@ const DateRangeSchema = new mongoose.Schema({
 
 export const dateSchema = new Schema<IDates>(
   {
-    created_by: { type: Types.ObjectId, ref: "User", required: true },
-    contributors: [{ type: Types.ObjectId, ref: "User" }],
+    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
     approved: { type: Boolean, default: false, required: true },
     application_start_date: { type: DateRangeSchema },
     application_end_date: { type: DateRangeSchema },

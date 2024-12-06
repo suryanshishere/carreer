@@ -1,17 +1,35 @@
 import HttpError from "@utils/http-errors";
 import { Response, NextFunction, Request } from "express";
 import crypto from "crypto";
-import Result from "@models/post/sectionModels/result-model";
-import Admission from "@models/post/sectionModels/admission-model";
-import AdmitCard from "@models/post/sectionModels/admit-card-model";
-import AnswerKey from "@models/post/sectionModels/answer-key-model";
-import CertificateVerification from "@models/post/sectionModels/certificate-verification-model";
-import PostCommon from "@models/post/overallModels/common-model";
-import PostImportant from "@models/post/sectionModels/important-model";
-import LatestJob from "@models/post/sectionModels/latest-job-model";
-import Syllabus from "@models/post/sectionModels/syllabus-model";
-import { Model } from "mongoose";
+import { Model, Schema } from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
+import AnswerKeyModel, {
+  answerKeySchema,
+} from "@models/post/sectionModels/answer-key-model";
+import AdmitCardModel, {
+  admitCardSchema,
+} from "@models/post/sectionModels/admit-card-model";
+import AdmissionModel, {
+  admissionSchema,
+} from "@models/post/sectionModels/admission-model";
+import ResultModel, {
+  resultSchema,
+} from "@models/post/sectionModels/result-model";
+import CertificateVerificationModel, {
+  certificateVerificationSchema,
+} from "@models/post/sectionModels/certificate-verification-model";
+import CommonModel, {
+  commonSchema,
+} from "@models/post/overallModels/common-model";
+import ImportantModel, {
+  importantSchema,
+} from "@models/post/sectionModels/important-model";
+import LatestJobModel, {
+  latestJobSchema,
+} from "@models/post/sectionModels/latest-job-model";
+import SyllabusModel, {
+  syllabusSchema,
+} from "@models/post/sectionModels/syllabus-model";
 
 export const checkAuthorisedPublisher = async (
   req: Request,
@@ -32,13 +50,25 @@ export const postIdGeneration = async (postCode: string): Promise<string> => {
 };
 
 export const modelMap: { [key: string]: Model<any> } = {
-  result: Result,
-  admission: Admission,
-  admit_card: AdmitCard,
-  answer_key: AnswerKey,
-  certificate_verification: CertificateVerification,
-  post_common: PostCommon,
-  important: PostImportant,
-  latest_job: LatestJob,
-  syllabus: Syllabus,
+  result: ResultModel,
+  admission: AdmissionModel,
+  admit_card: AdmitCardModel,
+  answer_key: AnswerKeyModel,
+  certificate_verification: CertificateVerificationModel,
+  post_common: CommonModel,
+  important: ImportantModel,
+  latest_job: LatestJobModel,
+  syllabus: SyllabusModel,
+};
+
+export const schemaMap: { [key: string]: Schema<any> } = {
+  result: resultSchema,
+  admission: admissionSchema,
+  admit_card: admitCardSchema,
+  answer_key: answerKeySchema,
+  certificate_verification: certificateVerificationSchema,
+  post_common: commonSchema,
+  important: importantSchema,
+  latest_job: latestJobSchema,
+  syllabus: syllabusSchema,
 };

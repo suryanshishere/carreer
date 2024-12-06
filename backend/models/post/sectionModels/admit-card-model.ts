@@ -1,15 +1,12 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Types, Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./section-common-data";
-
-const { Schema } = mongoose;
-const { ObjectId } = Schema.Types;
 
 const admitCardSchema = new Schema<IAdmitCardDetail>({
   how_to_download_admit_card: { type: String },
-  syllabus: { type: ObjectId, ref: "Syllabus" },
-  common: { type: ObjectId, ref: "Common" },
-  important_dates: { type: ObjectId, ref: "Date" },
-  important_links: { type: ObjectId, ref: "Link" }
+  syllabus: { type: Schema.Types.ObjectId, ref: "Syllabus" },
+  common: { type: Schema.Types.ObjectId, ref: "Common"},
+  important_dates: { type: Schema.Types.ObjectId, ref: "Date" },
+  important_links: { type: Schema.Types.ObjectId, ref: "Link"},
 });
 
 admitCardSchema.add(commonDataSchema);

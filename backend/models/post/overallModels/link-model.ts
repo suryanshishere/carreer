@@ -1,4 +1,4 @@
-import { Schema, model, Document, ObjectId, Types } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
 interface AdditionalResources extends Document {
   faq: string;
@@ -9,8 +9,8 @@ interface AdditionalResources extends Document {
 interface ILinks extends Document {
   createdAt: Date;
   updatedAt: Date;
-  created_by: ObjectId;
-  contributors?: ObjectId[];
+  created_by: Types.ObjectId;
+  contributors?: Types.ObjectId[];
   approved: boolean;
   official_website?: string;
   apply_online?: string;
@@ -32,8 +32,8 @@ const AdditionalResourcesSchema = new Schema<AdditionalResources>({
 
 export const LinksSchema = new Schema<ILinks>(
   {
-    created_by: { type: Types.ObjectId, ref: "User", required: true },
-    contributors: [{ type: Types.ObjectId, ref: "User" }],
+    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
     approved: { type: Boolean, default: false, required: true },
     official_website: { type: String },
     apply_online: { type: String },

@@ -16,7 +16,7 @@ import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 // Schema validation with Yup
 const validationSchema = Yup.object().shape({
   post_id: Yup.string()
-    .length(24, "Post ID must be exactly 24 characters long") // MongoDB ObjectId length
+    .length(24, "Post ID must be exactly 24 characters long") // MongoDB Types.ObjectId length
     .required("Post ID is required"), // Required field
 });
 

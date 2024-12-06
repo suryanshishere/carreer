@@ -13,9 +13,9 @@ export interface IHowToFillForm  {
 export interface ILatestJobDetail extends ICommonDetailData {
   how_to_fill_the_form?: IHowToFillForm;
   common?: ICommon;
-  // syllabus?: ObjectId;
+  // syllabus?: Types.ObjectId;
   application_fee?: IFees;
   important_dates?: IDates;
   important_links?: ILinks;
-  // result_data?: ObjectId;
+  // result_data?: Types.ObjectId;
 }

@@ -61,16 +61,16 @@ const userSchema: Schema = new Schema<IUser>(
 
     // Saved posts
     saved_posts: {
-      answer_key_ref: [{ type: Types.ObjectId, ref: "AnswerKey" }],
-      admission_ref: [{ type: Types.ObjectId, ref: "Admission" }],
-      admit_card_ref: [{ type: Types.ObjectId, ref: "AdmitCard" }],
+      answer_key_ref: [{ type: Schema.Types.ObjectId, ref: "AnswerKey" }],
+      admission_ref: [{ type: Schema.Types.ObjectId, ref: "Admission" }],
+      admit_card_ref: [{ type: Schema.Types.ObjectId, ref: "AdmitCard" }],
       certificate_verification_ref: [
-        { type: Types.ObjectId, ref: "CertificateVerification" },
+        { type: Schema.Types.ObjectId, ref: "CertificateVerification" },
       ],
-      important_ref: [{ type: Types.ObjectId, ref: "Important" }],
-      latest_job_ref: [{ type: Types.ObjectId, ref: "LatestJob" }],
-      result_ref: [{ type: Types.ObjectId, ref: "Result" }],
-      syllabus_ref: [{ type: Types.ObjectId, ref: "Syllabus" }],
+      important_ref: [{ type: Schema.Types.ObjectId, ref: "Important" }],
+      latest_job_ref: [{ type: Schema.Types.ObjectId, ref: "LatestJob" }],
+      result_ref: [{ type: Schema.Types.ObjectId, ref: "Result" }],
+      syllabus_ref: [{ type: Schema.Types.ObjectId, ref: "Syllabus" }],
     },
   },
   { timestamps: true }

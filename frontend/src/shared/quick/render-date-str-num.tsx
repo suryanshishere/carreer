@@ -1,6 +1,8 @@
 import moment from "moment";
 
 export const renderDateStrNum = (value: any, key?: string) => {
+  if (!value) return "N/A";
+
   if (value && typeof value === "string" && value.startsWith("https://")) {
     return (
       <a

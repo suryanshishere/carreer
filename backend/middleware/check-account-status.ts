@@ -20,7 +20,7 @@ const checkAccountStatus = async (
     if (!user) {
       return next();
     }
-    req.user = user;
+    (req as JWTRequest).user = user;
     //todo: check for 30 days
     //append the res for deactivated account
     if (user && user.deactivated_at) {

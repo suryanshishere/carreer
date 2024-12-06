@@ -1,5 +1,4 @@
 import mongoose, { Schema, Types } from "mongoose";
-import { ObjectId } from "mongoose";
 
 // AgeCriteria Schema
 const AgeCriteriaSchema: Schema = new Schema({
@@ -60,8 +59,8 @@ const ApplicantsSchema: Schema = new Schema({
 // ICommon Schema
 export const commonSchema: Schema = new Schema<ICommon>(
   {
-    created_by: { type: Types.ObjectId, ref: "User", required: true },
-    contributors: [{ type: Types.ObjectId, ref: "User" }],
+    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
     approved: { type: Boolean, default: false, required: true },
     short_information: { type: String },
     highlighted_information: { type: String },
@@ -88,7 +87,7 @@ export const commonSchema: Schema = new Schema<ICommon>(
     },
     applicants_gender_that_can_apply: {
       type: String,
-      enum: ["male", "female", "both"],
+      enum: ["male", "female", "both", ],
       required: false,
     },
   },
@@ -148,8 +147,8 @@ export interface ICommonCategoryWise {
 interface ICommon {
   createdAt: Date;
   updatedAt: Date;
-  created_by: ObjectId;
-  contributors?: ObjectId[];
+  created_by: Types.ObjectId;
+  contributors?: Types.ObjectId[];
   approved: boolean;
   short_information?: string;
   highlighted_information?: string;

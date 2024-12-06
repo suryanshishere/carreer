@@ -9,6 +9,7 @@ import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import PostModel from "@models/post/post-model";
 import { JWTRequest } from "@middleware/check-auth";
+import postCreation from "./postCreation/postCreation";
 
 export const createNewPost = async (
   req: Request,
@@ -33,17 +34,30 @@ export const createNewPost = async (
         new HttpError(`No model found for the section: ${section}`, 400)
       );
     }
+
+    //section model creation if not found
     const post = await model.findById(postId);
     if (post) return next(new HttpError("Post already exist!", 400));
 
+    const dataJson = await postCreation(req, res, next);
+    const postObjectId = new mongoose.Types.ObjectId(postId);
+    //todo: also if the ref is there already, use there date especially to make up the updatedAt field
+    //todo: make the overall automatically when the very first got
     const newPost = new model({
-      _id: postId,
+      _id: postObjectId,
       name_of_the_post,
       created_by: new mongoose.Types.ObjectId(userId),
+      common: postObjectId,
+      approved: true,
+      important_dates: postObjectId,
+      important_links: postObjectId,
+      application_fee: postObjectId,
+      ...dataJson,
     });
 
     await newPost.save();
 
+    //post model update or creation
     const postInPostModel = await PostModel.findById(postId);
 
     if (postInPostModel) {

@@ -1,4 +1,4 @@
-import mongoose, { ObjectId, Schema, Types } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./section-common-data";
 import {
   ICommonCategoryWise,
@@ -8,9 +8,9 @@ import {
 const resultSchema = new Schema<IResultDetail>({
   how_to_download_result: { type: String },
   result: CategoryWiseVacancySchema,
-  common: { type: Types.ObjectId, ref: "Common" },
-  important_links: { type: Types.ObjectId, ref: "Link" },
-  important_dates: { type: Types.ObjectId, ref: "Date" },
+  common: { type: Schema.Types.ObjectId, ref: "Common" },
+  important_links: { type: Schema.Types.ObjectId, ref: "Link" },
+  important_dates: { type: Schema.Types.ObjectId, ref: "Date" },
 });
 
 resultSchema.add(commonDataSchema);
@@ -22,7 +22,7 @@ export default ResultModel;
 export interface IResultDetail extends ICommonDetailData {
   how_to_download_result?: string;
   result?: ICommonCategoryWise;
-  common?: ObjectId;
+  common?: Types.ObjectId;
   important_links?: Types.ObjectId;
   important_dates?: Types.ObjectId;
 }

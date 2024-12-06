@@ -55,7 +55,7 @@ const Section: React.FC = () => {
   if (queryStateMessage) return queryStateMessage;
 
   return (
-    <div className="flex gap-3">
+    <div className="flex flex-col gap-3">
       {Object.keys(data.data).map((key) => (
         <PostList key={key} data={data.data[key] || []} section={key} />
       ))}

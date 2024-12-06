@@ -1,4 +1,4 @@
-import mongoose, { ObjectId, Types, Schema } from "mongoose";
+import mongoose, { Types, Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./section-common-data";
 
 const syllabusDataSchema = new Schema<ISyllabusData>({
@@ -8,9 +8,9 @@ const syllabusDataSchema = new Schema<ISyllabusData>({
 
 const syllabusSchema = new Schema<ISyllabusDetail>({
   syllabus: { type: [syllabusDataSchema] },
-  important_links: { type: Types.ObjectId, ref: "Link" },
-  important_dates: { type: Types.ObjectId, ref: "Date" },
-  common: { type: Types.ObjectId, ref: "Common" },
+  important_links: { type: Schema.Types.ObjectId, ref: "Link"},
+  important_dates: { type: Schema.Types.ObjectId, ref: "Date" },
+  common: { type: Schema.Types.ObjectId, ref: "Common"},
 });
 
 syllabusSchema.add(commonDataSchema);
@@ -27,7 +27,7 @@ interface ISyllabusData {
 
 export interface ISyllabusDetail extends ICommonDetailData {
   syllabus?: ISyllabusData[];
-  important_links?: ObjectId;
-  important_dates?: ObjectId;
-  common?: ObjectId;
+  important_links?: Types.ObjectId;
+  important_dates?: Types.ObjectId;
+  common?: Types.ObjectId;
 }

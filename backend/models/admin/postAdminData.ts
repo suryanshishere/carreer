@@ -4,7 +4,7 @@
 // import { answerKeySchema } from "@models/post/sectionModel/answer-key";
 // import { certificateVerificationSchema } from "@models/post/sectionModel/certificate-verification-model";
 // import { postCommonSchema } from "@models/post/overallModel/common-model";
-// import { postImportantSchema } from "@models/post/sectionModel/important-model";
+// import { importantSchema } from "@models/post/sectionModel/important-model";
 // import { latestJobSchema } from "@models/post/sectionModel/latest-job-model";
 // import { resultSchema } from "@models/post/sectionModel/result-model";
 // import { syllabusSchema } from "@models/post/sectionModel/syllabus-model";
@@ -54,7 +54,7 @@
 
 // export const PostImportantAdminData = createAdminDataModel(
 //   "PostImportantAdminData",
-//   postImportantSchema
+//   importantSchema
 // );
 
 // export const LatestJobAdminData = createAdminDataModel(
