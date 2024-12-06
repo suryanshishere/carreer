@@ -1,12 +1,8 @@
 import mongoose, { Types } from "mongoose";
-import commonDataSchema, { ICommonDetailData } from "./section-common-data";
+import commonDataSchema, { ICommonDetailData } from "./common-section-data";
 import { Schema } from "mongoose";
 
-const admissionSchema = new Schema<IAdmissionDetail>({
-  common: { type: Schema.Types.ObjectId, ref: "Common"},
-  important_dates: { type: Schema.Types.ObjectId, ref: "Date" },
-  important_links: { type: Schema.Types.ObjectId, ref: "Link"},
-});
+const admissionSchema = new Schema<IAdmissionDetail>({});
 
 admissionSchema.add(commonDataSchema);
 
@@ -16,8 +12,4 @@ const AdmissionModel = mongoose.model("Admission", admissionSchema);
 
 export default AdmissionModel;
 
-export interface IAdmissionDetail extends ICommonDetailData {
-  common?: Types.ObjectId;
-  important_dates?: Types.ObjectId;
-  important_links?: Types.ObjectId;
-}
+export interface IAdmissionDetail extends ICommonDetailData {}

@@ -62,11 +62,11 @@ interface PopulateOption {
   select?: string;
 }
 
-interface sectionDetailPopulateModels {
+interface ISectionPopulateModels {
   [key: string]: PopulateOption[];
 }
 
-export const sectionDetailPopulateModels: sectionDetailPopulateModels = {
+export const sectionDetailPopulateModels: ISectionPopulateModels = {
   result: populateResult,
   admit_card: admitCardPopulate,
   latest_job: latestJobPopulate,
@@ -77,7 +77,7 @@ export const sectionDetailPopulateModels: sectionDetailPopulateModels = {
   admission: admissionPopulate,
 };
 
-export const sectionListPopulate: sectionDetailPopulateModels = {
+export const sectionListPopulate: ISectionPopulateModels = {
   result: resultListPopulate,
   admit_card: admitCardListPopulate,
   latest_job: latestJobListPopulate,

@@ -7,6 +7,10 @@ export interface ICommonDetailData extends Document {
   contributors?: Types.ObjectId[];
   approved: boolean;
   name_of_the_post: string;
+  important_links?: Types.ObjectId;
+  important_dates?: Types.ObjectId;
+  application_fee?: Types.ObjectId;
+  common?: Types.ObjectId;
 }
 
 const commonDataSchema = new Schema<ICommonDetailData>(
@@ -32,6 +36,10 @@ const commonDataSchema = new Schema<ICommonDetailData>(
       unique: true,
       required: true,
     },
+    important_links: { type: Schema.Types.ObjectId, ref: "Link" },
+    important_dates: { type: Schema.Types.ObjectId, ref: "Date" },
+    common: { type: Schema.Types.ObjectId, ref: "Common" },
+    application_fee: { type: Schema.Types.ObjectId, ref: "Fee" },
   },
   { timestamps: true }
 );

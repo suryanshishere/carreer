@@ -1,5 +1,5 @@
 import mongoose, { Document, Types, Schema } from "mongoose";
-import commonDataSchema, { ICommonDetailData } from "./section-common-data";
+import commonDataSchema, { ICommonDetailData } from "./common-section-data";
 
 interface HowToFillForm extends Document {
   registration: string;
@@ -9,12 +9,8 @@ interface HowToFillForm extends Document {
 
 export interface ILatestJobDetail extends ICommonDetailData {
   how_to_fill_the_form?: HowToFillForm;
-  common?: Types.ObjectId;
   syllabus?: Types.ObjectId;
-  application_fee?: Types.ObjectId;
-  important_dates?: Types.ObjectId;
-  important_links?: Types.ObjectId;
-  result_data?: Types.ObjectId;
+  // result_data?: Types.ObjectId;
 }
 
 const HowToFillFormSchema = new Schema<HowToFillForm>({
@@ -25,10 +21,6 @@ const HowToFillFormSchema = new Schema<HowToFillForm>({
 
 const latestJobSchema = new Schema<ILatestJobDetail>({
   how_to_fill_the_form: HowToFillFormSchema,
-  common: { type: Schema.Types.ObjectId, ref: "Common"},
-  important_dates: { type: Schema.Types.ObjectId, ref: "Date" },
-  application_fee: { type: Schema.Types.ObjectId, ref: "Fee" },
-  important_links: { type: Schema.Types.ObjectId, ref: "Link"},
 });
 
 latestJobSchema.add(commonDataSchema);

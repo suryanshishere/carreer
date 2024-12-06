@@ -1,5 +1,29 @@
 import { NextFunction, Response, Request } from "express";
-const { GoogleGenerativeAI, SchemaType } = require("@google/generative-ai");
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import resultPromptSchema from "./sectionPromptSchema/result-prompt-schema";
+import admitCardPromptSchema from "./sectionPromptSchema/admit-card-prompt-schema";
+import latestJobPromptSchema from "./sectionPromptSchema/latest-job-prompt-schema";
+import syllabusPromptSchema from "./sectionPromptSchema/syllabus-prompt-schema";
+import answerKeyPromptSchema from "./sectionPromptSchema/answer-key-prompt-schema";
+import certificateVerificatePromptSchema from "./sectionPromptSchema/certificate-verificate-prompt-schema";
+import importantPromptSchema from "./sectionPromptSchema/important-prompt-schema";
+import admissionPromptSchema from "./sectionPromptSchema/admission-prompt-schema";
+import { snakeCase } from "lodash";
+
+interface ISectionPromptSchema {
+  [key: string]: { [key: string]: any };
+}
+
+export const sectionPromptSchema: ISectionPromptSchema = {
+  result: resultPromptSchema,
+  admit_card: admitCardPromptSchema,
+  latest_job: latestJobPromptSchema,
+  syllabus: syllabusPromptSchema,
+  answer_key: answerKeyPromptSchema,
+  certificate_verification: certificateVerificatePromptSchema,
+  important: importantPromptSchema,
+  admission: admissionPromptSchema,
+};
 
 const postCreation = async (
   req: Request,
@@ -7,11 +31,14 @@ const postCreation = async (
   next: NextFunction
 ) => {
   try {
-    const { name_of_the_post } = req.body;
+    const { name_of_the_post, section } = req.body;
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
     // Define a schema for structured response
-    const schema = resultPromptSchema;
+    const schema = sectionPromptSchema[snakeCase(section)];
+    if (Object.keys(schema).length === 0) {
+      return null;
+    }
 
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-pro",
@@ -35,48 +62,3 @@ const postCreation = async (
 };
 
 export default postCreation;
-
-const resultPromptSchema = {
-  description: "Detailed post information",
-  type: SchemaType.OBJECT,
-  properties: {
-    how_to_download_result: {
-      type: SchemaType.STRING,
-      description: "Steps to download the result",
-      nullable: true,
-    },
-    result: {
-      type: SchemaType.OBJECT,
-      properties: {
-        additional_resources: {
-          type: SchemaType.STRING,
-          description:
-            "Additional result resources or provide me total mark out of which is cutoff declared (don't provide me the links)",
-        },
-        male: {
-          type: SchemaType.OBJECT,
-          properties: {
-            general: { type: SchemaType.NUMBER },
-            obc: { type: SchemaType.NUMBER },
-            ews: { type: SchemaType.NUMBER },
-            sc: { type: SchemaType.NUMBER },
-            st: { type: SchemaType.NUMBER },
-            ph_dviyang: { type: SchemaType.NUMBER },
-          },
-        },
-        female: {
-          type: SchemaType.OBJECT,
-          properties: {
-            general: { type: SchemaType.NUMBER },
-            obc: { type: SchemaType.NUMBER },
-            ews: { type: SchemaType.NUMBER },
-            sc: { type: SchemaType.NUMBER },
-            st: { type: SchemaType.NUMBER },
-            ph_dviyang: { type: SchemaType.NUMBER },
-          },
-        },
-      },
-    },
-  },
-  required: ["how_to_download_result", "result"],
-};
