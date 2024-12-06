@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IPostList } from "models/postModels/IPostList";
 import Bookmark from "shared/components/Bookmark";
-import { renderDateStrNum } from "../quick/render-date-str-num";
+import { renderDateStrNum } from "../../shared/quick/render-date-str-num";
 import flattenToLastKeys from "shared/quick/flatten-object";
 import { startCase } from "lodash";
-import { excludedKeys } from "post/post-render-define";
+import { excludedKeys } from "post/post-detail-render-define";
+import { excludedPostListKeys } from "post/post-list-render-define";
 
 interface ListProps {
   data: IPostList;
@@ -16,15 +17,9 @@ const CATEGORY_LIMIT =
   Number(process.env.REACT_APP_NUMBER_OF_POST_CATEGORYLIST) || 25;
 
 const List: React.FC<ListProps> = ({ data, section }) => {
-  const rearrangedData = data.map((item) =>
-    flattenToLastKeys(item, ["important_dates"])
-  );
-
   const renderObject = (obj: Record<string, any>) => {
     return Object.entries(obj)
-      .filter(
-        ([key]) => !excludedKeys.includes(key) && key !== "name_of_the_post"
-      )
+      .filter(([key]) => !excludedPostListKeys.includes(key))
       .map(([key, value]) => {
         // Check if the value is an object and not the last-level object
         if (typeof value === "object" && value !== null) {
@@ -72,7 +67,7 @@ const List: React.FC<ListProps> = ({ data, section }) => {
 
   return (
     <ul className="w-full self-start p-0 m-0 text-base">
-      {(rearrangedData as IPostList).map((item, index) => (
+      {data.map((item, index) => (
         <React.Fragment key={item._id}>
           <li className="w-fit flex flex-col">
             <div className="flex gap-2 items-center">
@@ -90,7 +85,15 @@ const List: React.FC<ListProps> = ({ data, section }) => {
                 />
               </div>
             </div>
-            <div className="pl-2">{renderObject(item)}</div>
+            <span className="text-custom-less-gray text-sm mr-2">
+              <span className=" whitespace-nowrap">
+                <span>Updated At:</span>
+                <span className="text-custom-black ml-1">
+                  {renderDateStrNum(item.updatedAt)}
+                </span>
+              </span>
+              <span className="pl-2">{renderObject(item)}</span>
+            </span>
           </li>
           {index !== data.length - 1 && (
             <hr className="w-full border-t-1 border-custom-less-gray" />

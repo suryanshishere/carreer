@@ -2,7 +2,7 @@ export const excludedKeys = [
     "_id",
     "created_by",
     "createdAt",
-    // "updatedAt",
+    "updatedAt",
     "contributors",
     "is_saved"
   ];

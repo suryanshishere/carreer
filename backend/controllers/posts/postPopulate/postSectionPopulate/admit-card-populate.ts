@@ -17,11 +17,11 @@ export const admitCardListPopulate = [
   {
     path: "important_dates",
     select:
-      "result_announcement_date answer_key_release_date exam_date answer_key_release_date -_id",
+      "result_announcement_date answer_key_release_date exam_date answer_key_release_date",
   },
   {
     path: "important_links",
     select:
-      "official_website get_admit_card download_sample_papers additional_resources -_id",
+      "official_website get_admit_card download_sample_papers additional_resources",
   },
 ];
