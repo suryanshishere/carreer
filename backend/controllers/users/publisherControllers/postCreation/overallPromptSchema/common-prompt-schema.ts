@@ -1,35 +1,5 @@
 import { SchemaType } from "@google/generative-ai";
 
-const genderWiseVacancyCriteria = {
-  type: SchemaType.OBJECT,
-  properties: {
-    general: { type: SchemaType.NUMBER },
-    obc: { type: SchemaType.NUMBER },
-    ews: { type: SchemaType.NUMBER },
-    sc: { type: SchemaType.NUMBER },
-    st: { type: SchemaType.NUMBER },
-    ph_dviyang: { type: SchemaType.NUMBER },
-  },
-};
-
-const ageCriteriaProperties = {
-  minimum_age: { type: SchemaType.NUMBER },
-  maximum_age: { type: SchemaType.NUMBER },
-  age_relaxation: { type: SchemaType.STRING },
-};
-
-const genderWiseAgeCriteria = {
-  type: SchemaType.OBJECT,
-  properties: {
-    general: { type: SchemaType.OBJECT, properties: ageCriteriaProperties },
-    obc: { type: SchemaType.OBJECT, properties: ageCriteriaProperties },
-    ews: { type: SchemaType.OBJECT, properties: ageCriteriaProperties },
-    sc: { type: SchemaType.OBJECT, properties: ageCriteriaProperties },
-    st: { type: SchemaType.OBJECT, properties: ageCriteriaProperties },
-    ph_dviyang: { type: SchemaType.OBJECT, properties: ageCriteriaProperties },
-  },
-};
-
 const commonPromptSchema = {
   description: "Schema for exam details including eligibility and vacancies.",
   type: SchemaType.OBJECT,
@@ -46,15 +16,14 @@ const commonPromptSchema = {
       },
     },
     post_importance: { type: SchemaType.STRING },
-    post_exam_toughness_ranking: { type: SchemaType.NUMBER },
     job_type: { type: SchemaType.STRING },
     post_exam_duration: { type: SchemaType.NUMBER },
     age_criteria: {
       type: SchemaType.OBJECT,
       properties: {
-        male: genderWiseAgeCriteria,
-        female: genderWiseAgeCriteria,
-        other: genderWiseAgeCriteria,
+        minimum_age: { type: SchemaType.NUMBER },
+        maximum_age: { type: SchemaType.NUMBER },
+        age_relaxation: { type: SchemaType.STRING },
       },
     },
     vacancy: {
@@ -69,14 +38,18 @@ const commonPromptSchema = {
               total_post: { type: SchemaType.NUMBER },
               post_eligibility: { type: SchemaType.STRING },
             },
+            required: ["post_name", "total_post", "post_eligibility"],
           },
         },
         category_wise: {
           type: SchemaType.OBJECT,
           properties: {
-            male: genderWiseVacancyCriteria,
-            female: genderWiseVacancyCriteria,
-            other: genderWiseVacancyCriteria,
+            general: { type: SchemaType.NUMBER },
+            obc: { type: SchemaType.NUMBER },
+            ews: { type: SchemaType.NUMBER },
+            sc: { type: SchemaType.NUMBER },
+            st: { type: SchemaType.NUMBER },
+            ph_dviyang: { type: SchemaType.NUMBER },
           },
         },
       },
@@ -85,7 +58,7 @@ const commonPromptSchema = {
       type: SchemaType.OBJECT,
       properties: {
         minimum_qualification: { type: SchemaType.STRING },
-        other_qualification: { type: SchemaType.STRING },
+        additional_qualification: { type: SchemaType.STRING },
       },
     },
     post_exam_mode: {
@@ -97,6 +70,18 @@ const commonPromptSchema = {
       enum: ["male", "female", "other", "all"],
     },
   },
+  required: [
+    "short_information",
+    "highlighted_information",
+    "department",
+    "job_type",
+    "post_exam_duration",
+    "age_criteria",
+    "vacancy",
+    "eligibility",
+    "post_exam_mode",
+    "applicants_gender_that_can_apply",
+  ],
 };
 
 export default commonPromptSchema;

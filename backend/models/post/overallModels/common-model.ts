@@ -71,10 +71,10 @@ export const commonSchema: Schema = new Schema<ICommon>(
     post_exam_toughness_ranking: { type: Number },
     job_type: { type: String },
     post_exam_duration: { type: Number },
-    age_criteria: { type: CategoryAgeCriteriaSchema },
+    age_criteria: { type: AgeCriteriaSchema },
     vacancy: {
       detail: { type: [VacancyDetailSchema] },
-      category_wise: { type: CategoryWiseVacancySchema },
+      category_wise: { type: CategoryVacancySchema },
       additional_resources: { type: String },
     },
     eligibility: {
@@ -84,12 +84,10 @@ export const commonSchema: Schema = new Schema<ICommon>(
     post_exam_mode: {
       type: String,
       enum: ["online", "offline_paper_based", "offline_computer_based"],
-      required: false,
     },
     applicants_gender_that_can_apply: {
       type: String,
       enum: ["male", "female", "other", "all"],
-      required: false,
     },
   },
   { timestamps: true }
