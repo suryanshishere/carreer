@@ -2,44 +2,51 @@ import { SchemaType } from "@google/generative-ai";
 
 const linkPromptSchema = {
   description:
-    "Schema representing detailed information about a post, including metadata and relevant links.",
+    "Schema representing detailed information about a post, including metadata and valid links for official resources.",
   type: SchemaType.OBJECT,
   properties: {
     official_website: {
       type: SchemaType.STRING,
-      description: "Link for the official website.",
+      description:
+        "Official website link of the post or organization. ",
     },
     apply_online: {
       type: SchemaType.STRING,
-      description: "Link for the application form website.",
+      description:
+        "Link to the online application form. ",
     },
     register_now: {
       type: SchemaType.STRING,
-      description: "Link for the registration website.",
+      description: "Link for registration. ",
     },
     download_sample_papers: {
       type: SchemaType.STRING,
-      description: "Link to download sample papers for the post.",
+      description:
+        "Link to download sample papers for preparation. ",
     },
     get_admit_card: {
       type: SchemaType.STRING,
-      description: "Link for the admit card website.",
+      description:
+        "Link to download the admit card. ",
     },
     view_results: {
       type: SchemaType.STRING,
-      description: "Link for the results website.",
+      description: "Link to check results. ",
     },
     check_answer_key: {
       type: SchemaType.STRING,
-      description: "Link for checking the answer key.",
+      description:
+        "Real link to view or download the answer key. ",
     },
     counseling_portal: {
       type: SchemaType.STRING,
-      description: "Link for the counseling portal.",
+      description:
+        "Real link to access the counseling portal. ",
     },
     verify_certificates: {
       type: SchemaType.STRING,
-      description: "Link for certificate verification.",
+      description:
+        "Real link for verifying certificates. ",
     },
     additional_resources: {
       type: SchemaType.OBJECT,
@@ -47,11 +54,13 @@ const linkPromptSchema = {
       properties: {
         faq: {
           type: SchemaType.STRING,
-          description: "Link to the FAQ section.",
+          description:
+            "Real link to the FAQ section. ",
         },
         contact_us: {
           type: SchemaType.STRING,
-          description: "Link to the contact us page.",
+          description:
+            "Real link to the Contact Us page. ",
         },
       },
       required: ["faq", "contact_us"],

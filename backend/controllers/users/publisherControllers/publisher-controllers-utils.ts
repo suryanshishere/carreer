@@ -50,7 +50,6 @@ export const checkOverall = async (
 
         const dataJson = await postCreation(nameOfThePost, schema, next);
         if (!dataJson) {
-          console.log(schema)
           return next(new HttpError("Error creating dataJson", 500));
         }
 
@@ -61,7 +60,9 @@ export const checkOverall = async (
           ...dataJson,
         });
 
-        console.log(newPost); // Now this should be logged properly
+        if (item === "link") {
+          console.log(newPost); // Now this should be logged properly
+        }
 
         await newPost.save();
       }

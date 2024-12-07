@@ -11,8 +11,36 @@ import PostModel from "@models/post/post-model";
 import { JWTRequest } from "@middleware/check-auth";
 import postCreation from "./postCreation/postCreation";
 import { snakeCase } from "lodash";
-import { SECTION_POST_MODAL_MAP } from "@controllers/shared/post-model-map";
+import {
+  MODAL_MAP,
+  SECTION_POST_MODAL_MAP,
+} from "@controllers/shared/post-model-map";
 import { POST_PROMPT_SCHEMA } from "./postCreation/post-prompt-schema";
+
+
+export const deletePost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { postId } = req.body;
+
+  for (const [key, model] of Object.entries(MODAL_MAP)) {
+    try {
+      const result = await model.deleteOne({ _id: postId });
+      if (result) {
+        console.log(result)
+        console.log(`Post deleted from ${key} model`);
+      } else {
+        console.log(`Post not found in ${key} model`);
+      }
+    } catch (error) {
+      console.error(`Error deleting post from ${key} model: `, error);
+    }
+  }
+
+  return res.status(200).json("completed!");
+};
 
 export const createNewPost = async (
   req: Request,
@@ -75,7 +103,7 @@ export const createNewPost = async (
     if (postInPostModel) {
       await PostModel.updateOne(
         { _id: postId },
-        { $set: { [`sections.${section}`]: { exist: true, approved: false } } }
+        { $set: { [`sections.${sec}`]: { exist: true, approved: false } } }
       );
     } else {
       const newPostInPostModel = new PostModel({
@@ -91,7 +119,7 @@ export const createNewPost = async (
       await newPostInPostModel.save();
     }
 
-    return res.status(201).json({ message: "Created new post successfully!" });
+    return res.status(201).json({ "postId": postId, message: "Created new post successfully!" });
   } catch (error) {
     console.log(error);
     return next(new HttpError("Error occurred while creating new post.", 500));

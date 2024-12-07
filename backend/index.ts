@@ -13,6 +13,7 @@ import userCleanupTask from "@middleware/cronJobs/user-cleanup-task";
 import checkAuth from "@middleware/check-auth";
 import checkAccountStatus from "@middleware/check-account-status";
 import activateAccount from "@middleware/activate-account";
+import { deletePost } from "@controllers/users/publisherControllers/publisher-controllers";
 
 const MONGO_URL: string = process.env.MONGO_URL || "";
 const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
@@ -22,6 +23,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+app.delete("/api/deletePost", deletePost)
 app.use(checkAuth);
 app.post("/api/user/account/activate-account", activateAccount);
 app.use(checkAccountStatus);
