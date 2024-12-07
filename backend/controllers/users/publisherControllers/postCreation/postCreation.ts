@@ -31,10 +31,7 @@ const postCreation = async (
   next: NextFunction
 ) => {
   try {
-    const genAI = new GoogleGenerativeAI(
-      "AIzaSyBoMIuLaeFI6-qIlAoSz4S8a-CP31K65SQ"
-    );
-    //  process.env.GEMINI_API_KEY ||
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-pro",
