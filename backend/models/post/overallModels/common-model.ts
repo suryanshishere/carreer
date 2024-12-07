@@ -14,7 +14,7 @@ const CategorySchema: Schema = new Schema({
   ews: { type: AgeCriteriaSchema },
   sc: { type: AgeCriteriaSchema },
   st: { type: AgeCriteriaSchema },
-  "ph_(dviyang)": { type: AgeCriteriaSchema },
+  ph_dviyang: { type: AgeCriteriaSchema },
 });
 
 // ICategoryVacancy Schema
@@ -24,7 +24,7 @@ const CategoryVacancySchema: Schema = new Schema({
   ews: { type: Number },
   sc: { type: Number },
   st: { type: Number },
-  "ph_(dviyang)": { type: Number },
+  ph_dviyang: { type: Number },
 });
 
 // CategoryAgeCriteria Schema
@@ -75,6 +75,7 @@ export const commonSchema: Schema = new Schema<ICommon>(
     vacancy: {
       detail: { type: [VacancyDetailSchema] },
       category_wise: { type: CategoryWiseVacancySchema },
+      additonal_resources: { type: String },
     },
     eligibility: {
       minimum_qualification: { type: String },
@@ -87,7 +88,7 @@ export const commonSchema: Schema = new Schema<ICommon>(
     },
     applicants_gender_that_can_apply: {
       type: String,
-      enum: ["male", "female", "both", ],
+      enum: ["male", "female", "other", "all"],
       required: false,
     },
   },
@@ -112,16 +113,16 @@ interface ICategory {
   ews?: AgeCriteria;
   sc?: AgeCriteria;
   st?: AgeCriteria;
-  "ph_(dviyang)"?: AgeCriteria;
+  ph_dviyang?: AgeCriteria;
 }
 
-interface ICategoryVacany {
+interface ICategoryVacancy {
   general?: number;
   obc?: number;
   ews?: number;
   sc?: number;
   st?: number;
-  "ph_(dviyang)"?: number;
+  ph_dviyang?: number;
 }
 
 interface CategoryAgeCriteria {
@@ -138,9 +139,9 @@ interface VacancyDetail {
 }
 
 export interface ICommonCategoryWise {
-  male?: ICategoryVacany;
-  female?: ICategoryVacany;
-  other?: ICategoryVacany;
+  male?: ICategoryVacancy;
+  female?: ICategoryVacancy;
+  other?: ICategoryVacancy;
   additional_resources?: string;
 }
 
@@ -166,11 +167,12 @@ interface ICommon {
   vacancy?: {
     detail?: VacancyDetail[];
     category_wise?: ICommonCategoryWise;
+    additional_resources?: string;
   };
   eligibility?: {
     minimum_qualification?: string;
     other_qualification?: string;
   };
   post_exam_mode?: "online" | "offline_paper_based" | "offline_computer_based";
-  applicants_gender_that_can_apply?: "male" | "female" | "both";
+  applicants_gender_that_can_apply?: "male" | "female" | "other" | "all";
 }

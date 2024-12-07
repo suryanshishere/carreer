@@ -60,7 +60,7 @@
         "maximum_age": 40,
         "age_relaxation": "5 years for SC/ST candidates"
       },
-      "ph_(dviyang)": {
+      "ph_dviyang": {
         "minimum_age": 18,
         "maximum_age": 40,
         "age_relaxation": "5 years for SC/ST candidates"
@@ -92,7 +92,7 @@
         "maximum_age": 40,
         "age_relaxation": "5 years for SC/ST candidates"
       },
-      "ph_(dviyang)": {
+      "ph_dviyang": {
         "minimum_age": 18,
         "maximum_age": 40,
         "age_relaxation": "5 years for SC/ST candidates"
@@ -124,7 +124,7 @@
         "maximum_age": 40,
         "age_relaxation": "5 years for SC/ST candidates"
       },
-      "ph_(dviyang)": {
+      "ph_dviyang": {
         "minimum_age": 18,
         "maximum_age": 40,
         "age_relaxation": "5 years for SC/ST candidates"
@@ -152,7 +152,7 @@
         "ews": 46,
         "sc": 155,
         "st": 14,
-        "ph_(dviyang)": null
+        "ph_dviyang": 123
       },
       "female": {
         "general": 321,
@@ -160,7 +160,7 @@
         "ews": 46,
         "sc": 155,
         "st": 14,
-        "ph_(dviyang)": null
+        "ph_dviyang": 123
       },
       "other": {
         "general": 321,
@@ -168,15 +168,15 @@
         "ews": 46,
         "sc": 155,
         "st": 14,
-        "ph_(dviyang)": null
+        "ph_dviyang": 123
       }
     },
-    "additional_resources": "null"
+    "additional_resources": "Other vacany detail may verify on the website"
   },
   "eligibility": {
     "minimum_qualification": "12 or equalivalent passed or appearing.",
     "other_qualification": "Experience in HR management preferred"
   },
   "post_exam_mode": "offline_paper_based",
-  "applicants_gender_that_can_apply": "male"
+  "applicants_gender_that_can_apply": "all"
 }

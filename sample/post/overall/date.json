@@ -2,6 +2,17 @@
   "_id": {
     "$oid": "d88e5fd5a7ffa35584f39c26"
   },
+  "createdAt": "2024-08-08T12:00:00Z",
+  "updatedAt": "2024-09-08T12:00:00Z",
+  "created_by": {
+    "$oid": "6749e5ec8100dfa1958e9573"
+  },
+  "contributors": [
+    {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    }
+  ],
+  "approved": true,
   "application_start_date": {
     "current_year": "2024-01-01T00:00:00.000Z",
     "previous_year": "2023-01-01T00:00:00.000Z"

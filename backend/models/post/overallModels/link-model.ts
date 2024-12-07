@@ -1,9 +1,9 @@
 import { Schema, model, Document, Types } from "mongoose";
 
 interface AdditionalResources extends Document {
-  faq: string;
-  contact_us: string;
-  important_dates: string;
+  faq?: string;
+  contact_us?: string;
+  // important_dates?: string;
 }
 
 interface ILinks extends Document {
@@ -27,7 +27,7 @@ interface ILinks extends Document {
 const AdditionalResourcesSchema = new Schema<AdditionalResources>({
   faq: { type: String },
   contact_us: { type: String },
-  important_dates: { type: String },
+  // important_dates: { type: String },
 });
 
 export const LinksSchema = new Schema<ILinks>(

@@ -1,6 +1,6 @@
 import mongoose, { Schema, SchemaTypeOptions } from "mongoose";
 
-export const sections = [
+const sections = [
   "admission",
   "admit_card",
   "answer_key",

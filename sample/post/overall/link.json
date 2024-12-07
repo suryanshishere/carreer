@@ -24,7 +24,6 @@
   "verify_certificates": "https://jeemain.nta.nic.in/certificate-verification",
   "additional_resources": {
     "faq": "https://jeemain.nta.nic.in/faq",
-    "contact_us": "https://jeemain.nta.nic.in/contact",
-    "important_dates": "https://jeemain.nta.nic.in/important-dates"
+    "contact_us": "https://jeemain.nta.nic.in/contact"
   }
 }

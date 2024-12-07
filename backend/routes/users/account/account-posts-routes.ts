@@ -1,3 +1,4 @@
+import { postSectionsArray } from "@controllers/shared/post-array";
 import {
   bookmarkPost,
   savedPosts,
@@ -7,7 +8,6 @@ import {
   getUndefinedFields,
   contributeToPost,
 } from "@controllers/users/account/contribute-to-post-controllers";
-import { sections } from "@models/post/post-model";
 import express from "express";
 import { check } from "express-validator";
 import _ from "lodash";
@@ -44,7 +44,7 @@ const bookmarkMiddleware = [
     .custom((value) => {
       const lowerCaseCategory = value.toLowerCase();
 
-      const acceptedCategories = _.flatMap(sections, (section) => [
+      const acceptedCategories = _.flatMap(postSectionsArray, (section) => [
         _.toLower(section), 
         _.snakeCase(section), 
       ]);

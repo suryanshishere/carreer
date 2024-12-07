@@ -2,7 +2,7 @@ import validationError from "@controllers/controllersHelpers/validation-error";
 import { NextFunction, Response, Request } from "express";
 import {
   checkAuthorisedPublisher,
-  modelMap,
+  checkOverall,
   postIdGeneration,
 } from "./publisher-controllers-utils";
 import HttpError from "@utils/http-errors";
@@ -10,6 +10,9 @@ import mongoose from "mongoose";
 import PostModel from "@models/post/post-model";
 import { JWTRequest } from "@middleware/check-auth";
 import postCreation from "./postCreation/postCreation";
+import { snakeCase } from "lodash";
+import { SECTION_POST_MODAL_MAP } from "@controllers/shared/post-model-map";
+import { POST_PROMPT_SCHEMA } from "./postCreation/post-prompt-schema";
 
 export const createNewPost = async (
   req: Request,
@@ -18,6 +21,7 @@ export const createNewPost = async (
 ) => {
   validationError(req, res, next);
   const { section, name_of_the_post, post_code } = req.body;
+  const sec = snakeCase(section);
   const userId = (req as JWTRequest).userData.userId;
   checkAuthorisedPublisher(req, res, next);
 
@@ -28,7 +32,7 @@ export const createNewPost = async (
         new HttpError("Post Id generation failed, please try again.", 400)
       );
 
-    const model = modelMap[section];
+    const model = SECTION_POST_MODAL_MAP[sec];
     if (!model) {
       return next(
         new HttpError(`No model found for the section: ${section}`, 400)
@@ -39,14 +43,20 @@ export const createNewPost = async (
     const post = await model.findById(postId);
     if (post) return next(new HttpError("Post already exist!", 400));
 
-    const dataJson = await postCreation(req, res, next);
     const postObjectId = new mongoose.Types.ObjectId(postId);
-    //todo: also if the ref is there already, use there date especially to make up the updatedAt field
-    //todo: make the overall automatically when the very first got
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+    //todo: also if the ref is there already, use there date especially to make up the updatedAt field, making engagig name of the post as well
+
+    // Check for any unfilled references before creating the post
+    await checkOverall(postObjectId, userObjectId, name_of_the_post, next);
+
+    const schema = POST_PROMPT_SCHEMA[sec];
+    const dataJson = await postCreation(name_of_the_post, schema, next);
+
     const newPost = new model({
       _id: postObjectId,
       name_of_the_post,
-      created_by: new mongoose.Types.ObjectId(userId),
+      created_by: userObjectId,
       approved: true,
       common: postObjectId,
       important_dates: postObjectId,
@@ -60,6 +70,7 @@ export const createNewPost = async (
     //post model update or creation
     const postInPostModel = await PostModel.findById(postId);
 
+    //todo: multiple creater id adding left here
     if (postInPostModel) {
       await PostModel.updateOne(
         { _id: postId },
@@ -67,10 +78,10 @@ export const createNewPost = async (
       );
     } else {
       const newPostInPostModel = new PostModel({
-        _id: postId,
+        _id: postObjectId,
         post_code,
         sections: {
-          [section]: {
+          [sec]: {
             exist: true,
             approved: false,
           },

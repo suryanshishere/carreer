@@ -6,7 +6,7 @@ interface ICategoryFees extends Document {
   ews?: number;
   sc?: number;
   st?: number;
-  "ph_(dviyang)"?: number;
+  "ph_dviyang"?: number;
 }
 
 interface IFee extends Document {
@@ -27,7 +27,7 @@ const CategoryFeesSchema: Schema = new Schema<ICategoryFees>({
   ews: { type: Number },
   sc: { type: Number },
   st: { type: Number },
-  "ph_(dviyang)": { type: Number },
+  "ph_dviyang": { type: Number },
 });
 
 const FeeSchema: Schema = new Schema<IFee>(

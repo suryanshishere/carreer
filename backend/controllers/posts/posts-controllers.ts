@@ -2,7 +2,6 @@ import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
 import {
   sectionDetailPopulateModels,
-  MODEL_DATA,
 } from "./postPopulate/posts-populate";
 import { Request } from "express-jwt";
 import { snakeCase } from "lodash";
@@ -13,6 +12,7 @@ import DateModel from "@models/post/overallModels/date-model";
 import LinkModel from "@models/post/overallModels/link-model";
 import PostModel from "@models/post/post-model";
 import { fetchPostList } from "./posts-controllers-utils";
+import { SECTION_POST_MODAL_MAP } from "@controllers/shared/post-model-map";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 const CATEGORY_LIMIT =
@@ -32,7 +32,7 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
     const user = (req as JWTRequest).user;
     const savedPost = user?.saved_posts || null;
 
-    const dataPromises = Object.keys(MODEL_DATA).map(async (key: string) => {
+    const dataPromises = Object.keys(SECTION_POST_MODAL_MAP).map(async (key: string) => {
       const snakeKey = snakeCase(key);
       const savedField = `${snakeKey}_ref`;
       const savedIds = savedPost?.[savedField]?.map(String) || [];
@@ -105,7 +105,7 @@ export const postDetail = async (
   const { section, postId } = req.params;
   const sec = snakeCase(section);
   try {
-    const model = MODEL_DATA[sec];
+    const model = SECTION_POST_MODAL_MAP[sec];
     if (!model) {
       return next(new HttpError("Invalid section specified.", 400));
     }

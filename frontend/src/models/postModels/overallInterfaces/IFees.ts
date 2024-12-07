@@ -4,7 +4,7 @@ interface ICategoryFees {
   ews?: number;
   sc?: number;
   st?: number;
-  "ph_(dviyang)"?: number;
+  "ph_dviyang"?: number;
 }
 
 export interface IFees {

@@ -26,19 +26,12 @@ export const sectionPromptSchema: ISectionPromptSchema = {
 };
 
 const postCreation = async (
-  req: Request,
-  res: Response,
+  nameOfThePost: string,
+  schema: { [key: string]: any },
   next: NextFunction
 ) => {
   try {
-    const { name_of_the_post, section } = req.body;
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-
-    // Define a schema for structured response
-    const schema = sectionPromptSchema[snakeCase(section)];
-    if (Object.keys(schema).length === 0) {
-      return null;
-    }
 
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-pro",
@@ -48,12 +41,11 @@ const postCreation = async (
       },
     });
 
-    // Use the name_of_the_post dynamically in the prompt
-    const prompt = `Generate a detailed post for "${name_of_the_post}". Include steps to download the result, statistical breakdowns by category, and any important links or dates.`;
-
+    const prompt = `Generate a comprehensive and engaging post for the "${nameOfThePost}"`;
     const result = await model.generateContent(prompt);
-    const generatedContent = await result.response.text();
+    const generatedContent = result.response.text();
     const parsedContent = JSON.parse(generatedContent);
+
     return parsedContent;
   } catch (error) {
     console.error("Error generating post content:", error);

@@ -10,7 +10,7 @@ interface ICategory {
   ews?: AgeCriteria;
   sc?: AgeCriteria;
   st?: AgeCriteria;
-  "ph_(dviyang)"?: AgeCriteria;
+  "ph_dviyang"?: AgeCriteria;
 }
 
 interface ICategoryVacany {
@@ -19,7 +19,7 @@ interface ICategoryVacany {
   ews?: number;
   sc?: number;
   st?: number;
-  "ph_(dviyang)"?: number;
+  "ph_dviyang"?: number;
 }
 
 interface CategoryAgeCriteria {
