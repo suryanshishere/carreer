@@ -1,4 +1,5 @@
-export const postOverallArray = ["common", "date", "link", "fee"];
+export const postOverallArray = [ "link", "fee","date",];
+// "common", 
 
 export const postSectionsArray = [
     "admission",

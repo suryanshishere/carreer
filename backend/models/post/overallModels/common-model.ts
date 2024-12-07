@@ -75,7 +75,7 @@ export const commonSchema: Schema = new Schema<ICommon>(
     vacancy: {
       detail: { type: [VacancyDetailSchema] },
       category_wise: { type: CategoryWiseVacancySchema },
-      additonal_resources: { type: String },
+      additional_resources: { type: String },
     },
     eligibility: {
       minimum_qualification: { type: String },

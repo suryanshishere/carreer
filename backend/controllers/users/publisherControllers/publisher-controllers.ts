@@ -49,6 +49,7 @@ export const createNewPost = async (
 
     // Check for any unfilled references before creating the post
     await checkOverall(postObjectId, userObjectId, name_of_the_post, next);
+    // return res.status(200);
 
     const schema = POST_PROMPT_SCHEMA[sec];
     const dataJson = await postCreation(name_of_the_post, schema, next);

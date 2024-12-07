@@ -1,35 +1,8 @@
 import HttpError from "@utils/http-errors";
 import { Response, NextFunction, Request } from "express";
 import crypto from "crypto";
-import mongoose, { Model, Schema } from "mongoose";
+import mongoose from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
-import AnswerKeyModel, {
-  answerKeySchema,
-} from "@models/post/sectionModels/answer-key-model";
-import AdmitCardModel, {
-  admitCardSchema,
-} from "@models/post/sectionModels/admit-card-model";
-import AdmissionModel, {
-  admissionSchema,
-} from "@models/post/sectionModels/admission-model";
-import ResultModel, {
-  resultSchema,
-} from "@models/post/sectionModels/result-model";
-import CertificateVerificationModel, {
-  certificateVerificationSchema,
-} from "@models/post/sectionModels/certificate-verification-model";
-import CommonModel, {
-  commonSchema,
-} from "@models/post/overallModels/common-model";
-import ImportantModel, {
-  importantSchema,
-} from "@models/post/sectionModels/important-model";
-import LatestJobModel, {
-  latestJobSchema,
-} from "@models/post/sectionModels/latest-job-model";
-import SyllabusModel, {
-  syllabusSchema,
-} from "@models/post/sectionModels/syllabus-model";
 import { postOverallArray } from "@controllers/shared/post-array";
 import { POST_PROMPT_SCHEMA } from "./postCreation/post-prompt-schema";
 import postCreation from "./postCreation/postCreation";
@@ -53,18 +26,6 @@ export const postIdGeneration = async (postCode: string): Promise<string> => {
   return uniqueId.slice(0, 24);
 };
 
-export const schemaMap: { [key: string]: Schema<any> } = {
-  result: resultSchema,
-  admission: admissionSchema,
-  admit_card: admitCardSchema,
-  answer_key: answerKeySchema,
-  certificate_verification: certificateVerificationSchema,
-  post_common: commonSchema,
-  important: importantSchema,
-  latest_job: latestJobSchema,
-  syllabus: syllabusSchema,
-};
-
 export const checkOverall = async (
   postObjectId: mongoose.Types.ObjectId,
   userObjectId: mongoose.Types.ObjectId,
@@ -72,8 +33,7 @@ export const checkOverall = async (
   next: NextFunction
 ) => {
   try {
-    // Assuming postOverallArray and other variables are properly defined
-    const tasks = postOverallArray.map(async (item) => {
+    for (const item of postOverallArray) {
       const itemModel = MODAL_MAP[item];
       if (!itemModel) {
         return next(new HttpError("Internal server error: Missing model", 500));
@@ -89,21 +49,27 @@ export const checkOverall = async (
         }
 
         const dataJson = await postCreation(nameOfThePost, schema, next);
+        if (!dataJson) {
+          console.log(schema)
+          return next(new HttpError("Error creating dataJson", 500));
+        }
+
         const newPost = new itemModel({
           _id: postObjectId,
           created_by: userObjectId,
           approved: true,
           ...dataJson,
         });
+
+        console.log(newPost); // Now this should be logged properly
+
         await newPost.save();
       }
-    });
-
-    await Promise.all(tasks);
+    }
   } catch (err) {
     console.log("overall cool", err);
     return next(
-      new HttpError("Error occur while creating for overall post", 500)
+      new HttpError("Error occurred while creating for overall post", 500)
     );
   }
 };
