@@ -27,13 +27,6 @@ const CategoryVacancySchema: Schema = new Schema({
   ph_dviyang: { type: Number },
 });
 
-// CategoryAgeCriteria Schema
-const CategoryAgeCriteriaSchema: Schema = new Schema({
-  male: CategorySchema,
-  female: CategorySchema,
-  other: CategorySchema,
-  additional_resources: { type: String },
-});
 
 // VacancyDetail Schema
 const VacancyDetailSchema: Schema = new Schema({

@@ -34,103 +34,9 @@
     "$numberInt": "120"
   },
   "age_criteria": {
-    "male": {
-      "general": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "obc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ews": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "sc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "st": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ph_dviyang": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      }
-    },
-    "female": {
-      "general": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "obc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ews": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "sc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "st": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ph_dviyang": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      }
-    },
-    "other": {
-      "general": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "obc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ews": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "sc": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "st": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      },
-      "ph_dviyang": {
-        "minimum_age": 18,
-        "maximum_age": 40,
-        "age_relaxation": "5 years for SC/ST candidates"
-      }
-    },
-    "additional_resources": "Age Relaxation Extra as per UPSSSC UP  Advertisement No.-13-Exam/2024, Stenographer Main Examination 2024"
+    "minimum_age": 18,
+    "maximum_age": 40,
+    "age_relaxation": "5 years for SC/ST candidates"
   },
   "vacancy": {
     "detail": [
@@ -146,32 +52,13 @@
       }
     ],
     "category_wise": {
-      "male": {
-        "general": 321,
-        "obc": 124,
-        "ews": 46,
-        "sc": 155,
-        "st": 14,
-        "ph_dviyang": 123
-      },
-      "female": {
-        "general": 321,
-        "obc": 124,
-        "ews": 46,
-        "sc": 155,
-        "st": 14,
-        "ph_dviyang": 123
-      },
-      "other": {
-        "general": 321,
-        "obc": 124,
-        "ews": 46,
-        "sc": 155,
-        "st": 14,
-        "ph_dviyang": 123
-      }
-    },
-    "additional_resources": "Other vacany detail may verify on the website"
+      "general": 321,
+      "obc": 124,
+      "ews": 46,
+      "sc": 155,
+      "st": 14,
+      "ph_dviyang": 123
+    }
   },
   "eligibility": {
     "minimum_qualification": "12 or equalivalent passed or appearing.",

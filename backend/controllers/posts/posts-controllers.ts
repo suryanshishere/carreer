@@ -6,10 +6,10 @@ import {
 import { Request } from "express-jwt";
 import { snakeCase } from "lodash";
 import { JWTRequest } from "@middleware/check-auth";
-import CommonModel from "@models/post/overallModels/common-model";
-import FeeModel from "@models/post/overallModels/fee-model";
-import DateModel from "@models/post/overallModels/date-model";
-import LinkModel from "@models/post/overallModels/link-model";
+import CommonModel from "@models/post/componentModels/common-model";
+import FeeModel from "@models/post/componentModels/fee-model";
+import DateModel from "@models/post/componentModels/date-model";
+import LinkModel from "@models/post/componentModels/link-model";
 import PostModel from "@models/post/post-model";
 import { fetchPostList } from "./posts-controllers-utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/shared/post-model-map";

@@ -1,7 +1,8 @@
 import { SchemaType } from "@google/generative-ai";
 
 const commonPromptSchema = {
-  description: "Schema for exam details including eligibility and vacancies.",
+  description:
+    "Various common information field (may look up the schema keys for context)",
   type: SchemaType.OBJECT,
   properties: {
     short_information: { type: SchemaType.STRING },
@@ -9,16 +10,24 @@ const commonPromptSchema = {
     department: { type: SchemaType.STRING },
     stage_level: { type: SchemaType.STRING },
     applicants: {
+      description: "Number of applicants applied and got selected",
       type: SchemaType.OBJECT,
       properties: {
         number_of_applicants_each_year: { type: SchemaType.NUMBER },
         number_of_applicants_selected: { type: SchemaType.NUMBER },
       },
     },
-    post_importance: { type: SchemaType.STRING },
+    post_importance: {
+      description: "Importance of the given post",
+      type: SchemaType.STRING,
+    },
     job_type: { type: SchemaType.STRING },
-    post_exam_duration: { type: SchemaType.NUMBER },
+    post_exam_duration: {
+      description: "Post (if exam duration) in minutes",
+      type: SchemaType.NUMBER,
+    },
     age_criteria: {
+      description: "Age criteria for the given post",
       type: SchemaType.OBJECT,
       properties: {
         minimum_age: { type: SchemaType.NUMBER },
@@ -27,9 +36,11 @@ const commonPromptSchema = {
       },
     },
     vacancy: {
+      description: "Vacancies information of the post",
       type: SchemaType.OBJECT,
       properties: {
         detail: {
+          description: "Overall post name, total vacancy, and eligibility",
           type: SchemaType.ARRAY,
           items: {
             type: SchemaType.OBJECT,
@@ -42,6 +53,7 @@ const commonPromptSchema = {
           },
         },
         category_wise: {
+          description: "Category wise distribution of the vacancies",
           type: SchemaType.OBJECT,
           properties: {
             general: { type: SchemaType.NUMBER },
@@ -75,7 +87,6 @@ const commonPromptSchema = {
     "highlighted_information",
     "department",
     "job_type",
-    "post_exam_duration",
     "age_criteria",
     "vacancy",
     "eligibility",

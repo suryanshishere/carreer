@@ -3,7 +3,7 @@ import commonDataSchema, { ICommonDetailData } from "./common-section-data";
 import {
   ICommonCategoryWise,
   CategoryWiseVacancySchema,
-} from "../overallModels/common-model";
+} from "../componentModels/common-model";
 
 const resultSchema = new Schema<IResultDetail>({
   how_to_download_result: { type: String },

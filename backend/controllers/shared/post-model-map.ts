@@ -1,9 +1,9 @@
 import CertificateVerificationModel from "@models/post/sectionModels/certificate-verification-model";
 import { Model } from "mongoose";
-import DateModel from "@models/post/overallModels/date-model";
-import LinkModel from "@models/post/overallModels/link-model";
-import CommonModel from "@models/post/overallModels/common-model";
-import FeeModel from "@models/post/overallModels/fee-model";
+import DateModel from "@models/post/componentModels/date-model";
+import LinkModel from "@models/post/componentModels/link-model";
+import CommonModel from "@models/post/componentModels/common-model";
+import FeeModel from "@models/post/componentModels/fee-model";
 import AdmissionModel from "@models/post/sectionModels/admission-model";
 import ImportantModel from "@models/post/sectionModels/important-model";
 import AnswerKeyModel from "@models/post/sectionModels/answer-key-model";
@@ -42,7 +42,7 @@ export const SECTION_POST_MODAL_MAP: IModel = {
   important: ImportantModel,
   admission: AdmissionModel,
 };
-export const OVERALL_POST_MODAL_MAP: IModel = {
+export const COMPONENT_POST_MODAL_MAP: IModel = {
   date: DateModel,
   link: LinkModel,
   common: CommonModel,

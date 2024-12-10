@@ -30,27 +30,26 @@ export const checkOverall = async (
   postObjectId: mongoose.Types.ObjectId,
   userObjectId: mongoose.Types.ObjectId,
   nameOfThePost: string,
-  next: NextFunction
+  next: NextFunction,
+  session: mongoose.ClientSession
 ) => {
   try {
     for (const item of postOverallArray) {
       const itemModel = MODAL_MAP[item];
       if (!itemModel) {
-        return next(new HttpError("Internal server error: Missing model", 500));
+        throw new HttpError("Internal server error: Missing model", 500);
       }
 
-      const post = await itemModel.findById(postObjectId);
+      const post = await itemModel.findById(postObjectId).session(session);
       if (!post) {
         const schema = POST_PROMPT_SCHEMA[item];
         if (Object.keys(schema).length === 0) {
-          return next(
-            new HttpError("Internal server error: Missing schema", 500)
-          );
+          throw new HttpError("Internal server error: Missing schema", 500);
         }
 
         const dataJson = await postCreation(nameOfThePost, schema, next);
         if (!dataJson) {
-          return next(new HttpError("Error creating dataJson", 500));
+          throw new HttpError("Error creating dataJson", 500);
         }
 
         const newPost = new itemModel({
@@ -60,17 +59,13 @@ export const checkOverall = async (
           ...dataJson,
         });
 
-        if (item === "link") {
-          console.log(newPost); // Now this should be logged properly
-        }
+        console.log(newPost)
 
-        await newPost.save();
+        await newPost.save({ session });
       }
     }
   } catch (err) {
-    console.log("overall cool", err);
-    return next(
-      new HttpError("Error occurred while creating for overall post", 500)
-    );
+    console.error("Error in checkOverall:", err);
+    throw err;
   }
 };

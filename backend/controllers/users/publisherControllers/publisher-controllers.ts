@@ -12,11 +12,11 @@ import { JWTRequest } from "@middleware/check-auth";
 import postCreation from "./postCreation/postCreation";
 import { snakeCase } from "lodash";
 import {
+  COMPONENT_POST_MODAL_MAP,
   MODAL_MAP,
   SECTION_POST_MODAL_MAP,
 } from "@controllers/shared/post-model-map";
 import { POST_PROMPT_SCHEMA } from "./postCreation/post-prompt-schema";
-
 
 export const deletePost = async (
   req: Request,
@@ -29,7 +29,7 @@ export const deletePost = async (
     try {
       const result = await model.deleteOne({ _id: postId });
       if (result) {
-        console.log(result)
+        console.log(result);
         console.log(`Post deleted from ${key} model`);
       } else {
         console.log(`Post not found in ${key} model`);
@@ -40,6 +40,60 @@ export const deletePost = async (
   }
 
   return res.status(200).json("completed!");
+};
+
+//what if one of the component exist
+export const createComponentPost = async (
+  postObjectId: mongoose.Types.ObjectId,
+  userObjectId: mongoose.Types.ObjectId,
+  nameOfThePost: string,
+  next: NextFunction,
+  session: mongoose.ClientSession // Add session as a parameter
+) => {
+  try {
+    // Create posts for all models in COMPONENT_POST_MODAL_MAP
+    const postCreationPromises = Object.entries(COMPONENT_POST_MODAL_MAP).map(
+      async ([key, model]) => {
+        const schema = POST_PROMPT_SCHEMA[key];
+        let dataJson: any;
+
+        // Retry logic for postCreation
+        for (let attempt = 0; attempt < 3; attempt++) {
+          dataJson = await postCreation(nameOfThePost, schema, next);
+          if (dataJson) break; // Exit retry loop if successful
+          if (attempt === 2)
+            throw new Error("Failed to create post data after 3 attempts");
+        }
+
+        console.log(dataJson);
+
+        // Update or create post using session
+        const updatedPost = await model.findByIdAndUpdate(
+          postObjectId,
+          {
+            $set: {
+              created_by: userObjectId,
+              approved: true,
+              ...dataJson,
+            },
+          },
+          {
+            new: true,
+            upsert: true, // Create document if it doesn't exist
+            session, // Include session for transactional consistency
+          }
+        );
+
+        return updatedPost;
+      }
+    );
+
+    // Wait for all post creations to complete
+    await Promise.all(postCreationPromises);
+  } catch (error) {
+    console.error("Error in createComponentPost:", error);
+    throw error; // Rethrow error to ensure rollback in createNewPost
+  }
 };
 
 export const createNewPost = async (
@@ -53,35 +107,49 @@ export const createNewPost = async (
   const userId = (req as JWTRequest).userData.userId;
   checkAuthorisedPublisher(req, res, next);
 
+  const session = await mongoose.startSession(); // Start a session for the transaction
+  session.startTransaction();
+
   try {
     const postId = await postIdGeneration(post_code);
-    if (!postId)
-      return next(
-        new HttpError("Post Id generation failed, please try again.", 400)
-      );
+    if (!postId) {
+      throw new HttpError("Post Id generation failed, please try again.", 400);
+    }
 
     const model = SECTION_POST_MODAL_MAP[sec];
     if (!model) {
-      return next(
-        new HttpError(`No model found for the section: ${section}`, 400)
-      );
+      throw new HttpError(`No model found for the section: ${section}`, 400);
     }
 
-    //section model creation if not found
-    const post = await model.findById(postId);
-    if (post) return next(new HttpError("Post already exist!", 400));
+    const existingPost = await model.findById(postId);
+    if (existingPost) {
+      throw new HttpError("Post already exists!", 400);
+    }
 
     const postObjectId = new mongoose.Types.ObjectId(postId);
     const userObjectId = new mongoose.Types.ObjectId(userId);
-    //todo: also if the ref is there already, use there date especially to make up the updatedAt field, making engagig name of the post as well
 
-    // Check for any unfilled references before creating the post
-    await checkOverall(postObjectId, userObjectId, name_of_the_post, next);
-    // return res.status(200);
+    const isComponentPostMissing = await Promise.all(
+      Object.entries(COMPONENT_POST_MODAL_MAP).map(async ([key, model]) => {
+        const localPost = await model.findById(postId);
+        return !localPost;
+      })
+    ).then((results) => results.includes(true));
+
+    if (isComponentPostMissing) {
+      await createComponentPost(
+        postObjectId,
+        userObjectId,
+        name_of_the_post,
+        next,
+        session // Pass session to ensure the transaction scope includes component creation
+      );
+    }
 
     const schema = POST_PROMPT_SCHEMA[sec];
     const dataJson = await postCreation(name_of_the_post, schema, next);
 
+    // Create the new post document
     const newPost = new model({
       _id: postObjectId,
       name_of_the_post,
@@ -93,17 +161,16 @@ export const createNewPost = async (
       application_fee: postObjectId,
       ...dataJson,
     });
+    await newPost.save({ session });
 
-    await newPost.save();
+    // Update the PostModel
+    const postInPostModel = await PostModel.findById(postId).session(session);
 
-    //post model update or creation
-    const postInPostModel = await PostModel.findById(postId);
-
-    //todo: multiple creater id adding left here
     if (postInPostModel) {
       await PostModel.updateOne(
         { _id: postId },
-        { $set: { [`sections.${sec}`]: { exist: true, approved: false } } }
+        { $set: { [`sections.${sec}`]: { exist: true, approved: false } } },
+        { session }
       );
     } else {
       const newPostInPostModel = new PostModel({
@@ -116,12 +183,21 @@ export const createNewPost = async (
           },
         },
       });
-      await newPostInPostModel.save();
+      await newPostInPostModel.save({ session });
     }
 
-    return res.status(201).json({ "postId": postId, message: "Created new post successfully!" });
+    // Commit the transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    return res
+      .status(201)
+      .json({ postId, message: "Created new post successfully!" });
   } catch (error) {
-    console.log(error);
+    // Abort the transaction on error
+    await session.abortTransaction();
+    session.endSession();
+    console.error("Error creating new post:", error);
     return next(new HttpError("Error occurred while creating new post.", 500));
   }
 };
