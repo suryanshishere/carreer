@@ -6,10 +6,10 @@ import answerKeyPromptSchema from "./sectionPromptSchema/answer-key-prompt-schem
 import certificateVerificatePromptSchema from "./sectionPromptSchema/certificate-verificate-prompt-schema";
 import importantPromptSchema from "./sectionPromptSchema/important-prompt-schema";
 import admissionPromptSchema from "./sectionPromptSchema/admission-prompt-schema";
-import feePromptSchema from "./overallPromptSchema/fee-prompt-schema";
-import datePromptSchema from "./overallPromptSchema/date-prompt-schema";
-import linkPromptSchema from "./overallPromptSchema/link-prompt-schema";
-import commonPromptSchema from "./overallPromptSchema/common-prompt-schema";
+import feePromptSchema from "./componentPromptSchema/fee-prompt-schema";
+import datePromptSchema from "./componentPromptSchema/date-prompt-schema";
+import linkPromptSchema from "./componentPromptSchema/link-prompt-schema";
+import commonPromptSchema from "./componentPromptSchema/common-prompt-schema";
 
 
 interface ISectionPromptSchema {
