@@ -52,6 +52,8 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
         password: hashedPassword,
         emailVerificationToken: random(100000, 999999),
         emailVerificationTokenCreatedAt: new Date(),
+        role:
+          email === "heresuryanshsingh@gmail.com" ? "publisher" : "contributer",
       });
       await newUser.save();
 
@@ -70,7 +72,7 @@ export const sendPasswordResetLink = async (
 ) => {
   validationError(req, res, next);
   const { email } = req.body;
-  const userId = getUserIdFromRequest((req as JWTRequest));
+  const userId = getUserIdFromRequest(req as JWTRequest);
 
   try {
     let existingUser: IUser | null;
@@ -107,6 +109,7 @@ export const sendPasswordResetLink = async (
 
     existingUser.passwordResetToken = random(100000, 999999);
     existingUser.passwordResetTokenCreatedAt = new Date();
+
     await existingUser.save();
 
     await sendEmail(
@@ -247,7 +250,9 @@ export const sendVerificationOtp = async (
     validationError(req, res, next);
   }
   // optional routes: since in backend action won't have token hence conditional not workin
-  const userId = options.isDirect ? options.userId : getUserIdFromRequest(req as JWTRequest);
+  const userId = options.isDirect
+    ? options.userId
+    : getUserIdFromRequest(req as JWTRequest);
 
   try {
     let user: IUser | null = null;

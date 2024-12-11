@@ -30,7 +30,7 @@ const postCreation = async (
   next: NextFunction
 ) => {
   try {
-    if ((schema = {})) return {};
+    // if ((schema = {})) return {};
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
     const model = genAI.getGenerativeModel({
@@ -44,7 +44,7 @@ const postCreation = async (
     const prompt = `Generate a comprehensive and engaging post for the "${nameOfThePost}"`;
     const result = await model.generateContent(prompt);
     const generatedContent = result.response.text();
-
+    console.log("generated content", generatedContent);
     // Validate JSON format
     try {
       const parsedContent = JSON.parse(generatedContent);

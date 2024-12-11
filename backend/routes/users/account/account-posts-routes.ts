@@ -41,18 +41,6 @@ const bookmarkMiddleware = [
     .trim()
     .notEmpty()
     .withMessage("Section is required!")
-    .custom((value) => {
-      const lowerCaseCategory = value.toLowerCase();
-
-      const acceptedCategories = _.flatMap(postSectionsArray, (section) => [
-        _.toLower(section), 
-        _.snakeCase(section), 
-      ]);
-
-      return acceptedCategories.includes(lowerCaseCategory);
-    })
-    .withMessage("Invalid section!")
-    .customSanitizer((value) => _.snakeCase(value) + "_ref"),
 ];
 
 router.post("/bookmark", bookmarkMiddleware, bookmarkPost);

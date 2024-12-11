@@ -1,4 +1,3 @@
-import SECTIONS from "db/postDb/sections.json";
 import { ICommonListData } from "./sectionInterfaces/sectionListInterfaces/ICommonListData";
 import { IResultList } from "./sectionInterfaces/sectionListInterfaces/IResultList";
 import { ILatestJobList } from "./sectionInterfaces/sectionListInterfaces/ILatestJobList";

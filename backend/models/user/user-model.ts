@@ -61,16 +61,16 @@ const userSchema: Schema = new Schema<IUser>(
 
     // Saved posts
     saved_posts: {
-      answer_key_ref: [{ type: Schema.Types.ObjectId, ref: "AnswerKey" }],
-      admission_ref: [{ type: Schema.Types.ObjectId, ref: "Admission" }],
-      admit_card_ref: [{ type: Schema.Types.ObjectId, ref: "AdmitCard" }],
-      certificate_verification_ref: [
+      answer_key: [{ type: Schema.Types.ObjectId, ref: "AnswerKey" }],
+      admission: [{ type: Schema.Types.ObjectId, ref: "Admission" }],
+      admit_card: [{ type: Schema.Types.ObjectId, ref: "AdmitCard" }],
+      certificate_verification: [
         { type: Schema.Types.ObjectId, ref: "CertificateVerification" },
       ],
-      important_ref: [{ type: Schema.Types.ObjectId, ref: "Important" }],
-      latest_job_ref: [{ type: Schema.Types.ObjectId, ref: "LatestJob" }],
-      result_ref: [{ type: Schema.Types.ObjectId, ref: "Result" }],
-      syllabus_ref: [{ type: Schema.Types.ObjectId, ref: "Syllabus" }],
+      important: [{ type: Schema.Types.ObjectId, ref: "Important" }],
+      latest_job: [{ type: Schema.Types.ObjectId, ref: "LatestJob" }],
+      result: [{ type: Schema.Types.ObjectId, ref: "Result" }],
+      syllabus: [{ type: Schema.Types.ObjectId, ref: "Syllabus" }],
     },
   },
   { timestamps: true }

@@ -26,46 +26,46 @@ export const postIdGeneration = async (postCode: string): Promise<string> => {
   return uniqueId.slice(0, 24);
 };
 
-export const checkOverall = async (
-  postObjectId: mongoose.Types.ObjectId,
-  userObjectId: mongoose.Types.ObjectId,
-  nameOfThePost: string,
-  next: NextFunction,
-  session: mongoose.ClientSession
-) => {
-  try {
-    for (const item of postOverallArray) {
-      const itemModel = MODAL_MAP[item];
-      if (!itemModel) {
-        throw new HttpError("Internal server error: Missing model", 500);
-      }
+// export const checkOverall = async (
+//   postObjectId: mongoose.Types.ObjectId,
+//   userObjectId: mongoose.Types.ObjectId,
+//   nameOfThePost: string,
+//   next: NextFunction,
+//   session: mongoose.ClientSession
+// ) => {
+//   try {
+//     for (const item of postOverallArray) {
+//       const itemModel = MODAL_MAP[item];
+//       if (!itemModel) {
+//         throw new HttpError("Internal server error: Missing model", 500);
+//       }
 
-      const post = await itemModel.findById(postObjectId).session(session);
-      if (!post) {
-        const schema = POST_PROMPT_SCHEMA[item];
-        if (Object.keys(schema).length === 0) {
-          throw new HttpError("Internal server error: Missing schema", 500);
-        }
+//       const post = await itemModel.findById(postObjectId).session(session);
+//       if (!post) {
+//         const schema = POST_PROMPT_SCHEMA[item];
+//         if (Object.keys(schema).length === 0) {
+//           throw new HttpError("Internal server error: Missing schema", 500);
+//         }
 
-        const dataJson = await postCreation(nameOfThePost, schema, next);
-        if (!dataJson) {
-          throw new HttpError("Error creating dataJson", 500);
-        }
+//         const dataJson = await postCreation(nameOfThePost, schema, next);
+//         if (!dataJson) {
+//           throw new HttpError("Error creating dataJson", 500);
+//         }
 
-        const newPost = new itemModel({
-          _id: postObjectId,
-          created_by: userObjectId,
-          approved: true,
-          ...dataJson,
-        });
+//         const newPost = new itemModel({
+//           _id: postObjectId,
+//           created_by: userObjectId,
+//           approved: true,
+//           ...dataJson,
+//         });
 
-        console.log(newPost)
+//         console.log(newPost)
 
-        await newPost.save({ session });
-      }
-    }
-  } catch (err) {
-    console.error("Error in checkOverall:", err);
-    throw err;
-  }
-};
+//         await newPost.save({ session });
+//       }
+//     }
+//   } catch (err) {
+//     console.error("Error in checkOverall:", err);
+//     throw err;
+//   }
+// };

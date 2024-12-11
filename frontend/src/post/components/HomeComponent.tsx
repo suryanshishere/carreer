@@ -19,13 +19,13 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
 }) => {
   return (
     <div
-      className="w-full text-base flex flex-col overflow-hidden max-h-260 gap-2"
+      className="w-full text-base flex flex-col justify-center gap-2"
       style={{ height }}
     >
-      <div className="w-full">
-        <h5 className="text-center font-bold capitalize py-2">
+      <div className="flex flex-col justify-center gap-2">
+        <h2 className="self-center py-1 text-custom-gray w-fit font-bold outline px-2">
           {startCase(section)}
-        </h5>
+        </h2>
         <hr className="w-full border-t-2 border-custom-less-gray" />
       </div>
       <div className="h-full flex flex-col justify-between mr-1">

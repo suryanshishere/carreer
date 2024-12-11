@@ -1,8 +1,6 @@
 import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
-import {
-  sectionDetailPopulateModels,
-} from "./postPopulate/posts-populate";
+import { sectionDetailPopulateModels } from "./postPopulate/posts-populate";
 import { Request } from "express-jwt";
 import { snakeCase } from "lodash";
 import { JWTRequest } from "@middleware/check-auth";
@@ -32,21 +30,22 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
     const user = (req as JWTRequest).user;
     const savedPost = user?.saved_posts || null;
 
-    const dataPromises = Object.keys(SECTION_POST_MODAL_MAP).map(async (key: string) => {
-      const snakeKey = snakeCase(key);
-      const savedField = `${snakeKey}_ref`;
-      const savedIds = savedPost?.[savedField]?.map(String) || [];
-      const posts = await fetchPostList(snakeKey, false);
+    const dataPromises = Object.keys(SECTION_POST_MODAL_MAP).map(
+      async (key: string) => {
+        const snakeKey = snakeCase(key);
+        const savedIds = savedPost?.[snakeKey]?.map(String) || [];
+        const posts = await fetchPostList(snakeKey, false);
 
-      //todo: improve error handling
-      return {
-        [snakeKey]: posts?.map(({ _id, ...rest }) => ({
-          _id,
-          is_saved: savedIds.includes(String(_id)),
-          ...rest,
-        })),
-      };
-    });
+        //todo: improve error handling
+        return {
+          [snakeKey]: posts?.map(({ _id, ...rest }) => ({
+            _id,
+            is_saved: savedIds.includes(String(_id)),
+            ...rest,
+          })),
+        };
+      }
+    );
 
     const dataArray = await Promise.all(dataPromises);
     const response = dataArray.reduce((acc, curr) => {
@@ -71,10 +70,8 @@ export const section = async (
     const user = (req as JWTRequest).user;
     let savedIds: string[] = [];
     if (user) {
-      const savedField = `${sec}_ref`;
-
-      if (user?.saved_posts?.[savedField]) {
-        savedIds = user.saved_posts[savedField].map(String);
+      if (user?.saved_posts?.[sec]) {
+        savedIds = user.saved_posts[sec].map(String);
       }
     }
 
@@ -124,8 +121,7 @@ export const postDetail = async (
     const { Types } = require("mongoose");
 
     if (user && user?.saved_posts) {
-      const savedField = `${sec}_ref`;
-      const savedPosts = user.saved_posts[savedField] || [];
+      const savedPosts = user.saved_posts[sec] || [];
       const postIdObj = new Types.ObjectId(postId);
       isSaved = savedPosts.some((savedPost) => savedPost.equals(postIdObj));
     }

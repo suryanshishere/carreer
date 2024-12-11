@@ -2,7 +2,6 @@ import validationError from "@controllers/controllersHelpers/validation-error";
 import { NextFunction, Response, Request } from "express";
 import {
   checkAuthorisedPublisher,
-  checkOverall,
   postIdGeneration,
 } from "./publisher-controllers-utils";
 import HttpError from "@utils/http-errors";
@@ -47,8 +46,8 @@ export const createComponentPost = async (
   postObjectId: mongoose.Types.ObjectId,
   userObjectId: mongoose.Types.ObjectId,
   nameOfThePost: string,
-  next: NextFunction,
-  session: mongoose.ClientSession // Add session as a parameter
+  next: NextFunction
+  // session: mongoose.ClientSession // Add session as a parameter
 ) => {
   try {
     // Create posts for all models in COMPONENT_POST_MODAL_MAP
@@ -62,7 +61,7 @@ export const createComponentPost = async (
           dataJson = await postCreation(nameOfThePost, schema, next);
           if (dataJson) break; // Exit retry loop if successful
           if (attempt === 2)
-            throw new Error("Failed to create post data after 3 attempts");
+            throw new HttpError("Failed to create post data after 3 attempts",500);
         }
 
         console.log(dataJson);
@@ -80,7 +79,7 @@ export const createComponentPost = async (
           {
             new: true,
             upsert: true, // Create document if it doesn't exist
-            session, // Include session for transactional consistency
+            // session, // Include session for transactional consistency
           }
         );
 
@@ -91,7 +90,7 @@ export const createComponentPost = async (
     await Promise.all(postCreationPromises);
   } catch (error) {
     console.error("Error in createComponentPost:", error);
-    throw error; 
+    throw error;
   }
 };
 
@@ -106,8 +105,8 @@ export const createNewPost = async (
   const userId = (req as JWTRequest).userData.userId;
   checkAuthorisedPublisher(req, res, next);
 
-  const session = await mongoose.startSession(); 
-  session.startTransaction();
+  // const session = await mongoose.startSession();
+  // session.startTransaction();
 
   try {
     const postId = await postIdGeneration(post_code);
@@ -140,8 +139,8 @@ export const createNewPost = async (
         postObjectId,
         userObjectId,
         name_of_the_post,
-        next,
-        session 
+        next
+        // session
       );
     }
 
@@ -160,16 +159,16 @@ export const createNewPost = async (
       application_fee: postObjectId,
       ...dataJson,
     });
-    await newPost.save({ session });
+    await newPost.save();
 
     // Update the PostModel
-    const postInPostModel = await PostModel.findById(postId).session(session);
+    const postInPostModel = await PostModel.findById(postId);
 
     if (postInPostModel) {
       await PostModel.updateOne(
         { _id: postId },
-        { $set: { [`sections.${sec}`]: { exist: true, approved: false } } },
-        { session }
+        { $set: { [`sections.${sec}`]: { exist: true, approved: false } } }
+        // { session }
       );
     } else {
       const newPostInPostModel = new PostModel({
@@ -182,21 +181,23 @@ export const createNewPost = async (
           },
         },
       });
-      await newPostInPostModel.save({ session });
+      await newPostInPostModel.save();
     }
 
     // Commit the transaction
-    await session.commitTransaction();
-    session.endSession();
+    // await session.commitTransaction();
+    // session.endSession();
 
     return res
       .status(201)
       .json({ postId, message: "Created new post successfully!" });
   } catch (error) {
     // Abort the transaction on error
-    await session.abortTransaction();
-    session.endSession();
+    // await session.abortTransaction();
     console.error("Error creating new post:", error);
     return next(new HttpError("Error occurred while creating new post.", 500));
+  } finally {
+    // Ensure that the session is always ended, regardless of success or failure
+    // session.endSession();
   }
 };

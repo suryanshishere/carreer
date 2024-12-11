@@ -3,6 +3,12 @@ import User from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
+import { sectionListPopulate } from "@controllers/posts/postPopulate/posts-populate";
+import {
+  COMMON_SELECT_FIELDS,
+  sectionPostListSelect,
+} from "@controllers/posts/postSelect/sectionPostListSelect";
+import { postSectionsArray } from "@controllers/shared/post-array";
 
 export const savedPosts = async (
   req: Request,
@@ -12,18 +18,35 @@ export const savedPosts = async (
   const userId = (req as JWTRequest).userData.userId;
 
   try {
-    const userSavedPost = await User.findById(userId)
-      .select("saved_posts -_id")
-      .populate([
-        "saved_posts.answer_key_ref",
-        "saved_posts.admit_card_ref",
-        "saved_posts.latest_job_ref",
-        "saved_posts.admission_ref",
-        "saved_posts.certificate_verification_ref",
-        "saved_posts.important_ref",
-        "saved_posts.syllabus_ref",
-        "saved_posts.result_ref",
-      ]);
+    const query = User.findById(userId).select("saved_posts -_id");
+
+    postSectionsArray.forEach((section) => {
+      const selectFields = [
+        COMMON_SELECT_FIELDS,
+        sectionPostListSelect[section] || "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+      query.populate({
+        path: `saved_posts.${section}`,
+        select: selectFields,
+        populate: sectionListPopulate[section] || null,
+      });
+    });
+
+    const userSavedPost = await query;
+
+    // .populate([
+    //   "saved_posts.answer_key_ref",
+    //   "saved_posts.admit_card_ref",
+    //   "saved_posts.latest_job_ref",
+    //   "saved_posts.admission_ref",
+    //   "saved_posts.certificate_verification_ref",
+    //   "saved_posts.important_ref",
+    //   "saved_posts.syllabus_ref",
+    //   "saved_posts.result_ref",
+    // ]);
 
     if (!userSavedPost) {
       return next(new HttpError("No user saved post found!", 404));
@@ -50,7 +73,7 @@ export const bookmarkPost = async (
     if (!user) {
       return next(new HttpError("User not found!", 404));
     }
-
+    console.log(section)
     const currentPosts = user.saved_posts?.[section] || [];
     // Avoid bookmarking the same post_id if it's already present
     if (!currentPosts.includes(post_id)) {

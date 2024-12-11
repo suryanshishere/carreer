@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IPostList } from "models/postModels/IPostList";
 import Bookmark from "shared/components/Bookmark";
-import { renderDateStrNum } from "../../shared/quick/render-date-str-num";
+import { renderDateStrNum } from "../quick/render-date-str-num";
 import flattenToLastKeys from "shared/quick/flatten-object";
 import { startCase } from "lodash";
 import { excludedKeys } from "post/post-detail-render-define";
@@ -11,13 +11,16 @@ import { excludedPostListKeys } from "post/post-list-render-define";
 interface ListProps {
   data: IPostList;
   section: string;
+  isSaved?: boolean;
 }
 
 const CATEGORY_LIMIT =
   Number(process.env.REACT_APP_NUMBER_OF_POST_CATEGORYLIST) || 25;
 
-const List: React.FC<ListProps> = ({ data, section }) => {
-  console.log(data)
+const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
+  if (data.length === 0) return null;
+
+  // console.log(data)
   const renderObject = (obj: Record<string, any>) => {
     return Object.entries(obj)
       .filter(([key]) => !excludedPostListKeys.includes(key))
@@ -53,7 +56,7 @@ const List: React.FC<ListProps> = ({ data, section }) => {
           // Directly render key-value pair for non-object values
           return (
             <span key={key} className="text-custom-less-gray text-sm mr-2">
-              <span className=" whitespace-nowrap">
+              <span className=" ">
                 <span>{startCase(key)}:</span>
                 <span className="text-custom-black ml-1">
                   {renderDateStrNum(value)}
@@ -67,10 +70,10 @@ const List: React.FC<ListProps> = ({ data, section }) => {
   };
 
   return (
-    <ul className="w-full self-start p-0 m-0 text-base">
+    <ul className="self-start p-0 m-0 flex flex-col gap-2 text-base">
       {data.map((item, index) => (
         <React.Fragment key={item._id}>
-          <li className="w-fit flex flex-col">
+          <li className="w-fit ">
             <div className="flex gap-2 items-center">
               <Link
                 to={`/sections/${section}/${item._id}?is_saved=${item.is_saved}`}
@@ -82,7 +85,7 @@ const List: React.FC<ListProps> = ({ data, section }) => {
                 <Bookmark
                   section={section}
                   postId={item._id}
-                  isSaved={item.is_saved}
+                  isSaved={item.is_saved || isSaved}
                 />
               </div>
             </div>
@@ -105,4 +108,4 @@ const List: React.FC<ListProps> = ({ data, section }) => {
   );
 };
 
-export default List;
+export default PostList;

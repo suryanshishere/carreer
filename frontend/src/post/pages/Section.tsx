@@ -1,5 +1,5 @@
 import React from "react";
-import PostList from "post/components/List";
+import PostList from "shared/components/PostList";
 import { IPostList } from "models/postModels/IPostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
