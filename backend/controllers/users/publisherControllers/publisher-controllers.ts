@@ -88,11 +88,10 @@ export const createComponentPost = async (
       }
     );
 
-    // Wait for all post creations to complete
     await Promise.all(postCreationPromises);
   } catch (error) {
     console.error("Error in createComponentPost:", error);
-    throw error; // Rethrow error to ensure rollback in createNewPost
+    throw error; 
   }
 };
 
@@ -107,7 +106,7 @@ export const createNewPost = async (
   const userId = (req as JWTRequest).userData.userId;
   checkAuthorisedPublisher(req, res, next);
 
-  const session = await mongoose.startSession(); // Start a session for the transaction
+  const session = await mongoose.startSession(); 
   session.startTransaction();
 
   try {
@@ -142,7 +141,7 @@ export const createNewPost = async (
         userObjectId,
         name_of_the_post,
         next,
-        session // Pass session to ensure the transaction scope includes component creation
+        session 
       );
     }
 
