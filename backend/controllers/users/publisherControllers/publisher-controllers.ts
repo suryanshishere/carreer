@@ -22,23 +22,57 @@ export const deletePost = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { postId } = req.body;
+  const { postId, section } = req.body;
 
-  for (const [key, model] of Object.entries(MODAL_MAP)) {
-    try {
-      const result = await model.deleteOne({ _id: postId });
-      if (result) {
-        console.log(result);
-        console.log(`Post deleted from ${key} model`);
-      } else {
-        console.log(`Post not found in ${key} model`);
-      }
-    } catch (error) {
-      console.error(`Error deleting post from ${key} model: `, error);
-    }
+  if (!postId) {
+    return res.status(400).json({ error: "postId is required" });
   }
 
-  return res.status(200).json("completed!");
+  try {
+    if (section) {
+      // Check if the section exists in MODAL_MAP
+      const model = MODAL_MAP[section];
+      if (!model) {
+        return res.status(400).json({ error: `Invalid section: ${section}` });
+      }
+
+      // Delete the post only from the specified section
+      const result = await model.deleteOne({ _id: postId });
+      if (result.deletedCount > 0) {
+        console.log(`Post deleted from ${section} model`);
+        return res
+          .status(200)
+          .json({ message: `Post deleted from ${section} model` });
+      } else {
+        console.log(`Post not found in ${section} model`);
+        return res
+          .status(404)
+          .json({ error: `Post not found in ${section} model` });
+      }
+    } else {
+      // If no section is specified, delete the post from all models
+      for (const [key, model] of Object.entries(MODAL_MAP)) {
+        try {
+          const result = await model.deleteOne({ _id: postId });
+          if (result.deletedCount > 0) {
+            console.log(`Post deleted from ${key} model`);
+          } else {
+            console.log(`Post not found in ${key} model`);
+          }
+        } catch (error) {
+          console.error(`Error deleting post from ${key} model: `, error);
+        }
+      }
+      return res
+        .status(200)
+        .json({ message: "Post deletion process completed!" });
+    }
+  } catch (error) {
+    console.error("Error in deletePost function:", error);
+    return next(
+      new HttpError("An error occurred while deleting the post", 500)
+    );
+  }
 };
 
 //what if one of the component exist
@@ -57,12 +91,12 @@ export const createComponentPost = async (
         let dataJson: any;
 
         // Retry logic for postCreation
-        for (let attempt = 0; attempt < 3; attempt++) {
-          dataJson = await postCreation(nameOfThePost, schema, next);
-          if (dataJson) break; // Exit retry loop if successful
-          if (attempt === 2)
-            throw new HttpError("Failed to create post data after 3 attempts",500);
-        }
+        // for (let attempt = 0; attempt < 3; attempt++) {
+        dataJson = await postCreation(nameOfThePost, schema, next);
+        //   if (dataJson) break; // Exit retry loop if successful
+        //   if (attempt === 2)
+        //     throw new HttpError("Failed to create post data after 3 attempts",500);
+        // }
 
         console.log(dataJson);
 
@@ -90,7 +124,9 @@ export const createComponentPost = async (
     await Promise.all(postCreationPromises);
   } catch (error) {
     console.error("Error in createComponentPost:", error);
-    throw error;
+    return next(
+      new HttpError("Error occurred while creating component post.", 500)
+    );
   }
 };
 
@@ -111,17 +147,21 @@ export const createNewPost = async (
   try {
     const postId = await postIdGeneration(post_code);
     if (!postId) {
-      throw new HttpError("Post Id generation failed, please try again.", 400);
+      return next(
+        new HttpError("Post Id generation failed, please try again.", 400)
+      );
     }
 
     const model = SECTION_POST_MODAL_MAP[sec];
     if (!model) {
-      throw new HttpError(`No model found for the section: ${section}`, 400);
+      return next(
+        new HttpError(`No model found for the section: ${section}`, 400)
+      );
     }
 
     const existingPost = await model.findById(postId);
     if (existingPost) {
-      throw new HttpError("Post already exists!", 400);
+      return next(new HttpError("Post already exists!", 400));
     }
 
     const postObjectId = new mongoose.Types.ObjectId(postId);
@@ -145,7 +185,10 @@ export const createNewPost = async (
     }
 
     const schema = POST_PROMPT_SCHEMA[sec];
-    const dataJson = await postCreation(name_of_the_post, schema, next);
+    const dataJson =
+      Object.keys(schema).length === 0
+        ? {}
+        : await postCreation(name_of_the_post, schema, next);
 
     // Create the new post document
     const newPost = new model({
