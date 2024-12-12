@@ -1,23 +1,9 @@
 import SECTIONS from "db/postDb/sections.json";
 import { IPostDetail } from "models/postModels/IPostDetail";
-import { snakeCase } from "lodash";
 
-// const listPriorities: { [key: string]: string[] } = {
-//   latest_job_priority,
-//   result_priority,
-//   admit_card_priority,
-//   answer_key_priority,
-//   admission_priority,
-//   certificate_verification_priority,
-//   important_priority,
-//   syllabus_priority,
-// };
-
-export const priorityMapping = (
-  priorities: {
-    [key: string]: string[];
-  }
-): { [key: string]: string[] } => {
+export const priorityMapping = (priorities: {
+  [key: string]: string[];
+}): { [key: string]: string[] } => {
   const priorityMap: { [key: string]: string[] } = {};
 
   SECTIONS.forEach((section) => {
@@ -39,26 +25,25 @@ const rearrangeObjectByPriority = (
   let result: { [key: string]: any } = {};
 
   priorityKeys.forEach((key) => {
-    const keys = key.split("."); // Split by dot for nested keys
+    const keys = key.split(".");
     let value: any = data;
     keys.forEach((subKey) => {
       value = value ? value[subKey] : undefined;
     });
     if (value !== undefined) {
       result[keys[keys.length - 1]] = value;
-      
+
       let currentData: any = data;
       keys.forEach((subKey, index) => {
         if (index === keys.length - 1) {
-          delete currentData[subKey]; // Delete the final key
+          delete currentData[subKey];
         } else {
-          currentData = currentData[subKey]; // Traverse deeper if it's a nested structure
+          currentData = currentData[subKey];
         }
       });
     }
   });
 
-  // Add the rest of the keys that are not in the priority list
   Object.keys(data).forEach((key) => {
     if (!priorityKeys.includes(key)) {
       result[key] = data[key as keyof IPostDetail];

@@ -4,5 +4,6 @@ export const excludedPostListKeys = [
   "updatedAt",
   "is_saved",
   "approved",
-  "contributors"
+  "contributors",
+  "__v",
 ];

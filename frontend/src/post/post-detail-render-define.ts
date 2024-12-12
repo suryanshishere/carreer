@@ -4,7 +4,8 @@ export const excludedKeys = [
     "createdAt",
     "updatedAt",
     "contributors",
-    "is_saved"
+    "is_saved",
+    "__v"
   ];
   
   export const notDisplayKeys = [];
@@ -12,6 +13,7 @@ export const excludedKeys = [
   // "common"
   export const tableRequired = [
     "age_criteria",
+    "result",
     "male",
     "female",
     "other",

@@ -1,5 +1,5 @@
 export const answerKeyPopulate = [
-    { path: "common", select: " -eligibility" },
+    { path: "common", select: " -eligibility -approved" },
     {
       path: "important_dates",
       select:

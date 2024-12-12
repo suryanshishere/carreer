@@ -11,6 +11,10 @@ import LinkModel from "@models/post/componentModels/link-model";
 import PostModel from "@models/post/post-model";
 import { fetchPostList } from "./posts-controllers-utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/shared/post-model-map";
+import {
+  COMMON_POST_DETAIL_SELECT_FIELDS,
+  sectionPostDetailSelect,
+} from "./postSelect/sectionPostDetailSelect";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 const CATEGORY_LIMIT =
@@ -107,10 +111,19 @@ export const postDetail = async (
       return next(new HttpError("Invalid section specified.", 400));
     }
 
+    const sectionSelect = sectionPostDetailSelect[sec] || "";
+    let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
+
+    if (sectionSelect.startsWith("-")) {
+      selectFields = sectionSelect.split(" ");
+    } else if (sectionSelect) {
+      selectFields.push(...sectionSelect.split(" "));
+    }
+
     const response = await model
       .findOne({ _id: postId, approved: true })
-      .populate(sectionDetailPopulateModels[sec])
-      .select("-approved");
+      .select(selectFields)
+      .populate(sectionDetailPopulateModels[sec]);
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));
@@ -133,6 +146,7 @@ export const postDetail = async (
 
     return res.status(200).json(responseWithSavedStatus);
   } catch (err) {
+    console.log(err);
     return next(
       new HttpError("An error occurred while fetching the post.", 500)
     );

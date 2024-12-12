@@ -15,12 +15,21 @@ export const fetchPostList = async (
   }
 
   // Combine select fields
-  const selectFields = [
-    COMMON_SELECT_FIELDS,
-    sectionPostListSelect[section] || "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  // const selectFields = [
+  //   COMMON_SELECT_FIELDS,
+  //   sectionPostListSelect[section] || "",
+  // ]
+  //   .filter(Boolean)
+  //   .join(" ");
+
+  const sectionSelect = sectionPostListSelect[section] || "";
+  let selectFields: string[] = COMMON_SELECT_FIELDS.split(" ");
+
+  if (sectionSelect.startsWith("-")) {
+    selectFields = sectionSelect.split(" ");
+  } else if (sectionSelect) {
+    selectFields.push(...sectionSelect.split(" "));
+  }
 
   let query = model.find({ approved: true }).select(selectFields);
 

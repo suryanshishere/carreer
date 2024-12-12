@@ -5,7 +5,7 @@ export const populateResult = [
   },
   {
     path: "common",
-    select: "-post_exam_duration -age_criteria -eligibility -approved",
+    select: "-post_exam_duration -age_criteria -eligibility -approved -__v",
   },
   {
     path: "important_dates",
@@ -17,10 +17,10 @@ export const populateResult = [
 export const resultListPopulate = [
   {
     path: "important_links",
-    select: "view_results official_website -_id",
+    select: "view_results official_website",
   },
   {
     path: "important_dates",
-    select: "result_announcement_date -_id",
+    select: "result_announcement_date",
   },
 ];

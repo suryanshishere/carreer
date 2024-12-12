@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IPostList } from "models/postModels/IPostList";
+import { IPostList, IPostListData } from "models/postModels/IPostList";
 import Bookmark from "shared/components/Bookmark";
 import { renderDateStrNum } from "../quick/render-date-str-num";
 import flattenToLastKeys from "shared/quick/flatten-object";
@@ -21,7 +21,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
   if (data.length === 0) return null;
 
   // console.log(data)
-  const renderObject = (obj: Record<string, any>) => {
+  const renderObject = (obj: IPostListData) => {
     return Object.entries(obj)
       .filter(([key]) => !excludedPostListKeys.includes(key))
       .map(([key, value]) => {
@@ -38,22 +38,30 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
             )
           ) {
             return (
-              <span key={key}>
+              <span key={key} className="pl-2">
                 <span className="text-custom-less-gray text-sm">
                   {startCase(key)}:
                 </span>
-                <span className="pl-2">{renderObject(value)}</span>
+                <span className="pl-2">
+                  {value?.current_year != null &&
+                  value.previous_year != null ? (
+                    <span>
+                      {renderDateStrNum(
+                        value.current_year || value.previous_year,
+                        key
+                      )}
+                    </span>
+                  ) : (
+                    <span key={key}>{renderObject(value)}</span>
+                  )}
+                </span>
+                {/* <span> </span> */}
               </span>
             );
           } else {
-            return (
-              <span key={key}>
-                {renderObject(value)} {/* Recursively render nested values */}
-              </span>
-            );
+            return <span key={key}>{renderObject(value)}</span>;
           }
         } else {
-          // Directly render key-value pair for non-object values
           return (
             <span key={key} className="text-custom-less-gray text-sm mr-2">
               <span className=" ">
@@ -62,7 +70,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                   {renderDateStrNum(value)}
                 </span>
               </span>
-              <span> </span> {/* Add a space for separation */}
+              {/* <span> </span> */}
             </span>
           );
         }

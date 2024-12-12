@@ -9,7 +9,7 @@ export const admitCardPopulate = [
     select:
       "official_website get_admit_card download_sample_papers additional_resources",
   },
-  { path: "common", select: "-eligibility" },
+  { path: "common", select: "-eligibility -approved" },
   { path: "syllabus", select: "syllabus" },
 ];
 

@@ -1,7 +1,7 @@
 export const admissionPopulate = [
   {
     path: "common",
-    select: "-post_exam_duration -post_exam_toughness_ranking",
+    select: "-post_exam_duration -post_exam_toughness_ranking -approved",
   },
   {
     path: "important_dates",

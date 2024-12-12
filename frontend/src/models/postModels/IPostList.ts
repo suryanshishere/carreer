@@ -19,7 +19,7 @@ export type IPostListData =
   | IImportantList;
 
 export type IPostList = Array<
-  ICommonListData &
+  |ICommonListData &
     (
       | IResultList
       | ILatestJobList

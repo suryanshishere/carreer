@@ -50,7 +50,7 @@ const SavedPosts = () => {
         return (
           savedPost[key].length > 0 && (
             <Fragment key={key}>
-              <h2 className="w-fit py-1 text-custom-gray font-bold outline px-2 mt-3">{startCase(key)}</h2>
+              <h2 className="w-fit py-1 text-custom-gray font-bold px-2 mt-3">{startCase(key)}</h2>
               <div className="pl-2">
                 <PostList data={savedPost[key]} section={key} isSaved />
               </div>

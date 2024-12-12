@@ -57,12 +57,11 @@ const PostDetail: React.FC = () => {
 
   if (queryStateMessage) return queryStateMessage;
 
-  const orderData = rearrangeObjectByPriority(
-    data.data as IPostDetail,
+  const orderData: IPostDetail | null = rearrangeObjectByPriority(
+    data.data,
     //todo: improve the system
     priorityMapping(postDetailPriorities)[snakeCase(section)]
   );
-  console.log(orderData)
 
   return (
     <div className="flex flex-col items-center">
@@ -73,7 +72,7 @@ const PostDetail: React.FC = () => {
           isSaved={isSaved === "true" || data.is_saved}
         />
       </div>
-      {data && <PostDetailItem data={orderData as IPostDetail} />}
+      {orderData && <PostDetailItem data={orderData} />}
     </div>
   );
 };
