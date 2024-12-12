@@ -1,0 +1,41 @@
+{
+  "_id": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "createdAt": "2024-08-08T12:00:00Z",
+  "updatedAt": "2024-09-08T12:00:00Z",
+  "created_by": {
+    "$oid": "6749e5ec8100dfa1958e9573"
+  },
+  "contributors": [
+    {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    }
+  ],
+  "approved": true,
+  "male": {
+    "general": 25,
+    "obc": 25,
+    "ews": 25,
+    "sc": 25,
+    "st": 25,
+    "ph_dviyang": 25
+  },
+  "female": {
+    "general": 25,
+    "obc": 25,
+    "ews": 25,
+    "sc": 25,
+    "st": 25,
+    "ph_dviyang": 25
+  },
+  "other": {
+    "general": 25,
+    "obc": 25,
+    "ews": 25,
+    "sc": 25,
+    "st": 25,
+    "ph_dviyang": 25
+  },
+  "additional_resources": "Fee details for other categories and payment modes can be found on the official website."
+}

@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IPostListData } from "models/post/IPostList";
-import { formatWord } from "shared/quick/format-word";
+import { IPostList } from "models/postModels/IPostList";
+import { startCase } from "lodash";
 import Bookmark from "shared/components/Bookmark";
 
 interface HomeListItemProps {
-  ListItemData: IPostListData[];
-  category: string;
+  ListItemData: IPostList;
+  section: string;
   height?: string;
 }
 
@@ -14,18 +14,18 @@ const HOME_LIMIT = Number(process.env.REACT_APP_NUMBER_OF_POST_HOMELIST) || 12;
 
 const HomeComponent: React.FC<HomeListItemProps> = ({
   ListItemData,
-  category,
+  section,
   height,
 }) => {
   return (
     <div
-      className="w-full text-base flex flex-col overflow-hidden max-h-260 gap-2"
+      className="w-full text-base flex flex-col justify-center gap-2"
       style={{ height }}
     >
-      <div className="w-full">
-        <h5 className="text-center font-bold capitalize py-2">
-          {formatWord(category)}
-        </h5>
+      <div className="flex flex-col justify-center gap-2">
+        <h2 className="self-center py-1 text-custom-gray w-fit font-bold px-2">
+          {startCase(section)}
+        </h2>
         <hr className="w-full border-t-2 border-custom-less-gray" />
       </div>
       <div className="h-full flex flex-col justify-between mr-1">
@@ -33,10 +33,16 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
           {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
             <React.Fragment key={index}>
               <li className="w-full">
-                <Bookmark category={category} postId={item._id} isSaved={item.is_saved}/>
+                <div className="float-right">
+                  <Bookmark
+                    section={section}
+                    postId={item._id}
+                    isSaved={item.is_saved}
+                  />
+                </div>
                 <Link
-                  to={`/category/${category}/${item._id}`}
-                  className="text-custom-red underline decoration-1 underline-offset-2 hover:decoration-custom-gray"
+                  to={`/sections/${section}/${item._id}?is_saved=${item.is_saved}`}
+                  className="text-custom-red underline decoration-1 underline-offset-2 hover:text-custom-blue"
                 >
                   {item.name_of_the_post}
                 </Link>
@@ -49,7 +55,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
         </ul>
         <Link
           className="text-custom-blue text-sm font-semibold pr-2 h-auto text-right"
-          to={`/category/${category}`}
+          to={`/sections/${section}`}
         >
           Read More
         </Link>

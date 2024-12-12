@@ -1,0 +1,70 @@
+{
+  "_id": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "createdAt": "2024-08-08T12:00:00Z",
+  "updatedAt": "2024-09-08T12:00:00Z",
+  "created_by": {
+    "$oid": "6749e5ec8100dfa1958e9573"
+  },
+  "contributors": [
+    {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    }
+  ],
+  "approved": true,
+  "application_start_date": {
+    "current_year": "2024-01-01T00:00:00.000Z",
+    "previous_year": "2023-01-01T00:00:00.000Z"
+  },
+  "application_end_date": {
+    "current_year": "2024-03-15T23:59:59.000Z",
+    "previous_year": "2023-03-15T23:59:59.000Z"
+  },
+  "exam_fee_payment_end_date": {
+    "current_year": "2024-03-20T23:59:59.000Z",
+    "previous_year": "2023-03-20T23:59:59.000Z"
+  },
+  "form_correction_start_date": {
+    "current_year": "2024-04-01T00:00:00.000Z",
+    "previous_year": "2023-04-01T00:00:00.000Z"
+  },
+  "form_correction_end_date": {
+    "current_year": "2024-04-07T23:59:59.000Z",
+    "previous_year": "2023-04-07T23:59:59.000Z"
+  },
+  "exam_date": {
+    "current_year": "2024-05-15T00:00:00.000Z",
+    "previous_year": "2023-05-15T00:00:00.000Z"
+  },
+  "admit_card_release_date": {
+    "current_year": "2024-05-01T00:00:00.000Z",
+    "previous_year": "2023-05-01T00:00:00.000Z"
+  },
+  "exam_city_details_release_date": {
+    "current_year": "2024-05-10T00:00:00.000Z",
+    "previous_year": "2023-05-10T00:00:00.000Z"
+  },
+  "answer_key_release_date": {
+    "current_year": "2024-06-01T00:00:00.000Z",
+    "previous_year": "2023-06-01T00:00:00.000Z"
+  },
+  "result_announcement_date": {
+    "current_year": "2024-07-01T00:00:00.000Z",
+    "previous_year": "2023-07-01T00:00:00.000Z"
+  },
+  "counseling_start_date": {
+    "current_year": "2024-07-01T00:00:00.000Z",
+    "previous_year": "2023-07-01T00:00:00.000Z"
+  },
+  "counseling_end_date": {
+    "current_year": "2024-07-01T00:00:00.000Z",
+    "previous_year": "2023-07-01T00:00:00.000Z"
+  },
+  "counseling_result_announcement_date": {
+    "current_year": "2024-07-01T00:00:00.000Z",
+    "previous_year": "2023-07-01T00:00:00.000Z"
+  },
+
+  "additional_resources": "https://jeemain.nta.nic.in/important-dates"
+}

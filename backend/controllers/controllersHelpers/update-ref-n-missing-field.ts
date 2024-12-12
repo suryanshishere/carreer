@@ -26,7 +26,7 @@ const updateMissingFields = (
   // Automatically assign postId to missing reference fields
   referenceFields.forEach((field) => {
     if (missingFields.includes(field)) {
-      selectedPost.set(field, new Types.ObjectId(postId)); // Assign ObjectId from postId
+      selectedPost.set(field, new Types.ObjectId(postId)); // Assign Types.ObjectId from postId
       missingFields = missingFields.filter((missingField) => missingField !== field); // Remove the reference field from missingFields
     }
   });

@@ -1,6 +1,66 @@
 {
-    "_id": {
-        "$oid": "66b86fe14d528c942de38c3a"
+  "_id": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "post_code": "JEE2024",
+  "created_by": {
+    "admission": {
+      "$oid": "6749e5ec8100dfa1958e9573"
     },
-    "post_code": "JEE2024"
+    "admit_card": {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    },
+    "answer_key": {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    },
+    "certificate_verification": {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    },
+    "important": {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    },
+    "latest_job": {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    },
+    "result": {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    },
+    "syllabus": {
+      "$oid": "6749e5ec8100dfa1958e9573"
+    }
+  },
+  "sections": {
+    "admission": {
+      "exist": true,
+      "approved": true
+    },
+    "admit_card": {
+      "exist": true,
+      "approved": true
+    },
+    "answer_key": {
+      "exist": true,
+      "approved": true
+    },
+    "certificate_verification": {
+      "exist": true,
+      "approved": true
+    },
+    "important": {
+      "exist": true,
+      "approved": true
+    },
+    "latest_job": {
+      "exist": true,
+      "approved": true
+    },
+    "result": {
+      "exist": true,
+      "approved": true
+    },
+    "syllabus": {
+      "exist": true,
+      "approved": true
+    }
+  }
 }

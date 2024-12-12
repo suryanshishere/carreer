@@ -2,23 +2,23 @@ import React from "react";
 import HomeListItem from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import { IPostList } from "models/post/IPostList";
+import { IPostList } from "models/postModels/IPostList";
 import useQueryStates from "shared/hooks/query-states-hook";
-import "./Home.css";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
-const fetchHomePostList = async (token?: string): Promise<IPostList> => {
-  const headers: { Authorization?: string } = {};
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  const { data } = await axiosInstance.get("home", {
-    headers: headers, // Pass headers here, which may or may not include Authorization
+const fetchHomePostList = async (
+  token?: string
+): Promise<{
+  data: {
+    [key: string]: IPostList;
+  };
+}> => {
+  const { data } = await axiosInstance.get("/public/home", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
-
   return data;
 };
 
@@ -32,10 +32,17 @@ const heights: Record<string, string> = {
 const Home: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const {
-    data = {},
+    data = { data: {} },
     isLoading,
     error,
-  } = useQuery<IPostList, Error>({
+  } = useQuery<
+    {
+      data: {
+        [key: string]: IPostList;
+      };
+    },
+    Error
+  >({
     queryKey: ["homePostList"],
     queryFn: () => fetchHomePostList(token),
     retry: 3,
@@ -44,20 +51,18 @@ const Home: React.FC = () => {
   const queryStateMessage = useQueryStates({
     isLoading,
     error: error ? error.message : null,
-    empty: Object.keys(data).length === 0,
+    empty: Object.keys(data.data).length === 0,
   });
-
-  console.log(data);
 
   if (queryStateMessage) return queryStateMessage;
 
   return (
-    <div className="grid grid-cols-3 gap-3">
-      {Object.keys(data).map((key) => (
+    <div className="grid grid-cols-3 gap-x-3 gap-y-3">
+      {Object.keys(data.data).map((key) => (
         <HomeListItem
           key={key}
-          ListItemData={data[key] || []}
-          category={key}
+          ListItemData={data.data[key] || []}
+          section={key}
           height={heights[key] || heights.default}
         />
       ))}

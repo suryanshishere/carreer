@@ -45,23 +45,20 @@ const AuthComponent: React.FC<AuthProps> = () => {
   const submitMutation = useMutation({
     mutationFn: async (data: IAuth) => {
       const response = await axiosInstance.post(
-        `user/auth`,
+        `/user/auth`,
         JSON.stringify(data),
         {}
       );
       return response.data;
     },
-    onSuccess: ({ token, tokenExpiration, isEmailVerified, message }) => {
-      dispatch(login({ token, tokenExpiration, isEmailVerified }));
+    onSuccess: ({ token, tokenExpiration, isEmailVerified, role, message }) => {
       dispatch(triggerSuccessMsg(message));
-
-      if (isEmailVerified) {
-        dispatch(handleAuthClick(false));
-      }
+      dispatch(login({ token, tokenExpiration, isEmailVerified, role }));
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
     },
+    retry: 3,
   });
 
   const submitHandler: SubmitHandler<IAuth> = async (data) => {
@@ -71,7 +68,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
   return (
     <form
       onSubmit={handleSubmit(submitHandler)}
-      className="h-5/6 flex-1 flex items-center gap-2 justify-end"
+      className="flex-1 flex items-center gap-2 justify-end"
     >
       <Input
         type="email"
@@ -92,9 +89,10 @@ const AuthComponent: React.FC<AuthProps> = () => {
         outerClassProp={`flex-1`}
       />
       <Button
+        authButtonType
         classProp={`${
           submitMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
-        } py-2 rounded-full  text-white font-bold px-3 hover:bg-custom-black`}
+        }`}
         type="submit"
       >
         {submitMutation.isPending ? "Authenticating..." : "Authenticate"}

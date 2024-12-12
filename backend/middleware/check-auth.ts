@@ -1,75 +1,76 @@
+import { IUser } from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction, Request } from "express";
 import { expressjwt } from "express-jwt";
+import { isRegExp } from "lodash";
 
 const JWT_KEY = process.env.JWT_KEY || "";
 
 // Define paths that do not require authorization (excluded routes)
-const excludedPaths = [
+export const excludedPaths: (string | RegExp)[] = [
   "/api",
   "/api/user/auth",
   "/api/user/auth/reset-password",
+  /^\/api\/user\/auth\/reset-password\/[^/]+$/, //TODO: regrex can be used to add check for mongodb id
 ];
 
 // Define paths that optionally require authorization (only if token is present)
-const optionalPaths = [
-  "/api/home",
-  /^\/api\/category\/[^/]+$/,
-  /^\/api\/category\/[^/]+\/[^/]+$/,
+export const optionalPaths: (string | RegExp)[] = [
+  "/api/public/home",
+  /^\/api\/public\/sections\/[^/]+$/,
+  /^\/api\/public\/sections\/[^/]+\/[^/]+$/,
   "/api/user/auth/send-password-reset-link",
   "/api/user/auth/send-verification-otp",
 ];
 
-// Middleware to handle authorization
-const checkAuth = expressjwt({
-  secret: JWT_KEY,
-  algorithms: ["HS256"],
-  requestProperty: "userData", // Add user data to request if token is valid
-  credentialsRequired: true, //default needed authorisation
-  getToken: (req) => req.headers["authorization"]?.split(" ")[1], // Extract token from Authorization header
-}).unless({
-  path: excludedPaths, // These paths don't require token validation at all
-});
+const checkAuth = (req: Request, res: Response, next: NextFunction) => {
+  const checkAuth = expressjwt({
+    secret: JWT_KEY,
+    algorithms: ["HS256"],
+    requestProperty: "userData",
+    credentialsRequired: true, // Default: authorization required
+    getToken: (req) => req.headers["authorization"]?.split(" ")[1],
+  }).unless({
+    path: excludedPaths,
+  });
 
-// Error handler for JWT issues
-function isRegExp(path: any): path is RegExp {
-  return path instanceof RegExp;
-}
+  checkAuth(req, res, (err: any) => {
+    if (err) {
+      const isOptionalRoute = optionalPaths.some((path) => {
+        if (isRegExp(path)) {
+          return path.test(req.path);
+        } else if (typeof path === "string") {
+          return req.path === path;
+        }
+        return false;
+      });
 
-// Type guard function to check if a path is a string
-function isString(path: any): path is string {
-  return typeof path === "string";
-}
-
-export const jwtErrorHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  if (err.name === "UnauthorizedError") {
-    // Check if the route is optional for token validation
-    const isOptionalRoute = optionalPaths.some((path) => {
-      // Use type guards to check the type of path
-      if (isRegExp(path)) {
-        return path.test(req.path); // Test the RegExp against the request path
-      } else if (isString(path)) {
-        return req.path === path; // Compare the string paths
+      // Handle unauthorized errors for non-optional routes
+      if (err.name === "UnauthorizedError" && !isOptionalRoute) {
+        return next(
+          new HttpError("Unauthorized user, please do login / signup!", 401)
+        );
       }
-      return false; // If path is neither string nor RegExp, return false
-    });
-
-    // If it's an optional route, skip the error and allow the request to proceed without token
-    if (isOptionalRoute) {
-      return next(); // Proceed without setting userData
     }
-
-    // Respond with a 401 Unauthorized error for non-optional routes
-    return next(
-      new HttpError("Unauthorized user, please do login / signup!", 401)
-    );
-  }
+    next();
+  });
 };
 
-// Export the checkAuth middleware
 export default checkAuth;
+
+export interface JWTRequest extends Request {
+  userData: {
+    userId: string;
+  };
+  user: IUser;
+}
+
+//for the optional path (that may have doubt of getting userid)
+export const getUserIdFromRequest = (req: JWTRequest): string | undefined => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader?.split(" ")[1];
+
+  return token && req.userData && (req as JWTRequest).userData.userId
+    ? (req as JWTRequest).userData.userId
+    : undefined;
+};

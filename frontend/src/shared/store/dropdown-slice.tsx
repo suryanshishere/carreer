@@ -1,22 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DropdownState {
-  showNavDropdown: boolean;
+  dropdownStates: Record<string, boolean>;
 }
 
 const initialState: DropdownState = {
-  showNavDropdown: false,
+  dropdownStates: {},
 };
 
 const dropdownSlice = createSlice({
   name: "dropdown",
   initialState,
   reducers: {
-    handleShowNavDropdown(state, action: PayloadAction<boolean>) {
-      state.showNavDropdown = action.payload;
+    toggleDropdownState(state, action: PayloadAction<string>) {
+      const itemId = action.payload;
+      state.dropdownStates[itemId] = !state.dropdownStates[itemId];
+    },
+    closeAllDropdowns(state) {
+      state.dropdownStates = {};
     },
   },
 });
 
-export const { handleShowNavDropdown } = dropdownSlice.actions;
+export const { toggleDropdownState, closeAllDropdowns } = dropdownSlice.actions;
 export default dropdownSlice.reducer;
