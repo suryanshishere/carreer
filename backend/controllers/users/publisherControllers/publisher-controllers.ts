@@ -97,7 +97,11 @@ export const createComponentPost = async (
         //   if (attempt === 2)
         //     throw new HttpError("Failed to create post data after 3 attempts",500);
         // }
+        
 
+        if (!dataJson) {
+          throw new HttpError("Post creation returned no data", 500);
+        }
         console.log(dataJson);
 
         // Update or create post using session

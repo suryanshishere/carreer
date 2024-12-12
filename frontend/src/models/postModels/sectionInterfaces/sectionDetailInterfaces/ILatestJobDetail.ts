@@ -2,7 +2,6 @@ import { ICommon } from "../../overallInterfaces/ICommon";
 import { IDates } from "../../overallInterfaces/IDates";
 import { IFees } from "../../overallInterfaces/IFees";
 import { ILinks } from "../../overallInterfaces/ILinks";
-import { ICommonDetailData } from "./ICommonDetailData";
 
 export interface IHowToFillForm  {
   registration: string;
@@ -10,7 +9,7 @@ export interface IHowToFillForm  {
   video_link: string | null;
 }
 
-export interface ILatestJobDetail extends ICommonDetailData {
+export interface ILatestJobDetail  {
   how_to_fill_the_form?: IHowToFillForm;
   common?: ICommon;
   // syllabus?: Types.ObjectId;

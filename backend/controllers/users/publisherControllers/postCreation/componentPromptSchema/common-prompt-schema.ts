@@ -1,5 +1,11 @@
 import { SchemaType } from "@google/generative-ai";
 
+const ageCriteria = {
+  minimum_age: { type: SchemaType.NUMBER },
+  maximum_age: { type: SchemaType.NUMBER },
+  age_relaxation: { type: SchemaType.STRING },
+};
+
 const commonPromptSchema = {
   description:
     "Various common information field (may look up the schema keys for context)",
@@ -27,13 +33,9 @@ const commonPromptSchema = {
       type: SchemaType.NUMBER,
     },
     age_criteria: {
-      description: "Age criteria for the given post",
+      description: "Age criteria for different category",
       type: SchemaType.OBJECT,
-      properties: {
-        minimum_age: { type: SchemaType.NUMBER },
-        maximum_age: { type: SchemaType.NUMBER },
-        age_relaxation: { type: SchemaType.STRING },
-      },
+      properties: ageCriteria,
     },
     vacancy: {
       description: "Vacancies information of the post",

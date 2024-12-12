@@ -1,24 +1,24 @@
 import mongoose, { Schema, Types } from "mongoose";
 
 // AgeCriteria Schema
-const AgeCriteriaSchema: Schema = new Schema({
+const ageCriteriaSchema: Schema = new Schema({
   minimum_age: { type: Number },
   maximum_age: { type: Number },
   age_relaxation: { type: String },
 });
 
 // ICategory Schema
-const CategorySchema: Schema = new Schema({
-  general: { type: AgeCriteriaSchema },
-  obc: { type: AgeCriteriaSchema },
-  ews: { type: AgeCriteriaSchema },
-  sc: { type: AgeCriteriaSchema },
-  st: { type: AgeCriteriaSchema },
-  ph_dviyang: { type: AgeCriteriaSchema },
-});
+// const categoryAgeSchema: Schema = new Schema({
+//   general: AgeCriteriaSchema,
+//   obc: AgeCriteriaSchema,
+//   ews: AgeCriteriaSchema,
+//   sc: AgeCriteriaSchema,
+//   st: AgeCriteriaSchema,
+//   ph_dviyang: AgeCriteriaSchema,
+// });
 
 // ICategoryVacancy Schema
-const CategoryVacancySchema: Schema = new Schema({
+const categoryVacancySchema: Schema = new Schema({
   general: { type: Number },
   obc: { type: Number },
   ews: { type: Number },
@@ -26,7 +26,6 @@ const CategoryVacancySchema: Schema = new Schema({
   st: { type: Number },
   ph_dviyang: { type: Number },
 });
-
 
 // VacancyDetail Schema
 const VacancyDetailSchema: Schema = new Schema({
@@ -36,12 +35,12 @@ const VacancyDetailSchema: Schema = new Schema({
 });
 
 // CategoryWiseVacancy Schema
-export const CategoryWiseVacancySchema: Schema = new Schema({
-  male: { type: CategoryVacancySchema },
-  female: { type: CategoryVacancySchema },
-  other: { type: CategoryVacancySchema },
-  additional_resources: { type: String },
-});
+// export const CategoryWiseVacancySchema: Schema = new Schema({
+//   male: { type: CategoryVacancySchema },
+//   female: { type: CategoryVacancySchema },
+//   other: { type: CategoryVacancySchema },
+//   additional_resources: { type: String },
+// });
 
 // Applicants Schema
 const ApplicantsSchema: Schema = new Schema({
@@ -59,15 +58,15 @@ export const commonSchema: Schema = new Schema<ICommon>(
     highlighted_information: { type: String },
     department: { type: String },
     stage_level: { type: String },
-    applicants: { type: ApplicantsSchema },
+    applicants: ApplicantsSchema,
     post_importance: { type: String },
     post_exam_toughness_ranking: { type: Number },
     job_type: { type: String },
     post_exam_duration: { type: Number },
-    age_criteria: { type: AgeCriteriaSchema },
+    age_criteria: ageCriteriaSchema,
     vacancy: {
-      detail: { type: [VacancyDetailSchema] },
-      category_wise: { type: CategoryVacancySchema },
+      detail: [VacancyDetailSchema],
+      category_wise: categoryVacancySchema,
       additional_resources: { type: String },
     },
     eligibility: {
@@ -92,20 +91,20 @@ export default CommonModel;
 
 // interface for the common model --------------------------------
 
-interface AgeCriteria {
+interface IAgeCriteria {
   minimum_age?: number;
   maximum_age?: number;
   age_relaxation?: string;
 }
 
-interface ICategory {
-  general?: AgeCriteria;
-  obc?: AgeCriteria;
-  ews?: AgeCriteria;
-  sc?: AgeCriteria;
-  st?: AgeCriteria;
-  ph_dviyang?: AgeCriteria;
-}
+// interface ICategory {
+//   general?: AgeCriteria;
+//   obc?: AgeCriteria;
+//   ews?: AgeCriteria;
+//   sc?: AgeCriteria;
+//   st?: AgeCriteria;
+//   ph_dviyang?: AgeCriteria;
+// }
 
 interface ICategoryVacancy {
   general?: number;
@@ -116,12 +115,12 @@ interface ICategoryVacancy {
   ph_dviyang?: number;
 }
 
-interface CategoryAgeCriteria {
-  male?: ICategory;
-  female?: ICategory;
-  other?: ICategory;
-  additional_resources?: string;
-}
+// interface CategoryAgeCriteria {
+//   male?: ICategory;
+//   female?: ICategory;
+//   other?: ICategory;
+//   additional_resources?: string;
+// }
 
 interface VacancyDetail {
   post_name: string;
@@ -129,12 +128,12 @@ interface VacancyDetail {
   post_eligibility: string;
 }
 
-export interface ICommonCategoryWise {
-  male?: ICategoryVacancy;
-  female?: ICategoryVacancy;
-  other?: ICategoryVacancy;
-  additional_resources?: string;
-}
+// export interface ICommonCategoryWise {
+//   male?: ICategoryVacancy;
+//   female?: ICategoryVacancy;
+//   other?: ICategoryVacancy;
+//   additional_resources?: string;
+// }
 
 interface ICommon {
   createdAt: Date;
@@ -154,10 +153,10 @@ interface ICommon {
   post_exam_toughness_ranking?: number;
   job_type?: string;
   post_exam_duration?: number;
-  age_criteria?: CategoryAgeCriteria;
+  age_criteria?: IAgeCriteria;
   vacancy?: {
     detail?: VacancyDetail[];
-    category_wise?: ICommonCategoryWise;
+    category_wise?: ICategoryVacancy;
     additional_resources?: string;
   };
   eligibility?: {

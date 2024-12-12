@@ -9,6 +9,7 @@ interface DetailItemProps {
 }
 
 const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
+  console.log(data)
   return (
     <div className="w-full flex flex-col gap-8">
       {Object.entries(data).map(([key, value], index) => {
