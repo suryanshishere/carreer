@@ -9,21 +9,24 @@ import {
   sendVerificationResponse,
   updateUnverifiedUser,
 } from "./auth-utils";
-import validationError from "../../controllersUtils/controllersHelpers/validation-error";
+import validationError from "../../controllersUtils/validation-error";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import { random } from "lodash";
+import { validationResult } from "express-validator";
+import { USER_ENV_DATA } from "@shared/env-data";
 
 const FRONTEND_URL =
   `${process.env.FRONTEND_URL}/user/reset_password` ||
   "http://localhost:3000/user/reset_password";
 
-const EMAIL_VERIFICATION_TOKEN_EXPIRY =
-  Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY) || 3;
-const PASSWORD_RESET_TOKEN_EXPIRY =
-  Number(process.env.PASSWORD_RESET_TOKEN_EXPIRY) || 3;
+const { EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY } =
+  USER_ENV_DATA;
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
-  validationError(req, res, next);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
 
   const { email, password } = req.body;
   const existingUser: IUser | null = await User.findOne({ email });
@@ -68,7 +71,10 @@ export const sendPasswordResetLink = async (
   res: Response,
   next: NextFunction
 ) => {
-  validationError(req, res, next);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
   const { email } = req.body;
   const userId = getUserIdFromRequest(req as JWTRequest);
 
@@ -135,7 +141,10 @@ export const resetPassword = async (
   res: Response,
   next: NextFunction
 ) => {
-  validationError(req, res, next);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
 
   const { resetPasswordToken, password } = req.body;
   const { userId } = req.params;
@@ -245,7 +254,10 @@ export const sendVerificationOtp = async (
   } = {}
 ) => {
   if (!options.isDirect) {
-    validationError(req, res, next);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
   }
   // optional routes: since in backend action won't have token hence conditional not workin
   const userId = options.isDirect
@@ -323,7 +335,10 @@ export const verifyEmail = async (
   next: NextFunction
 ) => {
   // Validate request
-  validationError(req, res, next);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
 
   const { otp } = req.body;
   const userId = (req as JWTRequest).userData.userId;
@@ -356,7 +371,7 @@ export const verifyEmail = async (
     // Check if the OTP has expired (e.g., 15 minutes)
     const tokenExpirationTime = new Date(
       existingUser.emailVerificationTokenCreatedAt.getTime() +
-        EMAIL_VERIFICATION_TOKEN_EXPIRY * 60 * 1000
+      EMAIL_VERIFICATION_OTP_EXPIRY * 60 * 1000
     );
     const currentTime = new Date();
 

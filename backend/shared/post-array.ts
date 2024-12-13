@@ -1,5 +1,5 @@
-export const postOverallArray = ["common"];
-// , "link", "fee", "date"
+export const postComponentArray = ["common", "link", "fee", "date"];
+
 export const postSectionsArray = [
   "admission",
   "admit_card",
@@ -9,4 +9,4 @@ export const postSectionsArray = [
   "latest_job",
   "result",
   "syllabus",
-] as const;
+];

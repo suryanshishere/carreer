@@ -3,7 +3,7 @@ import { Response, NextFunction, Request } from "express";
 import crypto from "crypto";
 import mongoose from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
-import { postOverallArray } from "@controllers/controllersUtils/post-array";
+import { postComponentArray } from "shared/post-array";
 import { POST_PROMPT_SCHEMA } from "./postCreation/post-prompt-schema";
 import postCreation from "./postCreation/postCreation";
 import { MODAL_MAP } from "@controllers/controllersUtils/post-model-map";
@@ -34,7 +34,7 @@ export const postIdGeneration = async (postCode: string): Promise<string> => {
 //   session: mongoose.ClientSession
 // ) => {
 //   try {
-//     for (const item of postOverallArray) {
+//     for (const item of postComponentArray) {
 //       const itemModel = MODAL_MAP[item];
 //       if (!itemModel) {
 //         throw new HttpError("Internal server error: Missing model", 500);

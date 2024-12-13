@@ -1,10 +1,13 @@
 import { emailSchema } from "@models/modelsUtils";
+import { CONTACT_US_ENV_DATA } from "@shared/env-data";
 import { Schema, model } from "mongoose";
 
-const MIN_NAME_LENGTH = Number(process.env.MIN_NAME_LENGTH) || 3;
-const MAX_NAME_LENGTH = Number(process.env.MAX_NAME_LENGTH) || 100;
-const MIN_REASON_LENGTH = Number(process.env.MIN_REASON_LENGTH) || 100;
-const MAX_REASON_LENGTH = Number(process.env.MAX_REASON_LENGTH) || 500;
+const {
+  MIN_NAME_LENGTH,
+  MAX_NAME_LENGTH,
+  MIN_REASON_LENGTH,
+  MAX_REASON_LENGTH,
+} = CONTACT_US_ENV_DATA;
 
 const contactUsSchema = new Schema(
   {
@@ -12,6 +15,7 @@ const contactUsSchema = new Schema(
       type: String,
       enum: ["not_initiated", "in_process", "completed"],
       default: "not_initiated",
+      index: true,
     },
     user_id: {
       type: Schema.Types.ObjectId,

@@ -1,13 +1,10 @@
 import { check } from "express-validator";
-import { isString, snakeCase } from "lodash";
+import { snakeCase } from "lodash";
+import { postSectionsArray } from "@shared/post-array";
+import { POST_ENV_DATA } from "@shared/env-data";
 
-// Load environment variables
-const POST_SECTION_MIN = parseInt(process.env.POST_SECTION_MIN || "3", 10);
-const POST_SECTION_MAX = parseInt(process.env.POST_SECTION_MAX || "100", 10);
-const POST_NAME_MIN = parseInt(process.env.POST_NAME_MIN || "6", 10);
-const POST_NAME_MAX = parseInt(process.env.POST_NAME_MAX || "1000", 10);
-const POST_CODE_MIN = parseInt(process.env.POST_CODE_MIN || "6", 10);
-const POST_CODE_MAX = parseInt(process.env.POST_CODE_MAX || "1000", 10);
+const {ALPHA_NUM_UNDERSCRORE, MIN_POST_NAME, MAX_POST_NAME, MIN_POST_CODE, MAX_POST_CODE } =
+  POST_ENV_DATA;
 
 export const createNewPostValidators = [
   check("section")
@@ -15,39 +12,39 @@ export const createNewPostValidators = [
     .not()
     .isEmpty()
     .withMessage("Post section is required.")
-    .isLength({ min: POST_SECTION_MIN, max: POST_SECTION_MAX })
+    .customSanitizer((value) => snakeCase(value))
+    .isIn(postSectionsArray)
     .withMessage(
-      `Post section must be between ${POST_SECTION_MIN} and ${POST_SECTION_MAX} characters.`
-    )
-    .customSanitizer((value) => snakeCase(value)),
+      `Section must be one of the following: ${postSectionsArray.join(", ")}.`
+    ),
   check("name_of_the_post")
     .trim()
     .not()
     .isEmpty()
     .withMessage("Name of the post is required.")
-    .isLength({ min: POST_NAME_MIN, max: POST_NAME_MAX })
+    .isLength({
+      min: MIN_POST_NAME,
+      max: MAX_POST_NAME,
+    })
     .withMessage(
-      `Name of the post must be between ${POST_NAME_MIN} and ${POST_NAME_MAX} characters.`
+      `Name of the post must be between ${MIN_POST_NAME} and ${MAX_POST_NAME} characters.`
     ),
   check("post_code")
     .trim()
     .not()
     .isEmpty()
     .withMessage("Post code is required.")
-    .isLength({ min: POST_CODE_MIN, max: POST_CODE_MAX })
-    .withMessage(
-      `Post code must be between ${POST_CODE_MIN} and ${POST_CODE_MAX} characters.`
-    )
-    .custom((value) => {
-      // Ensure that the value is a string and matches the allowed pattern
-      if (!isString(value)) {
-        throw new Error("Post code must be a string.");
-      }
-      const regex = /^[A-Za-z0-9_]+$/;
-      if (!regex.test(value)) {
-        throw new Error("Post code can only contain letters, numbers, and underscores, with no spaces.");
-      }
-      return true;
+    .isLength({
+      min: MIN_POST_CODE,
+      max: MAX_POST_CODE,
     })
-    .withMessage("Post code can only contain letters, numbers, and underscores, with no spaces."),
+    .withMessage(
+      `Post code must be between ${MIN_POST_CODE} and ${MAX_POST_CODE} characters.`
+    )
+    .isString()
+    .withMessage("Post code must be a string.")
+    .matches(ALPHA_NUM_UNDERSCRORE)
+    .withMessage(
+      "Post code can only contain letters, numbers, and underscores, with no spaces."
+    ),
 ];

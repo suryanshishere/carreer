@@ -1,4 +1,4 @@
-import validationError from "@controllers/controllersUtils/controllersHelpers/validation-error";
+import validationError from "@controllers/controllersUtils/validation-error";
 import { NextFunction, Response, Request } from "express";
 import {
   checkAuthorisedPublisher,
@@ -16,6 +16,7 @@ import {
   SECTION_POST_MODAL_MAP,
 } from "@controllers/controllersUtils/post-model-map";
 import { POST_PROMPT_SCHEMA } from "./postCreation/post-prompt-schema";
+import { validationResult } from "express-validator";
 
 export const deletePost = async (
   req: Request,
@@ -138,7 +139,10 @@ export const createNewPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  validationError(req, res, next);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
   const { section, name_of_the_post, post_code } = req.body;
   const sec = snakeCase(section);
   const userId = (req as JWTRequest).userData.userId;

@@ -1,4 +1,4 @@
-import { postSectionsArray } from "@controllers/controllersUtils/post-array";
+import { postSectionsArray } from "@shared/post-array";
 import {
   bookmarkPost,
   savedPosts,
