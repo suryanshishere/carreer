@@ -25,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   type = "button",
   onClick,
-  outline,
+  // outline,
   loginSignupType,
   authButtonType,
   warning,

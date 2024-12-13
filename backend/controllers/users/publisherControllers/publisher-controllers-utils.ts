@@ -3,10 +3,10 @@ import { Response, NextFunction, Request } from "express";
 import crypto from "crypto";
 import mongoose from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
-import { postOverallArray } from "@controllers/shared/post-array";
+import { postOverallArray } from "@controllers/controllersUtils/post-array";
 import { POST_PROMPT_SCHEMA } from "./postCreation/post-prompt-schema";
 import postCreation from "./postCreation/postCreation";
-import { MODAL_MAP } from "@controllers/shared/post-model-map";
+import { MODAL_MAP } from "@controllers/controllersUtils/post-model-map";
 
 export const checkAuthorisedPublisher = async (
   req: Request,

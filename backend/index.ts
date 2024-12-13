@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 import postsRoutes from "@routes/posts/posts-routes";
-import adminRoutes from "@routes/admin/admin-routes";
+import otherRoutes from "@routes/other/other-routes";
 import usersRoutes from "@routes/users/user-routes";
 import HttpError from "@utils/http-errors";
 import userCleanupTask from "@middleware/cronJobs/user-cleanup-task";
@@ -30,6 +30,7 @@ app.use(checkAccountStatus);
 
 app.use("/api/public", postsRoutes);
 app.use("/api/user", usersRoutes);
+app.use("/api/other", otherRoutes);
 
 //Error showing if none of the routes found!
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -30,7 +30,7 @@ module.exports = {
       },
       padding: {
         page: "15vw",
-        button: ".25rem .5rem", //y,x
+        button: ".35rem .5rem", //y,x
       },
       gap: {},
       fontSize: {

@@ -1,10 +1,10 @@
 import HttpError from "@utils/http-errors";
 import { Request, Response, NextFunction } from "express";
 import mongoose, { Schema } from "mongoose";
-import validationError from "@controllers/controllersHelpers/validation-error";
+import validationError from "@controllers/controllersUtils/controllersHelpers/validation-error";
 // import { sectionAdminModelSelector } from "@controllers/controllersHelpers/section-model-selector";
 import _ from "lodash";
-import { sectionModelSchemaSelector } from "@controllers/controllersHelpers/section-model-schema-selector";
+import { sectionModelSchemaSelector } from "@controllers/controllersUtils/controllersHelpers/section-model-schema-selector";
 
 export const getUndefinedFields = async (
   req: Request,

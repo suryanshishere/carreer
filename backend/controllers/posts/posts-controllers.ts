@@ -10,7 +10,7 @@ import DateModel from "@models/post/componentModels/date-model";
 import LinkModel from "@models/post/componentModels/link-model";
 import PostModel from "@models/post/post-model";
 import { fetchPostList } from "./posts-controllers-utils";
-import { SECTION_POST_MODAL_MAP } from "@controllers/shared/post-model-map";
+import { SECTION_POST_MODAL_MAP } from "@controllers/controllersUtils/post-model-map";
 import {
   COMMON_POST_DETAIL_SELECT_FIELDS,
   sectionPostDetailSelect,

@@ -11,7 +11,7 @@
 // } from "@models/admin/postAdminData";
 import mongoose, { Model } from "mongoose";
 import { convertToSnakeCase } from "./case-convert";
-import HttpError from "../../utils/http-errors";
+import HttpError from "../../../utils/http-errors";
 import { Request, Response, NextFunction } from "express";
 import Result from "@models/post/sectionModels/result-model";
 import Admission from "@models/post/sectionModels/admission-model";

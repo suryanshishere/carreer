@@ -3,12 +3,12 @@ import HttpError from "../../../utils/http-errors";
 import {
   sectionModelSelector,
   sectionAdminModelSelector,
-} from "@controllers/controllersHelpers/section-model-selector";
-import validationError from "@controllers/controllersHelpers/validation-error";
-import { sectionModelSchemaSelector } from "@controllers/controllersHelpers/section-model-schema-selector";
-import updateMissingFields from "@controllers/controllersHelpers/update-ref-n-missing-field";
-import generateUniqueId from "@controllers/controllersHelpers/generate-unique-id";
-import addPostToAllSections from "@controllers/controllersHelpers/add-post-to-all-sections";
+} from "@controllers/controllersUtils/controllersHelpers/section-model-selector";
+import validationError from "@controllers/controllersUtils/controllersHelpers/validation-error";
+import { sectionModelSchemaSelector } from "@controllers/controllersUtils/controllersHelpers/section-model-schema-selector";
+import updateMissingFields from "@controllers/controllersUtils/controllersHelpers/update-ref-n-missing-field";
+import generateUniqueId from "@controllers/controllersUtils/controllersHelpers/generate-unique-id";
+import addPostToAllSections from "@controllers/controllersUtils/controllersHelpers/add-post-to-all-sections";
 import checkAuthorisedAdmin from "../adminControllersHelpers/check-authorised-admin";
 
 export const contributedPost = async (

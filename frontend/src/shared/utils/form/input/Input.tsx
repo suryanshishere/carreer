@@ -38,7 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       outerClassProp,
       errorClassProp,
     },
-    ref 
+    ref
   ) => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -133,16 +133,18 @@ export const TextArea = forwardRef<
       helperText,
       classProp,
       outerClassProp,
+      label,
     },
     ref
   ) => {
     return (
       <div className={`relative ${outerClassProp}`}>
         <label htmlFor={name} className="block text-sm font-medium mb-1">
-          {placeholder || name}
+          {label ? startCase(label) || startCase(placeholder) : startCase(name)}
         </label>
         <textarea
-          ref={ref} 
+          placeholder={placeholder}
+          ref={ref}
           id={name}
           name={name}
           rows={row}

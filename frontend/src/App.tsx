@@ -1,11 +1,12 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
-import ContactUs from "shared/pages/contactUs/ContactUs";
+import ContactUs from "shared/pages/ContactUs";
 import NotFound from "./shared/pages/NotFound";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import { createAuthRoutes, publicRoutes } from "routes/app-routes";
+import About from "shared/pages/About";
 
 const App: React.FC = () => {
   const { token, role } = useSelector(
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         ...publicRoutes,
         ...createAuthRoutes(token, role),
         { path: "contact-us", element: <ContactUs /> },
+        { path: "about", element: <About /> },
         { path: "*", element: <NotFound /> },
       ],
     },

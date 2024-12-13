@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import validationError from "@controllers/controllersHelpers/validation-error";
+import validationError from "@controllers/controllersUtils/controllersHelpers/validation-error";
 import checkAuthorisedAdmin from "../adminControllersHelpers/check-authorised-admin";
-import { sectionAdminModelSelector } from "@controllers/controllersHelpers/section-model-selector";
+import { sectionAdminModelSelector } from "@controllers/controllersUtils/controllersHelpers/section-model-selector";
 import HttpError from "@utils/http-errors";
 
 export const getAllPostAdminData = async (

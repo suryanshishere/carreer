@@ -3,12 +3,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import Dropdown from "shared/utils/form/input/Dropdown";
 import { Input, TextArea } from "shared/utils/form/input/Input";
 import SECTIONS from "db/postDb/sections.json";
 import Button from "shared/utils/form/Button";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   triggerErrorMsg,
@@ -20,11 +18,11 @@ import axiosInstance from "shared/utils/api/axios-instance";
 const validationSchema = Yup.object().shape({
   name_of_the_post: Yup.string()
     .min(6, `Name of the post must be between 6 and 1000 characters.`)
-    .max(1000, `Name of the post must be between 6 and 1000 characters.`)
+    .max(500, `Name of the post must be between 6 and 1000 characters.`)
     .required("Name of the post is required"),
   post_code: Yup.string()
     .min(6, `Post code must be between 6 and 1000 characters.`)
-    .max(1000, `Post code must be between 6 and 1000 characters.`)
+    .max(100, `Post code must be between 6 and 1000 characters.`)
     .matches(
       /^[A-Za-z0-9_]+$/,
       "Post code can only contain letters, numbers, and underscores, with no spaces."
@@ -41,7 +39,6 @@ interface ICreateNewPostForm {
 
 const CreateNewPost: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
   const {
@@ -55,7 +52,6 @@ const CreateNewPost: React.FC = () => {
 
   const submitMutation = useMutation({
     mutationFn: async (data: ICreateNewPostForm) => {
-      console.log(data);
       const response = await axiosInstance.post(
         "/user/publisher/create-new-post",
         JSON.stringify(data),
@@ -68,7 +64,7 @@ const CreateNewPost: React.FC = () => {
       return response.data;
     },
     onSuccess: ({ message }) => {
-      dispatch(triggerSuccessMsg(message));
+      dispatch(triggerSuccessMsg(message || "Post submission successfull!"));
       //not resetting the form cuz to preserve post code
     },
     onError: (error: any) => {

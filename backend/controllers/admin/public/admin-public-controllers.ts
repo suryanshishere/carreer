@@ -12,7 +12,7 @@ import {
   ResultAdminData,
   SyllabusAdminData,
 } from "@models/admin/postAdminData";
-import { sectionAdminModelSelector } from "@controllers/controllersHelpers/section-model-selector";
+import { sectionAdminModelSelector } from "@controllers/controllersUtils/controllersHelpers/section-model-selector";
 
 export const cool = async (req: Request, res: Response, next: NextFunction) => {
   try {

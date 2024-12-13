@@ -9,15 +9,14 @@ import {
   sendVerificationResponse,
   updateUnverifiedUser,
 } from "./auth-utils";
-import validationError from "../../controllersHelpers/validation-error";
+import validationError from "../../controllersUtils/controllersHelpers/validation-error";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import { random } from "lodash";
 
 const FRONTEND_URL =
   `${process.env.FRONTEND_URL}/user/reset_password` ||
   "http://localhost:3000/user/reset_password";
-// const JWT_KEY = process.env.JWT_KEY;
-// const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "15";
+
 const EMAIL_VERIFICATION_TOKEN_EXPIRY =
   Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY) || 3;
 const PASSWORD_RESET_TOKEN_EXPIRY =
@@ -52,8 +51,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
         password: hashedPassword,
         emailVerificationToken: random(100000, 999999),
         emailVerificationTokenCreatedAt: new Date(),
-        role:
-          email === "heresuryanshsingh@gmail.com" ? "publisher" : "contributer",
+        role: email === "heresuryanshsingh@gmail.com" && "publisher",
       });
       await newUser.save();
 

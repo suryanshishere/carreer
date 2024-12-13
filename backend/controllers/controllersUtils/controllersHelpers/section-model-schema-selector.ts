@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { convertToSnakeCase } from "./case-convert";
-import HttpError from "../../utils/http-errors";
+import HttpError from "../../../utils/http-errors";
 import { NextFunction } from "express";
 import { resultSchema } from "@models/post/sectionModels/result-model";
 import { admissionSchema } from "@models/post/sectionModels/admission-model";

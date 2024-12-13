@@ -1,4 +1,4 @@
-import validationError from "@controllers/controllersHelpers/validation-error";
+import validationError from "@controllers/controllersUtils/controllersHelpers/validation-error";
 import { NextFunction, Response, Request } from "express";
 import {
   checkAuthorisedPublisher,
@@ -14,7 +14,7 @@ import {
   COMPONENT_POST_MODAL_MAP,
   MODAL_MAP,
   SECTION_POST_MODAL_MAP,
-} from "@controllers/shared/post-model-map";
+} from "@controllers/controllersUtils/post-model-map";
 import { POST_PROMPT_SCHEMA } from "./postCreation/post-prompt-schema";
 
 export const deletePost = async (
@@ -97,7 +97,6 @@ export const createComponentPost = async (
         //   if (attempt === 2)
         //     throw new HttpError("Failed to create post data after 3 attempts",500);
         // }
-        
 
         if (!dataJson) {
           throw new HttpError("Post creation returned no data", 500);

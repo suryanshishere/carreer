@@ -1,5 +1,5 @@
 import express from "express";
-import { check, header } from "express-validator";
+import { check } from "express-validator";
 import {
   sendVerificationOtp,
   auth,
@@ -9,7 +9,6 @@ import {
 } from "@controllers/users/auth/auth-controllers";
 
 const router = express.Router();
-
 const PWD_LENGTH = Number(process.env.PWD_LENGTH) || 6;
 
 router.post(

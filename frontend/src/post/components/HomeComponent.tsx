@@ -23,7 +23,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
       style={{ height }}
     >
       <div className="flex flex-col justify-center gap-2">
-        <h2 className="self-center py-1 text-custom-gray w-fit font-bold px-2">
+        <h2 className="self-center py-1 text-custom-gray w-fit font-bold px-2 text-lg">
           {startCase(section)}
         </h2>
         <hr className="w-full border-t-2 border-custom-less-gray" />
