@@ -22,7 +22,7 @@ export const renderValue = (value: any, key: string) => {
   }
 
   if (value && (typeof value === "number" || typeof value === "string")) {
-    return renderDateStrNum(value, key);
+    return renderDateStrNum(value);
   }
 
   return null;

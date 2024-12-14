@@ -32,14 +32,13 @@ const fetchPostDetail = async (
 
 const PostDetail: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
-  const { section = "", postId = "" } = useParams<{
-    postId: string;
+  const { section = "" } = useParams<{
     section: string;
   }>();
   const location = useLocation();
+  const postId = location.state?.postId;
   const params = new URLSearchParams(location.search);
   const isSaved = params.get("is_saved");
-
   const {
     data = { data: {}, is_saved: false },
     isLoading,

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IPostList } from "models/postModels/IPostList";
-import { startCase } from "lodash";
+import { snakeCase, startCase } from "lodash";
 import Bookmark from "shared/components/Bookmark";
 
 interface HomeListItemProps {
@@ -41,8 +41,11 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                   />
                 </div>
                 <Link
-                  to={`/sections/${section}/${item._id}?is_saved=${item.is_saved}`}
-                  className="text-custom-red underline decoration-1 underline-offset-2 hover:text-custom-blue"
+                  to={`/sections/${section}/${snakeCase(
+                    item.name_of_the_post
+                  )}?is_saved=${item.is_saved}`}
+                  state={{ postId: item._id }}
+                  className="text-custom-red underline decoration-1 underline-offset-2 visited:text-custom-gray hover:decoration-custom-gray"
                 >
                   {item.name_of_the_post}
                 </Link>

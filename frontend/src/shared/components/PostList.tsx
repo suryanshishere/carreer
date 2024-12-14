@@ -4,7 +4,7 @@ import { IPostList, IPostListData } from "models/postModels/IPostList";
 import Bookmark from "shared/components/Bookmark";
 import { renderDateStrNum } from "../quick/render-date-str-num";
 import flattenToLastKeys from "shared/quick/flatten-object";
-import { startCase } from "lodash";
+import { snakeCase, startCase } from "lodash";
 import { excludedKeys } from "post/post-detail-render-define";
 import { excludedPostListKeys } from "post/post-list-render-define";
 
@@ -20,17 +20,12 @@ const CATEGORY_LIMIT =
 const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
   if (data.length === 0) return null;
 
-  // console.log(data)
   const renderObject = (obj: IPostListData) => {
     return Object.entries(obj)
       .filter(([key]) => !excludedPostListKeys.includes(key))
       .map(([key, value]) => {
-        // Check if the value is an object and not the last-level object
         if (typeof value === "object" && value !== null) {
-          // If value is a nested object, check its entries
           const nestedEntries = Object.entries(value);
-
-          // If the nested object is the last level (doesn't contain any other nested objects)
           if (
             nestedEntries.every(
               ([_, nestedValue]) =>
@@ -43,11 +38,13 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                   {startCase(key)}:
                 </span>
                 <span className="pl-2">
-                  {value?.current_year != null &&
-                  value.previous_year != null ? (
+                  {(value?.current_year || value?.previous_year) != null ? (
                     <span>
                       {renderDateStrNum(
-                        value.current_year || value.previous_year,
+                        `${
+                          value.current_year ||
+                          `${value.previous_year} (Estimate yourself for the Current Year)`
+                        }`,
                         key
                       )}
                     </span>
@@ -55,7 +52,6 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                     <span key={key}>{renderObject(value)}</span>
                   )}
                 </span>
-                {/* <span> </span> */}
               </span>
             );
           } else {
@@ -67,7 +63,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
               <span className=" ">
                 <span>{startCase(key)}:</span>
                 <span className="text-custom-black ml-1">
-                  {renderDateStrNum(value)}
+                  {renderDateStrNum(value, key)}
                 </span>
               </span>
               {/* <span> </span> */}
@@ -84,8 +80,9 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
           <li className="w-fit ">
             <div className="flex gap-2 items-center">
               <Link
-                to={`/sections/${section}/${item._id}?is_saved=${item.is_saved}`}
-                className="text-custom-red underline decoration-1 underline-offset-2 hover:text-custom-blue"
+                to={`/sections/${section}/${snakeCase(item.name_of_the_post)}?is_saved=${item.is_saved}`}
+                state={{ postId: item._id }}
+                className="text-custom-red underline decoration-1 underline-offset-2 visited:text-custom-gray  hover:decoration-custom-gray "
               >
                 {item.name_of_the_post}
               </Link>
@@ -98,12 +95,12 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
               </div>
             </div>
             <span className="text-custom-less-gray text-sm mr-2">
-              <span className="bg-custom-pale-yellow px-1 whitespace-nowrap">
+              <mark className="px-1 whitespace-nowrap bg-custom-pale-yellow">
                 <span>Updated At:</span>
                 <span className="text-custom-black ml-1">
                   {renderDateStrNum(item.updatedAt)}
                 </span>
-              </span>
+              </mark>
               <span className="pl-2">{renderObject(item)}</span>
             </span>
           </li>

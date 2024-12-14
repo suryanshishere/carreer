@@ -73,7 +73,6 @@ export const bookmarkPost = async (
     if (!user) {
       return next(new HttpError("User not found!", 404));
     }
-    console.log(section)
     const currentPosts = user.saved_posts?.[section] || [];
     // Avoid bookmarking the same post_id if it's already present
     if (!currentPosts.includes(post_id)) {

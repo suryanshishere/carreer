@@ -13,7 +13,7 @@ export const renderDateStrNum = (value: any, key?: string) => {
         href={stringValue}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-custom-red underline whitespace-nowrap font-semibold hover:text-custom-blue"
+        className={`text-custom-red underline whitespace-nowrap hover:decoration-custom-gray ${!key && "font-semibold"}`}
       >
         Click here
       </a>
@@ -48,9 +48,20 @@ export const renderDateStrNum = (value: any, key?: string) => {
   }
 
   // Check if value is a valid ISO date
-  const mongoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d+)?Z$/;
-  if (mongoDateRegex.test(stringValue)) {
-    return <>{moment(stringValue).format("Do MMMM YYYY")}</>;
+  const partialDateRegex = /\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(.\d+)?Z)?/; // Match full ISO or just YYYY-MM-DD
+  if (partialDateRegex.test(stringValue)) {
+    // Extract date substring
+    const match = partialDateRegex.exec(stringValue);
+    if (match) {
+      const extractedDate = match[0];
+      const formattedDate = moment(extractedDate).format("Do MMMM YYYY");
+      // Replace the matched date in the string with the formatted date
+      const updatedString = stringValue.replace(
+        extractedDate,
+        formattedDate
+      );
+      return <>{updatedString}</>;
+    }
   }
 
   // Return the string as-is for other cases

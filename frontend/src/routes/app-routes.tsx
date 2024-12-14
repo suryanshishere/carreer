@@ -6,7 +6,7 @@ import DeactivateAccount from "user/pages/account/setting/DeactivateAccount";
 import Setting from "user/pages/account/setting/Setting";
 import ResetPassword from "user/pages/auth/ResetPassword";
 import Section from "post/pages/Section";
-import Detail from "post/pages/postDetail/PostDetail";
+import PostDetail from "post/pages/postDetail/PostDetail";
 import Home from "post/pages/Home";
 import publisherRoutes from "./publisher-routes";
 
@@ -66,7 +66,7 @@ export const publicRoutes: RouteObject[] = [
     path: "sections/:section",
     children: [
       { index: true, element: <Section /> },
-      { path: ":postId", element: <Detail /> },
+      { path: ":nameOfThePost", element: <PostDetail /> },
     ],
   },
 ];
