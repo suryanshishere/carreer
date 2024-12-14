@@ -3,11 +3,11 @@ import User from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
-import { sectionListPopulate } from "@controllers/posts/postPopulate/posts-populate";
+import { sectionListPopulate } from "@controllers/posts/postsControllersUtils/postPopulate/posts-populate";
 import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
-} from "@controllers/posts/postSelect/sectionPostListSelect";
+} from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
 import { postSectionsArray } from "@shared/post-array";
 
 export const savedPosts = async (

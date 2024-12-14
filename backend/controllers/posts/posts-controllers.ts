@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
-import { sectionDetailPopulateModels } from "./postPopulate/posts-populate";
+import { sectionDetailPopulateModels } from "./postsControllersUtils/postPopulate/posts-populate";
 import { Request } from "express-jwt";
 import { snakeCase } from "lodash";
 import { JWTRequest } from "@middleware/check-auth";
@@ -9,12 +9,12 @@ import FeeModel from "@models/post/componentModels/fee-model";
 import DateModel from "@models/post/componentModels/date-model";
 import LinkModel from "@models/post/componentModels/link-model";
 import PostModel from "@models/post/post-model";
-import { fetchPostList } from "./posts-controllers-utils";
+import { fetchPostList } from "./postsControllersUtils/posts-controllers-utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/controllersUtils/post-model-map";
 import {
   COMMON_POST_DETAIL_SELECT_FIELDS,
   sectionPostDetailSelect,
-} from "./postSelect/sectionPostDetailSelect";
+} from "./postsControllersUtils/postSelect/sectionPostDetailSelect";
 import validationError  from "@controllers/controllersUtils/validation-error";
 import { validationResult } from "express-validator";
 
@@ -61,6 +61,7 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
 
     return res.status(200).json({ data: response });
   } catch (err) {
+    console.log(err)
     return next(new HttpError("An error occurred while fetching posts", 500));
   }
 };
