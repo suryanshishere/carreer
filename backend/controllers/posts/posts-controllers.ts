@@ -15,7 +15,7 @@ import {
   COMMON_POST_DETAIL_SELECT_FIELDS,
   sectionPostDetailSelect,
 } from "./postsControllersUtils/postSelect/sectionPostDetailSelect";
-import validationError  from "@controllers/controllersUtils/validation-error";
+import validationError from "@controllers/controllersUtils/validation-error";
 import { validationResult } from "express-validator";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
@@ -41,7 +41,7 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
       async (key: string) => {
         const snakeKey = snakeCase(key);
         const savedIds = savedPost?.[snakeKey]?.map(String) || [];
-        const posts = await fetchPostList(snakeKey, false);
+        const posts = await fetchPostList(snakeKey, false, next);
 
         //todo: improve error handling
         return {
@@ -61,7 +61,7 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
 
     return res.status(200).json({ data: response });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return next(new HttpError("An error occurred while fetching posts", 500));
   }
 };
@@ -73,7 +73,7 @@ export const section = async (
 ) => {
   try {
     const { section } = req.params;
-    const errors =validationResult(req);
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(new HttpError(validationError(errors), 400));
     }
@@ -86,7 +86,7 @@ export const section = async (
       }
     }
 
-    const response = await fetchPostList(section);
+    const response = await fetchPostList(section, true, next);
     //todo: if null them better
     const postsWithSavedStatus = response?.map(({ _id, ...rest }) => ({
       _id,

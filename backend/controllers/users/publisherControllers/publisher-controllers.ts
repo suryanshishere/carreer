@@ -17,6 +17,7 @@ import {
 } from "@controllers/controllersUtils/post-model-map";
 import { POST_PROMPT_SCHEMA } from "./postCreation/post-prompt-schema";
 import { validationResult } from "express-validator";
+import { dateRequiredMap } from "@controllers/posts/postsControllersUtils/post-sort-map";
 
 export const deletePost = async (
   req: Request,
@@ -80,32 +81,59 @@ export const deletePost = async (
 export const createComponentPost = async (
   postObjectId: mongoose.Types.ObjectId,
   userObjectId: mongoose.Types.ObjectId,
+  section: string,
   nameOfThePost: string,
   next: NextFunction
-  // session: mongoose.ClientSession // Add session as a parameter
 ) => {
   try {
     // Create posts for all models in COMPONENT_POST_MODAL_MAP
     const postCreationPromises = Object.entries(COMPONENT_POST_MODAL_MAP).map(
       async ([key, model]) => {
-        const schema = POST_PROMPT_SCHEMA[key];
-        let dataJson: any;
+        let schema = POST_PROMPT_SCHEMA[key];
 
-        // Retry logic for postCreation
-        // for (let attempt = 0; attempt < 3; attempt++) {
-        dataJson = await postCreation(nameOfThePost, schema, next);
-        //   if (dataJson) break; // Exit retry loop if successful
-        //   if (attempt === 2)
-        //     throw new HttpError("Failed to create post data after 3 attempts",500);
-        // }
+        // Ensure the schema's `required` matches the `dateRequiredMap` for `date`
+        if (key === "date") {
+          schema = { ...schema, required: dateRequiredMap[section] };
+        }
 
+        const existingDocument = await model.findById(postObjectId);
+        if (existingDocument && key != "date") {
+          return;
+        }
+
+        // Generate data JSON using `postCreation`
+        const dataJson = await postCreation(nameOfThePost, schema, next);
         if (!dataJson) {
           throw new HttpError("Post creation returned no data", 500);
         }
-        console.log(dataJson);
 
-        // Update or create post using session
-        const updatedPost = await model.findByIdAndUpdate(
+        // Check if the document exists
+
+        if (existingDocument && key === "date") {
+          // Update only missing fields for `key === "date"`
+          const updateData: Partial<typeof dataJson> = {};
+          for (const field in dataJson) {
+            if (!existingDocument[field]) {
+              updateData[field] = dataJson[field];
+            }
+          }
+
+          if (Object.keys(updateData).length > 0) {
+            await model.findByIdAndUpdate(
+              postObjectId,
+              {
+                $set: updateData,
+              },
+              {
+                new: true,
+                upsert: false, // Ensure no new document is created here
+              }
+            );
+          }
+        }
+
+        // If the document does not exist, create it
+        const newDocument = await model.findByIdAndUpdate(
           postObjectId,
           {
             $set: {
@@ -117,11 +145,10 @@ export const createComponentPost = async (
           {
             new: true,
             upsert: true, // Create document if it doesn't exist
-            // session, // Include session for transactional consistency
           }
         );
 
-        return updatedPost;
+        return newDocument;
       }
     );
 
@@ -144,7 +171,6 @@ export const createNewPost = async (
     return next(new HttpError(validationError(errors), 400));
   }
   const { section, name_of_the_post, post_code } = req.body;
-  const sec = snakeCase(section);
   const userId = (req as JWTRequest).userData.userId;
   checkAuthorisedPublisher(req, res, next);
 
@@ -159,7 +185,7 @@ export const createNewPost = async (
       );
     }
 
-    const model = SECTION_POST_MODAL_MAP[sec];
+    const model = SECTION_POST_MODAL_MAP[section];
     if (!model) {
       return next(
         new HttpError(`No model found for the section: ${section}`, 400)
@@ -185,13 +211,14 @@ export const createNewPost = async (
       await createComponentPost(
         postObjectId,
         userObjectId,
+        section,
         name_of_the_post,
         next
         // session
       );
     }
 
-    const schema = POST_PROMPT_SCHEMA[sec];
+    const schema = POST_PROMPT_SCHEMA[section];
     const dataJson =
       Object.keys(schema).length === 0
         ? {}
@@ -217,7 +244,7 @@ export const createNewPost = async (
     if (postInPostModel) {
       await PostModel.updateOne(
         { _id: postId },
-        { $set: { [`sections.${sec}`]: { exist: true, approved: false } } }
+        { $set: { [`sections.${section}`]: { exist: true, approved: false } } }
         // { session }
       );
     } else {
@@ -225,7 +252,7 @@ export const createNewPost = async (
         _id: postObjectId,
         post_code,
         sections: {
-          [sec]: {
+          [section]: {
             exist: true,
             approved: false,
           },
