@@ -41,7 +41,7 @@ export const renderTable = (value: any, key: string) => {
                       ? renderDateStrNum(
                           `${
                             subValue.current_year ||
-                            `${subValue.previous_year} (Estimate yourself for the Current Year)`
+                            `${subValue.previous_year}`
                           }`,
                           subKey
                         )
