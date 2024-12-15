@@ -11,33 +11,70 @@ import { NextFunction } from "express";
 
 const getSortedDateIds = async (section: string) => {
   const currentDate = new Date();
+
+  // Calculate the start and end of the range for the current year
   const startOfPreviousMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() - 1,
     1
   );
+
   const endOfNextMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + 2,
     0
   );
 
-  const query = {
-    $or: [
-      {
-        [`${postSortMap[section]}.current_year`]: {
-          $gte: startOfPreviousMonth,
-          $lte: endOfNextMonth,
-        },
+  // Construct the query conditions dynamically
+  const queryConditions = [];
+
+  // Add conditions for `current_year` for the last 5 years
+  for (let i = 0; i <= 5; i++) {
+    const startOfPreviousMonthYear = new Date(
+      startOfPreviousMonth.getFullYear() - i,
+      startOfPreviousMonth.getMonth(),
+      startOfPreviousMonth.getDate()
+    );
+
+    const endOfNextMonthYear = new Date(
+      endOfNextMonth.getFullYear() - i,
+      endOfNextMonth.getMonth(),
+      endOfNextMonth.getDate()
+    );
+
+    // Check `current_year` for this year
+    queryConditions.push({
+      [`${postSortMap[section]}.current_year`]: {
+        $gte: startOfPreviousMonthYear,
+        $lte: endOfNextMonthYear,
       },
-      {
-        [`${postSortMap[section]}.previous_year`]: {
-          $gte: startOfPreviousMonth,
-          $lte: endOfNextMonth,
-        },
+    });
+  }
+
+  // Add fallback conditions for `previous_year` for the last 5 years
+  for (let i = 0; i <= 5; i++) {
+    const startOfPreviousMonthYear = new Date(
+      startOfPreviousMonth.getFullYear() - i,
+      startOfPreviousMonth.getMonth(),
+      startOfPreviousMonth.getDate()
+    );
+
+    const endOfNextMonthYear = new Date(
+      endOfNextMonth.getFullYear() - i,
+      endOfNextMonth.getMonth(),
+      endOfNextMonth.getDate()
+    );
+
+    // Check `previous_year` for this year
+    queryConditions.push({
+      [`${postSortMap[section]}.previous_year`]: {
+        $gte: startOfPreviousMonthYear,
+        $lte: endOfNextMonthYear,
       },
-    ],
-  };
+    });
+  }
+
+  const query = { $or: queryConditions };
 
   const sortedDateIds = await DateModel.find(query)
     .select("_id") // Only fetch the IDs
@@ -45,6 +82,8 @@ const getSortedDateIds = async (section: string) => {
 
   return sortedDateIds.map((date) => date._id); // Return an array of IDs
 };
+
+
 
 export const fetchPostList = async (
   section: string,
