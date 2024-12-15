@@ -51,50 +51,56 @@ export const renderDateStrNum = (value: any, key?: string) => {
   // current year always)
   const partialDateRegex = /\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(.\d+)?Z)?/; // Match full ISO or just YYYY-MM-DD
 
-  if (partialDateRegex.test(stringValue)) {
-    // Extract date substring
-    const match = partialDateRegex.exec(stringValue);
-    if (match) {
-      const extractedDate = match[0];
+if (partialDateRegex.test(stringValue)) {
+  // Extract date substring
+  const match = partialDateRegex.exec(stringValue);
+  if (match) {
+    const extractedDate = match[0];
 
-      // Parse the extracted date
-      const dateMoment = moment(extractedDate);
+    // Parse the extracted date
+    const dateMoment = moment(extractedDate);
 
-      // Get current date
-      const currentDate = moment();
+    // Get current date
+    const currentDate = moment();
 
-      const isFutureDate = dateMoment.isAfter(currentDate, "day"); // Check if day and month are in future
+    const isFutureDate = dateMoment.isAfter(currentDate, 'day'); // Check if day and month are in future
 
-      let formattedDate;
+    let formattedDate;
 
-      if (dateMoment.year() === currentDate.year()) {
-        // If the year matches the current year
-        if (isFutureDate) {
-          // If the date is in the future
-          formattedDate = `${dateMoment.format("Do MMMM YYYY")} (Estimated)`;
+    if (dateMoment.year() === currentDate.year()) {
+      // If the year matches the current year
+      if (isFutureDate) {
+        // If the date is in the future
+        formattedDate = `${dateMoment.format("Do MMMM YYYY")} (Estimated)`;
+      } else {
+        // Otherwise, format as "Do MMMM YYYY"
+        formattedDate = dateMoment.format("Do MMMM YYYY");
+      }
+    } else {
+      // If the year is not the current year
+      const isPastDate = dateMoment.isBefore(currentDate, 'day');
+      if (isPastDate) {
+        // If day and month comparison for future is not true
+        const isFutureMonth = dateMoment.month() > currentDate.month() || (dateMoment.month() === currentDate.month() && dateMoment.date() > currentDate.date());
+        if (isFutureMonth) {
+          // If the date's day and month are in the future
+          formattedDate = `This ${dateMoment.format("MMMM")}, ${currentDate.year()} (Estimated)`;
         } else {
-          // Otherwise, format as "Do MMMM YYYY"
-          formattedDate = dateMoment.format("Do MMMM YYYY");
+          // Otherwise, show just the month of the past year
+          formattedDate = `${dateMoment.format("MMMM")}, ${currentDate.year()}`;
         }
       } else {
-        // If the year is not the current year
-        const isPastDate = dateMoment.isBefore(currentDate, "day");
-        if (isPastDate) {
-          // If day and month comparison for future is not true
-          formattedDate = `${dateMoment.format("MMMM")}, ${currentDate.year()}`;
-        } else {
-          // If the date is ahead in the future, show "Estimated"
-          formattedDate = `This ${dateMoment.format(
-            "MMMM"
-          )}, ${currentDate.year()} (Estimated)`;
-        }
+        // If the date is ahead in the future, show "Estimated"
+        formattedDate = `This ${dateMoment.format("MMMM")}, ${currentDate.year()} (Estimated)`;
       }
-
-      // Replace the matched date in the string with the formatted date
-      const updatedString = stringValue.replace(extractedDate, formattedDate);
-      return <>{updatedString}</>;
     }
+
+    // Replace the matched date in the string with the formatted date
+    const updatedString = stringValue.replace(extractedDate, formattedDate);
+    return <>{updatedString}</>;
   }
+}
+
 
   // Return the string as-is for other cases
   return <>{stringValue}</>;
