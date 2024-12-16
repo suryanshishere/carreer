@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHttpClient } from "shared/hooks/http-hook";
-import { Input } from "shared/utils/form/input/Input";
+import { Input } from "shared/utils/form/Input";
 import Button from "shared/utils/form/Button";
 import AccountInfoForm from "./forms/AccountInfoForm";
 import "./AccountInfo.css";

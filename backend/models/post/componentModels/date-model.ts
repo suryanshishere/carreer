@@ -2,7 +2,7 @@ import mongoose, { Types, Schema } from "mongoose";
 
 interface DateRange {
   current_year?: Date;
-  previous_year?: Date;
+  previous_year: Date;
 }
 
 interface IDates extends Document {
@@ -29,7 +29,7 @@ interface IDates extends Document {
 
 const DateRangeSchema = new mongoose.Schema({
   current_year: { type: Date },
-  previous_year: { type: Date },
+  previous_year: { type: Date, required: true },
 });
 
 export const dateSchema = new Schema<IDates>(

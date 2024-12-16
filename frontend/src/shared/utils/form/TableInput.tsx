@@ -15,7 +15,7 @@ import {
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 import { startCase } from "lodash";
 import { TextArea } from "./Input";
-import Button from "../Button";
+import Button from "./Button";
 
 interface SubItem {
   name: string;

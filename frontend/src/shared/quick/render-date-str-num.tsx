@@ -51,56 +51,59 @@ export const renderDateStrNum = (value: any, key?: string) => {
   // current year always)
   const partialDateRegex = /\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(.\d+)?Z)?/; // Match full ISO or just YYYY-MM-DD
 
-if (partialDateRegex.test(stringValue)) {
-  // Extract date substring
-  const match = partialDateRegex.exec(stringValue);
-  if (match) {
-    const extractedDate = match[0];
+  if (partialDateRegex.test(stringValue)) {
+    // Extract date substring
+    const match = partialDateRegex.exec(stringValue);
+    if (match) {
+      const extractedDate = match[0];
+      const dateMoment = moment(extractedDate);
+      const currentDate = moment();
 
-    // Parse the extracted date
-    const dateMoment = moment(extractedDate);
+      const currentYear = currentDate.year();
+      const extractedYear = dateMoment.year();
 
-    // Get current date
-    const currentDate = moment();
+      const monthDifference = dateMoment.diff(currentDate, "months");
 
-    const isFutureDate = dateMoment.isAfter(currentDate, 'day'); // Check if day and month are in future
+      let formattedDate;
+      const dateRender = dateMoment.format("Do MMMM YYYY");
+      const nextYear = moment().add(1, "years").year();
 
-    let formattedDate;
-
-    if (dateMoment.year() === currentDate.year()) {
-      // If the year matches the current year
-      if (isFutureDate) {
-        // If the date is in the future
-        formattedDate = `${dateMoment.format("Do MMMM YYYY")} (Estimated)`;
-      } else {
-        // Otherwise, format as "Do MMMM YYYY"
-        formattedDate = dateMoment.format("Do MMMM YYYY");
-      }
-    } else {
-      // If the year is not the current year
-      const isPastDate = dateMoment.isBefore(currentDate, 'day');
-      if (isPastDate) {
-        // If day and month comparison for future is not true
-        const isFutureMonth = dateMoment.month() > currentDate.month() || (dateMoment.month() === currentDate.month() && dateMoment.date() > currentDate.date());
-        if (isFutureMonth) {
-          // If the date's day and month are in the future
-          formattedDate = `This ${dateMoment.format("MMMM")}, ${currentDate.year()} (Estimated)`;
+      if (!key) {
+        formattedDate = dateRender;
+      } else if (currentYear === extractedYear || extractedYear > currentYear) {
+        if (monthDifference > 0 || monthDifference < -2) {
+          formattedDate = `${
+            dateMoment.format("Do MMMM") + " " + nextYear
+          } (Estimated)`;
+        } else if (
+          extractedYear > currentYear ||
+          dateMoment.isAfter(currentDate)
+        ) {
+          formattedDate = `${dateRender} (Estimated)`;
         } else {
-          // Otherwise, show just the month of the past year
-          formattedDate = `${dateMoment.format("MMMM")}, ${currentDate.year()}`;
+          formattedDate = dateRender;
         }
       } else {
-        // If the date is ahead in the future, show "Estimated"
-        formattedDate = `This ${dateMoment.format("MMMM")}, ${currentDate.year()} (Estimated)`;
+        dateMoment.year(currentYear);
+        const monthDifference = dateMoment.diff(currentDate, "months");
+        if (monthDifference === 0) {
+          formattedDate = `This ${
+            dateMoment.format("MMMM") + " " + currentDate.year()
+          } (Estimated)`;
+        } else if (monthDifference > 0 || monthDifference < -1) {
+          formattedDate = `This ${
+            dateMoment.format("MMMM") + " " + nextYear
+          } (Estimated)`;
+        } else {
+          formattedDate = `${dateMoment.format("MMMM")}, ${currentDate.year()}`;
+        }
       }
+
+      // Replace the matched date in the string with the formatted date
+      const updatedString = stringValue.replace(extractedDate, formattedDate);
+      return <>{updatedString}</>;
     }
-
-    // Replace the matched date in the string with the formatted date
-    const updatedString = stringValue.replace(extractedDate, formattedDate);
-    return <>{updatedString}</>;
   }
-}
-
 
   // Return the string as-is for other cases
   return <>{stringValue}</>;

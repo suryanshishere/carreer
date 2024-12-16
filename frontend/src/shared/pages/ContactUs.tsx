@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Button from "shared/utils/form/Button";
-import { Input, TextArea } from "shared/utils/form/input/Input";
+import { Input, TextArea } from "shared/utils/form/Input";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useDispatch, useSelector } from "react-redux";

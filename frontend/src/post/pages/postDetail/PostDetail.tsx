@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import Bookmark from "shared/components/Bookmark";
+import Bookmark from "shared/sharedPostComponents/Bookmark";
 import PostDetailItem from "post/components/postDetailItem/PostDetailItem";
 import rearrangeObjectByPriority, {
   priorityMapping,

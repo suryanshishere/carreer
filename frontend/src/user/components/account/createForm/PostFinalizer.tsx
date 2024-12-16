@@ -6,7 +6,7 @@ import { useHttpClient } from "shared/hooks/http-hook";
 import { useNavigate, useParams } from "react-router-dom";
 import { IPostAdminData } from "models/admin/IPostAdminData";
 import Button from "shared/utils/form/Button";
-import  Dropdown  from "shared/utils/form/input/Dropdown";
+import  Dropdown  from "shared/utils/form/Dropdown";
 import { undefinedFieldActions } from "shared/store/undefined-fields-slice";
 import { startCase } from "lodash";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,6 +1,6 @@
 export interface IDateRange {
   current_year?: Date;
-  previous_year?: Date;
+  previous_year: Date;
 }
 
 export interface IDates {
