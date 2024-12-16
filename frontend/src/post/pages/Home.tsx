@@ -22,7 +22,7 @@ const fetchHomePostList = async (
   return data;
 };
 
-const heights: Record<string, string> = {
+const heights: Record< string, string> = {
   result: "55rem",
   admit_card: "55rem",
   latest_job: "55rem",
@@ -57,7 +57,7 @@ const Home: React.FC = () => {
   if (queryStateMessage) return queryStateMessage;
 
   return (
-    <div className="grid grid-cols-3 gap-x-3 gap-y-3">
+    <div className="grid grid-cols-3 gap-x-2 gap-y-10">
       {Object.keys(data.data).map((key) => (
         <HomeListItem
           key={key}

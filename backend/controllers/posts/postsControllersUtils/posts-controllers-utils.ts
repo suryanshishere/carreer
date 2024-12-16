@@ -83,8 +83,6 @@ const getSortedDateIds = async (section: string) => {
   return sortedDateIds.map((date) => date._id); // Return an array of IDs
 };
 
-
-
 export const fetchPostList = async (
   section: string,
   includePopulate: boolean = true,
@@ -118,6 +116,11 @@ export const fetchPostList = async (
 
     if (includePopulate && sectionListPopulate[section]) {
       query = query.populate(sectionListPopulate[section]);
+    } else {
+      query = query.populate({
+        path: "important_dates",
+        select: "",
+      });
     }
 
     const posts = await query.exec();

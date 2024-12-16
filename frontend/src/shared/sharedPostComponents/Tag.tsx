@@ -1,12 +1,16 @@
 import React from "react";
 import { IDates } from "models/postModels/overallInterfaces/IDates";
 import moment from "moment";
-
 const calculateDateDifference = (importantDates: IDates, section: string) => {
   const tagSectionMap: Record<string, string> = {
     result: "result_announcement_date",
     latest_job: "application_start_date",
-    /////////////////////////////////////////////
+    answer_key: "answer_key_release_date",
+    syllabus: "application_start_date",
+    certificate_verification: "certificate_verification_date",
+    admission: "counseling_start_date",
+    important: "important_date",
+    admit_card: "admit_card_release_date",
   };
 
   const tagKey = tagSectionMap[section] as keyof IDates;
@@ -14,6 +18,7 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
     current_year?: string;
     previous_year?: string;
   };
+
   const resultDateString =
     dateString?.current_year || dateString?.previous_year;
 
@@ -45,7 +50,7 @@ const Tag = (importantDates: IDates, section: string) => {
   const days = calculateDateDifference(importantDates, section);
   console.log(days);
   const isReleased = days <= -4;
-  const isEarly = days > 25;
+  const isEarly = days >= 3;
   const isLive = days > -3 && days < 2;
 
   if (isReleased)

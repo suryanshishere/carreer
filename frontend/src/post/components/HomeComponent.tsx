@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { IPostList } from "models/postModels/IPostList";
 import { snakeCase, startCase } from "lodash";
 import Bookmark from "shared/sharedPostComponents/Bookmark";
+import Tag from "shared/sharedPostComponents/Tag";
 
 interface HomeListItemProps {
   ListItemData: IPostList;
@@ -17,6 +18,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   section,
   height,
 }) => {
+  console.log(ListItemData);
   return (
     <div
       className="w-full text-base flex flex-col justify-center gap-2"
@@ -33,7 +35,8 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
           {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
             <React.Fragment key={index}>
               <li className="w-full">
-                <div className="float-right">
+                <div className="float-right flex items-center gap-1">
+                  {item.important_dates && Tag(item.important_dates, section)}
                   <Bookmark
                     section={section}
                     postId={item._id}
