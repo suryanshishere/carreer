@@ -1,5 +1,5 @@
 import express from "express";
-import { postAdminData } from "@controllers/admin/public/admin-public-controllers";
+// import { postAdminData } from "@controllers/admin/public/admin-public-controllers";
 import { check, header } from "express-validator";
 
 const router = express.Router();
@@ -11,7 +11,7 @@ router.get(
       .isLength({ min: 24, max: 24 })
       .withMessage("User ID must be 24 characters long."),
   ],
-  postAdminData
+  // postAdminData
 );
 
 export default router;

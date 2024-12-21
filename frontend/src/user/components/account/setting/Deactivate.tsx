@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "shared/utils/form/Button";
-import { Input, TextArea } from "shared/utils/form/input/Input";
+import { Input, TextArea } from "shared/utils/form/Input";
 import { useHttpClient } from "shared/hooks/http-hook";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";

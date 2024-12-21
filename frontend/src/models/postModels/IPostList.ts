@@ -8,26 +8,22 @@ import { ISyllabusList } from "./sectionInterfaces/sectionListInterfaces/ISyllab
 import { IImportantList } from "./sectionInterfaces/sectionListInterfaces/IImportantList";
 
 //preventing mutliple
-export type IPostListData =
-  | ICommonListData
-  | IResultList
-  | ILatestJobList
-  | IAdmissionList
-  | IAdmitCardList
-  | ICertificateVerificationList
-  | ISyllabusList
-  | IImportantList;
+export type IPostListData = ICommonListData &
+  IResultList &
+  ILatestJobList &
+  IAdmissionList &
+  IAdmitCardList &
+  ICertificateVerificationList &
+  ISyllabusList &
+  IImportantList;
 
 export type IPostList = Array<
-  |ICommonListData &
-    (
-      | IResultList
-      | ILatestJobList
-      | IAdmissionList
-      | IAdmitCardList
-      | ICertificateVerificationList
-      | ISyllabusList
-      | IImportantList
-    )
+  ICommonListData &
+    IResultList &
+    ILatestJobList &
+    IAdmissionList &
+    IAdmitCardList &
+    ICertificateVerificationList &
+    ISyllabusList &
+    IImportantList
 >;
-

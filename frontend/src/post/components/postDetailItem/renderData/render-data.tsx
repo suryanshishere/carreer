@@ -21,9 +21,5 @@ export const renderValue = (value: any, key: string) => {
     return renderObject(value, key);
   }
 
-  if (value && (typeof value === "number" || typeof value === "string")) {
-    return renderDateStrNum(value, key);
-  }
-
-  return null;
+  return renderDateStrNum(value);
 };

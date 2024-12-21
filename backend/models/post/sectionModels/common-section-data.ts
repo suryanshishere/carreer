@@ -1,3 +1,4 @@
+import { POST_ENV_DATA } from "@shared/env-data";
 import { Schema, Types, Document } from "mongoose";
 
 export interface ICommonDetailData extends Document {
@@ -35,6 +36,14 @@ const commonDataSchema = new Schema<ICommonDetailData>(
       type: String,
       unique: true,
       required: true,
+      minlength: [
+        POST_ENV_DATA.MIN_POST_NAME,
+        `Post code must be at least ${POST_ENV_DATA.MIN_POST_NAME} characters long.`,
+      ],
+      maxlength: [
+        POST_ENV_DATA.MAX_POST_NAME,
+        `Post code must be at least ${POST_ENV_DATA.MAX_POST_NAME} characters long.`,
+      ],
     },
     important_links: { type: Schema.Types.ObjectId, ref: "Link" },
     important_dates: { type: Schema.Types.ObjectId, ref: "Date" },

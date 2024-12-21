@@ -23,8 +23,13 @@ export const renderObject = (value: any, key: string) => (
             </h2>
 
             <div className="pl-4">
-              {subValue?.current_year != null ? (
-                <p>{renderDateStrNum(subValue.current_year, key)}</p>
+              {(subValue?.current_year || subValue?.previous_year) != null ? (
+                <p>
+                  {renderDateStrNum(
+                    subValue.current_year || subValue.previous_year,
+                    key
+                  )}
+                </p>
               ) : (
                 renderValue(subValue, subKey)
               )}

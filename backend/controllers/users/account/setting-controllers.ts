@@ -1,19 +1,24 @@
-import validationError from "@controllers/controllersHelpers/validation-error";
-import User from "@models/user/user-model";
+import validationError from "@controllers/controllersUtils/validation-error";
+import  User  from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
-import { NextFunction, Response,Request } from "express";
+import { NextFunction, Response, Request } from "express";
 import bcrypt from "bcryptjs";
-import { JWTRequest } from "@middleware/check-auth";
+import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
+import { validationResult } from "express-validator";
 
 export const changePassword = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  validationError(req, res, next);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
   try {
     const { old_password, new_password } = req.body;
-    const user = (req as JWTRequest).user;
+    const userId = getUserIdFromRequest(req as JWTRequest);
+    const user = await User.findById(userId);
 
     if (!user) {
       return next(new HttpError("User not found!", 404));
@@ -48,9 +53,13 @@ export const deactivateAccount = async (
   res: Response,
   next: NextFunction
 ) => {
-  validationError(req, res, next);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
   try {
-    const user = (req as JWTRequest).user;
+    const userId = getUserIdFromRequest(req as JWTRequest);
+    const user = await User.findById(userId);
     if (!user) {
       return next(new HttpError("User not found!", 404));
     }

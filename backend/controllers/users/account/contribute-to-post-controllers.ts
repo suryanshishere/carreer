@@ -1,10 +1,11 @@
 import HttpError from "@utils/http-errors";
 import { Request, Response, NextFunction } from "express";
 import mongoose, { Schema } from "mongoose";
-import validationError from "@controllers/controllersHelpers/validation-error";
+import validationError from "@controllers/controllersUtils/validation-error";
 // import { sectionAdminModelSelector } from "@controllers/controllersHelpers/section-model-selector";
 import _ from "lodash";
-import { sectionModelSchemaSelector } from "@controllers/controllersHelpers/section-model-schema-selector";
+import { sectionModelSchemaSelector } from "@controllers/controllersUtils/controllersHelpers/section-model-schema-selector";
+import { validationResult } from "express-validator";
 
 export const getUndefinedFields = async (
   req: Request,
@@ -81,7 +82,10 @@ export const contributeToPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  validationError(req, res, next);
+  const errors =validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
   const { post_id, post_section, data } = req.body;
   const userid = req.headers.userid as string | undefined;
 

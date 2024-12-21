@@ -14,7 +14,7 @@ import { AuthProps } from "user/pages/auth/Auth";
 import axiosInstance from "shared/utils/api/axios-instance";
 import Button from "shared/utils/form/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Input } from "shared/utils/form/input/Input";
+import { Input } from "shared/utils/form/Input";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),

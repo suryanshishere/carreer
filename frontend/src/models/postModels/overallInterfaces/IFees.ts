@@ -13,8 +13,8 @@ export interface IFees {
   created_by: string;
   contributors?: string[];
   approved: boolean;
-  male?: ICategoryFees;
-  female?: ICategoryFees;
-  other?: ICategoryFees;
+  male?: number;
+  female?: number;
+  category_wise?: ICategoryFees;
   additional_resources?: string;
 }

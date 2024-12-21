@@ -12,7 +12,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import { handleAuthClick, login } from "shared/store/auth-slice";
 import axiosInstance from "shared/utils/api/axios-instance";
-import { Input } from "shared/utils/form/input/Input";
+import { Input } from "shared/utils/form/Input";
 import Button from "shared/utils/form/Button";
 
 // Validation schema using Yup
