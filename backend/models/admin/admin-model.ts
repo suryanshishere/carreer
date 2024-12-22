@@ -4,9 +4,10 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IAdmin extends Document {
   email: string;
-  admin_status: IAdminData["IAdminStatus"];
+  admin_status?: IAdminData["IAdminStatus"];
   role: IAdminData["IRoleApplied"];
   user: Schema.Types.ObjectId; 
+  admin: Schema.Types.ObjectId; 
 }
 
 export const adminSchema: Schema = new Schema<IAdmin>(
@@ -27,6 +28,7 @@ export const adminSchema: Schema = new Schema<IAdmin>(
       index: true,
     },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    admin: { type: Schema.Types.ObjectId, ref: "Admin", required: true },
   },
   { timestamps: true }
 );

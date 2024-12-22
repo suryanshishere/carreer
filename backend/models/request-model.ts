@@ -8,6 +8,7 @@ export interface IPublisher extends Document {
   role_applied: IAdminData["IRoleApplied"];
   reason: string;
   user: Schema.Types.ObjectId;
+  admin?: Schema.Types.ObjectId;
   expireAt: Date;
 }
 
@@ -38,6 +39,7 @@ export const requestSchema: Schema = new Schema<IPublisher>(
       max: MAX_REASON_LENGTH,
     },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    admin: { type: Schema.Types.ObjectId, ref: "Admin" },
     //only set expireAt when role_applied matches the rejected done so.
     expireAt: { type: Date, expires: ADMIN_DATA.REQUEST_DOC_EXPIRY }, // TTL index set to 30 days as type date
   },

@@ -15,7 +15,15 @@ export const reqAccess = async (
   const { reason, role_applied } = req.body;
 
   try {
-    let request = await RequestModal.findById(userId);
+    let request = await RequestModal.findById(userId).populate({
+      path: "user",
+      select: "role",
+    });
+
+    // @ts-ignore
+    if (request && request.user.role === role_applied) {
+      return next(new HttpError("You already have the access you are applying for.", 400));
+    }
 
     if (role_applied === "none") {
       if (request) {

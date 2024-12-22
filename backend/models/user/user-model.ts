@@ -1,4 +1,5 @@
-import { USER_ENV_DATA } from "@shared/env-data";
+import { ADMIN_DATA, USER_ENV_DATA } from "@shared/env-data";
+import { IAdminData } from "@shared/type-check-data";
 import mongoose, { Schema, Types, Document } from "mongoose";
 
 interface SavedPosts {
@@ -24,7 +25,7 @@ export interface IUser extends Document {
   passwordChangedAt?: Date;
 
   // Role
-  role: "publisher" | "approver" | "none" | "admin";
+  role: IAdminData["IRoleApplied"];
 
   // User identification fields
   email: string;
@@ -70,7 +71,7 @@ const userSchema: Schema = new Schema<IUser>(
     //role
     role: {
       type: String,
-      enum: ["publisher", "approver", "none", "admin"],
+      enum: ADMIN_DATA.ROLE_APPLIED,
       required: true,
       default: "none",
       index: true, //for better fitlering
