@@ -24,7 +24,7 @@ export interface IUser extends Document {
   passwordChangedAt?: Date;
 
   // Role
-  role?: "publisher" | "approver" | "contributor" | "admin";
+  role: "publisher" | "approver" | "none" | "admin";
 
   // User identification fields
   email: string;
@@ -70,8 +70,9 @@ const userSchema: Schema = new Schema<IUser>(
     //role
     role: {
       type: String,
-      enum: ["publisher", "approver", "contributor", "admin"],
-      default: "contributor",
+      enum: ["publisher", "approver", "none", "admin"],
+      required: true,
+      default: "none",
       index: true, //for better fitlering
     },
 

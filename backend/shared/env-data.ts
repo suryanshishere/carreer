@@ -36,6 +36,9 @@ export const USER_ENV_DATA = {
 };
 
 export const ADMIN_DATA = {
-  PUBLISHER_STATUS: ["pending", "approved", "rejected"],
-  PUBLISHER_DOC_EXPIRY: "30d",
+  STATUS: ["pending", "approved", "rejected"],
+  STATUS_DEFAULT: "pending",
+  ADMIN_STATUS: ["handlePublisher", "handleApprover", "admin", "none"],
+  ROLE_APPLIED: ["publisher", "admin", "approver", "none"],
+  REQUEST_DOC_EXPIRY: "30d",
 };

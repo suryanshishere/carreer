@@ -1,8 +1,8 @@
 import express from "express";
 import adminPublicRoutes from "./adminPublic/admin-public-routes";
 import {
-  publisherAccessUpdate,
-  getPublisherAccess,
+  accessUpdate,
+  getReqAccess,
 } from "@controllers/admin/admin-controllers";
 import { check } from "express-validator";
 import { ADMIN_DATA } from "@shared/env-data";
@@ -14,14 +14,23 @@ router.use("/public", adminPublicRoutes);
 
 const statusCheck = check("status")
   .trim()
-  .isIn(ADMIN_DATA.PUBLISHER_STATUS)
+  .isIn(ADMIN_DATA.STATUS)
   .withMessage(
-    `Status must be one of the following: ${ADMIN_DATA.PUBLISHER_STATUS.join(
-      ", "
-    )}`
+    `Status must be one of the following: ${ADMIN_DATA.STATUS.join(", ")}`
   );
 
-router.post("/publisher-access", statusCheck, getPublisherAccess);
+router.post(
+  "/req-access",
+  [
+    statusCheck,
+    check("role_applied")
+      .isIn(ADMIN_DATA.ROLE_APPLIED)
+      .withMessage(
+        `Role applied must be among ${ADMIN_DATA.ROLE_APPLIED.join(", ")}`
+      ),
+  ],
+  getReqAccess
+);
 
 const publisherIdCheck = check("publisher_id")
   .trim()
@@ -31,7 +40,7 @@ const publisherIdCheck = check("publisher_id")
 router.post(
   "/publisher-access-update",
   [statusCheck, publisherIdCheck],
-  publisherAccessUpdate
+  accessUpdate
 );
 
 export default router;
