@@ -2,7 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { JWTRequest } from "@middleware/check-auth";
 import HttpError from "@utils/http-errors";
 import PublisherModal from "@models/publisher-model";
-import validationError from "@controllers/controllersUtils/validation-error";
+import validationError, {
+  handleValidationErrors,
+} from "@controllers/controllersUtils/validation-error";
 import AdminModel from "@models/admin/admin-model";
 import { validationResult } from "express-validator";
 
@@ -11,6 +13,8 @@ export const getPublisherAccess = async (
   res: Response,
   next: NextFunction
 ) => {
+  handleValidationErrors(req, next);
+
   const userId = (req as JWTRequest).userData.userId;
   const { status } = req.body;
   try {
@@ -43,15 +47,13 @@ export const publisherAccessUpdate = async (
   res: Response,
   next: NextFunction
 ) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(new HttpError(validationError(errors), 400));
-  }
+  handleValidationErrors(req, next);
 
-  const userId = (req as JWTRequest).userData.userId;
-  const { status } = req.body;
+  const userId = (req as JWTRequest).userData.userId; // Extract the user ID from the request
+  const { status, publisher_id } = req.body;
+
   try {
-    //admin authorization check
+    // Admin authorization check
     const admin = await AdminModel.findById(userId);
     if (!admin || !["handlePublisher", "ultimate"].includes(admin.status)) {
       return next(
@@ -59,35 +61,50 @@ export const publisherAccessUpdate = async (
       );
     }
 
-    const publisher = await PublisherModal.findById(userId).populate({
+    // Validate publisher existence and populate related user data
+    const publisher = await PublisherModal.findById(publisher_id).populate({
       path: "user",
       select: "role",
     });
     if (!publisher) {
       return next(new HttpError("Publisher not found!", 404));
     }
-    if (status === "rejected") {
-      publisher.expire_at = new Date(); // Remove the doc after 30 days
-      await publisher.save();
-      return res
-        .status(200)
-        .json({ message: "Publisher request rejected and removed!" });
-    }
+    // Prevent redundant updates
     if (publisher.status === status) {
       return next(
         new HttpError("Status is already set to the requested value.", 400)
       );
     }
-    if (status === "approved") {
-      const user = publisher.user as any;
-      user.role = "publisher";
-      await user.save(); // Update user role to publisher
+    publisher.status = status;
+    
+    // Handle rejection: set an expiration date for automatic removal
+    if (status === "rejected") {
+      publisher.expireAt = new Date(); // Document will expire and be removed after TTL
+      await publisher.save();
+      return res.status(200).json({
+        message: "Publisher request rejected.",
+      });
     }
 
-    publisher.status = status;
+    // Handle approval: update user role and publisher status
+    if (status === "approved") {
+      const user = publisher.user as any; // Type assertion for `user` field
+      if (user.role !== "publisher") {
+        user.role = "publisher";
+        await user.save(); // Update user's role to 'publisher'
+      }
+    }
+
+    // Update publisher status
     await publisher.save();
-    return res.status(200).json({ message: "Publisher request approved!" });
+
+    // Return a success response
+    return res.status(200).json({
+      message: `Publisher status successfully updated to '${status}'.`,
+    });
   } catch (error) {
+    // Handle unexpected errors
+    console.error("Error updating publisher access:", error);
     return next(new HttpError("Failed to handle publisher request.", 500));
   }
 };

@@ -35,7 +35,7 @@ export const USER_ENV_DATA = {
   OTP_ERROR_MSG: "Invalid OTP!",
 };
 
-
 export const ADMIN_DATA = {
   PUBLISHER_STATUS: ["pending", "approved", "rejected"],
-}
+  PUBLISHER_DOC_EXPIRY: "30d",
+};

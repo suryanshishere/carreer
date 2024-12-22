@@ -25,7 +25,7 @@ const validationSchema = Yup.object().shape({
     .min(6, `Post code must be between 6 and 1000 characters.`)
     .max(100, `Post code must be between 6 and 1000 characters.`)
     .matches(
-      /^[A-Za-z0-9\s]+$/,
+      /^[A-Za-z0-9_\s]+$/,
       "Post code can only contain letters, numbers, and spaces."
     )
     .required("Post code is required"),

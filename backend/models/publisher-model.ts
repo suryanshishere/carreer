@@ -1,4 +1,4 @@
-import { CONTACT_US_ENV_DATA } from "@shared/env-data";
+import { ADMIN_DATA, CONTACT_US_ENV_DATA } from "@shared/env-data";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IPublisher extends Document {
@@ -6,7 +6,7 @@ export interface IPublisher extends Document {
   status: "pending" | "approved" | "rejected";
   reason: string;
   user: Schema.Types.ObjectId; 
-  expire_at: Date; 
+  expireAt: Date; 
 }
 
 const { MIN_REASON_LENGTH, MAX_REASON_LENGTH } = CONTACT_US_ENV_DATA;
@@ -29,7 +29,7 @@ export const publisherSchema: Schema = new Schema<IPublisher>(
       max: MAX_REASON_LENGTH,
     },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true }, // Reference to the user model
-    expire_at: { type: Date, expires: '5s' }, // TTL index set to 7 days as type date
+    expireAt: { type: Date, expires: ADMIN_DATA.PUBLISHER_DOC_EXPIRY}, // TTL index set to 7 days as type date
   },
   { timestamps: true }
 );

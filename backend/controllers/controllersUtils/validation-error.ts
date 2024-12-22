@@ -1,3 +1,6 @@
+import HttpError from "@utils/http-errors";
+import { NextFunction, Request } from "express";
+import { validationResult } from "express-validator";
 
 const validationError = (errors: any) => {
   const errorMessages = errors
@@ -8,3 +11,10 @@ const validationError = (errors: any) => {
 };
 
 export default validationError;
+
+export const handleValidationErrors = (req: Request, next: NextFunction) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
+};
