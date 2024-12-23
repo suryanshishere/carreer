@@ -25,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   type = "button",
   onClick,
-  outline,
+  // outline,
   loginSignupType,
   authButtonType,
   warning,
@@ -84,7 +84,9 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       style={{ cursor: disabled ? "default" : "", ...style }}
       disabled={disabled}
-      className={`flex items-center justify-center rounded outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
+      className={`flex items-center justify-center ${
+        classProp?.includes("rounded") ? "" : "rounded"
+      } outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden ${classProp}`}
     >
       {children}
     </button>

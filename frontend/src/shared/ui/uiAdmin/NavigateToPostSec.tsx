@@ -1,7 +1,7 @@
 import React from "react";
-import { Dropdown } from "shared/utils/form/input/Dropdown";
+import  Dropdown from "shared/utils/form/Dropdown";
 import { Button } from "@mui/material";
-import POST_SECTION from "db/adminDb/postSection.json";
+import POST_SECTION from "db/postDb/sections.json";
 import { useNavigate } from "react-router-dom";
 
 interface NavigateToPostSecProps {
@@ -23,7 +23,7 @@ const NavigateToPostSec: React.FC<NavigateToPostSecProps> = ({
 
   return (
     <form onSubmit={submitHandler} className="flex gap-2">
-      <Dropdown name="post_section" dropdownData={POST_SECTION} />
+      <Dropdown name="post_section" data={POST_SECTION} />
       <Button type="submit">{submitName}</Button>
     </form>
   );

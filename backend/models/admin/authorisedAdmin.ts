@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
-const { ObjectId } = Schema.Types;
+const { Types.ObjectId } = Schema.Types;
 
 export const authorisedAdminSchema = new Schema({
     _id: {
-      type: ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User", // Replace "User" with the name of your user model
       required: true,
     },

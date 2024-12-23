@@ -1,8 +1,19 @@
+import { ADMIN_DATA, USER_ENV_DATA } from "@shared/env-data";
+import { IAdminData } from "@shared/type-check-data";
 import mongoose, { Schema, Types, Document } from "mongoose";
 
 interface SavedPosts {
   [key: string]: Types.ObjectId[];
 }
+
+const {
+  MIN_EMAIL_OTP,
+  MAX_EMAIL_OTP,
+  PWD_RESET_ERROR_MSG,
+  OTP_ERROR_MSG,
+  EMAIL_VERIFICATION_OTP_EXPIRY,
+  PASSWORD_RESET_TOKEN_EXPIRY,
+} = USER_ENV_DATA;
 
 export interface IUser extends Document {
   // Authentication and verification fields
@@ -13,12 +24,14 @@ export interface IUser extends Document {
   passwordResetTokenCreatedAt?: Date;
   passwordChangedAt?: Date;
 
+  // Role
+  role: IAdminData["IRoleApplied"];
+
   // User identification fields
   email: string;
   password: string;
 
   // Timestamps and activity fields
-  created_at: Date;
   deactivated_at?: Date;
 
   // Relationships
@@ -28,40 +41,69 @@ export interface IUser extends Document {
   saved_posts?: SavedPosts;
 }
 
-const userSchema: Schema = new Schema<IUser>({
-  // Authentication and verification fields
-  isEmailVerified: { type: Boolean, default: false },
-  emailVerificationToken: { type: Number },
-  emailVerificationTokenCreatedAt: { type: Date },
-  passwordResetToken: { type: Number },
-  passwordResetTokenCreatedAt: { type: Date },
-  passwordChangedAt: { type: Date },
+const userSchema: Schema = new Schema<IUser>(
+  {
+    // Authentication and verification fields
+    //todo: add expire below
+    isEmailVerified: { type: Boolean, default: false },
+    emailVerificationToken: {
+      type: Number,
+      min: [MIN_EMAIL_OTP, OTP_ERROR_MSG],
+      max: [MAX_EMAIL_OTP, OTP_ERROR_MSG],
+      expires: EMAIL_VERIFICATION_OTP_EXPIRY * 60,
+    },
+    emailVerificationTokenCreatedAt: {
+      type: Date,
+      expires: PASSWORD_RESET_TOKEN_EXPIRY * 60,
+    },
+    passwordResetToken: {
+      type: Number,
+      min: [MIN_EMAIL_OTP, PWD_RESET_ERROR_MSG],
+      max: [MAX_EMAIL_OTP, PWD_RESET_ERROR_MSG],
+      expires: PASSWORD_RESET_TOKEN_EXPIRY * 60,
+    },
+    passwordResetTokenCreatedAt: {
+      type: Date,
+      expires: PASSWORD_RESET_TOKEN_EXPIRY * 60,
+    },
+    passwordChangedAt: { type: Date }, //todo
 
-  // User identification fields
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+    //role
+    role: {
+      type: String,
+      enum: ADMIN_DATA.ROLE_APPLIED,
+      required: true,
+      default: "none",
+      index: true, //for better fitlering
+    },
 
-  // Timestamps and activity fields
-  created_at: { type: Date, default: Date.now },
-  deactivated_at: { type: Date },
+    // User identification fields
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
 
-  // Relationships
-  // detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
+    // Timestamps and activity fields
+    // created_at: { type: Date, default: Date.now },
+    deactivated_at: { type: Date },
 
-  // Saved posts
-  saved_posts: {
-    answer_key_ref: [{ type: Types.ObjectId, ref: "AnswerKey" }],
-    admission_ref: [{ type: Types.ObjectId, ref: "Admission" }],
-    admit_card_ref: [{ type: Types.ObjectId, ref: "AdmitCard" }],
-    certificate_verification_ref: [
-      { type: Types.ObjectId, ref: "CertificateVerification" },
-    ],
-    important_ref: [{ type: Types.ObjectId, ref: "Important" }],
-    latest_job_ref: [{ type: Types.ObjectId, ref: "LatestJob" }],
-    result_ref: [{ type: Types.ObjectId, ref: "Result" }],
-    syllabus_ref: [{ type: Types.ObjectId, ref: "Syllabus" }],
+    // Relationships
+    detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
+
+    // Saved posts
+    saved_posts: {
+      answer_key: [{ type: Schema.Types.ObjectId, ref: "AnswerKey" }],
+      admission: [{ type: Schema.Types.ObjectId, ref: "Admission" }],
+      admit_card: [{ type: Schema.Types.ObjectId, ref: "AdmitCard" }],
+      certificate_verification: [
+        { type: Schema.Types.ObjectId, ref: "CertificateVerification" },
+      ],
+      important: [{ type: Schema.Types.ObjectId, ref: "Important" }],
+      latest_job: [{ type: Schema.Types.ObjectId, ref: "LatestJob" }],
+      result: [{ type: Schema.Types.ObjectId, ref: "Result" }],
+      syllabus: [{ type: Schema.Types.ObjectId, ref: "Syllabus" }],
+    },
   },
-});
+  { timestamps: true }
+);
 
-const User = mongoose.model<IUser>("User", userSchema);
-export default User;
+const UserModal = mongoose.model<IUser>("User", userSchema);
+export default UserModal;

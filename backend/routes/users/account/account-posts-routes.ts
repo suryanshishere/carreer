@@ -1,3 +1,4 @@
+import { postSectionsArray } from "@shared/post-array";
 import {
   bookmarkPost,
   savedPosts,
@@ -7,7 +8,6 @@ import {
   getUndefinedFields,
   contributeToPost,
 } from "@controllers/users/account/contribute-to-post-controllers";
-import { sections } from "@models/post/post-model";
 import express from "express";
 import { check } from "express-validator";
 import _ from "lodash";
@@ -41,18 +41,6 @@ const bookmarkMiddleware = [
     .trim()
     .notEmpty()
     .withMessage("Section is required!")
-    .custom((value) => {
-      const lowerCaseCategory = value.toLowerCase();
-
-      const acceptedCategories = _.flatMap(sections, (section) => [
-        _.toLower(section), 
-        _.snakeCase(section), 
-      ]);
-
-      return acceptedCategories.includes(lowerCaseCategory);
-    })
-    .withMessage("Invalid section!")
-    .customSanitizer((value) => _.snakeCase(value) + "_ref"),
 ];
 
 router.post("/bookmark", bookmarkMiddleware, bookmarkPost);

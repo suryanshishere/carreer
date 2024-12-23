@@ -1,14 +1,14 @@
-import User, { IUser } from "@models/user/user-model";
+import  User, {IUser} from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
-import { NextFunction, Response } from "express";
-import { Request } from "express-jwt";
+import { NextFunction, Response, Request } from "express";
+import { JWTRequest } from "./check-auth";
 
 const activateAccount = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const userId = req.userData.userId;
+  const userId = (req as JWTRequest).userData.userId;
   try {
     const user: IUser | null = await User.findById(userId);
     if (!user) return next(new HttpError("User not found!", 404));

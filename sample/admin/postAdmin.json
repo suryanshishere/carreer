@@ -26,7 +26,7 @@
     "important": {
         "$oid": "66b86fe14d528c942de38c3a"
     },
-    "post_common": {
+    "common": {
         "$oid": "66b86fe14d528c942de38c3a"
     },
     "title": "JEE (Joint Entrance Examination)",

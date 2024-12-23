@@ -7,12 +7,15 @@ import dotenv from "dotenv";
 dotenv.config();
 import postsRoutes from "@routes/posts/posts-routes";
 import adminRoutes from "@routes/admin/admin-routes";
+import otherRoutes from "@routes/other/other-routes";
 import usersRoutes from "@routes/users/user-routes";
 import HttpError from "@utils/http-errors";
 import userCleanupTask from "@middleware/cronJobs/user-cleanup-task";
 import checkAuth from "@middleware/check-auth";
 import checkAccountStatus from "@middleware/check-account-status";
 import activateAccount from "@middleware/activate-account";
+import { deletePost } from "@controllers/publisher/publisher-controllers";
+import publisherRoutes from "@routes/admin/publisher/publisher-routes";
 
 const MONGO_URL: string = process.env.MONGO_URL || "";
 const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
@@ -22,6 +25,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+app.delete("/api/deletePost", deletePost);
 app.use(checkAuth);
 app.post("/api/user/account/activate-account", activateAccount);
 app.use(checkAccountStatus);
@@ -29,10 +33,12 @@ app.use(checkAccountStatus);
 app.use("/api/public", postsRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", usersRoutes);
+app.use("/api/publisher", publisherRoutes);
+app.use("/api/other", otherRoutes);
 
 //Error showing if none of the routes found!
-app.use((next: NextFunction) => {
-  return next(new HttpError("Could not find this route.", 404));
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next(new HttpError("Could not find this route.", 404));
 });
 
 //httperror middleware use here to return a valid json error instead any html error page

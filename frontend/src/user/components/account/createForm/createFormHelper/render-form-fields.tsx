@@ -1,9 +1,9 @@
 import React from "react";
 import { IContributeInputForm } from "models/userModel/account/contributeToPost/IContributeInputForm";
 import { startCase } from "lodash";
-import { Dropdown } from "shared/utils/form/input/Dropdown";
-import { Input, TextArea } from "shared/utils/form/input/Input";
-import TableInput from "shared/utils/form/input/TableInput";
+import Dropdown  from "shared/utils/form/Dropdown";
+import { Input, TextArea } from "shared/utils/form/Input";
+import TableInput from "shared/utils/form/TableInput";
 import { ITableFormData } from "./interfaceHelper";
 
 const renderFormFields = (
@@ -46,7 +46,7 @@ const renderFormFields = (
         <Dropdown
           key={index}
           name={fieldName}
-          dropdownData={item.value}
+          data={item.value}
           error={errors ? !!errors[fieldName] : false}
           helperText={errors?.[fieldName]?.message}
           register={register}

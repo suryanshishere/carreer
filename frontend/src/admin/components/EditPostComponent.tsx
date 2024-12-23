@@ -48,14 +48,14 @@ const EditPostComponent = () => {
 
   return (
     <ul>
-      {data.map((item) => (
+      {/* {data.map((item) => (
         <li key={item._id}>
           {item.name_of_the_post}{" "}
           <Link to={`${item._id}`}>
             <EditIcon />
           </Link>{" "}
         </li>
-      ))}
+      ))} */}
     </ul>
   );
 };

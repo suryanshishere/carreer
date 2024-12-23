@@ -12,7 +12,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import { handleAuthClick, login } from "shared/store/auth-slice";
 import axiosInstance from "shared/utils/api/axios-instance";
-import { Input } from "shared/utils/form/input/Input";
+import { Input } from "shared/utils/form/Input";
 import Button from "shared/utils/form/Button";
 
 // Validation schema using Yup
@@ -51,9 +51,9 @@ const AuthComponent: React.FC<AuthProps> = () => {
       );
       return response.data;
     },
-    onSuccess: ({ token, tokenExpiration, isEmailVerified, message }) => {
+    onSuccess: ({ token, tokenExpiration, isEmailVerified, role, message }) => {
       dispatch(triggerSuccessMsg(message));
-      dispatch(login({ token, tokenExpiration, isEmailVerified }));
+      dispatch(login({ token, tokenExpiration, isEmailVerified, role }));
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));

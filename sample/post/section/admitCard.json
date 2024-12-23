@@ -1,33 +1,33 @@
 {
   "_id": {
-    "$oid": "06219de446e10e16e91b7260"
+    "$oid": "d88e5fd5a7ffa35584f39c26"
   },
   "createdAt": "2024-08-08T12:00:00Z",
   "updatedAt": "2024-09-08T12:00:00Z",
   "createdBy": {
-    "$oid": "66afaaf24d8bd472905fcf7e"
-  },
-  "post_code":"JEE",
-  "name_of_the_post": "JEE Admit Card: 1st Shift, 2024",
-  "how_to_download_admit_card": "Visit the official website.,Go to the admit card section.,Enter your registration number and date of birth.,Download and print your admit card.",
-  "syllabus": {
-    "$oid": "06219de446e10e16e91b7260"
-  },
-  "post_common": {
-    "$oid": "06219de446e10e16e91b7260"
-  },
-  "important_dates": {
-    "$oid": "06219de446e10e16e91b7260"
-  },
-  "important_links": {
-    "$oid": "06219de446e10e16e91b7260"
-  },
-  "result_data": {
-    "$oid": "06219de446e10e16e91b7260"
+    "$oid": "6749e5ec8100dfa1958e9573"
   },
   "contributors": [
     {
-      "$oid": "66afaaf24d8bd472905fcf7e"
+      "$oid": "6749e5ec8100dfa1958e9573"
     }
-  ]
+  ],
+  "approved": true,
+  "name_of_the_post": "JEE Admit Card: 1st Shift, 2024",
+  "how_to_download_admit_card": "Visit the official website.//Go to the admit card section.//Enter your registration number and date of birth.//Download and print your admit card.",
+  "syllabus": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "common": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "important_dates": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "important_links": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "result": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  }
 }

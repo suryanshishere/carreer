@@ -18,7 +18,6 @@ const initialState: IAuthSlice = {
   userData: {
     token: "",
     isEmailVerified: false,
-    deactivatedAt: undefined,
   },
 };
 
@@ -36,9 +35,10 @@ const authSlice = createSlice({
         token: string;
         isEmailVerified: boolean;
         tokenExpiration?: string;
+        role?: string;
       }>
     ) {
-      const { token, tokenExpiration, isEmailVerified } = action.payload;
+      const { token, tokenExpiration, isEmailVerified, role } = action.payload;
 
       if (!token && isEmailVerified === undefined) return;
 
@@ -53,6 +53,7 @@ const authSlice = createSlice({
         token,
         isEmailVerified,
         tokenExpiration: localTokenExpiration.toISOString(),
+        role,
       };
 
       if (isEmailVerified) {
@@ -77,7 +78,10 @@ const authSlice = createSlice({
       state.userData = { ...state.userData, ...updatedData };
     },
 
-    handleAccountDeactivatedAt(state, action: PayloadAction<string | undefined>) {
+    handleAccountDeactivatedAt(
+      state,
+      action: PayloadAction<string | undefined>
+    ) {
       state.userData.deactivatedAt = action.payload;
     },
   },

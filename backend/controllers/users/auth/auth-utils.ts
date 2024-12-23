@@ -37,37 +37,27 @@ export const sendVerificationResponse = async (
   return sendAuthenticatedResponse(res, user, false);
 };
 
-// Send authenticated response for verified users
-export const sendAuthenticatedResponse = (
-  res: Response,
-  user: IUser,
-  isEmailVerified: boolean = true
-) => {
-  const token = generateJWTToken(user.id, user.email);
-  const tokenExpiration = new Date(
-    Date.now() + Number(JWT_KEY_EXPIRY) * 60000
-  ).toISOString();
-
-  return res.status(200).json({
-    token,
-    isEmailVerified,
-    tokenExpiration: tokenExpiration,
-    message: isEmailVerified
-      ? "Logged in successfully!"
-      : "An OTP verification being sent to your mail.",
-  });
-};
-
-// JWT Token generation function
-export const generateJWTToken = (userId: string, email: string): string => {
+export const generateJWTToken = (
+  userId: string,
+  email: string,
+  deactivatedAt?: Date
+): string => {
   if (!JWT_KEY) {
     throw new Error("JWT_KEY environment variable is not defined!");
   }
+
   const expiryInMinutes = parseInt(JWT_KEY_EXPIRY, 10);
   if (isNaN(expiryInMinutes)) {
     throw new Error("JWT_KEY_EXPIRY must be a valid number!");
   }
-  return jwt.sign({ userId, email }, JWT_KEY, {
+
+  const payload = {
+    userId,
+    email,
+    ...(deactivatedAt && { deactivated_at: deactivatedAt }),
+  };
+
+  return jwt.sign(payload, JWT_KEY, {
     expiresIn: `${expiryInMinutes}m`,
   });
 };
@@ -83,16 +73,36 @@ export const checkRequestDelay = (
   }
   // Check if tokenCreatedAt is a future date
   if (tokenCreatedAt > new Date()) {
-    return null; // No delay needed if the token is in the future
+    return null;
   }
   const timeElapsed = Date.now() - tokenCreatedAt.getTime();
   const delayInMilliseconds = delayInSeconds * 1000;
 
   if (timeElapsed < delayInMilliseconds) {
-    // Calculate the remaining wait time in seconds
     return Math.ceil((delayInMilliseconds - timeElapsed) / 1000);
   }
 
-  // No delay needed, enough time has passed
   return null;
+};
+
+// Send authenticated response for verified users
+export const sendAuthenticatedResponse = (
+  res: Response,
+  user: IUser,
+  isEmailVerified: boolean = true
+) => {
+  const token = generateJWTToken(user.id, user.email, user.deactivated_at);
+  const tokenExpiration = new Date(
+    Date.now() + Number(JWT_KEY_EXPIRY) * 60000
+  ).toISOString();
+
+  return res.status(200).json({
+    role: user.role,
+    token,
+    isEmailVerified,
+    tokenExpiration: tokenExpiration,
+    message: isEmailVerified
+      ? "Logged in successfully!"
+      : "An OTP verification being sent to your mail.",
+  });
 };

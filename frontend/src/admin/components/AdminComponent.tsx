@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttpClient } from "shared/hooks/http-hook";
 
-import { IPostDetail } from "models/post/IPostDetail";
+import { IPostDetail } from "models/postModels/IPostDetail";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
@@ -72,12 +72,12 @@ const AdminComponent: React.FC = () => {
 
   return (
     <ul>
-      {data.map((item) => (
+      {/* {data.map((item) => (
         <li key={item._id}>
           {item._id}: {item.name_of_the_post}
           <button >Approved</button>
         </li>
-      ))}
+      ))} */}
     </ul>
   );
 };

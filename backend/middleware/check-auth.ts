@@ -1,6 +1,7 @@
+import { IUser } from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
-import { Response, NextFunction } from "express";
-import { expressjwt, Request } from "express-jwt";
+import { Response, NextFunction, Request } from "express";
+import { expressjwt } from "express-jwt";
 import { isRegExp } from "lodash";
 
 const JWT_KEY = process.env.JWT_KEY || "";
@@ -16,12 +17,11 @@ export const excludedPaths: (string | RegExp)[] = [
 // Define paths that optionally require authorization (only if token is present)
 export const optionalPaths: (string | RegExp)[] = [
   "/api/public/home",
-  /^\/api\/public\/category\/[^/]+$/,
-  /^\/api\/public\/category\/[^/]+\/[^/]+$/,
+  /^\/api\/public\/sections\/[^/]+$/,
+  /^\/api\/public\/sections\/[^/]+\/[^/]+$/,
   "/api/user/auth/send-password-reset-link",
   "/api/user/auth/send-verification-otp",
 ];
-
 
 const checkAuth = (req: Request, res: Response, next: NextFunction) => {
   const checkAuth = expressjwt({
@@ -58,12 +58,20 @@ const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 
 export default checkAuth;
 
+export interface JWTRequest extends Request {
+  userData: {
+    userId: string;
+    email:string;
+    deactivated_at?: Date;
+  };
+}
+
 //for the optional path (that may have doubt of getting userid)
-export const getUserIdFromRequest = (req: Request): string | undefined => {
+export const getUserIdFromRequest = (req: JWTRequest): string | undefined => {
   const authHeader = req.headers["authorization"];
   const token = authHeader?.split(" ")[1];
 
-  return token && req.userData && req.userData.userId
-    ? req.userData.userId
+  return token && req.userData && (req as JWTRequest).userData.userId
+    ? (req as JWTRequest).userData.userId
     : undefined;
 };

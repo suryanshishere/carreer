@@ -3,12 +3,12 @@ import HttpError from "../../../utils/http-errors";
 import {
   sectionModelSelector,
   sectionAdminModelSelector,
-} from "@controllers/controllersHelpers/section-model-selector";
-import validationError from "@controllers/controllersHelpers/validation-error";
-import { sectionModelSchemaSelector } from "@controllers/controllersHelpers/section-model-schema-selector";
-import updateMissingFields from "@controllers/controllersHelpers/update-ref-n-missing-field";
-import generateUniqueId from "@controllers/controllersHelpers/generate-unique-id";
-import addPostToAllSections from "@controllers/controllersHelpers/add-post-to-all-sections";
+} from "@controllers/controllersUtils/controllersHelpers/section-model-selector";
+import validationError from "@controllers/controllersUtils/validation-error";
+import { sectionModelSchemaSelector } from "@controllers/controllersUtils/controllersHelpers/section-model-schema-selector";
+import updateMissingFields from "@controllers/controllersUtils/controllersHelpers/update-ref-n-missing-field";
+import generateUniqueId from "@controllers/controllersUtils/controllersHelpers/generate-unique-id";
+import addPostToAllSections from "@controllers/controllersUtils/controllersHelpers/add-post-to-all-sections";
 import checkAuthorisedAdmin from "../adminControllersHelpers/check-authorised-admin";
 
 export const contributedPost = async (
@@ -16,7 +16,10 @@ export const contributedPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  validationError(req, res, next);
+  const errors =validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
   const userid = req.headers.userid as string | undefined;
   const { post_section } = req.body;
   checkAuthorisedAdmin(userid, next);
@@ -46,7 +49,10 @@ export const approvePost = async (
   res: Response,
   next: NextFunction
 ) => {
-  validationError(req, res, next);
+  const errors =validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
   const { post_section, postId, approve_anyway } = req.body;
   const userid = req.headers.userid as string | undefined;
   checkAuthorisedAdmin(userid, next);
@@ -133,67 +139,70 @@ export const approvePost = async (
   }
 };
 
-export const createNewPost = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  validationError(req, res, next);
-  const { post_section, name_of_the_post, post_code } = req.body;
-  const userid = req.headers.userid as string | undefined;
-  checkAuthorisedAdmin(userid, next);
-
-  try {
-    const postId = generateUniqueId(post_code);
-
-    const adminDataModelSelected = sectionAdminModelSelector(
-      post_section,
-      next
-    );
-    if (!adminDataModelSelected) {
-      return next(new HttpError("Invalid post section selected.", 400));
+// export const createNewPost = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const errors =validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
     }
+//   const { post_section, name_of_the_post, post_code } = req.body;
+//   const userid = req.headers.userid as string | undefined;
+//   checkAuthorisedAdmin(userid, next);
 
-    const existingPost = await adminDataModelSelected.findById(postId);
-    if (existingPost) {
-      return next(
-        new HttpError(
-          "Such post already exists",
-          400
-        )
-      );
-    }
+//   try {
+//     const postId = generateUniqueId(post_code);
 
-    //creating new post to all sections and related
-    // await addPostToAllSections(
-    //   post_section,
-    //   name_of_the_post,
-    //   post_code,
-    //   userid,
-    //   next,
-    //   res
-    // );
+//     const adminDataModelSelected = sectionAdminModelSelector(
+//       post_section,
+//       next
+//     );
+//     if (!adminDataModelSelected) {
+//       return next(new HttpError("Invalid post section selected.", 400));
+//     }
 
-    const newPost = new adminDataModelSelected({
-      _id: postId,
-      createdBy: userid, // Ensure this is set correctly
-      post_code,
-      name_of_the_post,
-    });
+//     const existingPost = await adminDataModelSelected.findById(postId);
+//     if (existingPost) {
+//       return next(
+//         new HttpError(
+//           "Such post already exists",
+//           400
+//         )
+//       );
+//     }
 
-    const schema = sectionModelSchemaSelector(post_section, next);
-    if (!schema) {
-      return next(
-        new HttpError("Invalid post section; schema not found.", 400)
-      );
-    }
+//     //creating new post to all sections and related
+//     // await addPostToAllSections(
+//     //   post_section,
+//     //   name_of_the_post,
+//     //   post_code,
+//     //   userid,
+//     //   next,
+//     //   res
+//     // );
 
-    const { updatedPost } = updateMissingFields(schema, newPost, postId);
-    await updatedPost.save();
+//     const newPost = new adminDataModelSelected({
+//       _id: postId,
+//       createdBy: userid, // Ensure this is set correctly
+//       post_code,
+//       name_of_the_post,
+//     });
 
-    return res.status(200).json({ message: "Created new post successfully!" });
-  } catch (error) {
-    console.log(error);
-    return next(new HttpError("Error occurred while creating new post.", 500));
-  }
-};
+//     const schema = sectionModelSchemaSelector(post_section, next);
+//     if (!schema) {
+//       return next(
+//         new HttpError("Invalid post section; schema not found.", 400)
+//       );
+//     }
+
+//     const { updatedPost } = updateMissingFields(schema, newPost, postId);
+//     await updatedPost.save();
+
+//     return res.status(200).json({ message: "Created new post successfully!" });
+//   } catch (error) {
+//     console.log(error);
+//     return next(new HttpError("Error occurred while creating new post.", 500));
+//   }
+// };

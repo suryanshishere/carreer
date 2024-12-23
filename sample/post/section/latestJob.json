@@ -1,37 +1,34 @@
 {
   "_id": {
-    "$oid": "06219de446e10e16e91b7260"
+    "$oid": "d88e5fd5a7ffa35584f39c26"
   },
-  "createdBy": {
-    "$oid": "66afaaf24d8bd472905fcf7e"
-  },
-  "createdAt": "2024-08-08T12:00:00Z",
-  "updatedAt": "2024-09-08T12:00:00Z",
-  "post_code": "JEE",
-  "name_of_the_post": "JEE Main Application",
-  "how_to_do_registration": "Visit the official website.,Click on the registration link.,Fill in the required details.,Submit the form.",
-  "how_to_apply": "Log in to your account.,Navigate to the application form.,Upload the necessary documents.,Submit your application.",
-  "post_common": {
-    "$oid": "06219de446e10e16e91b7260"
-  },
-  "syllabus": {
-    "$oid": "06219de446e10e16e91b7260"
-  },
-  "application_fee": {
-    "$oid": "06219de446e10e16e91b7260"
-  },
-  "important_dates": {
-    "$oid": "06219de446e10e16e91b7260"
-  },
-  "important_links": {
-    "$oid": "06219de446e10e16e91b7260"
-  },
-  "result_data": {
-    "$oid": "06219de446e10e16e91b7260"
+  "created_by": {
+    "$oid": "6749e5ec8100dfa1958e9573"
   },
   "contributors": [
     {
-      "$oid": "66afaaf24d8bd472905fcf7e"
+      "$oid": "6749e5ec8100dfa1958e9573"
     }
-  ]
+  ],
+  "approved": true,
+  "name_of_the_post": "UPSSSC Stenographer Recruitment 2024 Apply Online for 661 Post",
+  "createdAt": "2024-08-08T12:00:00Z",
+  "updatedAt": "2024-09-08T12:00:00Z",
+  "how_to_fill_the_form": {
+    "registration": "Visit the official website. //Click on the registration link. //Fill in the required details. //Submit the form.",
+    "apply": "Log in to your account.//Navigate to the application form.//Upload the necessary documents.//Submit your application.",
+    "video_link": null
+  },
+  "common": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "important_dates": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "application_fee": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  },
+  "important_links": {
+    "$oid": "d88e5fd5a7ffa35584f39c26"
+  }
 }

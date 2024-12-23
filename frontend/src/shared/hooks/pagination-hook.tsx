@@ -1,7 +1,8 @@
-import { IPostListData } from "models/post/IPostList";
+import { IPostList } from "models/postModels/IPostList";
+
 import { useEffect, useState } from "react";
 
-const usePagination = (data: IPostListData[]) => {
+const usePagination = (data: IPostList) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(
     parseInt(process.env.REACT_APP_RECORDS_PER_PAGE ?? "10", 10)

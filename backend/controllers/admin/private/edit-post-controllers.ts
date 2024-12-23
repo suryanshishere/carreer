@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import validationError from "@controllers/controllersHelpers/validation-error";
+import validationError from "@controllers/controllersUtils/validation-error";
 import checkAuthorisedAdmin from "../adminControllersHelpers/check-authorised-admin";
-import { sectionAdminModelSelector } from "@controllers/controllersHelpers/section-model-selector";
+import { sectionAdminModelSelector } from "@controllers/controllersUtils/controllersHelpers/section-model-selector";
 import HttpError from "@utils/http-errors";
 
 export const getAllPostAdminData = async (
@@ -10,7 +10,10 @@ export const getAllPostAdminData = async (
   next: NextFunction
 ) => {
   // Validate the request for any errors
-  validationError(req, res, next);
+  const errors =validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
 
   const userid = req.headers.userid as string | undefined;
   const { post_section } = req.params;
@@ -48,7 +51,10 @@ export const getEditPost = async (
   next: NextFunction
 ) => {
   // Validate the request for any errors
-  validationError(req, res, next);
+  const errors =validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
 
   const userid = req.headers.userid as string | undefined;
   const { post_section, post_id } = req.params;

@@ -1,73 +1,69 @@
 import { Response, NextFunction } from "express";
-import PostDate from "@models/post/common/postDate";
-import PostFee from "@models/post/common/postFee";
-import PostLink from "@models/post/common/postLink";
-import PostCommon from "@models/post/common/postCommon";
-import Post from "@models/post/post-model";
 import HttpError from "@utils/http-errors";
-import { fetchPosts, populateModels, MODEL_DATA } from "./posts-populate";
-import { convertToSnakeCase } from "@controllers/controllersHelpers/case-convert";
+import { sectionDetailPopulateModels } from "./postsControllersUtils/postPopulate/posts-populate";
 import { Request } from "express-jwt";
-import User from "@models/user/user-model";
 import { snakeCase } from "lodash";
-import { Types } from "mongoose";
-import { getUserIdFromRequest } from "@middleware/check-auth";
+import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
+import CommonModel from "@models/post/componentModels/common-model";
+import FeeModel from "@models/post/componentModels/fee-model";
+import DateModel from "@models/post/componentModels/date-model";
+import LinkModel from "@models/post/componentModels/link-model";
+import PostModel from "@models/post/post-model";
+import { fetchPostList } from "./postsControllersUtils/posts-controllers-utils";
+import { SECTION_POST_MODAL_MAP } from "@controllers/controllersUtils/post-model-map";
+import {
+  COMMON_POST_DETAIL_SELECT_FIELDS,
+  sectionPostDetailSelect,
+} from "./postsControllersUtils/postSelect/sectionPostDetailSelect";
+import validationError from "@controllers/controllersUtils/validation-error";
+import { validationResult } from "express-validator";
+import  User  from "@models/user/user-model";
 
-const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
+// const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
+//todo
 const CATEGORY_LIMIT =
   Number(process.env.NUMBER_OF_POST_SEND_CATEGORYLIST) || 25;
 
 // Example utility function (unused)
 export const helpless = () => {
-  const cool = PostLink.find({});
-  const cool1 = PostDate.find({});
-  const cool2 = PostFee.find({});
-  const cool3 = PostCommon.find({});
-  const cool5 = Post.find({});
+  const cool = LinkModel.find({});
+  const cool1 = DateModel.find({});
+  const cool2 = FeeModel.find({});
+  const cool3 = CommonModel.find({});
+  const cool5 = PostModel.find({});
 };
 
-// Get the list of posts for the home page
-export const home = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const home = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = getUserIdFromRequest(req);
+    const userId = getUserIdFromRequest(req as JWTRequest);
+    const user = await User.findById(userId);
+    const savedPost = user?.saved_posts || null;
 
-    const user = userId
-      ? await User.findById(userId).select("saved_posts").lean()
-      : null;
+    const dataPromises = Object.keys(SECTION_POST_MODAL_MAP).map(
+      async (key: string) => {
+        const snakeKey = snakeCase(key);
+        const savedIds = savedPost?.[snakeKey]?.map(String) || [];
+        const posts = await fetchPostList(snakeKey, false, next);
 
-    // Fetch and process posts for each category
-    const dataPromises = Object.keys(MODEL_DATA).map(async (key) => {
-      const model = MODEL_DATA[key];
-      const posts = await fetchPosts(model, HOME_LIMIT);
-
-      // Convert category to snake_case and append "_ref" to check saved_posts
-      const savedField = `${snakeCase(key)}_ref`;
-      const savedIds = user?.saved_posts?.[savedField]?.map(String) || [];
-      
-      return {
-        [snakeCase(key)]: posts.map(({ name_of_the_post, post_code, _id }) => ({
-          name_of_the_post,
-          post_code,
-          _id,
-          is_saved: savedIds.includes(String(_id)),
-        })),
-      };
-    });
+        //todo: improve error handling
+        return {
+          [snakeKey]: posts?.map(({ _id, ...rest }) => ({
+            _id,
+            is_saved: savedIds.includes(String(_id)),
+            ...rest,
+          })),
+        };
+      }
+    );
 
     const dataArray = await Promise.all(dataPromises);
-
-    // Combine results into a single object
     const response = dataArray.reduce((acc, curr) => {
       return { ...acc, ...curr };
     }, {});
 
     return res.status(200).json({ data: response });
   } catch (err) {
-    console.error("Error fetching posts for home list:", err);
+    console.log(err);
     return next(new HttpError("An error occurred while fetching posts", 500));
   }
 };
@@ -77,39 +73,34 @@ export const section = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { section } = req.params;
-
   try {
-    const userId = getUserIdFromRequest(req);
-    const model = MODEL_DATA[section];
-    if (!model) {
-      return next(new HttpError("Invalid category specified.", 400));
+    const { section } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
     }
-    
-    const response = await fetchPosts(model, CATEGORY_LIMIT);
-   
-    let savedIds: string[] = [];
-    if (userId) {
-      const user = await User.findById(userId).select("saved_posts").lean();
-      const savedField = `${snakeCase(section)}_ref`; 
 
-      if (user?.saved_posts?.[savedField]) {
-        savedIds = user.saved_posts[savedField].map(String); 
+    const userId = getUserIdFromRequest(req as JWTRequest);
+    const user = await User.findById(userId);
+    let savedIds: string[] = [];
+    if (user) {
+      if (user?.saved_posts?.[section]) {
+        savedIds = user.saved_posts[section].map(String);
       }
     }
 
-    const postsWithSavedStatus = response.map(
-      ({ name_of_the_post, post_code, _id }) => ({
-        name_of_the_post,
-        post_code,
-        _id,
-        is_saved: savedIds.includes(String(_id)), 
-      })
-    );
+    const response = await fetchPostList(section, true, next);
+    //todo: if null them better
+    const postsWithSavedStatus = response?.map(({ _id, ...rest }) => ({
+      _id,
+      ...rest,
+      is_saved: savedIds.includes(String(_id)),
+    }));
 
     const responseData = {
-      data: { [snakeCase(section)]: postsWithSavedStatus },
+      data: { [section]: postsWithSavedStatus },
     };
+
     return res.status(200).json(responseData);
   } catch (err) {
     return next(new HttpError("An error occurred while fetching posts!", 500));
@@ -117,41 +108,50 @@ export const section = async (
 };
 
 // Get the detailed information of a specific post
-export const sectionDetail = async (
+export const postDetail = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { section, postId } = req.params;
-
   try {
-    const model = MODEL_DATA[section];
+    const { section, postId } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
+
+    const model = SECTION_POST_MODAL_MAP[section];
     if (!model) {
       return next(new HttpError("Invalid section specified.", 400));
     }
 
-    // Fetch post details
+    const sectionSelect = sectionPostDetailSelect[section] || "";
+    let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
+
+    if (sectionSelect.startsWith("-")) {
+      selectFields = sectionSelect.split(" ");
+    } else if (sectionSelect) {
+      selectFields.push(...sectionSelect.split(" "));
+    }
+
     const response = await model
-      .findById(postId)
-      .populate(populateModels[section]);
+      .findOne({ _id: postId, approved: true })
+      .select(selectFields)
+      .populate(sectionDetailPopulateModels[section]);
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));
     }
 
     let isSaved = false;
-    const userId = getUserIdFromRequest(req);
-
+    const userId = getUserIdFromRequest(req as JWTRequest);
+    const user = await User.findById(userId);
     const { Types } = require("mongoose");
 
-    if (userId) {
-      const user = await User.findById(userId).select("saved_posts").lean();
-      if (user?.saved_posts) {
-        const savedField = `${snakeCase(section)}_ref`; 
-        const savedPosts = user.saved_posts[savedField] || [];
-        const postIdObj = new Types.ObjectId(postId);
-        isSaved = savedPosts.some((savedPost) => savedPost.equals(postIdObj));
-      }
+    if (user && user?.saved_posts) {
+      const savedPosts = user.saved_posts[section] || [];
+      const postIdObj = new Types.ObjectId(postId);
+      isSaved = savedPosts.some((savedPost) => savedPost.equals(postIdObj));
     }
 
     const responseWithSavedStatus = {
@@ -161,6 +161,7 @@ export const sectionDetail = async (
 
     return res.status(200).json(responseWithSavedStatus);
   } catch (err) {
+    // console.log(err);
     return next(
       new HttpError("An error occurred while fetching the post.", 500)
     );

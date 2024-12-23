@@ -1,7 +1,6 @@
 import axios from "axios";
 import store from "shared/store";
 import { handleAccountDeactivatedAt } from "shared/store/auth-slice";
-import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 
 const DEACTIVATED_ACCOUNT_DAYS =
   Number(process.env.REACT_APP_DEACTIVATED_ACCOUNT_DAYS) || 30;

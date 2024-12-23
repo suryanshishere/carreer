@@ -1,25 +1,13 @@
 import mongoose, { Schema, SchemaTypeOptions } from "mongoose";
+import { postSectionsArray } from "@shared/post-array";
+import { POST_ENV_DATA } from "@shared/env-data";
 
-export const sections = [
-  "admission",
-  "admit_card",
-  "answer_key",
-  "certificate_verification",
-  "important",
-  "latest_job",
-  "result",
-  "syllabus",
-] as const;
-
-const POST_CODE_LENGTH = Number(process.env.POST_CODE_LENGTH) || 6;
-
-const sectionFields = sections.reduce((fields, section) => {
+const sectionFields = postSectionsArray.reduce((fields, section) => {
   fields[section] = {
     exist: { type: Boolean, default: false },
     approved: {
       type: Boolean,
       default: false,
-      //added validation that approved can be set true only when exist is true.
       validate: {
         validator: function (
           this: { exist: boolean; approved: boolean },
@@ -29,11 +17,21 @@ const sectionFields = sections.reduce((fields, section) => {
         },
         message: (props) => `'approved' can only be true if 'exist' is true.`,
       },
-    } as SchemaTypeOptions<boolean>, 
+    } as SchemaTypeOptions<boolean>,
   };
   return fields;
 }, {} as Record<string, { exist: { type: BooleanConstructor; default: boolean }; approved: SchemaTypeOptions<boolean> }>);
 
+const createdByFields = postSectionsArray.reduce((fields, section) => {
+  fields[section] = {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: false,
+  };
+  return fields;
+}, {} as Record<string, { type: typeof Schema.Types.ObjectId; ref: string; required: boolean }>);
+
+const { MIN_POST_CODE, MAX_POST_CODE, ALPHA_NUM_UNDERSCRORE } = POST_ENV_DATA;
 
 const postSchema = new Schema({
   post_code: {
@@ -41,12 +39,26 @@ const postSchema = new Schema({
     unique: true,
     required: true,
     minlength: [
-      POST_CODE_LENGTH,
-      "Post code must be at least 6 characters long.",
+      MIN_POST_CODE,
+      `Post code must be at least ${MIN_POST_CODE} characters long.`,
     ],
+    maxlength: [
+      MAX_POST_CODE,
+      `Post code must be at max ${MAX_POST_CODE} characters long.`,
+    ],
+    validate: {
+      validator: function (value: string) {
+        return ALPHA_NUM_UNDERSCRORE.test(value);
+      },
+      message:
+        "Post code can only contain letters, numbers, and underscores, with no spaces.",
+    },
   },
   sections: {
-    type: new Schema(sectionFields, { _id: false }), 
+    type: new Schema(sectionFields, { _id: false }),
+  },
+  created_by: {
+    type: new Schema(createdByFields, { _id: false }),
   },
 });
 

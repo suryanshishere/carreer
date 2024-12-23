@@ -20,6 +20,9 @@ module.exports = {
         "custom-pale-yellow": "#EBE4D1",
         "custom-pale-orange": "#E4C087",
       },
+      borderWidth: {
+        1: '1px', 
+      },
       spacing: {
         "main-nav": "3rem",
         "auth-nav": "5rem",
@@ -29,18 +32,9 @@ module.exports = {
         footer: "5.5rem",
       },
       padding: {
-        page: "10vw",
-        button: ".25rem .5rem", //y,x
-      },
-      gap: {},
-      fontSize: {
-        // 'main-header': '1.5rem',
-        // 'header': '1.25rem',
-        // 'nav': '1rem',
-        // 'default': '1.15rem',
-        // 'min': '.8rem',
-      },
-      borderRadius: {},
+        page: "15vw",
+        button: ".35rem .5rem", //y,x
+      }
     },
   },
   plugins: [

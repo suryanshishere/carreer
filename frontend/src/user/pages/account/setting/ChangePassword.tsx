@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import Button from "shared/utils/form/Button";
-import { Input } from "shared/utils/form/input/Input";
+import { Input } from "shared/utils/form/Input";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import {
