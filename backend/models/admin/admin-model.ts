@@ -3,16 +3,16 @@ import { IAdminData } from "@shared/type-check-data";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IAdmin extends Document {
-  email: string;
-  admin_status?: IAdminData["IAdminStatus"];
+  // admin_status?: IAdminData["IAdminStatus"];
   role: IAdminData["IRoleApplied"];
   user: Schema.Types.ObjectId;
 }
 
+//explicitly called it for admin, and role will be on admin only.
+
 export const adminSchema: Schema = new Schema<IAdmin>(
   {
     //_id will be userid
-    email: { type: String, required: true, unique: true, index: true },
     role: {
       type: String,
       default: "none",
@@ -20,12 +20,11 @@ export const adminSchema: Schema = new Schema<IAdmin>(
       index: true,
       required: true,
     },
-    admin_status: {
-      type: String,
-      default: "none",
-      enum: ADMIN_DATA.ADMIN_STATUS,
-      index: true,
-    },
+    // admin_status: {
+    //   type: String,
+    //   enum: ADMIN_DATA.ADMIN_STATUS,
+    //   index: true,
+    // },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }

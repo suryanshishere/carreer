@@ -6,6 +6,7 @@ import AdminModel, { IAdmin } from "@models/admin/admin-model";
 import RequestModal from "@models/admin/request-model";
 import { IUser } from "@models/user/user-model";
 import { IAdminData } from "@shared/type-check-data";
+import { authorisedAdmin } from "./admin-controllers-utils";
 
 export const getReqAccess = async (
   req: Request,
@@ -18,39 +19,22 @@ export const getReqAccess = async (
   const { status, role_applied } = req.body;
 
   try {
-    const admin = await AdminModel.findById(userId);
-    if (
-      !admin ||
-      admin.role !== "admin" ||
-      admin.admin_status === "none" ||
-      (role_applied === "admin" && admin.admin_status !== "admin") ||
-      (role_applied === "publisher" &&
-        admin.admin_status !== "handlePublisher" &&
-        admin.admin_status !== "admin") ||
-      (role_applied === "approver" &&
-        admin.admin_status !== "handleApprover" &&
-        admin.admin_status !== "admin")
-    ) {
-      return next(
-        new HttpError("Access denied! Not authorized as admin. ", 403)
-      );
-    }
-
-    const pendingPublishers = await RequestModal.find({
+    authorisedAdmin(userId, next);
+    const requestList = await RequestModal.find({
       status,
       role_applied,
     }).select("-user -createdAt");
 
-    if (!pendingPublishers || pendingPublishers.length === 0) {
+    if (!requestList || requestList.length === 0) {
       return next(new HttpError(`No ${status} ${role_applied} found!`, 404));
     }
 
     return res
       .status(200)
-      .json({ data: pendingPublishers, message: "Fetched successfully!" });
+      .json({ data: requestList, message: "Fetched successfully!" });
   } catch (error) {
     return next(
-      new HttpError("Failed to fetch pending publisher requests.", 500)
+      new HttpError("Failed to fetch requests.", 500)
     );
   }
 };
@@ -66,24 +50,7 @@ export const accessUpdate = async (
   const { status, req_id, role_applied } = req.body;
 
   try {
-    const admin = await AdminModel.findById(userId);
-
-    if (
-      !admin ||
-      admin.role !== "admin" ||
-      admin.admin_status === "none" ||
-      (role_applied === "admin" && admin.admin_status !== "admin") ||
-      (role_applied === "publisher" &&
-        admin.admin_status !== "handlePublisher" &&
-        admin.admin_status !== "admin") ||
-      (role_applied === "approver" &&
-        admin.admin_status !== "handleApprover" &&
-        admin.admin_status !== "admin")
-    ) {
-      return next(
-        new HttpError("Access denied! Not authorized as admin. ", 403)
-      );
-    }
+    authorisedAdmin(userId, next);
 
     const request = await RequestModal.findById(req_id).populate<{
       user: IUser;
@@ -180,8 +147,8 @@ const handleApproval = async (
     const existingAdmin = await AdminModel.findById(req_id);
     if (existingAdmin) {
       existingAdmin.role = role_applied as IAdminData["IRoleApplied"];
-      existingAdmin.admin_status =
-        role_applied === "admin" ? "none" : undefined;
+      // existingAdmin.admin_status =
+      //   role_applied === "admin" ? "none" : undefined;
       await existingAdmin.save();
     } else {
       await new AdminModel({

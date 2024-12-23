@@ -45,7 +45,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
           new HttpError("Invalid credentials, could not log you in.", 401)
         );
       }
-
       return sendAuthenticatedResponse(res, existingUser);
     } else {
       const hashedPassword = await bcrypt.hash(password, 12);

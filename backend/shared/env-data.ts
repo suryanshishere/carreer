@@ -48,7 +48,7 @@ export const USER_ENV_DATA = {
 export const ADMIN_DATA = {
   STATUS: ["pending", "approved", "rejected"],
   STATUS_DEFAULT: "pending",
-  ADMIN_STATUS: ["handlePublisher", "handleApprover", "admin", "none"],
+  // ADMIN_STATUS: ["handlePublisher", "handleApprover", "admin", "none"],
   ROLE_APPLIED: ["publisher", "admin", "approver", "none"],
-  REQUEST_DOC_EXPIRY: "30d",
+  REQUEST_DOC_EXPIRY: 43200, //in min (everything is in minute)
 };
