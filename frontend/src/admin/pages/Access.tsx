@@ -19,6 +19,7 @@ import { Input } from "shared/utils/form/Input";
 
 // Validation Schemas
 const filterSchema = yup.object().shape({
+  role_applied: yup.string().required("Role applied is required."),
   status: yup
     .string()
     .required("Status is required.")
@@ -42,6 +43,7 @@ const updateSchema = yup.object().shape({
 // Interfaces
 interface IAccessFilter {
   status: string;
+  role_applied: string;
 }
 
 interface IAccessUpdate {
@@ -75,15 +77,11 @@ const PublisherAccess = () => {
   // Mutations
   const filterMutation = useMutation({
     mutationFn: async (data: IAccessFilter) => {
-      const response = await axiosInstance.post(
-        "/admin/publisher-access",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axiosInstance.post("/admin/req-access", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     },
     onSuccess: ({ message, data }) => {
@@ -125,6 +123,7 @@ const PublisherAccess = () => {
   });
 
   const handleFilter = (data: IAccessFilter) => {
+    console.log(data)
     filterMutation.mutate(data);
   };
 
@@ -140,6 +139,13 @@ const PublisherAccess = () => {
         onSubmit={handleFilterSubmit(handleFilter)}
         className="self-end flex items-center gap-2"
       >
+        <Dropdown
+          name="role_applied"
+          register={filterRegister}
+          error={!!filterErrors.role_applied}
+          helperText={filterErrors.role_applied?.message}
+          data={["publisher"]}
+        />
         <Dropdown
           name="status"
           register={filterRegister}

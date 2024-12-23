@@ -4,7 +4,7 @@ import HttpError from "@utils/http-errors";
 import { handleValidationErrors } from "@controllers/controllersUtils/validation-error";
 import AdminModel, { IAdmin } from "@models/admin/admin-model";
 import RequestModal from "@models/admin/request-model";
-import UserModal, { IUser } from "@models/user/user-model";
+import { IUser } from "@models/user/user-model";
 import { IAdminData } from "@shared/type-check-data";
 
 export const getReqAccess = async (
@@ -137,7 +137,6 @@ const handleRejection = async (request: any, role_applied: string) => {
     request.user.role = "none";
     request.admin.role = "none";
     await AdminModel.findByIdAndDelete(request._id);
-
   } else if (request.role_applied === "admin") {
     if (role_applied === "publisher") {
       if (request.admin) {
@@ -197,7 +196,6 @@ const handleApproval = async (
 
   await request.user.save();
   await request.save();
-
 };
 
 const handlePending = async (request: any) => {

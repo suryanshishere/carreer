@@ -1,4 +1,4 @@
-import PublisherAccess from "admin/pages/PublisherAccess";
+import PublisherAccess from "admin/pages/Access";
 import CreateNewPost from "user/publisher/pages/CreateNewPost";
 
 const adminRoutes = (token: string | null, role?: string) => {
