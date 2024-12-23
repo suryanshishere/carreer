@@ -31,7 +31,7 @@ router.post(
   "/access-update",
   [
     ...statusAndRoleCheck,
-    check("publisher_id")
+    check("req_id")
       .trim()
       .isLength({ min: 24, max: 24 })
       .withMessage("Publisher ID must be exactly 24 characters long"),

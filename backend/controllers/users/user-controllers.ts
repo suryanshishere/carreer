@@ -1,6 +1,6 @@
 import { handleValidationErrors } from "@controllers/controllersUtils/validation-error";
 import { JWTRequest } from "@middleware/check-auth";
-import RequestModal from "@models/request-model";
+import RequestModal from "@models/admin/request-model";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
 
@@ -43,6 +43,7 @@ export const reqAccess = async (
         reason,
         role_applied,
         user: userId,
+        admin: userId,
       }).save();
 
       return res.status(200).json({ message: "Request sent for approval!" });

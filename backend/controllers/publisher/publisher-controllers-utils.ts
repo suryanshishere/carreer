@@ -1,7 +1,7 @@
 import HttpError from "@utils/http-errors";
 import { NextFunction } from "express";
 import crypto from "crypto";
-import PublisherModal from "@models/request-model";
+import PublisherModal from "@models/admin/request-model";
 import AdminModel from "@models/admin/admin-model";
 
 export const checkAuthorisedPublisher = async (
