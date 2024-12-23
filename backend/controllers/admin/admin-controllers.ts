@@ -138,7 +138,7 @@ const handleApproval = async (
   request.user.role = role_applied;
   request.role_applied = role_applied;
   request.status = "approved";
-
+//add session
   if (request.admin) {
     request.admin.role = role_applied;
     await request.admin.save();
