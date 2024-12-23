@@ -1,5 +1,6 @@
-import { ADMIN_DATA, USER_ENV_DATA } from "@shared/env-data";
+import { ADMIN_DATA, POST_ENV_DATA, USER_ENV_DATA } from "@shared/env-data";
 import { IAdminData } from "@shared/type-check-data";
+import _ from "lodash";
 import mongoose, { Schema, Types, Document } from "mongoose";
 
 interface SavedPosts {
@@ -40,6 +41,14 @@ export interface IUser extends Document {
   // Saved posts
   saved_posts?: SavedPosts;
 }
+
+const dynamicReferences: Record<string, any> = {};
+POST_ENV_DATA.SECTIONS.forEach((key) => {
+  const camelCaseRef = _.camelCase(key);
+  dynamicReferences[key] = [
+    { type: Schema.Types.ObjectId, ref: _.upperFirst(camelCaseRef) },
+  ];
+});
 
 const userSchema: Schema = new Schema<IUser>(
   {
@@ -89,18 +98,7 @@ const userSchema: Schema = new Schema<IUser>(
     detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
 
     // Saved posts
-    saved_posts: {
-      answer_key: [{ type: Schema.Types.ObjectId, ref: "AnswerKey" }],
-      admission: [{ type: Schema.Types.ObjectId, ref: "Admission" }],
-      admit_card: [{ type: Schema.Types.ObjectId, ref: "AdmitCard" }],
-      certificate_verification: [
-        { type: Schema.Types.ObjectId, ref: "CertificateVerification" },
-      ],
-      important: [{ type: Schema.Types.ObjectId, ref: "Important" }],
-      latest_job: [{ type: Schema.Types.ObjectId, ref: "LatestJob" }],
-      result: [{ type: Schema.Types.ObjectId, ref: "Result" }],
-      syllabus: [{ type: Schema.Types.ObjectId, ref: "Syllabus" }],
-    },
+    saved_posts: { type: new Schema(dynamicReferences) },
   },
   { timestamps: true }
 );

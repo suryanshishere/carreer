@@ -12,6 +12,16 @@ export const POST_ENV_DATA = {
   MAX_POST_NAME: Number(process.env.MAX_POST_NAME) || 1000,
   MIN_POST_CODE: Number(process.env.MIN_POST_CODE) || 6,
   MAX_POST_CODE: Number(process.env.MAX_POST_CODE) || 100,
+  SECTIONS: [
+    "result",
+    "admit_card",
+    "latest_job",
+    "answer_key",
+    "syllabus",
+    "certificate_verification",
+    "admission",
+    "important",
+  ],
 };
 
 export const CONTACT_US_ENV_DATA = {
