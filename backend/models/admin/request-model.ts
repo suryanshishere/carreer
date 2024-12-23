@@ -7,7 +7,7 @@ export interface IRequest extends Document {
   role_applied: IAdminData["IRoleApplied"];
   reason: string;
   user: Schema.Types.ObjectId;
-  expireAt: Date;
+  expireAt?: Date;
 }
 
 const { MIN_REASON_LENGTH, MAX_REASON_LENGTH } = CONTACT_US_ENV_DATA;

@@ -3,7 +3,7 @@ import { JWTRequest } from "@middleware/check-auth";
 import HttpError from "@utils/http-errors";
 import { handleValidationErrors } from "@controllers/controllersUtils/validation-error";
 import AdminModel, { IAdmin } from "@models/admin/admin-model";
-import RequestModal from "@models/admin/request-model";
+import RequestModal, { IRequest } from "@models/admin/request-model";
 import { IUser } from "@models/user/user-model";
 import { IAdminData } from "@shared/type-check-data";
 import { authorisedAdmin } from "./admin-controllers-utils";
@@ -23,7 +23,9 @@ export const getReqAccess = async (
     const requestList = await RequestModal.find({
       status,
       role_applied,
-    }).select("-user -createdAt");
+    })
+      .select("reason updatedAt _id")
+      .sort({ updatedAt: -1 });
 
     if (!requestList || requestList.length === 0) {
       return next(new HttpError(`No ${status} ${role_applied} found!`, 404));
@@ -33,9 +35,7 @@ export const getReqAccess = async (
       .status(200)
       .json({ data: requestList, message: "Fetched successfully!" });
   } catch (error) {
-    return next(
-      new HttpError("Failed to fetch requests.", 500)
-    );
+    return next(new HttpError("Failed to fetch requests.", 500));
   }
 };
 
@@ -52,43 +52,29 @@ export const accessUpdate = async (
   try {
     authorisedAdmin(userId, next);
 
-    const request = await RequestModal.findById(req_id).populate<{
-      user: IUser;
-      admin: IAdmin;
-    }>([
-      {
-        path: "user",
-        select: "role",
-      },
-      {
-        path: "admin",
-        select: "admin_status role",
-      },
-    ]);
+    const request: IRequest | null = await RequestModal.findById(req_id);
 
-    if (!request || !request.user) {
-      return next(new HttpError("Request or user not found!", 404));
+    if (!request) {
+      return next(new HttpError("Request not found!", 404));
     }
-
     if (request.status === status) {
       return next(new HttpError(`Request is already ${status}!`, 400));
     }
+    if (request.role_applied != role_applied) {
+      return next(new HttpError("Role applied not match!", 400));
+    }
 
-    //rejected or approved with none have same features - refactor can happen
     if (status === "rejected") {
-      await handleRejection(request, role_applied);
+      await handleRejection(req, request);
     } else if (status === "approved") {
-      // if (request.expireAt) {
-      //   return next(new HttpError("It's already being rejected!", 400));
-      // }
-      await handleApproval(request, role_applied, req_id);
+      await handleApproval(req_id, request);
     } else if (status === "pending" || status === "none") {
       await handlePending(request);
     }
 
     return res.status(200).json({
       data: request,
-      message: `Publisher status successfully updated to '${status}'.`,
+      message: `Status successfully updated to '${status}'.`,
     });
   } catch (error) {
     console.error("Error updating publisher access:", error);
@@ -96,72 +82,63 @@ export const accessUpdate = async (
   }
 };
 
-const handleRejection = async (request: any, role_applied: string) => {
-  if (
-    request.role_applied === "publisher" ||
-    request.role_applied === "approver"
-  ) {
-    request.user.role = "none";
-    request.admin.role = "none";
-    await AdminModel.findByIdAndDelete(request._id);
-  } else if (request.role_applied === "admin") {
-    if (role_applied === "publisher") {
-      if (request.admin) {
-        request.admin.role = "approver";
-      }
-      request.user.role = "approver";
-    } else if (role_applied === "approver") {
-      request.user.role = "publisher";
-      if (request.admin) {
-        request.admin.role = "publisher";
-      }
-    }
-  } else if (request.role_applied === "none") {
-    await AdminModel.findByIdAndDelete(request._id);
-  }
+const handleRejection = async (req: Request, request: IRequest) => {
+  const { status, req_id } = req.body;
 
-  request.role_applied = role_applied;
-  request.status = "rejected";
   request.expireAt = new Date();
+  request.status = status;
 
-  await request.user.save();
+  await AdminModel.findByIdAndDelete(req_id);
   await request.save();
+
+  // if (
+  //   request.role_applied === "publisher" ||
+  //   request.role_applied === "approver"
+  // ) {
+  //   request.user.role = "none";
+  //   request.admin.role = "none";
+  //   await AdminModel.findByIdAndDelete(request._id);
+  // } else if (request.role_applied === "admin") {
+  //   if (role_applied === "publisher") {
+  //     if (request.admin) {
+  //       request.admin.role = "approver";
+  //     }
+  //     request.user.role = "approver";
+  //   } else if (role_applied === "approver") {
+  //     request.user.role = "publisher";
+  //     if (request.admin) {
+  //       request.admin.role = "publisher";
+  //     }
+  //   }
+  // } else if (request.role_applied === "none") {
+  //   await AdminModel.findByIdAndDelete(request._id);
+  // }
+
+  // request.role_applied = role_applied;
+  // request.status = "rejected";
+  // request.expireAt = new Date();
+
+  // await request.user.save();
+  // await request.save();
 };
-
-const handleApproval = async (
-  request: any,
-  role_applied: string,
-  req_id: string
-) => {
-  request.expireAt = undefined;
-
-  request.user.role = role_applied;
-  request.role_applied = role_applied;
-  request.status = "approved";
-//add session
-  if (request.admin) {
-    request.admin.role = role_applied;
-    await request.admin.save();
-  } else {
-    request.admin = req_id;
-    const existingAdmin = await AdminModel.findById(req_id);
-    if (existingAdmin) {
-      existingAdmin.role = role_applied as IAdminData["IRoleApplied"];
-      // existingAdmin.admin_status =
-      //   role_applied === "admin" ? "none" : undefined;
-      await existingAdmin.save();
-    } else {
-      await new AdminModel({
-        email: request.email,
-        user: req_id,
-        _id: req_id,
-        role: role_applied,
-        admin_status: role_applied === "admin" ? "none" : undefined,
-      }).save();
-    }
+//SESSIONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+const handleApproval = async (req_id: string, request: IRequest) => {
+  if (request.expireAt) {
+    request.expireAt = undefined;
   }
-
-  await request.user.save();
+  request.status = "approved";
+  //TODO: REFACTOR SCOPE
+  const existingAdmin = await AdminModel.findById(req_id);
+  if (existingAdmin) {
+    existingAdmin.role = request.role_applied;
+   await existingAdmin.save()
+  } else {
+    await new AdminModel({
+      user: req_id,
+      _id: req_id,
+      role: request.role_applied,
+    }).save();
+  }
   await request.save();
 };
 

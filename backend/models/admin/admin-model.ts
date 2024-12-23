@@ -8,8 +8,8 @@ export interface IAdmin extends Document {
   user: Schema.Types.ObjectId;
 }
 
-//explicitly called it for admin, and role will be on admin only.
-
+//temp: explicitly called it for admin, and role will be on admin only.
+//temp: admin have approver, publisher and other list power and work
 export const adminSchema: Schema = new Schema<IAdmin>(
   {
     //_id will be userid

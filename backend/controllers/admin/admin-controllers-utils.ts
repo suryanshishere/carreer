@@ -8,4 +8,5 @@ export const authorisedAdmin = async (userId: string, next: NextFunction) => {
   if (!admin || admin.role != "admin") {
     return next(new HttpError("Access denied! Not authorized as admin.", 403));
   }
+
 };
