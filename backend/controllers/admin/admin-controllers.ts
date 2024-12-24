@@ -6,6 +6,27 @@ import AdminModel from "@models/admin/admin-model";
 import RequestModal, { IRequest } from "@models/admin/request-model";
 import { authorisedAdmin } from "./admin-controllers-utils";
 
+export const getRole = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = (req as JWTRequest).userData.userId;
+  try {
+    const admin = await AdminModel.findById(userId).select("role");
+
+    if (!admin || !admin.role) {
+      return next(new HttpError("Nothing to activate found!", 404));
+    }
+
+    return res
+      .status(200)
+      .json({ data: { role: admin.role }, message: "Activated successfully!" });
+  } catch (error) {
+    return next(new HttpError("Internal server error!", 500));
+  }
+};
+
 export const getReqAccess = async (
   req: Request,
   res: Response,

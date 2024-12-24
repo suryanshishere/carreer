@@ -15,11 +15,10 @@ interface ListProps {
   isSaved?: boolean;
 }
 
-const CATEGORY_LIMIT =
-  Number(process.env.REACT_APP_NUMBER_OF_POST_CATEGORYLIST) || 25;
-
 const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
-  if (data.length === 0) return null;
+  if (!Array.isArray(data) || data.length === 0) {
+    return null;
+  }
 
   const renderObject = (obj: IPostListData) => {
     return Object.entries(obj)
@@ -89,10 +88,6 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
               </div>
             </div>
             <span className="text-custom-less-gray text-sm mr-2">
-              {/* <mark className="px-1 whitespace-nowrap bg-custom-pale-yellow">
-                <span>Updated At:</span>
-                <span className="ml-1">{renderDateStrNum(item.updatedAt)}</span>
-              </mark> */}
               <span>{renderObject(item)}</span>
             </span>
           </li>

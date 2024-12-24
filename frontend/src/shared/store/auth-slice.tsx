@@ -8,9 +8,9 @@ interface IAuthSlice {
 }
 
 const AUTH_TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY || 15;
-const NAV_ACCOUNT_DEFAULT_DP =
-  process.env.REACT_APP_NAV_ACCOUNT_DEFAULT_DP ||
-  "https://img.freepik.com/free-photo/background_53876-32170.jpg?t=st=1732070280~exp=1732073880~hmac=f3b7e7a5ee6cef8bc932b0f3595f7d90864f64a12871da125d205ef3559a0208&w=996";
+// const NAV_ACCOUNT_DEFAULT_DP =
+//   process.env.REACT_APP_NAV_ACCOUNT_DEFAULT_DP ||
+//   "https://img.freepik.com/free-photo/background_53876-32170.jpg?t=st=1732070280~exp=1732073880~hmac=f3b7e7a5ee6cef8bc932b0f3595f7d90864f64a12871da125d205ef3559a0208&w=996";
 
 const initialState: IAuthSlice = {
   isNavAuthClicked: false,
@@ -75,7 +75,10 @@ const authSlice = createSlice({
 
     updateUserData(state, action: PayloadAction<Partial<IUserData>>) {
       const updatedData = action.payload;
-      state.userData = { ...state.userData, ...updatedData };
+  console.log("Updated Data:", updatedData);
+  console.log("Before Update:", state.userData);
+  state.userData = { ...state.userData, ...updatedData };
+  console.log("After Update:", state.userData);
     },
 
     handleAccountDeactivatedAt(

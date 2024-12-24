@@ -40,8 +40,8 @@ const NavAccount = () => {
   let onAuthenticated = (
     <>
       {role === "admin" && (
-        <NavLink to="/admin/publisher-access" className="text-custom-pale-orange">
-          Publisher Access
+        <NavLink to="/admin/access" className="text-custom-pale-orange">
+          Access
         </NavLink>
       )}
       <NavLink

@@ -28,7 +28,6 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
 
   const currentDate = moment();
   const resultDate = moment(resultDateString);
-  console.log(tagKey);
   resultDate.year(currentDate.year());
 
   // Calculate the difference in days for the same year

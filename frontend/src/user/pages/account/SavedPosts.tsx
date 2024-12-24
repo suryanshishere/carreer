@@ -31,8 +31,6 @@ const SavedPosts = () => {
     queryFn: () => fetchSavedPosts(token),
   });
 
-  console.log(data);
-
   const savedPost = data.data.saved_posts;
   const savedPostLength = Object.keys(savedPost).length;
   const queryStateMessage = useQueryStates({
@@ -46,8 +44,10 @@ const SavedPosts = () => {
   return (
     <div className="flex flex-col gap-2">
       {Object.keys(savedPost).map((key) => {
+        const data = savedPost[key];
         return (
-          savedPost[key].length > 0 && (
+          data.length > 0 &&
+          Array.isArray(data) && (
             <Fragment key={key}>
               <h2 className="mt-3 self-start">{startCase(key)}</h2>
               <div className="pl-2">

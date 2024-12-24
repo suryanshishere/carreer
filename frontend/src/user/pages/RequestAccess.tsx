@@ -13,42 +13,52 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import axiosInstance from "shared/utils/api/axios-instance";
+import Dropdown from "shared/utils/form/Dropdown";
 
 const MIN_REASON_LENGTH =
   Number(process.env.REACT_APP_MIN_REASON_LENGTH) || 100;
 const MAX_REASON_LENGTH =
   Number(process.env.REACT_APP_MAX_REASON_LENGTH) || 500;
 
-const validationSchema = yup.object().shape({
-  reason: yup
-    .string()
-    .required("Reason is required.")
-    .min(
-      MIN_REASON_LENGTH,
-      ({ min }) => `Reason must be at least ${min} characters.`
-    )
-    .max(
-      MAX_REASON_LENGTH,
-      ({ max }) => `Reason cannot exceed ${max} characters.`
-    ),
-});
+interface IRequestAccess {
+  reason: string;
+  role_applied: string;
+}
 
-const ReqPublisherAccess: React.FC = () => {
+const RequestAccess: React.FC = () => {
   const { token, role } = useSelector(
     (state: RootState) => state.auth.userData
   );
+  const validationSchema = yup.object().shape({
+    role_applied: yup
+      .string()
+      .required("Role applied is required!")
+      .notOneOf([role], "You already have access for the role!"),
+    reason: yup
+      .string()
+      .required("Reason is required.")
+      .min(
+        MIN_REASON_LENGTH,
+        ({ min }) => `Reason must be at least ${min} characters.`
+      )
+      .max(
+        MAX_REASON_LENGTH,
+        ({ max }) => `Reason cannot exceed ${max} characters.`
+      ),
+  });
+
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm({
+  } = useForm<IRequestAccess>({
     resolver: yupResolver(validationSchema),
     mode: "onSubmit",
   });
   const dispatch = useDispatch<AppDispatch>();
 
   const mutation = useMutation({
-    mutationFn: async (data: { reason: string }) => {
+    mutationFn: async (data: IRequestAccess) => {
       const response = await axiosInstance.post(
         "/user/req-publisher-access",
         data,
@@ -75,7 +85,7 @@ const ReqPublisherAccess: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: { reason: string }) => {
+  const onSubmit = (data: IRequestAccess) => {
     mutation.mutate(data);
   };
 
@@ -85,16 +95,32 @@ const ReqPublisherAccess: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
-      <h2>Apply for Publisher Access</h2>
-      <p className="w-1/2 text-start">
-        Once you have been granted publisher access, you will be able to create
-        new posts. These posts can then be sent for approval before being
-        published.
+      <h2>Apply for Access</h2>
+      <p className="w-1/2 text-start italic text-sm">
+        1. Once you have been granted publisher access, you will be able to
+        create new posts. These posts can then be sent for approval before being
+        published. <br />
+        <br />
+        2. Once you have been granted approver access, you will be able to
+        approve created posts. These posts will then be displayed on the site.{" "}
+        <br />
+        <br />
+        3. Once you have been granted admin access, you will be able to create
+        new posts, approve created posts, manage publisher and approver access
+        requests, view publisher and approver lists, and more. Only when
+        guaranteed by the admin, you then only get access here.
       </p>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-1/2 flex gap-2 flex-col"
       >
+        <Dropdown
+          name="role_applied"
+          data={["publisher", "approver", "admin"]}
+          register={register}
+          error={!!errors.role_applied}
+          helperText={errors.role_applied?.message}
+        />
         <TextArea
           placeholder="Please include your full name, email, and reason for applying."
           classProp="placeholder:text-sm"
@@ -110,4 +136,4 @@ const ReqPublisherAccess: React.FC = () => {
   );
 };
 
-export default ReqPublisherAccess;
+export default RequestAccess;
