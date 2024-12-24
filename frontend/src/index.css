@@ -5,7 +5,7 @@
 
 @layer base {
   h2 {
-    @apply text-lg font-bold text-custom-gray p-1 self-center w-fit;
+    @apply text-lg font-bold p-1 self-center w-fit;
   }
   hr {
     @apply w-full border-t-1 border-custom-less-gray;

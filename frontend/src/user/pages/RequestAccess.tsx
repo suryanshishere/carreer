@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import Button from "shared/utils/form/Button";
@@ -14,6 +13,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import axiosInstance from "shared/utils/api/axios-instance";
 import Dropdown from "shared/utils/form/Dropdown";
+import ADMIN_DB from "db/adminDb/admin-db";
 
 const MIN_REASON_LENGTH =
   Number(process.env.REACT_APP_MIN_REASON_LENGTH) || 100;
@@ -51,6 +51,7 @@ const RequestAccess: React.FC = () => {
     handleSubmit,
     register,
     formState: { errors },
+    reset,
   } = useForm<IRequestAccess>({
     resolver: yupResolver(validationSchema),
     mode: "onSubmit",
@@ -59,19 +60,16 @@ const RequestAccess: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: IRequestAccess) => {
-      const response = await axiosInstance.post(
-        "/user/req-publisher-access",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axiosInstance.post("/user/req-access", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return response.data;
     },
     onSuccess: ({ message }) => {
+      reset();
       dispatch(
         triggerSuccessMsg(message || "Publisher request sent successfully!")
       );
@@ -88,10 +86,6 @@ const RequestAccess: React.FC = () => {
   const onSubmit = (data: IRequestAccess) => {
     mutation.mutate(data);
   };
-
-  if (role === "publisher") {
-    return <h2>Already a publisher</h2>;
-  }
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
@@ -116,7 +110,7 @@ const RequestAccess: React.FC = () => {
       >
         <Dropdown
           name="role_applied"
-          data={["publisher", "approver", "admin"]}
+          data={ADMIN_DB.ROLE_APPLIED}
           register={register}
           error={!!errors.role_applied}
           helperText={errors.role_applied?.message}

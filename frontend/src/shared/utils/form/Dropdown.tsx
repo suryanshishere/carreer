@@ -30,7 +30,8 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
       classProp,
       onChange,
       required,
-      multiple,register
+      multiple,
+      register,
     },
     ref
   ) => {
@@ -44,19 +45,20 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
         <select
           id={name}
           name={name}
-          ref={ref} 
+          ref={ref}
           onChange={onChange}
           {...register?.(name)}
           required={required}
           multiple={multiple}
-          className={`w-full pl-2 py-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
+          defaultValue=""
+          className={`w-full p-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
             error ? "outline-custom-red" : ""
           } ${error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"}`}
           style={style}
         >
-            <option value="" disabled hidden>
-    Select an option
-  </option>
+          <option value="" disabled hidden>
+            Select an option
+          </option>
           {data.map((item) =>
             typeof item === "string" ? (
               <option key={item} value={item}>
@@ -83,4 +85,4 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
   }
 );
 
-export default Dropdown
+export default Dropdown;

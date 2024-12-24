@@ -1,11 +1,52 @@
-export const COMMON_COMPONENT_POST_CHAR_LIMITS = {
+interface CharLimits {
+  min: number;
+  max: number;
+}
+
+interface PostEnvData {
+  ALPHA_NUM_UNDERSCRORE: RegExp;
+  MIN_POST_NAME_PUBLISHER: number;
+  MIN_POST_NAME: number;
+  MAX_POST_NAME: number;
+  MIN_POST_CODE: number;
+  MAX_POST_CODE: number;
+  SECTIONS: string[];
+}
+
+interface ContactUsEnvData {
+  MIN_NAME_LENGTH: number;
+  MAX_NAME_LENGTH: number;
+  MIN_REASON_LENGTH: number;
+  MAX_REASON_LENGTH: number;
+}
+
+interface UserEnvData {
+  ALPHA_NUM_SPECIAL_CHAR: RegExp;
+  MIN_PWD_LENGTH: number;
+  MAX_PWD_LENGTH: number;
+  MIN_EMAIL_OTP: number;
+  MAX_EMAIL_OTP: number;
+  EMAIL_VERIFICATION_OTP_EXPIRY: number;
+  PASSWORD_RESET_TOKEN_EXPIRY: number;
+  PWD_RESET_ERROR_MSG: string;
+  OTP_ERROR_MSG: string;
+}
+
+interface AdminData {
+  STATUS: string[];
+  STATUS_DEFAULT: string;
+  ROLE_APPLIED: string[];
+  REQUEST_DOC_EXPIRY: number;
+}
+
+export const COMMON_COMPONENT_POST_CHAR_LIMITS: Record<string, CharLimits> = {
   short_information: { min: 100, max: 2500 },
   highlighted_information: { min: 50, max: 500 },
   department: { min: 5, max: 100 },
   stage_level: { min: 5, max: 50 },
 };
 
-export const POST_ENV_DATA = {
+export const POST_ENV_DATA: PostEnvData = {
   ALPHA_NUM_UNDERSCRORE: /^[A-Za-z0-9_]+$/,
   MIN_POST_NAME_PUBLISHER: Number(process.env.MIN_POST_NAME_PUBLISHER) || 6,
   MIN_POST_NAME: Number(process.env.MIN_POST_NAME) || 20,
@@ -24,14 +65,14 @@ export const POST_ENV_DATA = {
   ],
 };
 
-export const CONTACT_US_ENV_DATA = {
+export const CONTACT_US_ENV_DATA: ContactUsEnvData = {
   MIN_NAME_LENGTH: Number(process.env.MIN_NAME_LENGTH) || 3,
   MAX_NAME_LENGTH: Number(process.env.MAX_NAME_LENGTH) || 100,
   MIN_REASON_LENGTH: Number(process.env.MIN_REASON_LENGTH) || 100,
   MAX_REASON_LENGTH: Number(process.env.MAX_REASON_LENGTH) || 500,
 };
 
-export const USER_ENV_DATA = {
+export const USER_ENV_DATA: UserEnvData = {
   ALPHA_NUM_SPECIAL_CHAR: /^[A-Za-z0-9!@#$%^&*(),.?":{}|<>_+\\-]*$/,
   MIN_PWD_LENGTH: Number(process.env.MIN_PWD_LENGTH) || 6,
   MAX_PWD_LENGTH: Number(process.env.MAX_PWD_LENGTH) || 50,
@@ -45,10 +86,9 @@ export const USER_ENV_DATA = {
   OTP_ERROR_MSG: "Invalid OTP!",
 };
 
-export const ADMIN_DATA = {
+export const ADMIN_DATA: AdminData = {
   STATUS: ["pending", "approved", "rejected"],
   STATUS_DEFAULT: "pending",
-  // ADMIN_STATUS: ["handlePublisher", "handleApprover", "admin", "none"],
   ROLE_APPLIED: ["publisher", "admin", "approver", "none"],
-  REQUEST_DOC_EXPIRY: 43200, //in min (everything is in minute)
+  REQUEST_DOC_EXPIRY: 43200, // in min (everything is in minute)
 };

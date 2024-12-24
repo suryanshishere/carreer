@@ -43,8 +43,8 @@ export const getReqAccess = async (
       status,
       role_applied,
     })
-      .select("reason updatedAt _id")
-      .sort({ updatedAt: -1 });
+      .sort({ updatedAt: -1 })
+      .populate({ path: "user", select: "email" });
 
     if (!requestList || requestList.length === 0) {
       return next(new HttpError(`No ${status} ${role_applied} found!`, 404));
@@ -121,6 +121,7 @@ export const accessUpdate = async (
         existingAdmin.role = "none";
         await existingAdmin.save({ session });
       }
+      request.expireAt = undefined;
     }
     request.status = status;
     await request.save({ session });
@@ -129,7 +130,6 @@ export const accessUpdate = async (
     session.endSession();
 
     return res.status(200).json({
-      data: request,
       message: `Status successfully updated to '${status}'.`,
     });
   } catch (error) {

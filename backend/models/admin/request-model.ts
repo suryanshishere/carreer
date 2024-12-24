@@ -37,7 +37,7 @@ export const requestSchema: Schema = new Schema<IRequest>(
     },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     //only set expireAt when role_applied matches the rejected done so.
-    expireAt: { type: Date, expires: ADMIN_DATA.REQUEST_DOC_EXPIRY * 60 }, // TTL index set to 30 days as type date
+    expireAt: { type: Date, expires: ADMIN_DATA.REQUEST_DOC_EXPIRY * 60 * 60 }, // TTL index set to expire in hours
   },
   { timestamps: true }
 );

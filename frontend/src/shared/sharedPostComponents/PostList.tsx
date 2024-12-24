@@ -74,7 +74,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                   item.name_of_the_post
                 )}?is_saved=${item.is_saved}`}
                 state={{ postId: item._id }}
-                className="text-custom-red underline decoration-1 underline-offset-2 visited:text-custom-gray  hover:decoration-custom-gray "
+                className="text-custom-red font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray  hover:decoration-custom-gray "
               >
                 {item.name_of_the_post}
               </Link>
@@ -87,7 +87,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                 />
               </div>
             </div>
-            <span className="text-custom-less-gray text-sm mr-2">
+            <span className="text-sm mr-2">
               <span>{renderObject(item)}</span>
             </span>
           </li>

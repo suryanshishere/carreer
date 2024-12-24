@@ -8,7 +8,6 @@ import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
 //TEMP: someone can send none, while expireAt active. to start new req to remove expireAt, but the person will have to loose earlier access then.
-//TODO://on frontend add warming for request to delete
 
 export const reqAccess = async (
   req: Request,
@@ -26,6 +25,7 @@ export const reqAccess = async (
   try {
     let request = await RequestModal.findById(userId).session(session);
 
+    //revoke access management which user himself requested
     if (role_applied === "none") {
       if (!request) {
         await session.abortTransaction();
@@ -66,7 +66,7 @@ export const reqAccess = async (
         session.endSession();
         return next(
           new HttpError(
-            "You already have the access you are applying for.",
+            "You already applied or have the access you are applying for.",
             400
           )
         );
