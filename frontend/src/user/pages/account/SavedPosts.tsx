@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import PostList from "shared/sharedPostComponents/PostList";
+import PostList from "post/shared/PostList";
 import { Fragment } from "react/jsx-runtime";
 import { startCase } from "lodash";
 

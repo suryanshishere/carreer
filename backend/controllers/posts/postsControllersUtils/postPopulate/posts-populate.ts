@@ -1,35 +1,21 @@
 import {
   latestJobListPopulate,
   latestJobPopulate,
-} from "./postSectionPopulate/latest-job-populate";
-import {
   populateResult,
   resultListPopulate,
-} from "./postSectionPopulate/result-populate";
-import {
   admitCardListPopulate,
   admitCardPopulate,
-} from "./postSectionPopulate/admit-card-populate";
-import {
   answerKeyListPopulate,
   answerKeyPopulate,
-} from "./postSectionPopulate/answer-key-populate";
-import {
   syllabusListPopulate,
   syllabusPopulate,
-} from "./postSectionPopulate/syllabus-populate";
-import {
   certificateVerificationListPopulate,
   certificateVerificationPopulate,
-} from "./postSectionPopulate/certificate-verification-populate";
-import {
   importantListPopulate,
   importantPopulate,
-} from "./postSectionPopulate/important-populate";
-import {
   admissionListPopulate,
   admissionPopulate,
-} from "./postSectionPopulate/admission-populate";
+} from "./postListAndDetailPopulate";
 
 interface PopulateOption {
   path: string;

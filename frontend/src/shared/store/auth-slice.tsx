@@ -75,10 +75,7 @@ const authSlice = createSlice({
 
     updateUserData(state, action: PayloadAction<Partial<IUserData>>) {
       const updatedData = action.payload;
-  console.log("Updated Data:", updatedData);
-  console.log("Before Update:", state.userData);
-  state.userData = { ...state.userData, ...updatedData };
-  console.log("After Update:", state.userData);
+      state.userData = { ...state.userData, ...updatedData };
     },
 
     handleAccountDeactivatedAt(

@@ -1,5 +1,4 @@
 import express from "express";
-import adminPublicRoutes from "./adminPublic/admin-public-routes";
 import {
   accessUpdate,
   getReqAccess,
@@ -9,6 +8,7 @@ import { check } from "express-validator";
 import { ADMIN_DATA } from "@shared/env-data";
 
 const router = express.Router();
+
 const statusAndRoleCheck = [
   check("status")
     .trim()
@@ -22,9 +22,6 @@ const statusAndRoleCheck = [
       `Role applied must be among ${ADMIN_DATA.ROLE_APPLIED.join(", ")}`
     ),
 ];
-
-router.use("/public", adminPublicRoutes);
-// router.use("/private", adminPrivateRoutes);
 
 router.get("/get-role", getRole);
 

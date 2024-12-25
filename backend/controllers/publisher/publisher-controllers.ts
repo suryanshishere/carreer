@@ -1,4 +1,4 @@
-import validationError from "@controllers/controllersUtils/validation-error";
+import validationError from "@controllers/shared/validation-error";
 import { NextFunction, Response, Request } from "express";
 import {
   checkAuthorisedPublisher,
@@ -13,7 +13,7 @@ import {
   COMPONENT_POST_MODAL_MAP,
   MODAL_MAP,
   SECTION_POST_MODAL_MAP,
-} from "@controllers/controllersUtils/post-model-map";
+} from "@controllers/shared/post-model-map";
 import {
   COMPONENT_POST_PROMPT_SCHEMA_MAP,
   SECTION_DESCRIPTIONS,
