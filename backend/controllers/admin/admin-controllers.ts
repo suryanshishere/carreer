@@ -2,10 +2,30 @@ import { NextFunction, Request, Response } from "express";
 import { JWTRequest } from "@middleware/check-auth";
 import HttpError from "@utils/http-errors";
 import { handleValidationErrors } from "@controllers/controllersUtils/validation-error";
-import AdminModel, { IAdmin } from "@models/admin/admin-model";
-import RequestModal from "@models/admin/request-model";
-import { IUser } from "@models/user/user-model";
-import { IAdminData } from "@shared/type-check-data";
+import AdminModel from "@models/admin/admin-model";
+import RequestModal, { IRequest } from "@models/admin/request-model";
+import { authorisedAdmin } from "./admin-controllers-utils";
+
+export const getRole = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = (req as JWTRequest).userData.userId;
+  try {
+    const admin = await AdminModel.findById(userId).select("role");
+
+    if (!admin || !admin.role) {
+      return next(new HttpError("Nothing to activate found!", 404));
+    }
+
+    return res
+      .status(200)
+      .json({ data: { role: admin.role }, message: "Activated successfully!" });
+  } catch (error) {
+    return next(new HttpError("Internal server error!", 500));
+  }
+};
 
 export const getReqAccess = async (
   req: Request,
@@ -18,40 +38,23 @@ export const getReqAccess = async (
   const { status, role_applied } = req.body;
 
   try {
-    const admin = await AdminModel.findById(userId);
-    if (
-      !admin ||
-      admin.role !== "admin" ||
-      admin.admin_status === "none" ||
-      (role_applied === "admin" && admin.admin_status !== "admin") ||
-      (role_applied === "publisher" &&
-        admin.admin_status !== "handlePublisher" &&
-        admin.admin_status !== "admin") ||
-      (role_applied === "approver" &&
-        admin.admin_status !== "handleApprover" &&
-        admin.admin_status !== "admin")
-    ) {
-      return next(
-        new HttpError("Access denied! Not authorized as admin. ", 403)
-      );
-    }
-
-    const pendingPublishers = await RequestModal.find({
+    authorisedAdmin(userId, next);
+    const requestList = await RequestModal.find({
       status,
       role_applied,
-    }).select("-user -createdAt");
+    })
+      .sort({ updatedAt: -1 })
+      .populate({ path: "user", select: "email" });
 
-    if (!pendingPublishers || pendingPublishers.length === 0) {
+    if (!requestList || requestList.length === 0) {
       return next(new HttpError(`No ${status} ${role_applied} found!`, 404));
     }
 
     return res
       .status(200)
-      .json({ data: pendingPublishers, message: "Fetched successfully!" });
+      .json({ data: requestList, message: "Fetched successfully!" });
   } catch (error) {
-    return next(
-      new HttpError("Failed to fetch pending publisher requests.", 500)
-    );
+    return next(new HttpError("Failed to fetch requests.", 500));
   }
 };
 
@@ -62,152 +65,77 @@ export const accessUpdate = async (
 ) => {
   handleValidationErrors(req, next);
 
-  const userId = (req as JWTRequest).userData.userId;
-  const { status, req_id, role_applied } = req.body;
+  const session = await RequestModal.startSession();
+  session.startTransaction();
 
   try {
-    const admin = await AdminModel.findById(userId);
+    const userId = (req as JWTRequest).userData.userId;
+    const { status, req_id, role_applied } = req.body;
 
-    if (
-      !admin ||
-      admin.role !== "admin" ||
-      admin.admin_status === "none" ||
-      (role_applied === "admin" && admin.admin_status !== "admin") ||
-      (role_applied === "publisher" &&
-        admin.admin_status !== "handlePublisher" &&
-        admin.admin_status !== "admin") ||
-      (role_applied === "approver" &&
-        admin.admin_status !== "handleApprover" &&
-        admin.admin_status !== "admin")
-    ) {
-      return next(
-        new HttpError("Access denied! Not authorized as admin. ", 403)
-      );
+    authorisedAdmin(userId, next);
+
+    const request: IRequest | null = await RequestModal.findById(
+      req_id
+    ).session(session);
+
+    if (!request) {
+      await session.abortTransaction();
+      session.endSession();
+      return next(new HttpError("Request not found!", 404));
     }
-
-    const request = await RequestModal.findById(req_id).populate<{
-      user: IUser;
-      admin: IAdmin;
-    }>([
-      {
-        path: "user",
-        select: "role",
-      },
-      {
-        path: "admin",
-        select: "admin_status role",
-      },
-    ]);
-
-    if (!request || !request.user) {
-      return next(new HttpError("Request or user not found!", 404));
-    }
-
     if (request.status === status) {
+      await session.abortTransaction();
+      session.endSession();
       return next(new HttpError(`Request is already ${status}!`, 400));
     }
-
-    //rejected or approved with none have same features - refactor can happen
-    if (status === "rejected") {
-      await handleRejection(request, role_applied);
-    } else if (status === "approved") {
-      // if (request.expireAt) {
-      //   return next(new HttpError("It's already being rejected!", 400));
-      // }
-      await handleApproval(request, role_applied, req_id);
-    } else if (status === "pending" || status === "none") {
-      await handlePending(request);
+    if (request.role_applied != role_applied) {
+      await session.abortTransaction();
+      session.endSession();
+      return next(new HttpError("Role applied not match!", 400));
     }
 
+    if (status === "rejected") {
+      if (!request.expireAt) {
+        request.expireAt = new Date();
+      }
+      await AdminModel.findByIdAndDelete(req_id).session(session);
+    } else if (status === "approved") {
+      if (request.expireAt) {
+        request.expireAt = undefined;
+      }
+
+      const existingAdmin = await AdminModel.findById(req_id).session(session);
+      if (existingAdmin) {
+        existingAdmin.role = request.role_applied;
+        await existingAdmin.save({ session });
+      } else {
+        await new AdminModel({
+          user: req_id,
+          _id: req_id,
+          role: request.role_applied,
+        }).save({ session });
+      }
+    } else {
+      const existingAdmin = await AdminModel.findById(req_id).session(session);
+      if (existingAdmin) {
+        existingAdmin.role = "none";
+        await existingAdmin.save({ session });
+      }
+      request.expireAt = undefined;
+    }
+    request.status = status;
+    await request.save({ session });
+
+    await session.commitTransaction();
+    session.endSession();
+
     return res.status(200).json({
-      data: request,
-      message: `Publisher status successfully updated to '${status}'.`,
+      message: `Status successfully updated to '${status}'.`,
     });
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     console.error("Error updating publisher access:", error);
     return next(new HttpError("Failed to handle access request.", 500));
   }
-};
-
-const handleRejection = async (request: any, role_applied: string) => {
-  if (
-    request.role_applied === "publisher" ||
-    request.role_applied === "approver"
-  ) {
-    request.user.role = "none";
-    request.admin.role = "none";
-    await AdminModel.findByIdAndDelete(request._id);
-  } else if (request.role_applied === "admin") {
-    if (role_applied === "publisher") {
-      if (request.admin) {
-        request.admin.role = "approver";
-      }
-      request.user.role = "approver";
-    } else if (role_applied === "approver") {
-      request.user.role = "publisher";
-      if (request.admin) {
-        request.admin.role = "publisher";
-      }
-    }
-  } else if (request.role_applied === "none") {
-    await AdminModel.findByIdAndDelete(request._id);
-  }
-
-  request.role_applied = role_applied;
-  request.status = "rejected";
-  request.expireAt = new Date();
-
-  await request.user.save();
-  await request.save();
-};
-
-const handleApproval = async (
-  request: any,
-  role_applied: string,
-  req_id: string
-) => {
-  request.expireAt = undefined;
-
-  request.user.role = role_applied;
-  request.role_applied = role_applied;
-  request.status = "approved";
-
-  if (request.admin) {
-    request.admin.role = role_applied;
-    await request.admin.save();
-  } else {
-    request.admin = req_id;
-    const existingAdmin = await AdminModel.findById(req_id);
-    if (existingAdmin) {
-      existingAdmin.role = role_applied as IAdminData["IRoleApplied"];
-      existingAdmin.admin_status =
-        role_applied === "admin" ? "none" : undefined;
-      await existingAdmin.save();
-    } else {
-      await new AdminModel({
-        email: request.email,
-        user: req_id,
-        _id: req_id,
-        role: role_applied,
-        admin_status: role_applied === "admin" ? "none" : undefined,
-      }).save();
-    }
-  }
-
-  await request.user.save();
-  await request.save();
-};
-
-const handlePending = async (request: any) => {
-  if (request.admin) {
-    request.admin.role = "none";
-    if (request.admin?.admin_status) {
-      request.admin.admin_status = undefined;
-    }
-  }
-  request.user.role = "none";
-  request.role_applied = "none";
-  request.status = "pending";
-
-  await request.save();
 };

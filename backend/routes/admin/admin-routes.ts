@@ -3,6 +3,7 @@ import adminPublicRoutes from "./adminPublic/admin-public-routes";
 import {
   accessUpdate,
   getReqAccess,
+  getRole,
 } from "@controllers/admin/admin-controllers";
 import { check } from "express-validator";
 import { ADMIN_DATA } from "@shared/env-data";
@@ -24,6 +25,8 @@ const statusAndRoleCheck = [
 
 router.use("/public", adminPublicRoutes);
 // router.use("/private", adminPrivateRoutes);
+
+router.get("/get-role", getRole);
 
 router.post("/req-access", statusAndRoleCheck, getReqAccess);
 

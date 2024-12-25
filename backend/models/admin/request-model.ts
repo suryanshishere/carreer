@@ -3,13 +3,11 @@ import { IAdminData } from "@shared/type-check-data";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IRequest extends Document {
-  email: string;
   status: IAdminData["IStatus"];
   role_applied: IAdminData["IRoleApplied"];
   reason: string;
   user: Schema.Types.ObjectId;
-  admin: Schema.Types.ObjectId;
-  expireAt: Date;
+  expireAt?: Date;
 }
 
 const { MIN_REASON_LENGTH, MAX_REASON_LENGTH } = CONTACT_US_ENV_DATA;
@@ -17,7 +15,6 @@ const { MIN_REASON_LENGTH, MAX_REASON_LENGTH } = CONTACT_US_ENV_DATA;
 export const requestSchema: Schema = new Schema<IRequest>(
   {
     //_id will be userid
-    email: { type: String, required: true, unique: true, index: true },
     status: {
       type: String,
       default: "pending",
@@ -39,9 +36,8 @@ export const requestSchema: Schema = new Schema<IRequest>(
       max: MAX_REASON_LENGTH,
     },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    admin: { type: Schema.Types.ObjectId, ref: "Admin", required: true },
     //only set expireAt when role_applied matches the rejected done so.
-    expireAt: { type: Date, expires: ADMIN_DATA.REQUEST_DOC_EXPIRY }, // TTL index set to 30 days as type date
+    expireAt: { type: Date, expires: ADMIN_DATA.REQUEST_DOC_EXPIRY * 60 * 60 }, // TTL index set to expire in hours
   },
   { timestamps: true }
 );

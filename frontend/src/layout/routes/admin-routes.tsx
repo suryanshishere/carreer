@@ -1,4 +1,4 @@
-import PublisherAccess from "admin/pages/Access";
+import Access from "admin/pages/Access";
 import CreateNewPost from "user/publisher/pages/CreateNewPost";
 
 const adminRoutes = (token: string | null, role?: string) => {
@@ -21,8 +21,8 @@ const adminRoutes = (token: string | null, role?: string) => {
         path: "admin",
         children: [
           {
-            path: "publisher-access",
-            element: <PublisherAccess />,
+            path: "access",
+            element: <Access />,
           },
         ],
       },

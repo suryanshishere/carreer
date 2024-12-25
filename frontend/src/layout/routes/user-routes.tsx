@@ -2,7 +2,7 @@ import SavedPosts from "user/pages/account/SavedPosts";
 import ChangePassword from "user/pages/account/setting/ChangePassword";
 import ForgotPassword from "user/pages/auth/ForgotPassword";
 import DeactivateAccount from "user/pages/account/setting/DeactivateAccount";
-import ReqPublisherAccess from "user/pages/ReqPublisherAccess";
+import ReqPublisherAccess from "user/pages/RequestAccess";
 import ResetPassword from "user/pages/auth/ResetPassword";
 
 const userRoutes = (token: string | null, role?: string) => {

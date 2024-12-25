@@ -97,7 +97,7 @@ export const sendAuthenticatedResponse = (
   ).toISOString();
 
   return res.status(200).json({
-    role: user.role,
+    // role: user.role,
     token,
     isEmailVerified,
     tokenExpiration: tokenExpiration,

@@ -25,9 +25,6 @@ export interface IUser extends Document {
   passwordResetTokenCreatedAt?: Date;
   passwordChangedAt?: Date;
 
-  // Role
-  role: IAdminData["IRoleApplied"];
-
   // User identification fields
   email: string;
   password: string;
@@ -76,15 +73,6 @@ const userSchema: Schema = new Schema<IUser>(
       expires: PASSWORD_RESET_TOKEN_EXPIRY * 60,
     },
     passwordChangedAt: { type: Date }, //todo
-
-    //role
-    role: {
-      type: String,
-      enum: ADMIN_DATA.ROLE_APPLIED,
-      required: true,
-      default: "none",
-      index: true, //for better fitlering
-    },
 
     // User identification fields
     email: { type: String, required: true, unique: true },

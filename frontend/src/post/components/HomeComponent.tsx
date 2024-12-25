@@ -18,7 +18,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   section,
   height,
 }) => {
-  console.log(ListItemData);
+
   return (
     <div
       className="w-full text-base flex flex-col justify-center gap-2"
@@ -30,30 +30,32 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
       </div>
       <div className="h-full flex flex-col justify-between mr-1">
         <ul className="flex flex-col gap-2 ml-0 pr-0">
-          {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
-            <React.Fragment key={index}>
-              <li className="w-full">
-                <div className="float-right flex items-center gap-1">
-                  {item.important_dates && Tag(item.important_dates, section)}
-                  <Bookmark
-                    section={section}
-                    postId={item._id}
-                    isSaved={item.is_saved}
-                  />
-                </div>
-                <Link
-                  to={`/sections/${section}/${snakeCase(
-                    item.name_of_the_post
-                  )}?is_saved=${item.is_saved}`}
-                  state={{ postId: item._id }}
-                  className="text-custom-red underline decoration-1 underline-offset-2 visited:text-custom-gray hover:decoration-custom-gray"
-                >
-                  {item.name_of_the_post}
-                </Link>
-              </li>
-              {index !== ListItemData.length - 1 && <hr />}
-            </React.Fragment>
-          ))}
+          {ListItemData.length > 0 &&
+            Array.isArray(ListItemData) &&
+            ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
+              <React.Fragment key={index}>
+                <li className="w-full">
+                  <div className="float-right flex items-center gap-1">
+                    {item.important_dates && Tag(item.important_dates, section)}
+                    <Bookmark
+                      section={section}
+                      postId={item._id}
+                      isSaved={item.is_saved}
+                    />
+                  </div>
+                  <Link
+                    to={`/sections/${section}/${snakeCase(
+                      item.name_of_the_post
+                    )}?is_saved=${item.is_saved}`}
+                    state={{ postId: item._id }}
+                    className="text-custom-red font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray hover:decoration-custom-gray"
+                  >
+                    {item.name_of_the_post}
+                  </Link>
+                </li>
+                {index !== ListItemData.length - 1 && <hr />}
+              </React.Fragment>
+            ))}
         </ul>
         <Link
           className="text-custom-blue text-sm font-semibold pr-2 h-auto text-right"

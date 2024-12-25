@@ -15,11 +15,10 @@ interface ListProps {
   isSaved?: boolean;
 }
 
-const CATEGORY_LIMIT =
-  Number(process.env.REACT_APP_NUMBER_OF_POST_CATEGORYLIST) || 25;
-
 const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
-  if (data.length === 0) return null;
+  if (!Array.isArray(data) || data.length === 0) {
+    return null;
+  }
 
   const renderObject = (obj: IPostListData) => {
     return Object.entries(obj)
@@ -75,7 +74,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                   item.name_of_the_post
                 )}?is_saved=${item.is_saved}`}
                 state={{ postId: item._id }}
-                className="text-custom-red underline decoration-1 underline-offset-2 visited:text-custom-gray  hover:decoration-custom-gray "
+                className="text-custom-red font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray  hover:decoration-custom-gray "
               >
                 {item.name_of_the_post}
               </Link>
@@ -88,11 +87,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                 />
               </div>
             </div>
-            <span className="text-custom-less-gray text-sm mr-2">
-              {/* <mark className="px-1 whitespace-nowrap bg-custom-pale-yellow">
-                <span>Updated At:</span>
-                <span className="ml-1">{renderDateStrNum(item.updatedAt)}</span>
-              </mark> */}
+            <span className="text-sm mr-2">
               <span>{renderObject(item)}</span>
             </span>
           </li>
