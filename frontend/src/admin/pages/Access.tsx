@@ -54,9 +54,7 @@ interface IAccessUpdate extends IAccessFilter {
 const PublisherAccess = () => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const dispatch = useDispatch<AppDispatch>();
-  const [status, setStatus] = useState<string | null>(null);
 
-  // React Hook Form Instances
   const {
     register: filterRegister,
     handleSubmit: handleFilterSubmit,
@@ -66,19 +64,8 @@ const PublisherAccess = () => {
     mode: "onSubmit",
   });
 
-  // const {
-  //   register: updateRegister,
-  //   handleSubmit: handleUpdateSubmit,
-  //   formState: { errors: updateErrors },
-  // } = useForm<IAccessUpdate>({
-  //   resolver: yupResolver(updateSchema),
-  //   mode: "onSubmit",
-  // });
-
-  // Mutations
   const filterMutation = useMutation({
     mutationFn: async (data: IAccessFilter) => {
-      setStatus(data.status);
       const response = await axiosInstance.post("/admin/req-access", data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -86,11 +73,10 @@ const PublisherAccess = () => {
       });
       return response.data;
     },
-    onSuccess: ({ message, data }) => {
+    onSuccess: ({ message }) => {
       dispatch(triggerSuccessMsg(message || "Filter applied successfully!"));
     },
     onError: (error: any) => {
-      setStatus(null);
       dispatch(
         triggerErrorMsg(
           error.response?.data?.message || "Filter request failed!"
@@ -99,41 +85,9 @@ const PublisherAccess = () => {
     },
   });
 
-  // const updateMutation = useMutation({
-  //   mutationFn: async (data: IAccessUpdate) => {
-  //     const response = await axiosInstance.post(
-  //       "/admin/publisher-access-update",
-  //       { publisher_id: data.publisher_id, status: data.status_update },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     return response.data;
-  //   },
-  //   onSuccess: ({ message, data }) => {
-  //     console.log(data);
-  //     dispatch(triggerSuccessMsg(message || "Access updated successfully!"));
-  //   },
-  //   onError: (error: any) => {
-  //     dispatch(
-  //       triggerErrorMsg(
-  //         error.response?.data?.message || "Update request failed!"
-  //       )
-  //     );
-  //   },
-  // });
-
   const handleFilter = (data: IAccessFilter) => {
-    // console.log(data);
     filterMutation.mutate(data);
   };
-
-  // const handleUpdate = (data: IAccessUpdate) => {
-  //   console.log(data);
-  //   updateMutation.mutate(data);
-  // };
 
   const { mutate: updateAccess } = useMutation({
     mutationFn: async ({ req_id, role_applied, status }: IAccessUpdate) => {
