@@ -14,11 +14,7 @@ const fetchHomePostList = async (
     [key: string]: IPostList;
   };
 }> => {
-  const { data } = await axiosInstance.get("/public/home", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const { data } = await axiosInstance.get("/public/home");
   return data;
 };
 

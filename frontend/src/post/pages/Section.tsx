@@ -17,11 +17,7 @@ const fetchCategoryPostList = async (
     [key: string]: IPostList;
   };
 }> => {
-  const { data } = await axiosInstance.get(`/public/sections/${section}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const { data } = await axiosInstance.get(`/public/sections/${section}`);
   return data;
 };
 

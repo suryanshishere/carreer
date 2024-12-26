@@ -67,12 +67,7 @@ const ContactUs: React.FC = () => {
     mutationFn: async (data: IContactUsFormInputs) => {
       const response = await axiosInstance.post(
         "/other/contact-us",
-        JSON.stringify(data),
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        JSON.stringify(data)
       );
       return response.data;
     },

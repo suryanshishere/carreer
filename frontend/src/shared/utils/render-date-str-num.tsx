@@ -5,10 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { removeKeyValuePair, setKeyValuePair } from "shared/store/post-slice";
 
-export const RenderDateStrNum = (
-  value: Date | string | number,
-  key: string
-) => {
+const RenderDateStrNum = (value: Date | string | number, key: string) => {
   const { isEditPostClicked, keyValuePairs } = useSelector(
     (state: RootState) => state.post
   );
@@ -198,3 +195,5 @@ export const RenderDateStrNum = (
   // Return the string as-is for other cases
   return <>{stringValue}</>;
 };
+
+export default RenderDateStrNum;

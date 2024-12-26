@@ -18,14 +18,10 @@ import ContributeToPost from "post/components/ContributeToPost";
 // Fetch Post Detail API Call
 const fetchPostDetail = async (
   section: string,
-  postId: string,
-  token?: string
+  postId: string
 ): Promise<{ data: IPostDetail; is_saved: boolean }> => {
   const { data } = await axiosInstance.get(
-    `/public/sections/${section}/${postId}`,
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
+    `/public/sections/${section}/${postId}`
   );
   return data;
 };
@@ -38,8 +34,6 @@ const getIsSavedStatus = (
 
 // PostDetail Component
 const PostDetail: React.FC = () => {
-  const { token } = useSelector((state: RootState) => state.auth.userData);
-
   const { section = "" } = useParams<{ section: string }>();
   const location = useLocation();
   const postId = location.state?.postId;
@@ -48,6 +42,7 @@ const PostDetail: React.FC = () => {
     [location.search]
   );
 
+  //TODO
   const dispatch = useDispatch();
 
   // Fetch Post Details
@@ -57,7 +52,7 @@ const PostDetail: React.FC = () => {
     error,
   } = useQuery<{ data: IPostDetail; is_saved: boolean }, Error>({
     queryKey: ["detailPost", section, postId],
-    queryFn: () => fetchPostDetail(section, postId, token),
+    queryFn: () => fetchPostDetail(section, postId),
   });
 
   // Query State Message Handling
@@ -85,7 +80,7 @@ const PostDetail: React.FC = () => {
   return (
     <div className="flex flex-col items-center">
       <div className="self-end flex gap-2 items-center justify-center">
-        <ContributeToPost />
+        <ContributeToPost section={section} postId={postId} />
         <Bookmark section={section} postId={postId} isSaved={isSaved} />
       </div>
       {orderedData && <PostDetailItem data={orderedData} />}

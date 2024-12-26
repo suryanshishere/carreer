@@ -8,35 +8,46 @@ import {
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useMutation } from "@tanstack/react-query";
+import {
+  triggerErrorMsg,
+  triggerSuccessMsg,
+} from "shared/store/thunks/response-thunk";
 
-const ContributeToPost = () => {
+interface IContributeToPost {
+  section: string;
+  postId: string;
+}
+
+const ContributeToPost: React.FC<IContributeToPost> = ({ section, postId }) => {
   const { isEditPostClicked, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  // Mutation to submit keyValuePairs to backend
   const mutation = useMutation({
     mutationFn: async (keyValuePairs: Record<string, any>) => {
       console.log(keyValuePairs);
-      const response = await axiosInstance.post(
-        "/user/contribute",
-        keyValuePairs
-      );
+      const response = await axiosInstance.post("/user/contribute-to-post", {
+        post_data: keyValuePairs,
+        section,
+        post_id: postId,
+      });
       return response.data;
     },
-    onSuccess: () => {
-      alert("Data submitted successfully!");
+    onSuccess: ({ message }) => {
+      dispatch(
+        triggerSuccessMsg(message || "Contributed to post successfully!")
+      );
       dispatch(resetKeyValuePairs());
     },
     onError: (error: any) => {
-      alert(`Failed to submit data: ${error.message}`);
+      dispatch(
+        triggerErrorMsg(
+          error.response?.data?.message || "Failed to contribute!"
+        )
+      );
     },
   });
-
-  const handleSubmit = () => {
-    mutation.mutate(keyValuePairs); // Trigger mutation with current keyValuePairs
-  };
 
   return (
     <>
@@ -49,7 +60,12 @@ const ContributeToPost = () => {
         <button onClick={() => dispatch(resetKeyValuePairs())}>Undo</button>
       )}
       {isAllKeyValuePairsStored && (
-        <button onClick={handleSubmit} disabled={mutation.isPending}>
+        <button
+          onClick={() => {
+            mutation.mutate(keyValuePairs);
+          }}
+          disabled={mutation.isPending}
+        >
           {mutation.isPending ? "Submitting..." : "Submit"}
         </button>
       )}

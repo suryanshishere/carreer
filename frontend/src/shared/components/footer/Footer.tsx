@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppDispatch, RootState } from "shared/store";
 import { updateUserData } from "shared/store/auth-slice";
-import { triggerErrorMsg, triggerSuccessMsg } from "shared/store/thunks/response-thunk";
+import {
+  triggerErrorMsg,
+  triggerSuccessMsg,
+} from "shared/store/thunks/response-thunk";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useMutation } from "@tanstack/react-query";
 
@@ -16,11 +19,7 @@ const Footer: React.FC = () => {
 
   const { mutate: activateAccess } = useMutation({
     mutationFn: async () => {
-      const { data } = await axiosInstance.get("/admin/get-role", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data } = await axiosInstance.get("/admin/get-role");
       return data;
     },
     onSuccess: ({ data: { role }, message }) => {
@@ -28,7 +27,11 @@ const Footer: React.FC = () => {
       dispatch(triggerSuccessMsg(message || "Activated successfully!"));
     },
     onError: (error: any) => {
-      dispatch(triggerErrorMsg(error.response?.data?.message || "Failed to activate access!"));
+      dispatch(
+        triggerErrorMsg(
+          error.response?.data?.message || "Failed to activate access!"
+        )
+      );
     },
   });
 
@@ -51,12 +54,18 @@ const Footer: React.FC = () => {
         </Link>
       )}
       {token && !role && (
-        <button onClick={() => activateAccess()} className={footerLinkClassName}>
+        <button
+          onClick={() => activateAccess()}
+          className={footerLinkClassName}
+        >
           Activate access
         </button>
       )}
       {token && (
-        <button onClick={() => activateAccess()} className={footerLinkClassName}>
+        <button
+          onClick={() => activateAccess()}
+          className={footerLinkClassName}
+        >
           Revoke access (TODO)
         </button>
       )}

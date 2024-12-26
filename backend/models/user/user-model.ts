@@ -1,5 +1,4 @@
-import { ADMIN_DATA, POST_ENV_DATA, USER_ENV_DATA } from "@shared/env-data";
-import { IAdminData } from "@shared/type-check-data";
+import { POST_ENV_DATA, USER_ENV_DATA } from "@shared/env-data";
 import _ from "lodash";
 import mongoose, { Schema, Types, Document } from "mongoose";
 

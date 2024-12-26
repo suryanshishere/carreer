@@ -3,13 +3,17 @@ import authRoutes from "./auth/auth-routes";
 import accountRoutes from "./account/account-routes";
 import { check } from "express-validator";
 import { ADMIN_DATA, CONTACT_US_ENV_DATA } from "@shared/env-data";
-import { reqAccess } from "@controllers/users/user-controllers";
+import {
+  contributeToPost,
+  reqAccess,
+} from "@controllers/users/user-controllers";
 
 const router = express.Router();
 const { MIN_REASON_LENGTH, MAX_REASON_LENGTH } = CONTACT_US_ENV_DATA;
 
 router.use("/auth", authRoutes);
 router.use("/account", accountRoutes);
+router.post("/contribute-to-post", contributeToPost);
 router.post(
   "/req-access",
   [

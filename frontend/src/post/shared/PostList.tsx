@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IPostList, IPostListData } from "models/postModels/IPostList";
 import Bookmark from "post/shared/Bookmark";
-import { RenderDateStrNum } from "../../shared/utils/render-date-str-num";
+import  RenderDateStrNum  from "../../shared/utils/render-date-str-num";
 import { snakeCase, startCase } from "lodash";
 import { excludedPostListKeys } from "post/shared/post-list-render-define";
 import Tag from "./Tag";

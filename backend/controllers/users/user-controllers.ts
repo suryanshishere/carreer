@@ -2,6 +2,7 @@ import { handleValidationErrors } from "@controllers/shared/validation-error";
 import { JWTRequest } from "@middleware/check-auth";
 import AdminModel from "@models/admin/admin-model";
 import RequestModal from "@models/admin/request-model";
+import ContributionModel from "@models/user/contribution-model";
 import { ADMIN_DATA } from "@shared/env-data";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
@@ -93,5 +94,48 @@ export const reqAccess = async (
     await session.abortTransaction();
     session.endSession();
     return next(new HttpError("Failed to process access request.", 500));
+  }
+};
+
+export const contributeToPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { post_data, section, post_id } = req.body;
+  const userId = (req as JWTRequest).userData.userId;
+
+  try {
+    let contribution = await ContributionModel.findById(userId);
+
+    if (!contribution) {
+      // Create a new document if it doesn't exist
+      contribution = new ContributionModel({
+        _id: userId,
+        user: userId,
+        contribution: new Map(),
+      });
+    }
+
+    // Get the existing post contribution or initialize it
+    const postContribution = contribution.contribution.get(post_id) || {};
+
+    // Update the specific section with the new data
+    postContribution[section] = {
+      ...postContribution[section],
+      ...post_data,
+    };
+
+    // Set the updated contribution back to the Map
+    contribution.contribution.set(post_id, postContribution);
+
+    // Save the document
+    await contribution.save();
+
+    return res.status(200).json({
+      message: "Contributed to post successfully",
+    });
+  } catch (error) {
+    return next(new HttpError("An error occurred while contributing", 500));
   }
 };
