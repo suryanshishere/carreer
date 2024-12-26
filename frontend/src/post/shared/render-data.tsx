@@ -17,6 +17,7 @@ export const renderValue = (value: any, key: string) => {
     return <div className="mt-3 w-full"> {renderTable(value, key)}</div>;
   }
 
+  //manage direct dates rendering, so not need to enter conditional for the renderdatestrnum
   if (value && typeof value === "object") {
     return renderObject(value, key);
   }

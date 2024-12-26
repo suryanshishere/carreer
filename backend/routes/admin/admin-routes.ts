@@ -1,6 +1,7 @@
 import express from "express";
 import {
   accessUpdate,
+  getContributionIds,
   getReqAccess,
   getRole,
 } from "@controllers/admin/admin-controllers";
@@ -22,6 +23,8 @@ const statusAndRoleCheck = [
       `Role applied must be among ${ADMIN_DATA.ROLE_APPLIED.join(", ")}`
     ),
 ];
+
+router.get("/get-contribution-ids", getContributionIds);
 
 router.get("/get-role", getRole);
 

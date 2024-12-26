@@ -8,7 +8,6 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5050/api";
 
 const getTokenFromLocalStorage = () => {
   const state = JSON.parse(localStorage.getItem("persist:auth") || "{}");
-  console.log("TOKEN", state);
   const userData = state.userData ? JSON.parse(state.userData) : null;
   return userData ? userData.token : null;
 };

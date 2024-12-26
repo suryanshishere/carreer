@@ -1,0 +1,43 @@
+{
+  "_id": { "$oid": "b103193ebf7e4dbef8ab1270" },
+  "__v": { "$numberInt": "0" },
+  "age_criteria": {
+    "minimum_age": { "$numberInt": "17" },
+    "_id": { "$oid": "676511bacb2af840d2ac88f5" }
+  },
+  "applicants": {
+    "number_of_applicants_each_year": { "$numberInt": "70000" },
+    "_id": { "$oid": "676511bacb2af840d2ac88f2" }
+  },
+  "applicants_gender_that_can_apply": "all",
+  "approved": true,
+  "contributors": [],
+  "createdAt": { "$date": { "$numberLong": "1734676922647" } },
+  "created_by": { "$oid": "6759876e974db2ff2e3fdc76" },
+  "department": "Consortium of National Law Universities",
+  "eligibility": { "minimum_qualification": "10+2 or equivalent" },
+  "highlighted_information": "Common Law Admission Test for undergraduate and postgraduate law programs.",
+  "job_type": "Entrance Exam",
+  "post_exam_duration": { "$numberInt": "120" },
+  "post_exam_mode": "offline_computer_based",
+  "post_importance": "Gateway to prestigious National Law Universities",
+  "short_information": "CLAT 2024 is the national level entrance exam for admissions to undergraduate (UG) and postgraduate (PG) law programs offered by 22 participating NLUs in India.",
+  "stage_level": "National",
+  "updatedAt": { "$date": { "$numberLong": "1734676922647" } },
+  "vacancy": {
+    "detail": [
+      {
+        "post_name": "CLAT UG",
+        "total_post": { "$numberInt": "2900" },
+        "post_eligibility": "Passed 10+2 or equivalent for UG and LLB degree for PG",
+        "_id": { "$oid": "676511bacb2af840d2ac88f3" }
+      },
+      {
+        "post_name": "CLAT PG",
+        "total_post": { "$numberInt": "750" },
+        "post_eligibility": "LLB Degree",
+        "_id": { "$oid": "676511bacb2af840d2ac88f4" }
+      }
+    ]
+  }
+}

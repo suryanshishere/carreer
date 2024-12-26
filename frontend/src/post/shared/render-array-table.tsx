@@ -1,6 +1,6 @@
 import { startCase } from "lodash";
 import { excludedKeys } from "./post-detail-render-define";
-import  RenderDateStrNum  from "../../shared/utils/render-date-str-num";
+import RenderDateStrNum from "../../shared/utils/render-date-str-num";
 
 export const bgColors = [
   "bg-red-100",
@@ -11,8 +11,6 @@ export const bgColors = [
   "bg-pink-100",
   "bg-gray-100",
 ];
-
-// Select a random color from the array
 
 export const renderArrayTable = (value: any, key: string) => {
   if (
@@ -29,7 +27,10 @@ export const renderArrayTable = (value: any, key: string) => {
         <thead>
           <tr>
             {headers.map((header) => (
-              <th key={header} className="border-2 border-custom-gray px-2 py-1">
+              <th
+                key={header}
+                className="border-2 border-custom-gray px-2 py-1"
+              >
                 {startCase(header)}
               </th>
             ))}
@@ -40,14 +41,18 @@ export const renderArrayTable = (value: any, key: string) => {
             const randomBgColor = bgColors[rowIndex % bgColors.length];
             return (
               <tr key={rowIndex}>
-                {headers.map((header) => (
-                  <td
-                    key={header}
-                    className={`border-2 border-custom-gray px-2 py-1 ${randomBgColor}`}
-                  >
-                    {RenderDateStrNum(item[header], key)}
-                  </td>
-                ))}
+                {headers.map((header) => {
+                  const fullKey = `${key}[${rowIndex}].${header}`; // Construct the full key
+                  return (
+                    <td
+                      key={header}
+                      className={`border-2 border-custom-gray px-2 py-1 ${randomBgColor}`}
+                    >
+                      {RenderDateStrNum(item[header], fullKey)}{" "}
+                      {/* Pass full key */}
+                    </td>
+                  );
+                })}
               </tr>
             );
           })}

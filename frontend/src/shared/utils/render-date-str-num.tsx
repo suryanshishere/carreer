@@ -48,7 +48,7 @@ const RenderDateStrNum = (value: Date | string | number, key: string) => {
 
   if (isEditPostClicked) {
     const isLongText = typeof inputValue === "string" && inputValue.length > 75;
-
+console.log(key)
     return (
       <>
         {isLongText ? (

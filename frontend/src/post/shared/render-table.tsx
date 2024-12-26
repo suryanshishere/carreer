@@ -5,7 +5,7 @@ import { IDates } from "models/postModels/overallInterfaces/IDates";
 import { IFees } from "models/postModels/overallInterfaces/IFees";
 import { ILinks } from "models/postModels/overallInterfaces/ILinks";
 import { startCase } from "lodash";
-import  RenderDateStrNum  from "../../shared/utils/render-date-str-num";
+import RenderDateStrNum from "../../shared/utils/render-date-str-num";
 import { bgColors } from "./render-array-table";
 
 export const renderTable = (value: any, key: string) => {
@@ -21,6 +21,7 @@ export const renderTable = (value: any, key: string) => {
                 return null;
               }
               const randomBgColor = bgColors[index % bgColors.length];
+              const fullKey = `${key}.${subKey}`;
 
               return (
                 <tr
@@ -34,15 +35,15 @@ export const renderTable = (value: any, key: string) => {
                     className={`border-2 border-custom-gray px-2 py-1 max-w-2/5 ${randomBgColor}`}
                   >
                     {typeof subValue !== "object" && !subValue?.current_year
-                      ? RenderDateStrNum(subValue, subKey)
+                      ? RenderDateStrNum(subValue, fullKey)
                       : subValue?.current_year || subValue?.previous_year
                       ? RenderDateStrNum(
                           `${
                             subValue.current_year || `${subValue.previous_year}`
                           }`,
-                          subKey
+                          `${fullKey}.current_year` 
                         )
-                      : renderTable(subValue, subKey)}
+                      : renderTable(subValue, fullKey)}
                   </td>
                 </tr>
               );

@@ -7,13 +7,15 @@ import { excludedKeys } from "./post-detail-render-define";
 import { renderValue } from "./render-data";
 import  RenderDateStrNum  from "../../shared/utils/render-date-str-num";
 
-export const renderObject = (value: any, key: string) => (
-  <div className="w-full flex flex-col gap-4 pt-3 pl-4 ">
+export const renderObject = (value: any, parentKey: string) => (
+  <div className="w-full flex flex-col gap-4 pt-3 pl-4">
     {Object.entries(value as IDates | ILinks | IFees | ICommon).map(
       ([subKey, subValue]) => {
         if (excludedKeys.includes(subKey)) {
           return null;
         }
+
+        const fullKey = parentKey ? `${parentKey}.${subKey}` : subKey;
 
         return (
           <div key={subKey} className="flex flex-col gap-1">
@@ -27,11 +29,11 @@ export const renderObject = (value: any, key: string) => (
                 <p>
                   {RenderDateStrNum(
                     subValue.current_year || subValue.previous_year,
-                    key
+                    `${fullKey}.current_year` 
                   )}
                 </p>
               ) : (
-                renderValue(subValue, subKey)
+                renderValue(subValue, fullKey)
               )}
             </div>
           </div>
@@ -40,3 +42,4 @@ export const renderObject = (value: any, key: string) => (
     )}
   </div>
 );
+
