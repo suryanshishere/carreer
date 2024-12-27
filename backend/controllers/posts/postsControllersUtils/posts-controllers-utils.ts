@@ -1,4 +1,4 @@
-import { SECTION_POST_MODAL_MAP } from "@controllers/shared/post-model-map";
+import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
 import { sectionListPopulate } from "./postPopulate/posts-populate";
 import {
   COMMON_SELECT_FIELDS,

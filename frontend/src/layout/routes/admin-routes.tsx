@@ -6,7 +6,7 @@ const adminRoutes = (token: string | null, role?: string) => {
     return [];
   }
 
-  if (role === "publisher") {
+  if (role === "publisher" || role === "admin") {
     return [
       {
         path: "publisher",

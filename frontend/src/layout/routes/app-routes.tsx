@@ -3,15 +3,11 @@ import ResetPassword from "user/pages/auth/ResetPassword";
 import Section from "post/pages/Section";
 import PostDetail from "post/pages/PostDetail";
 import Home from "post/pages/Home";
-import  userRoutes  from "./user-routes";
-import  adminRoutes  from "./admin-routes";
+import userRoutes from "./user-routes";
+import adminRoutes from "./admin-routes";
 
 export const authRoutes = (token: string | null, role?: string) => {
-  return [
-   
-    ...adminRoutes(token, role),
-    ...userRoutes(token,role),
-  ];
+  return [...adminRoutes(token, role), ...userRoutes(token, role)];
 };
 
 export const publicRoutes: RouteObject[] = [

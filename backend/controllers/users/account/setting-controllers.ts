@@ -1,4 +1,4 @@
-import validationError from "@controllers/shared/validation-error";
+import validationError from "@controllers/sharedControllers/validation-error";
 import  User  from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";

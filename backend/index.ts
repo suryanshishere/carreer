@@ -14,7 +14,7 @@ import userCleanupTask from "@middleware/cronJobs/user-cleanup-task";
 import checkAuth from "@middleware/check-auth";
 import checkAccountStatus from "@middleware/check-account-status";
 import activateAccount from "@middleware/activate-account";
-import { deletePost } from "@controllers/publisher/publisher-controllers";
+import { deletePost } from "@controllers/admin/publisher/publisher-controllers";
 import publisherRoutes from "@routes/admin/publisher/publisher-routes";
 
 const MONGO_URL: string = process.env.MONGO_URL || "";

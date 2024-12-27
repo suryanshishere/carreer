@@ -103,7 +103,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               error ? "text-custom-red" : "text-grey"
             } ${errorClassProp}`}
           >
-            {helperText}
+            {helperText.replace(/_/g, " ")}
           </p>
         )}
       </div>
@@ -133,6 +133,7 @@ export const TextArea = forwardRef<
       helperText,
       classProp,
       outerClassProp,
+      errorClassProp,
       label,
     },
     ref
@@ -158,11 +159,11 @@ export const TextArea = forwardRef<
         />
         {helperText && (
           <p
-            className={`ml-2 text-sm ${
-              error ? "text-custom-red" : "text-custom-gray"
-            }`}
+            className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
+              error ? "text-custom-red" : "text-grey"
+            } ${errorClassProp}`}
           >
-            {helperText}
+            {helperText.replace(/_/g, " ")}
           </p>
         )}
       </div>

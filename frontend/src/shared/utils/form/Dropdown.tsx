@@ -77,7 +77,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
               error ? "text-custom-red" : "text-grey"
             } ${errorClassProp}`}
           >
-            {helperText}
+            {helperText.replace(/_/g, " ")}
           </p>
         )}
       </div>

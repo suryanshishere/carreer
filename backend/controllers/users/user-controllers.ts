@@ -1,7 +1,8 @@
-import { handleValidationErrors } from "@controllers/shared/validation-error";
+import { handleValidationErrors } from "@controllers/sharedControllers/validation-error";
 import { JWTRequest } from "@middleware/check-auth";
 import AdminModel from "@models/admin/admin-model";
 import RequestModal from "@models/admin/request-model";
+import PostModel from "@models/post/post-model";
 import ContributionModel from "@models/user/contribution-model";
 import { ADMIN_DATA } from "@shared/env-data";
 import HttpError from "@utils/http-errors";
@@ -107,6 +108,11 @@ export const contributeToPost = async (
 
   try {
     let contribution = await ContributionModel.findById(userId);
+    const post = await PostModel.findById(post_id).select("post_code");
+    const postCode = post?.post_code;
+    if (!post || !postCode) {
+      return next(new HttpError("Post or its post code not found!", 400));
+    }
 
     if (!contribution) {
       // Create a new document if it doesn't exist
@@ -118,7 +124,7 @@ export const contributeToPost = async (
     }
 
     // Get the existing post contribution or initialize it
-    const postContribution = contribution.contribution.get(post_id) || {};
+    const postContribution = contribution.contribution.get(postCode) || {};
 
     // Update the specific section with the new data
     postContribution[section] = {
@@ -127,7 +133,7 @@ export const contributeToPost = async (
     };
 
     // Set the updated contribution back to the Map
-    contribution.contribution.set(post_id, postContribution);
+    contribution.contribution.set(postCode, postContribution);
 
     // Save the document
     await contribution.save();
@@ -136,6 +142,7 @@ export const contributeToPost = async (
       message: "Contributed to post successfully",
     });
   } catch (error) {
+    console.log(error);
     return next(new HttpError("An error occurred while contributing", 500));
   }
 };

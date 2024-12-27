@@ -1,7 +1,7 @@
 import express from "express";
 import {
   accessUpdate,
-  getContributionIds,
+  getContriPostCodes,
   getReqAccess,
   getRole,
 } from "@controllers/admin/admin-controllers";
@@ -24,7 +24,7 @@ const statusAndRoleCheck = [
     ),
 ];
 
-router.get("/get-contribution-ids", getContributionIds);
+router.get("/get-contri-post-codes", getContriPostCodes);
 
 router.get("/get-role", getRole);
 

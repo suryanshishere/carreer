@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { JWTRequest } from "@middleware/check-auth";
 import HttpError from "@utils/http-errors";
-import { handleValidationErrors } from "@controllers/shared/validation-error";
+import { handleValidationErrors } from "@controllers/sharedControllers/validation-error";
 import AdminModel from "@models/admin/admin-model";
 import RequestModal, { IRequest } from "@models/admin/request-model";
 import { authorisedAdmin } from "./admin-controllers-utils";
@@ -141,7 +141,7 @@ export const accessUpdate = async (
   }
 };
 
-export const getContributionIds = async (
+export const getContriPostCodes = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -179,7 +179,6 @@ export const getContributionIds = async (
     // Send the counted contribution IDs to the client
     return res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching contribution IDs:", error);
-    return res.status(500).json({ message: "Server error" });
+    return next(new HttpError("Error fetching contribution IDs", 500));
   }
 };

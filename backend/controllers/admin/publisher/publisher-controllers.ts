@@ -1,27 +1,27 @@
-import validationError from "@controllers/shared/validation-error";
+import validationError from "@controllers/sharedControllers/validation-error";
 import { NextFunction, Response, Request } from "express";
-import {
-  checkAuthorisedPublisher,
-  postIdGeneration,
-} from "./publisher-controllers-utils";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 import PostModel from "@models/post/post-model";
 import { JWTRequest } from "@middleware/check-auth";
-import postCreation from "./postCreation/postCreation";
 import {
   COMPONENT_POST_MODAL_MAP,
   MODAL_MAP,
   SECTION_POST_MODAL_MAP,
-} from "@controllers/shared/post-model-map";
+} from "@controllers/sharedControllers/post-model-map";
 import {
   COMPONENT_POST_PROMPT_SCHEMA_MAP,
   SECTION_DESCRIPTIONS,
   SECTION_POST_PROMPT_SCHEMA_MAP,
-} from "./postCreation/post-prompt-schema-map";
+  postCreation,
+  postIdGeneration,
+} from "./publisher-controllers-utils";
 import { validationResult } from "express-validator";
 import { updateSchema } from "@controllers/posts/postsControllersUtils/post-sort-map";
+import AdminModel, { IAdmin } from "@models/admin/admin-model";
 
+//may be used in future
 export const deletePost = async (
   req: Request,
   res: Response,
@@ -80,7 +80,7 @@ export const deletePost = async (
   }
 };
 
-//what if one of the component exist
+//TODO: what if one of the component exist
 export const createComponentPost = async (
   postId: string,
   req: Request,
@@ -179,11 +179,24 @@ export const createNewPost = async (
 
   const { section, name_of_the_post, post_code } = req.body;
   const publisherId = (req as JWTRequest).userData.userId; //since publisher id will be same as user id but just in the publisher model
-  checkAuthorisedPublisher(publisherId, next);
 
   const session = await mongoose.startSession();
 
   try {
+    const publisher: IAdmin | null = await AdminModel.findById(publisherId)
+      .select("role")
+      .exec();
+    if (
+      !publisher ||
+      (publisher.role != "publisher" && publisher.role != "admin")
+    ) {
+      return next(
+        new HttpError(
+          "Not authorised, request for access or approval of req!",
+          403
+        )
+      );
+    }
     // allow time out constraint to be removed (with transaction)
     const result = await session.withTransaction(async () => {
       const postId = await postIdGeneration(post_code);

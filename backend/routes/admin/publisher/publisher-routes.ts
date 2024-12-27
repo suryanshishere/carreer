@@ -1,4 +1,4 @@
-import { createNewPost } from "@controllers/publisher/publisher-controllers";
+import { createNewPost } from "@controllers/admin/publisher/publisher-controllers";
 import express from "express";
 import { createNewPostValidators } from "./publisher-routes-utils";
 

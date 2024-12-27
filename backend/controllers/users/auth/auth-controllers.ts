@@ -9,7 +9,7 @@ import {
   sendVerificationResponse,
   updateUnverifiedUser,
 } from "./auth-utils";
-import validationError from "../../shared/validation-error";
+import validationError from "../../sharedControllers/validation-error";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import { random } from "lodash";
 import { validationResult } from "express-validator";
