@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IRole } from "models/admin/IAdmin";
 import { IUserData } from "models/userModel/IUserData";
 
 interface IAuthSlice {
@@ -35,7 +36,7 @@ const authSlice = createSlice({
         token: string;
         isEmailVerified: boolean;
         tokenExpiration?: string;
-        role?: string;
+        role?: IRole;
       }>
     ) {
       const { token, tokenExpiration, isEmailVerified, role } = action.payload;

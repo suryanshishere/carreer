@@ -39,6 +39,14 @@ const NavAccount = () => {
 
   let onAuthenticated = (
     <>
+      {(role === "admin" || role === "approver") && (
+        <NavLink
+          to="/approver/contributions"
+          className="text-custom-pale-orange"
+        >
+          Contributions
+        </NavLink>
+      )}
       {role === "admin" && (
         <NavLink to="/admin/access" className="text-custom-pale-orange">
           Access
@@ -56,7 +64,7 @@ const NavAccount = () => {
         <div>
           {/* {email &&
             `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`}  */}
-          Cool 
+          Cool
         </div>
         <div className="relative">
           <button

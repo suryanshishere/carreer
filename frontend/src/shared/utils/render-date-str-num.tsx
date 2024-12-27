@@ -4,6 +4,7 @@ import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { removeKeyValuePair, setKeyValuePair } from "shared/store/post-slice";
+import { Link } from "react-router-dom";
 
 const RenderDateStrNum = (value: Date | string | number, key: string) => {
   const { isEditPostClicked, keyValuePairs } = useSelector(
@@ -48,7 +49,7 @@ const RenderDateStrNum = (value: Date | string | number, key: string) => {
 
   if (isEditPostClicked) {
     const isLongText = typeof inputValue === "string" && inputValue.length > 75;
-console.log(key)
+
     return (
       <>
         {isLongText ? (
@@ -90,6 +91,11 @@ console.log(key)
   if (value === null || value === undefined) return "N/A";
 
   const stringValue = _.toString(value);
+
+  // Check if the string is uppercase and joined with "_"
+  if (_.isString(stringValue) && stringValue === stringValue.toUpperCase() && stringValue.includes("_")) {
+    return <Link to={`/approver/contributions/${stringValue}`}>{_.startCase(_.toLower(stringValue))}</Link>;
+  }
 
   // Handle URLs
   if (stringValue.startsWith("https://")) {

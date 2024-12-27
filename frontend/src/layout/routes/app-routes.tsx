@@ -5,8 +5,9 @@ import PostDetail from "post/pages/PostDetail";
 import Home from "post/pages/Home";
 import userRoutes from "./user-routes";
 import adminRoutes from "./admin-routes";
+import { IRole } from "models/admin/IAdmin";
 
-export const authRoutes = (token: string | null, role?: string) => {
+export const authRoutes = (token: string | null, role?: IRole) => {
   return [...adminRoutes(token, role), ...userRoutes(token, role)];
 };
 

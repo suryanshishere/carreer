@@ -48,8 +48,7 @@ export const renderArrayTable = (value: any, key: string) => {
                       key={header}
                       className={`border-2 border-custom-gray px-2 py-1 ${randomBgColor}`}
                     >
-                      {RenderDateStrNum(item[header], fullKey)}{" "}
-                      {/* Pass full key */}
+                      {RenderDateStrNum(item[header], fullKey)}
                     </td>
                   );
                 })}

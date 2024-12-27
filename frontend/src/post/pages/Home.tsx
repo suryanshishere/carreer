@@ -2,23 +2,9 @@ import React from "react";
 import HomeListItem from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import { IPostList } from "models/postModels/IPostList";
 import useQueryStates from "shared/hooks/query-states-hook";
-import { useSelector } from "react-redux";
-import { RootState } from "shared/store";
 
-const fetchHomePostList = async (
-  token?: string
-): Promise<{
-  data: {
-    [key: string]: IPostList;
-  };
-}> => {
-  const { data } = await axiosInstance.get("/public/home");
-  return data;
-};
-
-const heights: Record< string, string> = {
+const heights: Record<string, string> = {
   result: "55rem",
   admit_card: "55rem",
   latest_job: "55rem",
@@ -26,21 +12,16 @@ const heights: Record< string, string> = {
 };
 
 const Home: React.FC = () => {
-  const { token } = useSelector((state: RootState) => state.auth.userData);
   const {
     data = { data: {} },
     isLoading,
     error,
-  } = useQuery<
-    {
-      data: {
-        [key: string]: IPostList;
-      };
-    },
-    Error
-  >({
+  } = useQuery({
     queryKey: ["homePostList"],
-    queryFn: () => fetchHomePostList(token),
+    queryFn: async () => {
+      const response = await axiosInstance.get("/public/home");
+      return response.data;
+    },
     retry: 3,
   });
 

@@ -149,25 +149,28 @@ export const getContriPostCodes = async (
   try {
     const result = await ContributionModel.aggregate([
       {
-        // Step 1: Unwind the 'contribution' field to get individual contribution items
+        // Step 1: Convert the 'contribution' field to an array of key-value pairs
         $project: {
-          contribution: { $objectToArray: "$contribution" }, // Convert the contribution object into an array of key-value pairs
+          contribution: { $objectToArray: "$contribution" },
         },
       },
       {
-        // Step 2: Unwind the contribution array, so each contribution entry is a separate document
+        // Step 2: Unwind the contribution array
         $unwind: "$contribution",
       },
       {
-        // Step 3: Group by the 'contribution.k' field (i.e., the contribution ID)
+        // Step 3: Group by the contribution key ('k'), counting occurrences
         $group: {
-          _id: "$contribution.k", // The key of each contribution is the ID
-          count: { $sum: 1 }, // Increment the count for each appearance of this ID
+          _id: "$contribution.k", // Use the key as the group ID
+          contribution_submission: { $sum: 1 }, // Count occurrences
         },
       },
       {
-        // Step 4: Sort by the count in descending order (most frequent to least frequent)
-        $sort: { count: -1 },
+        // Step 4: Rename _id to post_code in the output
+        $project: {
+          post_code: "$_id", // Rename _id to post_code
+          contribution_submission: 1, // Retain the count field
+        },
       },
     ]);
 
@@ -176,8 +179,11 @@ export const getContriPostCodes = async (
       return res.status(404).json({ message: "No contributions found." });
     }
 
-    // Send the counted contribution IDs to the client
-    return res.status(200).json(result);
+    // Send the reshaped result to the client
+    return res.status(200).json({
+      data: result,
+      message: "Contribution list fetched successfully!",
+    });
   } catch (error) {
     return next(new HttpError("Error fetching contribution IDs", 500));
   }

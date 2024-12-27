@@ -34,14 +34,6 @@ const filterSchema = yup.object().shape({
     .oneOf(STATUS, `Status should be one of: ${STATUS.join(", ")}.`),
 });
 
-const updateSchema = yup.object().shape({
-  status_update: yup
-    .string()
-    .required("Status update is required.")
-    .oneOf(STATUS, `Status update should be one of: ${STATUS.join(", ")}.`),
-  publisher_id: yup.string().required("Publisher ID is required."),
-});
-
 interface IAccessFilter {
   status: string;
   role_applied: string;

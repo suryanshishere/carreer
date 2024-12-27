@@ -107,23 +107,31 @@ export const contributeToPost = async (
   const userId = (req as JWTRequest).userData.userId;
 
   try {
+    // Fetch the existing contribution document, or create a new one
     let contribution = await ContributionModel.findById(userId);
+
+    // Fetch the post and its post code
     const post = await PostModel.findById(post_id).select("post_code");
     const postCode = post?.post_code;
     if (!post || !postCode) {
       return next(new HttpError("Post or its post code not found!", 400));
     }
 
+    // If no contribution exists for the user, create a new one
     if (!contribution) {
-      // Create a new document if it doesn't exist
       contribution = new ContributionModel({
         _id: userId,
         user: userId,
-        contribution: new Map(),
+        contribution: new Map(), // Initialize the contribution Map
       });
     }
 
-    // Get the existing post contribution or initialize it
+    // Ensure contribution.contribution is always a Map
+    if (!(contribution.contribution instanceof Map)) {
+      contribution.contribution = new Map(); // Initialize it as a Map if not already
+    }
+
+    // Ensure the Map for the specific postCode exists
     const postContribution = contribution.contribution.get(postCode) || {};
 
     // Update the specific section with the new data
@@ -135,9 +143,10 @@ export const contributeToPost = async (
     // Set the updated contribution back to the Map
     contribution.contribution.set(postCode, postContribution);
 
-    // Save the document
+    // Save the contribution document
     await contribution.save();
 
+    // Return a success response
     return res.status(200).json({
       message: "Contributed to post successfully",
     });

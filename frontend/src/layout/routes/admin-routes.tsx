@@ -1,35 +1,48 @@
+import React from "react";
 import Access from "admin/pages/Access";
-import CreateNewPost from "user/publisher/pages/CreateNewPost";
+import Contributions from "admin/pages/Contributions";
+import CreateNewPost from "admin/pages/CreateNewPost";
+import { IRole } from "models/admin/IAdmin";
+import Contribution from "admin/pages/Contribution";
 
-const adminRoutes = (token: string | null, role?: string) => {
-  if (!token) {
-    return [];
+const adminRoutes = (token: string | null, role?: IRole) => {
+  if (!token) return [];
+
+  // Helper function to check if the user has a specific role
+  const hasAccess = (roles: IRole[]) => role && roles.includes(role);
+
+  const routes = [];
+
+  if (hasAccess(["approver", "admin"])) {
+    routes.push({
+      path: "approver",
+      children: [
+        {
+          path: "contributions",
+          children: [
+            { index: true, element: <Contributions /> },
+            { path: ":postCode", element: <Contribution /> },
+          ],
+        },
+      ],
+    });
   }
 
-  if (role === "publisher" || role === "admin") {
-    return [
-      {
-        path: "publisher",
-        children: [{ path: "create-new-post", element: <CreateNewPost /> }],
-      },
-    ];
+  if (hasAccess(["publisher", "admin"])) {
+    routes.push({
+      path: "publisher",
+      children: [{ path: "create-new-post", element: <CreateNewPost /> }],
+    });
   }
 
-  if (role === "admin") {
-    return [
-      {
-        path: "admin",
-        children: [
-          {
-            path: "access",
-            element: <Access />,
-          },
-        ],
-      },
-    ];
+  if (hasAccess(["admin"])) {
+    routes.push({
+      path: "admin",
+      children: [{ path: "access", element: <Access /> }],
+    });
   }
 
-  return [];
+  return routes;
 };
 
 export default adminRoutes;
