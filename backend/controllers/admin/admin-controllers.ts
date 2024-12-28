@@ -6,6 +6,7 @@ import AdminModel from "@models/admin/admin-model";
 import RequestModal, { IRequest } from "@models/admin/request-model";
 import { authorisedAdmin } from "./admin-controllers-utils";
 import ContributionModel from "@models/user/contribution-model";
+import { snakeCase } from "lodash";
 
 export const getRole = async (
   req: Request,
@@ -146,6 +147,9 @@ export const getContriPostCodes = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { section } = req.params;
+  const sec = snakeCase(section);
+
   try {
     const result = await ContributionModel.aggregate([
       {
@@ -159,14 +163,20 @@ export const getContriPostCodes = async (
         $unwind: "$contribution",
       },
       {
-        // Step 3: Group by the contribution key ('k'), counting occurrences
+        // Step 3: Filter documents where the specified section exists in the contribution data
+        $match: {
+          [`contribution.v.${sec}`]: { $exists: true },
+        },
+      },
+      {
+        // Step 4: Group by the contribution key ('k'), counting occurrences
         $group: {
-          _id: "$contribution.k", // Use the key as the group ID
+          _id: "$contribution.k", // Use the key (post_code) as the group ID
           contribution_submission: { $sum: 1 }, // Count occurrences
         },
       },
       {
-        // Step 4: Rename _id to post_code in the output
+        // Step 5: Rename _id to post_code in the output
         $project: {
           post_code: "$_id", // Rename _id to post_code
           contribution_submission: 1, // Retain the count field
@@ -176,16 +186,18 @@ export const getContriPostCodes = async (
 
     // If no contributions are found, return a 404 response
     if (!result.length) {
-      return res.status(404).json({ message: "No contributions found." });
+      return res
+        .status(404)
+        .json({ message: "No contributions found for the given section." });
     }
 
     // Send the reshaped result to the client
     return res.status(200).json({
       data: result,
-      message: "Contribution list fetched successfully!",
+      message: "Contribution post codes fetched successfully!",
     });
   } catch (error) {
-    return next(new HttpError("Error fetching contribution IDs", 500));
+    return next(new HttpError("Error fetching contribution post codes", 500));
   }
 };
 
@@ -195,21 +207,19 @@ export const getContriPost = async (
   next: NextFunction
 ) => {
   try {
-    const { postCode } = req.params;
+    const { section, postCode } = req.params;
 
     const contributionPosts = await ContributionModel.find({
-      [`contribution.${postCode}`]: { $exists: true },
+      [`contribution.${postCode}.${section}`]: { $exists: true },
     })
       .select(`contribution.${postCode}`)
       .limit(5)
       .exec();
 
-    return res
-      .status(200)
-      .json({
-        data: contributionPosts,
-        message: "Contributed post fetched successfully!",
-      });
+    return res.status(200).json({
+      data: contributionPosts,
+      message: "Contributed post fetched successfully!",
+    });
   } catch (error) {
     return next(
       new HttpError("Fetching contibution post failed, please try again!", 500)

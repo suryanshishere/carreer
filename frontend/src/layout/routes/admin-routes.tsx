@@ -1,9 +1,10 @@
 import React from "react";
 import Access from "admin/pages/Access";
-import Contributions from "admin/pages/Contributions";
 import CreateNewPost from "admin/pages/CreateNewPost";
 import { IRole } from "models/admin/IAdmin";
-import Contribution from "admin/pages/Contribution";
+import ContriSec from "admin/pages/approver/ContriSec";
+import ContriTrends from "admin/pages/approver/ContriTrends";
+import Contri from "admin/pages/approver/Contri";
 
 const adminRoutes = (token: string | null, role?: IRole) => {
   if (!token) return [];
@@ -18,10 +19,11 @@ const adminRoutes = (token: string | null, role?: IRole) => {
       path: "approver",
       children: [
         {
-          path: "contributions",
+          path: "contributions-section",
+          element: <ContriSec />,
           children: [
-            { index: true, element: <Contributions /> },
-            { path: ":postCode", element: <Contribution /> },
+            { path: ":section", element: <ContriTrends /> },
+            { path: ":section/:post-code", element: <Contri /> },
           ],
         },
       ],

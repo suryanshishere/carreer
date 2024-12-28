@@ -25,16 +25,18 @@ const renderObject = (value: any, parentKey: string) => (
             </h2>
 
             <div className="pl-4">
-              {(subValue?.current_year || subValue?.previous_year) != null ? (
+                {(subValue?.current_year || subValue?.previous_year) != null ? (
                 <p>
                   <RenderPostDetail
-                    value={subValue.current_year || subValue.previous_year}
-                    key={`${fullKey}.current_year`}
+                  value={subValue.current_year || subValue.previous_year}
+                  key={`${fullKey}.current_year`}
                   />
                 </p>
-              ) : (
+                ) : typeof subValue === "object" && subValue !== null ? (
+                <>{renderObject(subValue, fullKey)}</>
+                ) : (
                 <>{renderData(subValue, fullKey)}</>
-              )}
+                )}
             </div>
           </div>
         );

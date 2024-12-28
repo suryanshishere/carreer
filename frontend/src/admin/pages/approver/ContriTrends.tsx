@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import RenderArrayTable from "shared/ui/RenderArrayTable";
 import React from "react";
+import { useParams } from "react-router-dom";
+import RenderArrayTable from "shared/ui/RenderArrayTable";
 import axiosInstance from "shared/utils/api/axios-instance";
 
-const Contributions = () => {
+const ContriTrends = () => {
+  const { section } = useParams();
   const {
     data = { data: [] },
     isLoading,
@@ -11,7 +13,9 @@ const Contributions = () => {
   } = useQuery({
     queryKey: ["contributionList"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/admin/contri-post-codes");
+      const response = await axiosInstance.get(
+        "/admin/approver/contri-post-codes/${section}"
+      );
       return response.data;
     },
     retry: 3,
@@ -24,4 +28,4 @@ const Contributions = () => {
   );
 };
 
-export default Contributions;
+export default ContriTrends;

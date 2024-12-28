@@ -25,9 +25,9 @@ const statusAndRoleCheck = [
     ),
 ];
 
-router.get("/contri-post-codes", getContriPostCodes);
+router.get("/approver/contri-post-codes/:section", getContriPostCodes);
 
-router.get("/contri-post/:postCode", getContriPost);
+router.get("/approver/contri-post-codes/:section/:postCode", getContriPost);
 
 router.get("/get-role", getRole);
 
