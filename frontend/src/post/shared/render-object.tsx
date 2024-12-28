@@ -8,7 +8,7 @@ import RenderPostDetail from "post/components/RenderPostDetail";
 import renderData from "./render-data";
 
 const renderObject = (value: any, parentKey: string) => (
-  <div className="w-full flex flex-col gap-4 pt-3 pl-4">
+  <div className="w-full flex flex-col items-start gap-4 pt-3 pl-4">
     {Object.entries(value as IDates | ILinks | IFees | ICommon).map(
       ([subKey, subValue]) => {
         if (excludedKeys.includes(subKey)) {
@@ -18,25 +18,25 @@ const renderObject = (value: any, parentKey: string) => (
         const fullKey = parentKey ? `${parentKey}.${subKey}` : subKey;
 
         return (
-          <div key={subKey} className="flex flex-col gap-1">
-            <h2 className="flex items-center gap-2 font-semibold text-custom-gray text-lg">
+          <div key={subKey} className="flex flex-col justify-start gap-1">
+            <h2 className="flex items-center justify-start gap-2 font-semibold text-custom-gray text-lg">
               <div className="w-2 h-2 bg-custom-gray rounded-sm"></div>
               {startCase(subKey)}
             </h2>
 
-            <div className="pl-4">
-                {(subValue?.current_year || subValue?.previous_year) != null ? (
+            <div className="pl-4 self-start">
+              {(subValue?.current_year || subValue?.previous_year) != null ? (
                 <p>
                   <RenderPostDetail
-                  value={subValue.current_year || subValue.previous_year}
-                  key={`${fullKey}.current_year`}
+                    value={subValue.current_year || subValue.previous_year}
+                    keyProp={`${fullKey}.current_year`}
                   />
                 </p>
-                ) : typeof subValue === "object" && subValue !== null ? (
+              ) : typeof subValue === "object" && subValue !== null ? (
                 <>{renderObject(subValue, fullKey)}</>
-                ) : (
+              ) : (
                 <>{renderData(subValue, fullKey)}</>
-                )}
+              )}
             </div>
           </div>
         );

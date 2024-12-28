@@ -41,7 +41,7 @@ const NavAccount = () => {
     <>
       {(role === "admin" || role === "approver") && (
         <NavLink
-          to="/approver/contributions"
+          to="/approver/contributions-section"
           className="text-custom-pale-orange"
         >
           Contributions

@@ -25,7 +25,7 @@ const renderData = (value: any, key: string) => {
   }
   
   // Default case: Render the date or number directly
-  return <RenderPostDetail value={value} key={key} />;
+  return <RenderPostDetail value={value} keyProp={key} />;
 };
 
 export default renderData;

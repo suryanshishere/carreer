@@ -7,6 +7,8 @@ import RequestModal, { IRequest } from "@models/admin/request-model";
 import { authorisedAdmin } from "./admin-controllers-utils";
 import ContributionModel from "@models/user/contribution-model";
 import { snakeCase } from "lodash";
+import { MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
+import { postIdGeneration } from "./publisher/publisher-controllers-utils";
 
 export const getRole = async (
   req: Request,
@@ -208,19 +210,39 @@ export const getContriPost = async (
 ) => {
   try {
     const { section, postCode } = req.params;
+    const sec = snakeCase(section);
+
+    const modal = MODAL_MAP[sec];
+    const postId = await postIdGeneration(postCode);
+
+    const post = await modal.findById(postId);
 
     const contributionPosts = await ContributionModel.find({
-      [`contribution.${postCode}.${section}`]: { $exists: true },
+      [`contribution.${postCode}.${sec}`]: { $exists: true },
     })
-      .select(`contribution.${postCode}`)
+      .select(`contribution.${postCode}.${sec}`)
       .limit(5)
       .exec();
 
+    const flattenedData = contributionPosts.map((doc: any) => {
+      const postDetails =
+        (doc.contribution as Map<string, { [key: string]: any }>).get(
+          postCode
+        )?.[sec] || {};
+
+      return {
+        _id: doc._id, // Keep _id intact
+        ...postDetails, // Spread key-value pairs of the specific section
+      };
+    });
+
     return res.status(200).json({
-      data: contributionPosts,
+      data: flattenedData,
+      post_data: post,
       message: "Contributed post fetched successfully!",
     });
   } catch (error) {
+    console.log(error);
     return next(
       new HttpError("Fetching contibution post failed, please try again!", 500)
     );

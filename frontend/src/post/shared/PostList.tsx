@@ -40,7 +40,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                         value={`${
                           value.current_year || `${value.previous_year}`
                         }`}
-                        key={key}
+                        keyProp={key}
                       />
                     </span>
                   ) : (
@@ -56,7 +56,8 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
           return (
             <span key={key} className="mr-2">
               <span>{startCase(key)}:</span>
-              <span className="ml-1">{RenderPostDetail(value, key)}</span>
+              <span className="ml-1"><RenderPostDetail value={value} keyProp={key} />
+              </span>
             </span>
           );
         }

@@ -8,21 +8,26 @@ import RenderField from "shared/ui/RenderField";
 // Define the props type for RenderPostDetail component
 interface RenderPostDetailProps {
   value: Date | string | number;
-  key: string;
+  keyProp: string; // Accept as `keyProp`
 }
 
-const RenderPostDetail: React.FC<RenderPostDetailProps> = ({ value, key }) => {
+const RenderPostDetail: React.FC<RenderPostDetailProps> = ({
+  value,
+  keyProp,
+}) => {
   const { isEditPostClicked } = useSelector((state: RootState) => state.post);
   const dispatch = useDispatch<AppDispatch>();
 
-  // State management for handling input value, edit status, and save status
   const [inputValue, setInputValue] = useState<string>(
-    typeof value === "object" && value instanceof Date ? value.toISOString() : _.toString(value)
+    value
+      ? typeof value === "object" && value instanceof Date
+        ? value.toISOString()
+        : _.toString(value)
+      : "" // Default empty string
   );
   const [isChanged, setIsChanged] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  // Handle input field change
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -31,46 +36,48 @@ const RenderPostDetail: React.FC<RenderPostDetailProps> = ({ value, key }) => {
     setIsSaved(false);
   };
 
-  // Handle save button click
   const handleSave = () => {
-    dispatch(setKeyValuePair({ key, value: inputValue }));
+    dispatch(setKeyValuePair({ key: keyProp, value: inputValue })); // Use `keyProp`
     setIsChanged(false);
     setIsSaved(true);
   };
 
-  // Handle undo button click
   const handleUndo = () => {
-    dispatch(removeKeyValuePair(key));
+    dispatch(removeKeyValuePair(keyProp)); // Use `keyProp`
     setInputValue(
-      typeof value === "object" && value instanceof Date ? value.toISOString() : _.toString(value)
+      value
+        ? typeof value === "object" && value instanceof Date
+          ? value.toISOString()
+          : _.toString(value)
+        : ""
     );
     setIsChanged(false);
     setIsSaved(false);
   };
 
-  // If edit mode is active, show editable field
-  if (isEditPostClicked) {
-    return (
-      <EditableField
-        value={inputValue}
-        onChange={handleInputChange}
-        onSave={handleSave}
-        onUndo={handleUndo}
-        isChanged={isChanged}
-        isSaved={isSaved}
-      />
-    );
-  }
-
-  // If not in edit mode, render the field with possible formatting or linking
-  const stringValue = _.toString(value);
-  return <RenderField stringValue={stringValue} uniqueKey={key} />;
+  // Render logic remains unchanged
+  return isEditPostClicked ? (
+    <EditableField
+      value={inputValue}
+      onChange={handleInputChange}
+      onSave={handleSave}
+      onUndo={handleUndo}
+      isChanged={isChanged}
+      isSaved={isSaved}
+    />
+  ) : (
+    <RenderField stringValue={_.toString(value)} uniqueKey={keyProp} />
+  );
 };
+
+export default RenderPostDetail;
 
 // EditableField component for handling input changes, save, and undo
 interface EditableFieldProps {
   value: string | number;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   onSave: () => void;
   onUndo: () => void;
   isChanged: boolean;
@@ -124,5 +131,3 @@ const EditableField: React.FC<EditableFieldProps> = ({
     </div>
   );
 };
-
-export default RenderPostDetail;

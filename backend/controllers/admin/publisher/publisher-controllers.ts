@@ -2,7 +2,6 @@ import validationError from "@controllers/sharedControllers/validation-error";
 import { NextFunction, Response, Request } from "express";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
-import { ObjectId } from "mongodb";
 import PostModel from "@models/post/post-model";
 import { JWTRequest } from "@middleware/check-auth";
 import {

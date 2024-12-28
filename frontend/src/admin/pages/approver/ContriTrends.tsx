@@ -11,10 +11,10 @@ const ContriTrends = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["contributionList"],
+    queryKey: ["contriTrends"],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        "/admin/approver/contri-post-codes/${section}"
+        `/admin/approver/contri-post-codes/${section}`
       );
       return response.data;
     },

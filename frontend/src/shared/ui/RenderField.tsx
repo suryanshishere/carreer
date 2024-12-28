@@ -9,9 +9,12 @@ const RenderField = ({
   stringValue: string;
   uniqueKey: string;
 }) => {
+
+  
+
   if (stringValue === stringValue.toUpperCase() && stringValue.includes("_")) {
     return (
-      <Link to={`/approver/contributions/${stringValue}`}>
+      <Link to={stringValue}>
         {_.startCase(_.toLower(stringValue))}
       </Link>
     );

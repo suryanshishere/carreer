@@ -48,7 +48,7 @@ const TableRows: React.FC<{
                   key={header}
                   className={`border-2 border-custom-gray px-2 py-1 ${randomBgColor}`}
                 >
-                  <RenderPostDetail value={item[header]} key={fullKey} />
+                  <RenderPostDetail value={item[header]} keyProp={fullKey} />
                 </td>
               );
             })}
