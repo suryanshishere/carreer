@@ -1,8 +1,8 @@
 import React from "react";
 import { startCase } from "lodash";
-import { renderValue } from "../shared/render-data";
 import { excludedKeys } from "../shared/post-detail-render-define";
 import { IPostDetail } from "models/postModels/IPostDetail";
+import renderData from "../shared/render-data";
 
 interface DetailItemProps {
   data: IPostDetail;
@@ -22,7 +22,7 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
               {startCase(key)}
               <hr className="flex-1 border-t-[1px] mb-1 border-custom-less-gray" />
             </h2>
-            <div className="flex flex-col gap-3">{renderValue(value, key)}</div>
+            <div className="flex flex-col gap-3">{renderData(value, key)}</div>
           </div>
         );
       })}

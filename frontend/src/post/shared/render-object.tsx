@@ -4,10 +4,10 @@ import { IDates } from "models/postModels/overallInterfaces/IDates";
 import { IFees } from "models/postModels/overallInterfaces/IFees";
 import { ILinks } from "models/postModels/overallInterfaces/ILinks";
 import { excludedKeys } from "./post-detail-render-define";
-import { renderValue } from "./render-data";
-import  RenderDateStrNum  from "../../shared/utils/render-date-str-num";
+import RenderPostDetail from "post/components/RenderPostDetail";
+import renderData from "./render-data";
 
-export const renderObject = (value: any, parentKey: string) => (
+const renderObject = (value: any, parentKey: string) => (
   <div className="w-full flex flex-col gap-4 pt-3 pl-4">
     {Object.entries(value as IDates | ILinks | IFees | ICommon).map(
       ([subKey, subValue]) => {
@@ -27,13 +27,13 @@ export const renderObject = (value: any, parentKey: string) => (
             <div className="pl-4">
               {(subValue?.current_year || subValue?.previous_year) != null ? (
                 <p>
-                  {RenderDateStrNum(
-                    subValue.current_year || subValue.previous_year,
-                    `${fullKey}.current_year` 
-                  )}
+                  <RenderPostDetail
+                    value={subValue.current_year || subValue.previous_year}
+                    key={`${fullKey}.current_year`}
+                  />
                 </p>
               ) : (
-                renderValue(subValue, fullKey)
+                <>{renderData(subValue, fullKey)}</>
               )}
             </div>
           </div>
@@ -43,3 +43,4 @@ export const renderObject = (value: any, parentKey: string) => (
   </div>
 );
 
+export default renderObject;

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   accessUpdate,
+  getContriPost,
   getContriPostCodes,
   getReqAccess,
   getRole,
@@ -25,6 +26,8 @@ const statusAndRoleCheck = [
 ];
 
 router.get("/contri-post-codes", getContriPostCodes);
+
+router.get("/contri-post/:postCode", getContriPost);
 
 router.get("/get-role", getRole);
 

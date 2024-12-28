@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { startCase } from "lodash";
-import { renderArrayTable } from "post/shared/render-array-table";
+import RenderArrayTable from "shared/ui/RenderArrayTable";
 import React from "react";
 import axiosInstance from "shared/utils/api/axios-instance";
 
@@ -18,7 +17,11 @@ const Contributions = () => {
     retry: 3,
   });
 
-  return <div>{renderArrayTable(data.data, "cool")}</div>;
+  return (
+    <div>
+      <RenderArrayTable value={data.data || []} key="cool" />
+    </div>
+  );
 };
 
 export default Contributions;

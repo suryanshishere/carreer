@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IPostList, IPostListData } from "models/postModels/IPostList";
 import Bookmark from "post/shared/Bookmark";
-import  RenderDateStrNum  from "../../shared/utils/render-date-str-num";
+import RenderPostDetail from "../components/RenderPostDetail";
 import { snakeCase, startCase } from "lodash";
 import { excludedPostListKeys } from "post/shared/post-list-render-define";
 import Tag from "./Tag";
@@ -36,10 +36,12 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                 <span className="pl-2">
                   {(value?.current_year || value?.previous_year) != null ? (
                     <span>
-                      {RenderDateStrNum(
-                        `${value.current_year || `${value.previous_year}`}`,
-                        key
-                      )}
+                      <RenderPostDetail
+                        value={`${
+                          value.current_year || `${value.previous_year}`
+                        }`}
+                        key={key}
+                      />
                     </span>
                   ) : (
                     <span key={key}>{renderObject(value)}</span>
@@ -54,7 +56,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
           return (
             <span key={key} className="mr-2">
               <span>{startCase(key)}:</span>
-              <span className="ml-1">{RenderDateStrNum(value, key)}</span>
+              <span className="ml-1">{RenderPostDetail(value, key)}</span>
             </span>
           );
         }

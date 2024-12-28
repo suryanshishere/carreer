@@ -188,3 +188,31 @@ export const getContriPostCodes = async (
     return next(new HttpError("Error fetching contribution IDs", 500));
   }
 };
+
+export const getContriPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { postCode } = req.params;
+
+    const contributionPosts = await ContributionModel.find({
+      [`contribution.${postCode}`]: { $exists: true },
+    })
+      .select(`contribution.${postCode}`)
+      .limit(5)
+      .exec();
+
+    return res
+      .status(200)
+      .json({
+        data: contributionPosts,
+        message: "Contributed post fetched successfully!",
+      });
+  } catch (error) {
+    return next(
+      new HttpError("Fetching contibution post failed, please try again!", 500)
+    );
+  }
+};

@@ -1,26 +1,31 @@
 import { tableRequired } from "./post-detail-render-define";
-import { renderTable } from "./render-table";
-import { renderObject } from "./render-object";
-import { renderArrayTable } from "./render-array-table";
-import  RenderDateStrNum  from "../../shared/utils/render-date-str-num";
+import RenderPostDetail from "../components/RenderPostDetail";
+import RenderArrayTable from "../../shared/ui/RenderArrayTable";
+import renderTable from "./render-table";
+import renderObject from "./render-object";
 
-export const renderValue = (value: any, key: string) => {
+const renderData = (value: any, key: string) => {
+  // Check if value is an array of objects and render the table for arrays
   if (
     Array.isArray(value) &&
     value.length > 0 &&
     typeof value[0] === "object"
   ) {
-    return renderArrayTable(value, key);
+    return <RenderArrayTable value={value} key={key} />;
   }
 
+  // If the key is in tableRequired and the value is an object, render object table
   if (tableRequired.includes(key) && value && typeof value === "object") {
     return <div className="mt-3 w-full"> {renderTable(value, key)}</div>;
   }
 
-  //manage direct dates rendering, so not need to enter conditional for the renderdatestrnum
+  // For objects, render the object component
   if (value && typeof value === "object") {
     return renderObject(value, key);
   }
-
-  return RenderDateStrNum(value,key);
+  
+  // Default case: Render the date or number directly
+  return <RenderPostDetail value={value} key={key} />;
 };
+
+export default renderData;
