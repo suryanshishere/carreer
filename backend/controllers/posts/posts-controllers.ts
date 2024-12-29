@@ -17,7 +17,7 @@ import {
 } from "./postsControllersUtils/postSelect/sectionPostDetailSelect";
 import validationError from "@controllers/sharedControllers/validation-error";
 import { validationResult } from "express-validator";
-import  User  from "@models/user/user-model";
+import User from "@models/user/user-model";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
@@ -115,6 +115,7 @@ export const postDetail = async (
 ) => {
   try {
     const { section, postId } = req.params;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(new HttpError(validationError(errors), 400));

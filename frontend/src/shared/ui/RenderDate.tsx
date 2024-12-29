@@ -6,7 +6,6 @@ interface IRenderDate {
 }
 
 const RenderDate: React.FC<IRenderDate> = ({ stringValue, uniqueKey }) => {
-    console.log("uniquekey",uniqueKey)
   const partialDateRegex = /\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(.\d+)?Z)?/; // Match full ISO or just YYYY-MM-DD
 
   if (!partialDateRegex.test(stringValue)) {

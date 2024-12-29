@@ -5,13 +5,14 @@ import renderTable from "./render-table";
 import renderObject from "./render-object";
 
 const renderData = (value: any, key: string) => {
+
   // Check if value is an array of objects and render the table for arrays
   if (
     Array.isArray(value) &&
     value.length > 0 &&
     typeof value[0] === "object"
   ) {
-    return <RenderArrayTable value={value} key={key} />;
+    return <RenderArrayTable value={value} arrTableKey={key} />;
   }
 
   // If the key is in tableRequired and the value is an object, render object table

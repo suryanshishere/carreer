@@ -1,6 +1,7 @@
 import express from "express";
 import {
   accessUpdate,
+  applyContri,
   getContriPost,
   getContriPostCodes,
   getReqAccess,
@@ -24,6 +25,8 @@ const statusAndRoleCheck = [
       `Role applied must be among ${ADMIN_DATA.ROLE_APPLIED.join(", ")}`
     ),
 ];
+
+router.post("/approver/apply-contri", applyContri);
 
 router.get("/approver/contri-post-codes/:section", getContriPostCodes);
 

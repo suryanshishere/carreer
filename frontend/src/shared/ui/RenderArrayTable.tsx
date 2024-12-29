@@ -33,8 +33,9 @@ const TableHeaders: React.FC<{ headers: string[] }> = ({ headers }) => {
 const TableRows: React.FC<{
   value: any[];
   headers: string[];
-  key: string;
-}> = ({ value, headers, key }) => {
+  tableRowKey: string;
+}> = ({ value, headers, tableRowKey }) => {
+  
   return (
     <tbody>
       {value.map((item, rowIndex) => {
@@ -42,7 +43,7 @@ const TableRows: React.FC<{
         return (
           <tr key={rowIndex}>
             {headers.map((header) => {
-              const fullKey = `${key}[${rowIndex}].${header}`;
+              const fullKey = `${tableRowKey}[${rowIndex}].${header}`;
               return (
                 <td
                   key={header}
@@ -60,7 +61,7 @@ const TableRows: React.FC<{
 };
 
 // Main Table Component
-const RenderArrayTable: React.FC<{ value: any[]; key: string }> = ({ value, key }) => {
+const RenderArrayTable: React.FC<{ value: any[]; arrTableKey: string }> = ({ value, arrTableKey }) => {
   if (!value.length) return null; // Handle empty array case
 
   // Filter headers based on excluded keys
@@ -71,7 +72,7 @@ const RenderArrayTable: React.FC<{ value: any[]; key: string }> = ({ value, key 
   return (
     <table className="border-collapse border-2 border-custom-gray w-full mt-3">
       <TableHeaders headers={headers} />
-      <TableRows value={value} headers={headers} key={key} />
+      <TableRows value={value} headers={headers} tableRowKey={arrTableKey} />
     </table>
   );
 };

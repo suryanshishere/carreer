@@ -6,9 +6,20 @@ import AdminModel from "@models/admin/admin-model";
 import RequestModal, { IRequest } from "@models/admin/request-model";
 import { authorisedAdmin } from "./admin-controllers-utils";
 import ContributionModel from "@models/user/contribution-model";
-import { snakeCase } from "lodash";
-import { MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
+import { set, snakeCase } from "lodash";
+import {
+  MODAL_MAP,
+  SECTION_POST_MODAL_MAP,
+} from "@controllers/sharedControllers/post-model-map";
 import { postIdGeneration } from "./publisher/publisher-controllers-utils";
+import { postDetail } from "@controllers/posts/posts-controllers";
+import {
+  COMMON_POST_DETAIL_SELECT_FIELDS,
+  sectionPostDetailSelect,
+} from "@controllers/posts/postsControllersUtils/postSelect/sectionPostDetailSelect";
+import { sectionDetailPopulateModels } from "@controllers/posts/postsControllersUtils/postPopulate/posts-populate";
+import mongoose, { Schema } from "mongoose";
+import { SECTION_POST_SCHEMA_MAP } from "@controllers/sharedControllers/post-schema-map";
 
 export const getRole = async (
   req: Request,
@@ -247,4 +258,61 @@ export const getContriPost = async (
       new HttpError("Fetching contibution post failed, please try again!", 500)
     );
   }
+};
+
+export const applyContri = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  let { post_code, data, section } = req.body;
+  section = snakeCase(section);
+  const postId = await postIdGeneration(post_code);
+
+  // const post = await postDetail(req, res, next, options);
+
+  const model = SECTION_POST_MODAL_MAP[section];
+  if (!model) {
+    return next(new HttpError("Invalid section specified.", 400));
+  }
+
+  const sectionSelect = sectionPostDetailSelect[section] || "";
+  let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
+
+  if (sectionSelect.startsWith("-")) {
+    selectFields = sectionSelect.split(" ");
+  } else if (sectionSelect) {
+    selectFields.push(...sectionSelect.split(" "));
+  }
+
+  const post = await model
+    .findOne({ _id: postId, approved: true })
+    .select(selectFields)
+    .populate(sectionDetailPopulateModels[section]);
+
+  //updating the post (TODO: CACABLE OF UPDATING MUTLIPLE FIELDS AT ONCES)
+  Object.keys(data).forEach((key) => {
+    set(post, key, data[key]);
+    console.log(post[key])
+  });
+
+
+  if (post.common) {
+    await post.common.save();
+  }
+
+  if (post.important_dates) {
+    await post.important_dates.save();
+  }
+
+  if (post.important_links) {
+    await post.important_links.save();
+  }
+
+  if (post.application_fee) {
+    await post.application_fee.save();
+  }
+
+  await post.save();
+  return res.status(200).json({ key: "good" });
 };

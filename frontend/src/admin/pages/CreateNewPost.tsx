@@ -7,12 +7,12 @@ import Dropdown from "shared/utils/form/Dropdown";
 import { Input, TextArea } from "shared/utils/form/Input";
 import SECTIONS from "db/postDb/sections.json";
 import Button from "shared/utils/form/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
-import { AppDispatch, RootState } from "shared/store";
+import { AppDispatch } from "shared/store";
 import axiosInstance from "shared/utils/api/axios-instance";
 import _ from "lodash";
 
@@ -41,7 +41,6 @@ interface ICreateNewPostForm {
 }
 
 const CreateNewPost: React.FC = () => {
-  const { token } = useSelector((state: RootState) => state.auth.userData);
   const dispatch = useDispatch<AppDispatch>();
 
   const {
@@ -57,12 +56,7 @@ const CreateNewPost: React.FC = () => {
     mutationFn: async (data: ICreateNewPostForm) => {
       const response = await axiosInstance.post(
         "/publisher/create-new-post",
-        JSON.stringify(data),
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        JSON.stringify(data)
       );
       return response.data;
     },

@@ -23,24 +23,32 @@ const rearrangeObjectByPriority = (
   priorityKeys: string[]
 ) => {
   let result: { [key: string]: any } = {};
-
+  const getNestedValue = (obj: any, key: string) => {
+    // Check if the key exists and the object is not null or undefined
+    if (obj && typeof obj === "object" && key in obj) {
+      return obj[key];
+    }
+    return undefined;
+  };
   priorityKeys.forEach((key) => {
     const keys = key.split(".");
-    let value: any = data;
-    keys.forEach((subKey) => {
-      value = value ? value[subKey] : undefined;
-    });
+    let value = getNestedValue(data, key);
+    console.log(value)
+    // keys.forEach((subKey) => {
+    //   value = value ? value[subKey] : undefined;
+    // });
     if (value !== undefined) {
-      result[keys[keys.length - 1]] = value;
-
-      let currentData: any = data;
-      keys.forEach((subKey, index) => {
-        if (index === keys.length - 1) {
-          delete currentData[subKey];
-        } else {
-          currentData = currentData[subKey];
-        }
-      });
+      result[key] = value;
+      delete data[key as keyof IPostDetail];
+      
+      // let currentData: any = data;
+      // keys.forEach((subKey, index) => {
+      //   if (index === keys.length - 1) {
+      //     delete currentData[subKey];
+      //   } else {
+      //     currentData = currentData[subKey];
+      //   }
+      // });
     }
   });
 

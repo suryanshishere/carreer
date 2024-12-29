@@ -23,7 +23,7 @@ const ContriTrends = () => {
 
   return (
     <div>
-      <RenderArrayTable value={data.data || []} key="cool" />
+      <RenderArrayTable value={data.data || []} arrTableKey="cool" />
     </div>
   );
 };

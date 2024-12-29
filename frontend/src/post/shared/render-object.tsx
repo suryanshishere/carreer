@@ -16,7 +16,7 @@ const renderObject = (value: any, parentKey: string) => (
         }
 
         const fullKey = parentKey ? `${parentKey}.${subKey}` : subKey;
-
+        
         return (
           <div key={subKey} className="flex flex-col justify-start gap-1">
             <h2 className="flex items-center justify-start gap-2 font-semibold text-custom-gray text-lg">
@@ -32,9 +32,11 @@ const renderObject = (value: any, parentKey: string) => (
                     keyProp={`${fullKey}.current_year`}
                   />
                 </p>
-              ) : typeof subValue === "object" && subValue !== null ? (
-                <>{renderObject(subValue, fullKey)}</>
-              ) : (
+              ) 
+              // : typeof subValue === "object" && subValue !== null ? (
+              //   <>{renderObject(subValue, fullKey)}</>
+              // ) 
+              : (
                 <>{renderData(subValue, fullKey)}</>
               )}
             </div>

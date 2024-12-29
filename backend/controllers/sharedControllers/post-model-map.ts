@@ -32,6 +32,7 @@ export const MODAL_MAP: IModel = {
   common: CommonModel,
   fee: FeeModel,
 };
+
 export const SECTION_POST_MODAL_MAP: IModel = {
   result: ResultModel,
   admit_card: AdmitCardModel,

@@ -9,15 +9,8 @@ const RenderField = ({
   stringValue: string;
   uniqueKey: string;
 }) => {
-
-  
-
   if (stringValue === stringValue.toUpperCase() && stringValue.includes("_")) {
-    return (
-      <Link to={stringValue}>
-        {_.startCase(_.toLower(stringValue))}
-      </Link>
-    );
+    return <Link to={stringValue}>{_.startCase(_.toLower(stringValue))}</Link>;
   }
 
   if (stringValue.startsWith("https://")) {
