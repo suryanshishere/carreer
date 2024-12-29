@@ -49,6 +49,7 @@ const commonDataSchema = new Schema<ICommonDetailData>(
     important_dates: { type: Schema.Types.ObjectId, ref: "Date" },
     common: { type: Schema.Types.ObjectId, ref: "Common" },
     application_fee: { type: Schema.Types.ObjectId, ref: "Fee" },
+    // post:{type:Scehma}
   },
   { timestamps: true }
 );

@@ -33,6 +33,7 @@ export interface IUser extends Document {
 
   // Relationships
   detail?: mongoose.Types.ObjectId;
+  contribution?: mongoose.Types.ObjectId | string;
 
   // Saved posts
   saved_posts?: SavedPosts;
@@ -82,7 +83,8 @@ const userSchema: Schema = new Schema<IUser>(
     deactivated_at: { type: Date },
 
     // Relationships
-    detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
+    detail: { type: mongoose.Types.ObjectId, ref: "UserDetail" },
+    contribution: { type: mongoose.Types.ObjectId, ref: "Contribution" },
 
     // Saved posts
     saved_posts: { type: new Schema(dynamicReferences) },

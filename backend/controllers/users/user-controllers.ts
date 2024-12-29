@@ -3,7 +3,10 @@ import { JWTRequest } from "@middleware/check-auth";
 import AdminModel from "@models/admin/admin-model";
 import RequestModal from "@models/admin/request-model";
 import PostModel from "@models/post/post-model";
-import ContributionModel from "@models/user/contribution-model";
+import ContributionModel, {
+  IContribution,
+} from "@models/user/contribution-model";
+import UserModal from "@models/user/user-model";
 import { ADMIN_DATA } from "@shared/env-data";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
@@ -107,23 +110,31 @@ export const contributeToPost = async (
   const userId = (req as JWTRequest).userData.userId;
 
   try {
+    let user = await UserModal.findById(userId)
+      .populate("contribution")
+      .select("contribution");
+
+    if (!user) return next(new HttpError("No user found!", 400));
+
+    let contribution = user?.contribution as IContribution | undefined;
     // Fetch the existing contribution document, or create a new one
-    let contribution = await ContributionModel.findById(userId);
+    // let contribution = await ContributionModel.findById(userId);
 
     // Fetch the post and its post code
-    const post = await PostModel.findById(post_id).select("post_code");
+    const post = await PostModel.findById(post_id).select("post_code"); //TODO: using postcode as url of postdetail and related
     const postCode = post?.post_code;
     if (!post || !postCode) {
       return next(new HttpError("Post or its post code not found!", 400));
     }
-
+    console.log(user);
     // If no contribution exists for the user, create a new one
     if (!contribution) {
       contribution = new ContributionModel({
         _id: userId,
-        user: userId,
         contribution: new Map(), // Initialize the contribution Map
       });
+      user.contribution = userId;
+      await user.save();
     }
 
     // Ensure contribution.contribution is always a Map

@@ -30,16 +30,29 @@ const Contri = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const applyMutation = useMutation({
-    mutationFn: async ({ key, value }: { key: string; value: any }) => {
+    mutationFn: async ({
+      id,
+      key,
+      value,
+    }: {
+      id: string;
+      key: string;
+      value: any;
+    }) => {
       const response = await axiosInstance.post(
         "/admin/approver/apply-contri",
-        JSON.stringify({ data: { [key]: value }, post_code: postCode, section })
+        JSON.stringify({
+          contributor_id: id,
+          data: { [key]: value },
+          post_code: postCode,
+          section,
+        })
       );
       return response.data;
     },
     onSuccess: ({ message }) => {
       dispatch(
-        triggerSuccessMsg(message || "Applying contibution successfull!")
+        triggerSuccessMsg(message || "Applying contribution successful!")
       );
     },
     onError: (error: any) => {
@@ -51,8 +64,8 @@ const Contri = () => {
     },
   });
 
-  const applyHandler = (key: string, value: any) => {
-    applyMutation.mutate({ key, value });
+  const applyHandler = (id: string, key: string, value: any) => {
+    applyMutation.mutate({ id, key, value });
   };
 
   return (
@@ -60,18 +73,21 @@ const Contri = () => {
       <div className="flex items-start flex-col gap-2">
         {data.data.map((item: any, index: number) => (
           <div key={index} className="flex flex-col">
-            {Object.entries(item).map(([key, value]) => (
-              <div key={key} className="flex gap-2">
-                <strong>{key}:</strong>
-                {value as React.ReactNode}
-                <button
-                  onClick={() => applyHandler(key, value)}
-                  className="outline "
-                >
-                  Apply
-                </button>
-              </div>
-            ))}
+            <strong>ID:</strong> {item._id}
+            {Object.entries(item)
+              .filter(([key]) => key !== "_id") // Skip _id for rendering
+              .map(([key, value]) => (
+                <div key={key} className="flex gap-2">
+                  <strong>{key}:</strong>
+                  {value as React.ReactNode}
+                  <button
+                    onClick={() => applyHandler(item._id, key, value)}
+                    className="outline"
+                  >
+                    Apply
+                  </button>
+                </div>
+              ))}
             <hr />
           </div>
         ))}

@@ -1,14 +1,16 @@
 import express from "express";
 import {
   accessUpdate,
-  applyContri,
-  getContriPost,
-  getContriPostCodes,
   getReqAccess,
   getRole,
 } from "@controllers/admin/admin-controllers";
 import { check } from "express-validator";
 import { ADMIN_DATA } from "@shared/env-data";
+import {
+  applyContri,
+  getContriPost,
+  getContriPostCodes,
+} from "@controllers/admin/approver-controllers";
 
 const router = express.Router();
 
