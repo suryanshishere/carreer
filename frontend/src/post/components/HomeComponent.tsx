@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IPostList } from "models/postModels/IPostList";
-import { snakeCase, startCase } from "lodash";
+import { lowerCase, snakeCase, startCase } from "lodash";
 import Bookmark from "post/shared/Bookmark";
 import Tag from "post/shared/Tag";
 
@@ -18,7 +18,6 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   section,
   height,
 }) => {
-
   return (
     <div
       className="w-full text-base flex flex-col justify-center gap-2"
@@ -44,9 +43,11 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                     />
                   </div>
                   <Link
-                    to={`/sections/${section}/${snakeCase(
-                      item.name_of_the_post
-                    )}?is_saved=${item.is_saved}`}
+                    to={`/sections/${section}/${
+                      item.post
+                        ? (item.post.post_code)
+                        : snakeCase(item.name_of_the_post)
+                    }?is_saved=${item.is_saved}`}
                     state={{ postId: item._id }}
                     className="text-custom-red font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray hover:decoration-custom-gray"
                   >

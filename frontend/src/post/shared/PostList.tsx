@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { IPostList, IPostListData } from "models/postModels/IPostList";
 import Bookmark from "post/shared/Bookmark";
 import RenderPostDetail from "../components/RenderPostDetail";
-import { snakeCase, startCase } from "lodash";
+import { lowerCase, snakeCase, startCase } from "lodash";
 import { excludedPostListKeys } from "post/shared/post-list-render-define";
 import Tag from "./Tag";
 
@@ -56,14 +56,15 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
           return (
             <span key={key} className="mr-2">
               <span>{startCase(key)}:</span>
-              <span className="ml-1"><RenderPostDetail value={value} keyProp={key} />
+              <span className="ml-1">
+                <RenderPostDetail value={value} keyProp={key} />
               </span>
             </span>
           );
         }
       });
   };
-
+  console.log("post code", data);
   return (
     <ul className="self-start p-0 m-0 flex flex-col gap-2 text-base">
       {data.map((item, index) => (
@@ -71,9 +72,11 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
           <li className="w-fit ">
             <div className="flex gap-2 items-center">
               <Link
-                to={`/sections/${section}/${snakeCase(
-                  item.name_of_the_post
-                )}?is_saved=${item.is_saved}`}
+                to={`/sections/${section}/${
+                  item.post
+                    ? (item.post.post_code)
+                    : snakeCase(item.name_of_the_post)
+                }?is_saved=${item.is_saved}`}
                 state={{ postId: item._id }}
                 className="text-custom-red font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray  hover:decoration-custom-gray "
               >

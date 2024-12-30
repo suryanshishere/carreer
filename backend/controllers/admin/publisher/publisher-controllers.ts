@@ -249,10 +249,6 @@ export const createNewPost = async (
         _id: postId,
         created_by: publisherId,
         approved: true,
-        common: postId,
-        important_dates: postId,
-        important_links: postId,
-        application_fee: postId,
         ...dataJson,
       });
       await newPost.save({ session });

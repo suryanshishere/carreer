@@ -3,8 +3,6 @@ import axiosInstance from "shared/utils/api/axios-instance";
 import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "shared/store";
 import Bookmark from "post/shared/Bookmark";
 import PostDetailItem from "post/components/PostDetailItem";
 import rearrangeObjectByPriority, {
@@ -34,7 +32,10 @@ const getIsSavedStatus = (
 
 // PostDetail Component
 const PostDetail: React.FC = () => {
-  const { section = "" } = useParams<{ section: string }>();
+  const { section = "", postCode = "" } = useParams<{
+    section: string;
+    postCode: string;
+  }>();
   const location = useLocation();
   const postId = location.state?.postId;
   const params = useMemo(
@@ -43,7 +44,7 @@ const PostDetail: React.FC = () => {
   );
 
   //TODO
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // Fetch Post Details
   const {
@@ -80,7 +81,10 @@ const PostDetail: React.FC = () => {
   return (
     <div className="flex flex-col items-center">
       <div className="self-end flex gap-2 items-center justify-center">
-        <ContributeToPost section={section} postId={postId} />
+        <ContributeToPost
+          section={section}
+          postCode={postCode}
+        />
         <Bookmark section={section} postId={postId} isSaved={isSaved} />
       </div>
       {orderedData && <PostDetailItem data={orderedData} />}

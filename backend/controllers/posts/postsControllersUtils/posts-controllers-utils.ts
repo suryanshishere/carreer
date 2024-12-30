@@ -117,10 +117,17 @@ export const fetchPostList = async (
     if (includePopulate && sectionListPopulate[section]) {
       query = query.populate(sectionListPopulate[section]);
     } else {
-      query = query.populate({
-        path: "important_dates",
-        select: "",
-      });
+      //for home list with less populate
+      query = query.populate([
+        {
+          path: "important_dates",
+          select: "",
+        },
+        {
+          path: "post",
+          select: "post_code",
+        },
+      ]);
     }
 
     const posts = await query.exec();

@@ -25,9 +25,6 @@ export default ResultModel;
 export interface IResultDetail extends ICommonDetailData {
   how_to_download_result?: string;
   result?: IResultCategory;
-  common?: Types.ObjectId;
-  important_links?: Types.ObjectId;
-  important_dates?: Types.ObjectId;
 }
 
 interface IResultCategory {

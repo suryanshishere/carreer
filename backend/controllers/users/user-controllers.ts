@@ -10,6 +10,7 @@ import UserModal from "@models/user/user-model";
 import { ADMIN_DATA } from "@shared/env-data";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
+import { snakeCase, upperCase } from "lodash";
 import mongoose from "mongoose";
 
 //TEMP: someone can send none, while expireAt active. to start new req to remove expireAt, but the person will have to loose earlier access then.
@@ -106,7 +107,8 @@ export const contributeToPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { post_data, section, post_id } = req.body;
+  let { post_data, section, post_code } = req.body;
+
   const userId = (req as JWTRequest).userData.userId;
 
   try {
@@ -117,13 +119,6 @@ export const contributeToPost = async (
     if (!user) return next(new HttpError("No user found!", 400));
 
     let contribution = user?.contribution as IContribution | undefined;
-
-    // Fetch the post and its post code
-    const post = await PostModel.findById(post_id).select("post_code"); 
-    const postCode = post?.post_code;
-    if (!post || !postCode) {
-      return next(new HttpError("Post or its post code not found!", 400));
-    }
 
     // If no contribution exists for the user, create a new one
     if (!contribution) {
@@ -141,7 +136,7 @@ export const contributeToPost = async (
     }
 
     // Ensure the Map for the specific postCode exists
-    const postContribution = contribution.contribution.get(postCode) || {};
+    const postContribution = contribution.contribution.get(post_code) || {};
 
     // If section is already present, merge data, else create a new entry
     if (postContribution[section]) {
@@ -154,7 +149,7 @@ export const contributeToPost = async (
     }
 
     // Set the updated contribution back to the Map
-    contribution.contribution.set(postCode, postContribution);
+    contribution.contribution.set(post_code, postContribution);
 
     // Save the contribution document
     await contribution.save();
@@ -168,4 +163,3 @@ export const contributeToPost = async (
     return next(new HttpError("An error occurred while contributing", 500));
   }
 };
-

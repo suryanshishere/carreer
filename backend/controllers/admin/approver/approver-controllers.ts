@@ -14,11 +14,12 @@ import { NextFunction, Request, Response } from "express";
 import HttpError from "@utils/http-errors";
 import { JWTRequest } from "@middleware/check-auth";
 import {
-  updateApproverData,
+  flattenContributionData,
   updateContributorApproval,
   updateContributorContribution,
   updatePostData,
 } from "./approver-controllers-utils";
+import mongoose from "mongoose";
 
 export const getContriPostCodes = async (
   req: Request,
@@ -79,22 +80,7 @@ export const getContriPostCodes = async (
   }
 };
 
-export const flattenContributionData = (data: any, prefix: string = ''): any => {
-  let result: any = {};
 
-  for (let key in data) {
-    if (data.hasOwnProperty(key)) {
-      const newKey = prefix ? `${prefix}.${key}` : key;
-      if (typeof data[key] === 'object' && data[key] !== null) {
-        // If the value is an object, recursively flatten it
-        Object.assign(result, flattenContributionData(data[key], newKey));
-      } else {
-        result[newKey] = data[key];
-      }
-    }
-  }
-  return result;
-};
 
 export const getContriPost = async (
   req: Request,
@@ -162,6 +148,9 @@ export const applyContri = async (
   res: Response,
   next: NextFunction
 ) => {
+  const session = await mongoose.startSession(); // Start the session
+  session.startTransaction(); // Start the transaction
+
   try {
     const { post_code, data, section, contributor_id } = req.body;
     const snakeCaseSection = snakeCase(section);
@@ -169,6 +158,7 @@ export const applyContri = async (
 
     // Generate post ID from post_code
     const postId = await postIdGeneration(post_code);
+
 
     // Validate section model
     const model = SECTION_POST_MODAL_MAP[snakeCaseSection];
@@ -190,51 +180,61 @@ export const applyContri = async (
     const post = await model
       .findOne({ _id: postId, approved: true })
       .select(selectFields)
-      .populate(sectionDetailPopulateModels[snakeCaseSection]);
+      .populate(sectionDetailPopulateModels[snakeCaseSection])
+      .session(session);  
 
     if (!post) {
-      return next(new HttpError("Post not found or not approved.", 404));
+      return next (new HttpError("Post not found or not approved.", 404));
     }
 
     // Update post data
-    updatePostData(post, data);
-    const contributor = await ContributionModel.findById(contributor_id).select(
-      `contribution.${post_code}.${section} approved`
-    );
-  
-    if (!contributor) throw new HttpError("Contributor not found!", 400);
+    await updatePostData(post, data); // This function is being updated, no session required here as it's just modifying the in-memory post object
 
-    // Contributor updates
+    const contributor = await ContributionModel.findById(contributor_id)
+      .select(`contribution.${post_code}.${section} approved`)
+      .session(session); // Pass the session
+
+    if (!contributor) return next (new HttpError("Contributor not found!", 400));
+
+    // Update contributor contribution
     await updateContributorContribution(
       contributor,
       post_code,
       snakeCaseSection,
-      data
+      data,
+      session
     );
 
-    // // Add or update the approved data
-    // // const key = `${post_code}.${section}`;
-
-    // // Use the utility function to update the data
-    // await updateApproverData(contributor, approverId, post_code,section, data);
-   
+    // Update contributor approval
     await updateContributorApproval(
       contributor,
       approverId,
       post_code,
       section,
-      data
+      data,
+      session
     );
 
-    // Save post and contributor data
-    await contributor.save();
-    await post.save();
+    // Save post and contributor data inside the transaction
+    await contributor.save({ session });
+    await post.save({ session });
+
+    // Commit the transaction if all steps are successful
+    await session.commitTransaction();
+
+    // End the session
+    session.endSession();
 
     return res
       .status(200)
       .json({ message: "Post updated and configured successfully!" });
   } catch (error) {
     console.error("Error in applyContri:", error);
+
+    // Rollback the transaction in case of any error
+    await session.abortTransaction();
+    session.endSession();
+
     return next(new HttpError("Something went wrong. Please try again.", 500));
   }
 };

@@ -15,10 +15,13 @@ import {
 
 interface IContributeToPost {
   section: string;
-  postId: string;
+  postCode: string;
 }
 
-const ContributeToPost: React.FC<IContributeToPost> = ({ section, postId }) => {
+const ContributeToPost: React.FC<IContributeToPost> = ({
+  section,
+  postCode,
+}) => {
   const { isEditPostClicked, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
 
@@ -30,7 +33,7 @@ const ContributeToPost: React.FC<IContributeToPost> = ({ section, postId }) => {
       const response = await axiosInstance.post("/user/contribute-to-post", {
         post_data: keyValuePairs,
         section,
-        post_id: postId,
+        post_code: postCode,
       });
       return response.data;
     },

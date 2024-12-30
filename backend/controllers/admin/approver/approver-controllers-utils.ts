@@ -4,24 +4,42 @@ import ContributionModel, {
 import HttpError from "@utils/http-errors";
 import { set } from "lodash";
 import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 
-export const updatePostData = (post: any, data: Record<string, any>) => {
-  Object.keys(data).forEach((key) => {
-    set(post, key, data[key]);
-  });
+export const flattenContributionData = (data: any, prefix: string = ''): any => {
+  let result: any = {};
 
-  if (post.common) post.common.save();
-  if (post.important_dates) post.important_dates.save();
-  if (post.important_links) post.important_links.save();
-  if (post.application_fee) post.application_fee.save();
+  for (let key in data) {
+    if (data.hasOwnProperty(key)) {
+      const newKey = prefix ? `${prefix}.${key}` : key;
+      if (typeof data[key] === 'object' && data[key] !== null) {
+        // If the value is an object, recursively flatten it
+        Object.assign(result, flattenContributionData(data[key], newKey));
+      } else {
+        result[newKey] = data[key];
+      }
+    }
+  }
+  return result;
 };
 
-// Function to update contributor's contribution map
+export const updatePostData = async (post: any, data: Record<string, any>) => {
+  Object.keys(data).forEach((key) => {
+    set(post, key, data[key]); // Use lodash's set or other appropriate method
+  });
+
+  if (post.common) await post.common.save(); // Save with session if needed
+  if (post.important_dates) await post.important_dates.save();
+  if (post.important_links) await post.important_links.save();
+  if (post.application_fee) await post.application_fee.save();
+};
+
 export const updateContributorContribution = async (
   contributor: IContribution,
   post_code: string,
   section: string,
-  data: Record<string, any>
+  data: Record<string, any>,
+  session: mongoose.ClientSession // Pass session here
 ) => {
   let contributionMap = contributor.contribution.get(post_code);
   if (!contributionMap) throw new HttpError("Post code data not found.", 404);
@@ -30,6 +48,7 @@ export const updateContributorContribution = async (
   if (!contributedData)
     throw new HttpError("Contributed section data not found.", 404);
 
+  // Replace old data with new data
   Object.keys(data).forEach((key) => {
     if (key in contributedData) {
       delete contributedData[key];
@@ -48,50 +67,8 @@ export const updateContributorContribution = async (
   }
 
   contributor.markModified("contribution");
-  await contributor.save();
+  await contributor.save({ session }); // Ensure the session is used here
   return contributor;
-};
-
-export const updateApproverData = async (
-  contributor: IContribution,
-  approverId: string,
-  post_code: string,
-  section: string,
-  newData: Record<string, any>
-) => {
-  if (!Array.isArray(contributor.approved)) {
-    contributor.approved = [];
-  }
-
-  // Update or add approval data for the specific post_code and section
-  const existingApproval = contributor.approved.find((approval) => {
-    return approval.approver.toString() === approverId;
-  });
-
-  if (existingApproval) {
-    if (!existingApproval.data.has(post_code)) {
-      existingApproval.data.set(post_code, {});
-    }
-    const sectionData = existingApproval.data.get(post_code) || {};
-    sectionData[section] = {
-      ...sectionData[section],
-      ...newData,
-    };
-    existingApproval.data.set(post_code, sectionData);
-  } else {
-    contributor.approved.push({
-      approver: approverId,
-      data: new Map([[post_code, { [section]: newData }]]),
-    });
-  }
-
-  // Dynamically update the contribution map for the given post_code and section
-  const postContribution = contributor.contribution.get(post_code) || {};
-  postContribution[section] = {
-    ...postContribution[section],
-    ...newData,
-  };
-  contributor.contribution.set(post_code, postContribution);
 };
 
 export const updateContributorApproval = async (
@@ -99,17 +76,16 @@ export const updateContributorApproval = async (
   approverId: string,
   post_code: string,
   section: string,
-  data: Record<string, any>
+  data: Record<string, any>,
+  session: mongoose.ClientSession // Accept session here
 ) => {
-
-  console.log(contributor)
-
   if (!Array.isArray(contributor.approved)) {
     contributor.approved = [];
   }
 
   const existingApproval = contributor.approved.find(
-    (approval) => approval.approver.toString() === new ObjectId(approverId).toString()
+    (approval) =>
+      approval.approver.toString() === new ObjectId(approverId).toString()
   );
 
   if (existingApproval) {
@@ -140,4 +116,6 @@ export const updateContributorApproval = async (
       data: newApprovalData,
     });
   }
+
+  await contributor.save({ session }); // Save with session
 };

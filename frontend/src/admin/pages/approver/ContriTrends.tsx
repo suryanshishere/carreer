@@ -21,6 +21,7 @@ const ContriTrends = () => {
     retry: 3,
   });
 
+
   return (
     <div>
       <RenderArrayTable value={data.data || []} arrTableKey="cool" />

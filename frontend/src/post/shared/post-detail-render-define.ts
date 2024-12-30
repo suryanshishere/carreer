@@ -5,7 +5,8 @@ export const excludedKeys = [
     "updatedAt",
     "contributors",
     "is_saved",
-    "__v"
+    "__v",
+    // "post_code"
   ];
   
   export const notDisplayKeys = [];

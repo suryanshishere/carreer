@@ -8,11 +8,16 @@ export interface ICommonDetailData extends Document {
   contributors?: Types.ObjectId[];
   approved: boolean;
   name_of_the_post: string;
-  important_links?: Types.ObjectId;
-  important_dates?: Types.ObjectId;
-  application_fee?: Types.ObjectId;
-  common?: Types.ObjectId;
+  important_links: Types.ObjectId;
+  important_dates: Types.ObjectId;
+  application_fee: Types.ObjectId;
+  common: Types.ObjectId;
+  post: Types.ObjectId;
 }
+
+const applyDefaultId = function (this: Document) {
+  return this._id; // Set the reference to the document's _id
+};
 
 const commonDataSchema = new Schema<ICommonDetailData>(
   {
@@ -45,11 +50,36 @@ const commonDataSchema = new Schema<ICommonDetailData>(
         `Post code must be at least ${POST_ENV_DATA.MAX_POST_NAME} characters long.`,
       ],
     },
-    important_links: { type: Schema.Types.ObjectId, ref: "Link" },
-    important_dates: { type: Schema.Types.ObjectId, ref: "Date" },
-    common: { type: Schema.Types.ObjectId, ref: "Common" },
-    application_fee: { type: Schema.Types.ObjectId, ref: "Fee" },
-    // post:{type:Scehma}
+    important_links: {
+      type: Schema.Types.ObjectId,
+      ref: "Link",
+      default: applyDefaultId,
+      required: true,
+    },
+    important_dates: {
+      type: Schema.Types.ObjectId,
+      ref: "Date",
+      default: applyDefaultId,
+      required: true,
+    },
+    common: {
+      type: Schema.Types.ObjectId,
+      ref: "Common",
+      default: applyDefaultId,
+      required: true,
+    },
+    application_fee: {
+      type: Schema.Types.ObjectId,
+      ref: "Fee",
+      default: applyDefaultId,
+      required: true,
+    },
+    post: {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
+      required: true,
+      default: applyDefaultId,
+    },
   },
   { timestamps: true }
 );
