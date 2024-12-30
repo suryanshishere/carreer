@@ -43,11 +43,11 @@ const commonDataSchema = new Schema<ICommonDetailData>(
       required: true,
       minlength: [
         POST_ENV_DATA.MIN_POST_NAME,
-        `Post code must be at least ${POST_ENV_DATA.MIN_POST_NAME} characters long.`,
+        `Post name must be at least ${POST_ENV_DATA.MIN_POST_NAME} characters long.`,
       ],
       maxlength: [
         POST_ENV_DATA.MAX_POST_NAME,
-        `Post code must be at least ${POST_ENV_DATA.MAX_POST_NAME} characters long.`,
+        `Post name must be at least ${POST_ENV_DATA.MAX_POST_NAME} characters long.`,
       ],
     },
     important_links: {

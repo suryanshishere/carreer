@@ -8,7 +8,9 @@ import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
 } from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
-import { postSectionsArray } from "@shared/post-array";
+import { POST_ENV_DATA } from "@shared/env-data";
+
+const postSectionsArray = POST_ENV_DATA.SECTIONS;
 
 export const savedPosts = async (
   req: Request,

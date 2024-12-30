@@ -4,25 +4,31 @@ import {
   postDetail,
   section,
 } from "@controllers/posts/posts-controllers";
-import { param } from "express-validator";
+import { body, param } from "express-validator";
 import { snakeCase } from "lodash";
-import { postSectionsArray } from "@shared/post-array";
+import { POST_ENV_DATA } from "@shared/env-data";
 
 const router = express.Router();
 
-const sectionParamCheck = param("section")
-  .customSanitizer((value) => snakeCase(value))
-  .isIn(postSectionsArray)
-  .withMessage(
-    `Section must be one of the following: ${postSectionsArray.join(", ")}.`
-  );
+export const sectionCheck = (source: "param" | "body") => {
+  const validator = source === "param" ? param("section") : body("section");
+
+  return validator
+    .customSanitizer((value) => snakeCase(value))
+    .isIn(POST_ENV_DATA.SECTIONS)
+    .withMessage(
+      `Section must be one of the following: ${POST_ENV_DATA.SECTIONS.join(
+        ", "
+      )}.`
+    );
+};
 
 router.get(["/", "/home"], home);
-router.get("/sections/:section", sectionParamCheck, section);
+router.get("/sections/:section", sectionCheck("param"), section);
 router.get(
   "/sections/:section/:postId",
   [
-    sectionParamCheck,
+    sectionCheck("param"),
     param("postId")
       .isMongoId()
       .withMessage("Post ID must be a valid MongoDB ObjectId."),

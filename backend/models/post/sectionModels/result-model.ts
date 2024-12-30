@@ -11,7 +11,7 @@ const resultDataSchema = new Schema({
   ph_dviyang: { type: Number },
 });
 
-const resultSchema = new Schema<IResultDetail>({
+const resultSchema = new Schema<IResult>({
   how_to_download_result: { type: String },
   result: resultDataSchema,
 });
@@ -22,7 +22,7 @@ export { resultSchema };
 const ResultModel = mongoose.model("Result", resultSchema);
 export default ResultModel;
 
-export interface IResultDetail extends ICommonDetailData {
+export interface IResult extends ICommonDetailData {
   how_to_download_result?: string;
   result?: IResultCategory;
 }

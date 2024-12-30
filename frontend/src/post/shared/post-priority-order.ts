@@ -1,5 +1,5 @@
 import SECTIONS from "db/postDb/sections.json";
-import { IPostDetail } from "models/postModels/IPostDetail";
+import { IPostDetail } from "models/postModels/IPost";
 
 export const priorityMapping = (priorities: {
   [key: string]: string[];

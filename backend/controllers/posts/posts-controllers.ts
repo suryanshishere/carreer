@@ -9,13 +9,18 @@ import FeeModel from "@models/post/componentModels/fee-model";
 import DateModel from "@models/post/componentModels/date-model";
 import LinkModel from "@models/post/componentModels/link-model";
 import PostModel from "@models/post/post-model";
-import { fetchPostList } from "./postsControllersUtils/posts-controllers-utils";
+import {
+  fetchPostList,
+  getSectionPostDetails,
+} from "./postsControllersUtils/posts-controllers-utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
 import {
   COMMON_POST_DETAIL_SELECT_FIELDS,
   sectionPostDetailSelect,
 } from "./postsControllersUtils/postSelect/sectionPostDetailSelect";
-import validationError from "@controllers/sharedControllers/validation-error";
+import validationError, {
+  handleValidationErrors,
+} from "@controllers/sharedControllers/validation-error";
 import { validationResult } from "express-validator";
 import User from "@models/user/user-model";
 
@@ -113,32 +118,12 @@ export const postDetail = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { section, postId } = req.params;
+
   try {
-    const { section, postId } = req.params;
+    handleValidationErrors(req, next);
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new HttpError(validationError(errors), 400));
-    }
-
-    const model = SECTION_POST_MODAL_MAP[section];
-    if (!model) {
-      return next(new HttpError("Invalid section specified.", 400));
-    }
-
-    const sectionSelect = sectionPostDetailSelect[section] || "";
-    let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
-
-    if (sectionSelect.startsWith("-")) {
-      selectFields = sectionSelect.split(" ");
-    } else if (sectionSelect) {
-      selectFields.push(...sectionSelect.split(" "));
-    }
-
-    const response = await model
-      .findOne({ _id: postId, approved: true })
-      .select(selectFields)
-      .populate(sectionDetailPopulateModels[section]);
+    const response = await getSectionPostDetails(section, postId);
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));
@@ -156,7 +141,7 @@ export const postDetail = async (
     }
 
     const responseWithSavedStatus = {
-      data: response.toObject(),
+      data: response,
       is_saved: isSaved,
     };
 

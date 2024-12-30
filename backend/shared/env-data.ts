@@ -1,16 +1,19 @@
+
 interface CharLimits {
   min: number;
   max: number;
 }
 
-interface PostEnvData {
-  ALPHA_NUM_UNDERSCRORE: RegExp;
+interface IPostEnvData {
+  ALPHA_NUM_UNDERSCORE: RegExp;
   MIN_POST_NAME_PUBLISHER: number;
   MIN_POST_NAME: number;
   MAX_POST_NAME: number;
   MIN_POST_CODE: number;
   MAX_POST_CODE: number;
   SECTIONS: string[];
+  COMPONENTS: string[];
+  OVERALL: string[];
 }
 
 interface ContactUsEnvData {
@@ -46,8 +49,10 @@ export const COMMON_COMPONENT_POST_CHAR_LIMITS: Record<string, CharLimits> = {
   stage_level: { min: 5, max: 50 },
 };
 
-export const POST_ENV_DATA: PostEnvData = {
-  ALPHA_NUM_UNDERSCRORE: /^[A-Za-z0-9_]+$/,
+// ------------------------------
+
+const POST_ENV_DATA: IPostEnvData = {
+  ALPHA_NUM_UNDERSCORE: /^[A-Za-z0-9_]+$/,
   MIN_POST_NAME_PUBLISHER: Number(process.env.MIN_POST_NAME_PUBLISHER) || 6,
   MIN_POST_NAME: Number(process.env.MIN_POST_NAME) || 20,
   MAX_POST_NAME: Number(process.env.MAX_POST_NAME) || 1000,
@@ -63,7 +68,18 @@ export const POST_ENV_DATA: PostEnvData = {
     "admission",
     "important",
   ],
+  COMPONENTS: ["date", "common", "link", "fee"],
+  OVERALL: [],
 };
+
+// Populate OVERALL dynamically
+POST_ENV_DATA.OVERALL = [
+  ...POST_ENV_DATA.SECTIONS,
+  ...POST_ENV_DATA.COMPONENTS,
+];
+export { POST_ENV_DATA };
+
+// -------------------------------------------
 
 export const CONTACT_US_ENV_DATA: ContactUsEnvData = {
   MIN_NAME_LENGTH: Number(process.env.MIN_NAME_LENGTH) || 3,

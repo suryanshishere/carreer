@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IPostList, IPostListData } from "models/postModels/IPostList";
 import Bookmark from "post/shared/Bookmark";
 import RenderPostDetail from "../components/RenderPostDetail";
 import { lowerCase, snakeCase, startCase } from "lodash";
 import { excludedPostListKeys } from "post/shared/post-list-render-define";
 import Tag from "./Tag";
+import { IPostList, IPostListData } from "models/postModels/IPost";
 
 interface ListProps {
   data: IPostList;

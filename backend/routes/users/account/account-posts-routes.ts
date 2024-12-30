@@ -1,4 +1,3 @@
-import { postSectionsArray } from "@shared/post-array";
 import {
   bookmarkPost,
   savedPosts,

@@ -9,7 +9,7 @@ import rearrangeObjectByPriority, {
   priorityMapping,
 } from "../shared/post-priority-order";
 import { snakeCase } from "lodash";
-import { IPostDetail } from "models/postModels/IPostDetail";
+import { IPostDetail } from "models/postModels/IPost";
 import { postDetailPriorities } from "../shared/post-priority-array";
 import ContributeToPost from "post/components/ContributeToPost";
 

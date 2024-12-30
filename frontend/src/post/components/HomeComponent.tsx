@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IPostList } from "models/postModels/IPostList";
-import { lowerCase, snakeCase, startCase } from "lodash";
+import { snakeCase, startCase } from "lodash";
 import Bookmark from "post/shared/Bookmark";
 import Tag from "post/shared/Tag";
+import { IPostList } from "models/postModels/IPost";
 
 interface HomeListItemProps {
   ListItemData: IPostList;
@@ -45,7 +45,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                   <Link
                     to={`/sections/${section}/${
                       item.post
-                        ? (item.post.post_code)
+                        ? item.post.post_code
                         : snakeCase(item.name_of_the_post)
                     }?is_saved=${item.is_saved}`}
                     state={{ postId: item._id }}

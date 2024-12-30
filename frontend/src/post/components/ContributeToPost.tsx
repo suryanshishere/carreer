@@ -31,7 +31,7 @@ const ContributeToPost: React.FC<IContributeToPost> = ({
     mutationFn: async (keyValuePairs: Record<string, any>) => {
       console.log(keyValuePairs);
       const response = await axiosInstance.post("/user/contribute-to-post", {
-        post_data: keyValuePairs,
+        data: keyValuePairs,
         section,
         post_code: postCode,
       });

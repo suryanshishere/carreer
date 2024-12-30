@@ -6,11 +6,7 @@ import {
 } from "@controllers/admin/admin-controllers";
 import { check } from "express-validator";
 import { ADMIN_DATA } from "@shared/env-data";
-import {
-  applyContri,
-  getContriPost,
-  getContriPostCodes,
-} from "@controllers/admin/approver/approver-controllers";
+import approverRoutes from "./approver-routes";
 
 const router = express.Router();
 
@@ -28,12 +24,7 @@ const statusAndRoleCheck = [
     ),
 ];
 
-router.post("/approver/apply-contri", applyContri);
-
-router.get("/approver/contri-post-codes/:section", getContriPostCodes);
-
-router.get("/approver/contri-post-codes/:section/:postCode", getContriPost);
-
+router.use("/approver", approverRoutes);
 router.get("/get-role", getRole);
 
 router.post("/req-access", statusAndRoleCheck, getReqAccess);

@@ -1,4 +1,6 @@
-import { handleValidationErrors } from "@controllers/sharedControllers/validation-error";
+import validationError, {
+  handleValidationErrors,
+} from "@controllers/sharedControllers/validation-error";
 import { JWTRequest } from "@middleware/check-auth";
 import AdminModel from "@models/admin/admin-model";
 import RequestModal from "@models/admin/request-model";
@@ -107,14 +109,21 @@ export const contributeToPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  let { post_data, section, post_code } = req.body;
-
+  let { data, section, post_code } = req.body;
   const userId = (req as JWTRequest).userData.userId;
 
+  const session = await mongoose.startSession(); // Start the session
+
   try {
+    session.startTransaction(); // Start the transaction
+
+    handleValidationErrors(req, next);
+
+    // Find the user and populate contribution field
     let user = await UserModal.findById(userId)
       .populate("contribution")
-      .select("contribution");
+      .select("contribution")
+      .session(session); // Use the session in the find query
 
     if (!user) return next(new HttpError("No user found!", 400));
 
@@ -127,7 +136,7 @@ export const contributeToPost = async (
         contribution: new Map(), // Initialize the contribution Map
       });
       user.contribution = userId;
-      await user.save();
+      await user.save({ session }); // Use the session in the save query
     }
 
     // Ensure contribution.contribution is always a Map
@@ -142,23 +151,33 @@ export const contributeToPost = async (
     if (postContribution[section]) {
       postContribution[section] = {
         ...postContribution[section], // Keep existing data
-        ...post_data, // Add/Update new data
+        ...data, // Add/Update new data
       };
     } else {
-      postContribution[section] = post_data; // Create new section if not present
+      postContribution[section] = data; // Create new section if not present
     }
 
     // Set the updated contribution back to the Map
     contribution.contribution.set(post_code, postContribution);
 
     // Save the contribution document
-    await contribution.save();
+    await contribution.save({ session }); // Use the session in the save query
+
+    // Commit the transaction if all operations were successful
+    await session.commitTransaction();
+
+    // End the session
+    session.endSession();
 
     // Return a success response
     return res.status(200).json({
       message: "Contributed to post successfully",
     });
   } catch (error) {
+    // If an error occurs, abort the transaction and roll back
+    await session.abortTransaction();
+    session.endSession();
+
     console.log(error);
     return next(new HttpError("An error occurred while contributing", 500));
   }

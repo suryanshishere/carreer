@@ -1,7 +1,7 @@
 import mongoose, { Types, Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
 
-const answerKeySchema = new Schema<IAnswerKeyDetail>({
+const answerKeySchema = new Schema<IAnswerKey>({
   how_to_download_answer_key:{type:String},
   syllabus: { type: Schema.Types.ObjectId, ref: "Syllabus" },
 });
@@ -14,7 +14,7 @@ const AnswerKeyModel = mongoose.model("AnswerKey", answerKeySchema);
 
 export default AnswerKeyModel;
 
-export interface IAnswerKeyDetail extends ICommonDetailData {
+export interface IAnswerKey extends ICommonDetailData {
   how_to_download_answer_key ?: string;
   syllabus?: Types.ObjectId;
 }

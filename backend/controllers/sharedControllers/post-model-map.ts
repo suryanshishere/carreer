@@ -1,5 +1,7 @@
-import CertificateVerificationModel from "@models/post/sectionModels/certificate-verification-model";
 import { Model } from "mongoose";
+import { POST_ENV_DATA } from "@shared/env-data";
+import { camelCase, upperFirst } from "lodash";
+import CertificateVerificationModel from "@models/post/sectionModels/certificate-verification-model";
 import DateModel from "@models/post/componentModels/date-model";
 import LinkModel from "@models/post/componentModels/link-model";
 import CommonModel from "@models/post/componentModels/common-model";
@@ -12,41 +14,56 @@ import LatestJobModel from "@models/post/sectionModels/latest-job-model";
 import AdmitCardModel from "@models/post/sectionModels/admit-card-model";
 import ResultModel from "@models/post/sectionModels/result-model";
 
-interface PostModel extends Model<any> {}
-
-export type IModel = {
-  [key: string]: PostModel;
+interface IOverallModels extends Model<any> {}
+const OVERALL_MODELS: Record<string, IOverallModels> = {
+  CertificateVerificationModel,
+  DateModel,
+  LinkModel,
+  CommonModel,
+  FeeModel,
+  AdmissionModel,
+  ImportantModel,
+  AnswerKeyModel,
+  SyllabusModel,
+  LatestJobModel,
+  AdmitCardModel,
+  ResultModel,
 };
 
-export const MODAL_MAP: IModel = {
-  result: ResultModel,
-  admit_card: AdmitCardModel,
-  latest_job: LatestJobModel,
-  syllabus: SyllabusModel,
-  answer_key: AnswerKeyModel,
-  certificate_verification: CertificateVerificationModel,
-  important: ImportantModel,
-  admission: AdmissionModel,
-  date: DateModel,
-  link: LinkModel,
-  common: CommonModel,
-  fee: FeeModel,
-};
+export const MODAL_MAP: Record<string, IOverallModels> =
+  POST_ENV_DATA.OVERALL.reduce((acc, key) => {
+    const modelName = `${upperFirst(camelCase(key))}Model`; // Convert key to PascalCase and append "Model"
+    const model = OVERALL_MODELS[modelName]; // Lookup the model in availableModels
 
-export const SECTION_POST_MODAL_MAP: IModel = {
-  result: ResultModel,
-  admit_card: AdmitCardModel,
-  latest_job: LatestJobModel,
-  syllabus: SyllabusModel,
-  answer_key: AnswerKeyModel,
-  certificate_verification: CertificateVerificationModel,
-  important: ImportantModel,
-  admission: AdmissionModel,
-};
+    if (model) {
+      acc[key] = model;
+    } else {
+      console.warn(`Model "${modelName}" not found for key "${key}".`);
+    }
 
-export const COMPONENT_POST_MODAL_MAP: IModel = {
-  date: DateModel,
-  common: CommonModel,
-  link: LinkModel,
-  fee: FeeModel,
-};
+    return acc;
+  }, {} as Record<string, IOverallModels>);
+
+// ---------------------------------------------------------
+
+const SECTION_POST_MODAL_MAP: Record<
+  string,
+  Model<any>
+> = POST_ENV_DATA.SECTIONS.reduce((acc, key) => {
+  acc[key] = MODAL_MAP[key];
+  return acc;
+}, {} as Record<string, Model<any>>);
+
+export { SECTION_POST_MODAL_MAP };
+
+// ----------------------------------------------------------
+
+const COMPONENT_POST_MODAL_MAP: Record<
+  string,
+  Model<any>
+> = POST_ENV_DATA.COMPONENTS.reduce((acc, key) => {
+  acc[key] = MODAL_MAP[key];
+  return acc;
+}, {} as Record<string, Model<any>>);
+
+export { COMPONENT_POST_MODAL_MAP };

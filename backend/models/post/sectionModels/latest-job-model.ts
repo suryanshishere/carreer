@@ -7,7 +7,7 @@ interface HowToFillForm extends Document {
   video_link: string | null;
 }
 
-export interface ILatestJobDetail extends ICommonDetailData {
+export interface ILatestJob extends ICommonDetailData {
   how_to_fill_the_form?: HowToFillForm;
   syllabus?: Types.ObjectId;
   // result_data?: Types.ObjectId;
@@ -19,7 +19,7 @@ const HowToFillFormSchema = new Schema<HowToFillForm>({
   video_link: { type: String, required: false },
 });
 
-const latestJobSchema = new Schema<ILatestJobDetail>({
+const latestJobSchema = new Schema<ILatestJob>({
   how_to_fill_the_form: HowToFillFormSchema,
 });
 

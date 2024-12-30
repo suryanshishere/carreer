@@ -1,4 +1,4 @@
-import { IPostList } from "models/postModels/IPostList";
+import { IPostList } from "models/postModels/IPost";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";

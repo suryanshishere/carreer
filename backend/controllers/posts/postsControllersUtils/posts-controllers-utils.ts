@@ -1,5 +1,8 @@
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
-import { sectionListPopulate } from "./postPopulate/posts-populate";
+import {
+  sectionDetailPopulateModels,
+  sectionListPopulate,
+} from "./postPopulate/posts-populate";
 import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
@@ -8,6 +11,10 @@ import DateModel from "@models/post/componentModels/date-model";
 import postSortMap from "./post-sort-map";
 import HttpError from "@utils/http-errors";
 import { NextFunction } from "express";
+import {
+  COMMON_POST_DETAIL_SELECT_FIELDS,
+  sectionPostDetailSelect,
+} from "./postSelect/sectionPostDetailSelect";
 
 const getSortedDateIds = async (section: string) => {
   const currentDate = new Date();
@@ -145,3 +152,25 @@ export const fetchPostList = async (
     );
   }
 };
+
+export async function getSectionPostDetails<T>(
+  section: string,
+  postId: string
+): Promise<T | null> {
+  const model = SECTION_POST_MODAL_MAP[section];
+  const sectionSelect = sectionPostDetailSelect[section] || "";
+  let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
+
+  if (sectionSelect.startsWith("-")) {
+    selectFields = sectionSelect.split(" ");
+  } else if (sectionSelect) {
+    selectFields.push(...sectionSelect.split(" "));
+  }
+
+  const result = await model
+    .findOne({ _id: postId, approved: true })
+    .select(selectFields)
+    .populate(sectionDetailPopulateModels[section]);
+
+  return result as T | null;
+}

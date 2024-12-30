@@ -20,6 +20,9 @@ import {
   updatePostData,
 } from "./approver-controllers-utils";
 import mongoose from "mongoose";
+import { handleValidationErrors } from "@controllers/sharedControllers/validation-error";
+import { getSectionPostDetails } from "@controllers/posts/postsControllersUtils/posts-controllers-utils";
+import { ISection } from "@models/post/post-interface";
 
 export const getContriPostCodes = async (
   req: Request,
@@ -27,9 +30,9 @@ export const getContriPostCodes = async (
   next: NextFunction
 ) => {
   const { section } = req.params;
-  const sec = snakeCase(section);
 
   try {
+    handleValidationErrors(req, next);
     const result = await ContributionModel.aggregate([
       {
         // Step 1: Convert the 'contribution' field to an array of key-value pairs
@@ -44,7 +47,7 @@ export const getContriPostCodes = async (
       {
         // Step 3: Filter documents where the specified section exists in the contribution data
         $match: {
-          [`contribution.v.${sec}`]: { $exists: true },
+          [`contribution.v.${section}`]: { $exists: true },
         },
       },
       {
@@ -80,37 +83,33 @@ export const getContriPostCodes = async (
   }
 };
 
-
-
 export const getContriPost = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const { section, postCode } = req.params;
   try {
-    const { section, postCode } = req.params;
-    const sec = snakeCase(section); // Convert section to snake_case
-
-    // Dynamically retrieve the modal based on section name
-    const modal = MODAL_MAP[sec];
-
-    // Generate the postId from the postCode
+    handleValidationErrors(req, next);
     const postId = await postIdGeneration(postCode);
 
     // Retrieve the post document
-    const post = await modal.findById(postId);
+    const post = await getSectionPostDetails(section, postId);
+    if (!post) {
+      return next(new HttpError("Post not found!", 404));
+    }
 
     // Find the contribution posts for the specified section and postCode
     const contributionPosts = await ContributionModel.find({
-      [`contribution.${postCode}.${sec}`]: { $exists: true },
+      [`contribution.${postCode}.${section}`]: { $exists: true },
     })
-      .select(`contribution.${postCode}.${sec}`)
+      .select(`contribution.${postCode}.${section}`)
       .limit(5)
       .exec();
 
     // Flatten each contribution entry and add it to the response
     const flattenedPosts = contributionPosts.map((contri) => {
-      const contributionData = contri.contribution.get(postCode)?.[sec]; /// Safe access
+      const contributionData = contri.contribution.get(postCode)?.[section]; /// Safe access
 
       // Check if contributionData exists before flattening
       if (contributionData) {
@@ -148,43 +147,18 @@ export const applyContri = async (
   res: Response,
   next: NextFunction
 ) => {
-  const session = await mongoose.startSession(); // Start the session
-  session.startTransaction(); // Start the transaction
-
+  const { post_code, data, section, contributor_id } = req.body;
+  const approverId = (req as JWTRequest).userData.userId;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  
   try {
-    const { post_code, data, section, contributor_id } = req.body;
-    const snakeCaseSection = snakeCase(section);
-    const approverId = (req as JWTRequest).userData.userId;
-
-    // Generate post ID from post_code
+    handleValidationErrors(req, next);
     const postId = await postIdGeneration(post_code);
 
-
-    // Validate section model
-    const model = SECTION_POST_MODAL_MAP[snakeCaseSection];
-    if (!model) {
-      return next(new HttpError("Invalid section specified.", 400));
-    }
-
-    // Prepare fields to select for the section
-    const sectionSelect = sectionPostDetailSelect[snakeCaseSection] || "";
-    let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
-
-    if (sectionSelect.startsWith("-")) {
-      selectFields = sectionSelect.split(" ");
-    } else if (sectionSelect) {
-      selectFields.push(...sectionSelect.split(" "));
-    }
-
-    // Find the post with the provided postId
-    const post = await model
-      .findOne({ _id: postId, approved: true })
-      .select(selectFields)
-      .populate(sectionDetailPopulateModels[snakeCaseSection])
-      .session(session);  
-
+    let post = await getSectionPostDetails<ISection>(section, postId);
     if (!post) {
-      return next (new HttpError("Post not found or not approved.", 404));
+      return next(new HttpError("Post not found or not approved.", 404));
     }
 
     // Update post data
@@ -194,13 +168,13 @@ export const applyContri = async (
       .select(`contribution.${post_code}.${section} approved`)
       .session(session); // Pass the session
 
-    if (!contributor) return next (new HttpError("Contributor not found!", 400));
+    if (!contributor) return next(new HttpError("Contributor not found!", 400));
 
     // Update contributor contribution
     await updateContributorContribution(
       contributor,
       post_code,
-      snakeCaseSection,
+      section,
       data,
       session
     );
@@ -229,8 +203,6 @@ export const applyContri = async (
       .status(200)
       .json({ message: "Post updated and configured successfully!" });
   } catch (error) {
-    console.error("Error in applyContri:", error);
-
     // Rollback the transaction in case of any error
     await session.abortTransaction();
     session.endSession();
