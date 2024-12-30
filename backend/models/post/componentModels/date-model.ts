@@ -1,11 +1,11 @@
-import mongoose, { Types, Schema } from "mongoose";
+import mongoose, { Types, Schema, Document } from "mongoose";
 
 interface DateRange {
   current_year?: Date;
   previous_year: Date;
 }
 
-interface IDates extends Document {
+export interface IDates extends Document {
   createdAt: Date;
   updatedAt: Date;
   created_by: Types.ObjectId;

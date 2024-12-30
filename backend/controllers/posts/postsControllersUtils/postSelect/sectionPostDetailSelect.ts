@@ -1,4 +1,4 @@
-export const COMMON_POST_DETAIL_SELECT_FIELDS: string = "name_of_the_post _id updatedAt";
+export const COMMON_POST_DETAIL_SELECT_FIELDS: string = "name_of_the_post _id updatedAt contributors";
 
 export const sectionPostDetailSelect: { [key: string]: string } = {
     result: "-application_fee -approved",

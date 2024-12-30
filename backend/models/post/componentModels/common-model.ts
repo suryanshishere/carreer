@@ -1,5 +1,5 @@
 import { COMMON_COMPONENT_POST_CHAR_LIMITS } from "@shared/env-data";
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 const ageCriteriaSchema: Schema = new Schema({
   minimum_age: { type: Number },
@@ -132,7 +132,7 @@ interface VacancyDetail {
 //   additional_resources?: string;
 // }
 
-interface ICommon {
+export interface ICommon extends Document {
   createdAt: Date;
   updatedAt: Date;
   created_by: Types.ObjectId;

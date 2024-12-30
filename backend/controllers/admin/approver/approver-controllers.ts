@@ -151,18 +151,19 @@ export const applyContri = async (
   const approverId = (req as JWTRequest).userData.userId;
   const session = await mongoose.startSession();
   session.startTransaction();
-  
+
   try {
     handleValidationErrors(req, next);
     const postId = await postIdGeneration(post_code);
 
-    let post = await getSectionPostDetails<ISection>(section, postId);
+    let post = await getSectionPostDetails<ISection | null>(section, postId);
     if (!post) {
       return next(new HttpError("Post not found or not approved.", 404));
     }
 
     // Update post data
-    await updatePostData(post, data); // This function is being updated, no session required here as it's just modifying the in-memory post object
+    // This function is being updated, no session required here as it's just modifying the in-memory post object
+    await updatePostData(post, data, contributor_id);
 
     const contributor = await ContributionModel.findById(contributor_id)
       .select(`contribution.${post_code}.${section} approved`)

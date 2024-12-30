@@ -41,7 +41,7 @@ export const ContributionSchema = new Schema<IContribution>(
     },
     contribution: {
       type: Map,
-      of: new Schema(dynamicFields, { _id: false }), // Map with dynamic fields
+      of: new Schema(dynamicFields, { _id: false }), 
     },
   },
   {

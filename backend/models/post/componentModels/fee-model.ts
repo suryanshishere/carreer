@@ -1,4 +1,5 @@
 import mongoose, { Schema, Types } from "mongoose";
+import { Document } from "mongoose";
 
 interface ICategoryFees extends Document {
   general?: number;
@@ -9,7 +10,7 @@ interface ICategoryFees extends Document {
   ph_dviyang?: number;
 }
 
-interface IFee extends Document {
+export interface IFee extends Document {
   createdAt: Date;
   updatedAt: Date;
   created_by: Types.ObjectId;

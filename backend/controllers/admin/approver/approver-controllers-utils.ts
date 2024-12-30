@@ -1,18 +1,24 @@
-import ContributionModel, {
-  IContribution,
-} from "@models/user/contribution-model";
+import { ICommon } from "@models/post/componentModels/common-model";
+import { IDates } from "@models/post/componentModels/date-model";
+import { IFee } from "@models/post/componentModels/fee-model";
+import { ILinks } from "@models/post/componentModels/link-model";
+import { ISection } from "@models/post/post-interface";
+import { IContribution } from "@models/user/contribution-model";
 import HttpError from "@utils/http-errors";
 import { set } from "lodash";
 import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
-export const flattenContributionData = (data: any, prefix: string = ''): any => {
+export const flattenContributionData = (
+  data: any,
+  prefix: string = ""
+): any => {
   let result: any = {};
 
   for (let key in data) {
     if (data.hasOwnProperty(key)) {
       const newKey = prefix ? `${prefix}.${key}` : key;
-      if (typeof data[key] === 'object' && data[key] !== null) {
+      if (typeof data[key] === "object" && data[key] !== null) {
         // If the value is an object, recursively flatten it
         Object.assign(result, flattenContributionData(data[key], newKey));
       } else {
@@ -23,15 +29,29 @@ export const flattenContributionData = (data: any, prefix: string = ''): any => 
   return result;
 };
 
-export const updatePostData = async (post: any, data: Record<string, any>) => {
+export const updatePostData = async (
+  post: ISection,
+  data: Record<string, any>,
+  contributor_id: string
+) => {
   Object.keys(data).forEach((key) => {
     set(post, key, data[key]); // Use lodash's set or other appropriate method
   });
 
-  if (post.common) await post.common.save(); // Save with session if needed
-  if (post.important_dates) await post.important_dates.save();
-  if (post.important_links) await post.important_links.save();
-  if (post.application_fee) await post.application_fee.save();
+  if (!post.contributors) {
+    // Initialize the contributors array if it doesn't exist
+    post.contributors = [];
+  }
+
+  // Check if the contributor_id exists, and add it only if not present
+  if (!post.contributors.some((id) => id.toString() === contributor_id)) {
+    post.contributors.push(contributor_id);
+  }
+
+  if (post.common) await (post.common as ICommon).save();
+  if (post.important_dates) await (post.important_dates as IDates).save();
+  if (post.important_links) await (post.important_links as ILinks).save();
+  if (post.application_fee) await (post.application_fee as IFee).save();
 };
 
 export const updateContributorContribution = async (
