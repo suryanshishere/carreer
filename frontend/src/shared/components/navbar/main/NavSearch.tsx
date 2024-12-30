@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "shared/utils/form/input/Input";
+import { Input } from "shared/utils/form/Input";
 
 const NavSearch = () => {
   return (

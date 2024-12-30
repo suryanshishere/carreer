@@ -1,0 +1,8 @@
+{
+  "_id": { "$oid": "67653300d8d401865f807a06" },
+  "role": "publisher",
+  "user": { "$oid": "67653300d8d401865f807a06" },
+  "createdAt": { "$date": { "$numberLong": "1735109192928" } },
+  "updatedAt": { "$date": { "$numberLong": "1735109192928" } },
+  "__v": { "$numberInt": "0" }
+}

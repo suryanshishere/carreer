@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 
+@layer base {
+  h2 {
+    @apply text-lg font-bold p-1 self-center w-fit;
+  }
+  hr {
+    @apply w-full border-t-1 border-custom-less-gray;
+  }
+}
+
 /* :root {
   --border-radius: 10px;
   --border-radius-more: 25px;
@@ -50,7 +59,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -62,4 +71,3 @@ input[type=number] {
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Webkit browsers */
 }
-

@@ -61,8 +61,9 @@ export default checkAuth;
 export interface JWTRequest extends Request {
   userData: {
     userId: string;
+    email:string;
+    deactivated_at?: Date;
   };
-  user: IUser;
 }
 
 //for the optional path (that may have doubt of getting userid)

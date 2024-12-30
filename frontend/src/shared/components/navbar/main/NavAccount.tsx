@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from "shared/store";
 import { handleAuthClick } from "shared/store/auth-slice";
 import { toggleDropdownState } from "shared/store/dropdown-slice";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import NavAccountList from "../subMain/navAccount/NavAccountList";
+import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";
 import NAV_ACCOUNT_LIST from "db/shared/nav/navAccountList.json";
 import SETTING_LIST from "db/shared/nav/setting.json";
@@ -17,7 +17,9 @@ const NavAccount = () => {
   const dropdownStates = useSelector(
     (state: RootState) => state.dropdown.dropdownStates
   );
-  const { token } = useSelector((state: RootState) => state.auth.userData);
+  const { token, role } = useSelector(
+    (state: RootState) => state.auth.userData
+  );
 
   const showNavDropdown = dropdownStates["main_nav_account"] || false;
 
@@ -29,10 +31,7 @@ const NavAccount = () => {
           classProp="px-2 py-1 text-sm"
           onClick={() => dispatch(handleAuthClick(!isNavAuthClicked))}
         >
-          {/* <span className="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded bg-custom-black"></span>
-          <span className="relative inline-block h-full w-full rounded px-2 py-1 font-bold text-custom-white bg-custom-red hover:bg-custom-less-red"> */}
           Login / Signup
-          {/* </span> */}
         </Button>
       )}
     </>
@@ -40,6 +39,19 @@ const NavAccount = () => {
 
   let onAuthenticated = (
     <>
+      {(role === "admin" || role === "approver") && (
+        <NavLink
+          to="/approver/contributions-section"
+          className="text-custom-pale-orange"
+        >
+          Contributions
+        </NavLink>
+      )}
+      {role === "admin" && (
+        <NavLink to="/admin/access" className="text-custom-pale-orange">
+          Access
+        </NavLink>
+      )}
       <NavLink
         to="/user/account/saved-posts"
         className={({ isActive }) =>

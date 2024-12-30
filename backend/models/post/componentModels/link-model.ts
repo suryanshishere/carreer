@@ -6,7 +6,7 @@ interface AdditionalResources extends Document {
   // important_dates?: string;
 }
 
-interface ILinks extends Document {
+export interface ILinks extends Document {
   createdAt: Date;
   updatedAt: Date;
   created_by: Types.ObjectId;

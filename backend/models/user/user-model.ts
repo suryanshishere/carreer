@@ -1,8 +1,19 @@
+import { POST_ENV_DATA, USER_ENV_DATA } from "@shared/env-data";
+import _ from "lodash";
 import mongoose, { Schema, Types, Document } from "mongoose";
 
 interface SavedPosts {
   [key: string]: Types.ObjectId[];
 }
+
+const {
+  MIN_EMAIL_OTP,
+  MAX_EMAIL_OTP,
+  PWD_RESET_ERROR_MSG,
+  OTP_ERROR_MSG,
+  EMAIL_VERIFICATION_OTP_EXPIRY,
+  PASSWORD_RESET_TOKEN_EXPIRY,
+} = USER_ENV_DATA;
 
 export interface IUser extends Document {
   // Authentication and verification fields
@@ -13,9 +24,6 @@ export interface IUser extends Document {
   passwordResetTokenCreatedAt?: Date;
   passwordChangedAt?: Date;
 
-  // Role
-  role?: "publisher" | "approver" | "contributer";
-
   // User identification fields
   email: string;
   password: string;
@@ -25,28 +33,46 @@ export interface IUser extends Document {
 
   // Relationships
   detail?: mongoose.Types.ObjectId;
+  contribution?: mongoose.Types.ObjectId | string;
 
   // Saved posts
   saved_posts?: SavedPosts;
 }
 
+const dynamicReferences: Record<string, any> = {};
+POST_ENV_DATA.SECTIONS.forEach((key) => {
+  const camelCaseRef = _.camelCase(key);
+  dynamicReferences[key] = [
+    { type: Schema.Types.ObjectId, ref: _.upperFirst(camelCaseRef) },
+  ];
+});
+
 const userSchema: Schema = new Schema<IUser>(
   {
     // Authentication and verification fields
+    //todo: add expire below
     isEmailVerified: { type: Boolean, default: false },
-    emailVerificationToken: { type: Number },
-    emailVerificationTokenCreatedAt: { type: Date },
-    passwordResetToken: { type: Number },
-    passwordResetTokenCreatedAt: { type: Date },
-    passwordChangedAt: { type: Date },
-
-    //role
-    role: {
-      type: String,
-      enum: ["publisher", "approver", "contributor"],
-      default: "contributor",
-      index: true, //for better fitlering
+    emailVerificationToken: {
+      type: Number,
+      min: [MIN_EMAIL_OTP, OTP_ERROR_MSG],
+      max: [MAX_EMAIL_OTP, OTP_ERROR_MSG],
+      expires: EMAIL_VERIFICATION_OTP_EXPIRY * 60,
     },
+    emailVerificationTokenCreatedAt: {
+      type: Date,
+      expires: PASSWORD_RESET_TOKEN_EXPIRY * 60,
+    },
+    passwordResetToken: {
+      type: Number,
+      min: [MIN_EMAIL_OTP, PWD_RESET_ERROR_MSG],
+      max: [MAX_EMAIL_OTP, PWD_RESET_ERROR_MSG],
+      expires: PASSWORD_RESET_TOKEN_EXPIRY * 60,
+    },
+    passwordResetTokenCreatedAt: {
+      type: Date,
+      expires: PASSWORD_RESET_TOKEN_EXPIRY * 60,
+    },
+    passwordChangedAt: { type: Date }, //todo
 
     // User identification fields
     email: { type: String, required: true, unique: true },
@@ -57,24 +83,14 @@ const userSchema: Schema = new Schema<IUser>(
     deactivated_at: { type: Date },
 
     // Relationships
-    detail: { type: mongoose.Types.ObjectId, ref: "AccountDetail" },
+    detail: { type: mongoose.Types.ObjectId, ref: "UserDetail" },
+    contribution: { type: mongoose.Types.ObjectId, ref: "Contribution" },
 
     // Saved posts
-    saved_posts: {
-      answer_key: [{ type: Schema.Types.ObjectId, ref: "AnswerKey" }],
-      admission: [{ type: Schema.Types.ObjectId, ref: "Admission" }],
-      admit_card: [{ type: Schema.Types.ObjectId, ref: "AdmitCard" }],
-      certificate_verification: [
-        { type: Schema.Types.ObjectId, ref: "CertificateVerification" },
-      ],
-      important: [{ type: Schema.Types.ObjectId, ref: "Important" }],
-      latest_job: [{ type: Schema.Types.ObjectId, ref: "LatestJob" }],
-      result: [{ type: Schema.Types.ObjectId, ref: "Result" }],
-      syllabus: [{ type: Schema.Types.ObjectId, ref: "Syllabus" }],
-    },
+    saved_posts: { type: new Schema(dynamicReferences) },
   },
   { timestamps: true }
 );
 
-const User = mongoose.model<IUser>("User", userSchema);
-export default User;
+const UserModal = mongoose.model<IUser>("User", userSchema);
+export default UserModal;

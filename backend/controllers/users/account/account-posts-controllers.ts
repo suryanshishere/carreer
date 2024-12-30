@@ -1,14 +1,16 @@
 import { Response, NextFunction, Request } from "express";
-import User from "@models/user/user-model";
+import  User  from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
-import { JWTRequest } from "@middleware/check-auth";
-import { sectionListPopulate } from "@controllers/posts/postPopulate/posts-populate";
+import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
+import { sectionListPopulate } from "@controllers/posts/postsControllersUtils/postPopulate/posts-populate";
 import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
-} from "@controllers/posts/postSelect/sectionPostListSelect";
-import { postSectionsArray } from "@controllers/shared/post-array";
+} from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
+import { POST_ENV_DATA } from "@shared/env-data";
+
+const postSectionsArray = POST_ENV_DATA.SECTIONS;
 
 export const savedPosts = async (
   req: Request,
@@ -68,12 +70,12 @@ export const bookmarkPost = async (
   try {
     const { section, post_id } = req.body;
 
-    const user = (req as JWTRequest).user;
+    const userId = getUserIdFromRequest(req as JWTRequest);
+    const user = await User.findById(userId);
 
     if (!user) {
       return next(new HttpError("User not found!", 404));
     }
-    console.log(section)
     const currentPosts = user.saved_posts?.[section] || [];
     // Avoid bookmarking the same post_id if it's already present
     if (!currentPosts.includes(post_id)) {
@@ -103,7 +105,8 @@ export const unBookmarkPost = async (
   try {
     const { section, post_id } = req.body;
 
-    const user = (req as JWTRequest).user;
+       const userId = getUserIdFromRequest(req as JWTRequest);
+    const user = await User.findById(userId);
 
     if (!user) {
       return next(new HttpError("User not found!", 404));

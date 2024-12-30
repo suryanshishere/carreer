@@ -6,9 +6,8 @@ const syllabusDataSchema = new Schema<ISyllabusData>({
   topics: { type: String, default: "Not Available", required: true },
 });
 
-const syllabusSchema = new Schema<ISyllabusDetail>({
+const syllabusSchema = new Schema<ISyllabus>({
   syllabus: { type: [syllabusDataSchema] },
-
 });
 
 syllabusSchema.add(commonDataSchema);
@@ -23,7 +22,6 @@ interface ISyllabusData {
   topics: string;
 }
 
-export interface ISyllabusDetail extends ICommonDetailData {
+export interface ISyllabus extends ICommonDetailData {
   syllabus?: ISyllabusData[];
-
 }

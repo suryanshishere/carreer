@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "shared/utils/api/axios-instance";
 import Button from "shared/utils/form/Button";
-import { Input } from "shared/utils/form/input/Input";
+import { Input } from "shared/utils/form/Input";
 import { AppDispatch, RootState } from "shared/store";
 import {
   triggerErrorMsg,
@@ -47,8 +47,7 @@ const DeactivateAccount: React.FC = () => {
     mutationFn: async (data: IDeactivateForm) => {
       const response = await axiosInstance.post(
         "/user/account/setting/deactivate-account",
-        JSON.stringify(data),
-        { headers: { Authorization: `Bearer ${token}` } }
+        JSON.stringify(data)
       );
       return response.data;
     },

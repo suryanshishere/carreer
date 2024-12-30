@@ -1,8 +1,0 @@
-.dropdown_sec {
-    top: 8.5rem;
-    background: var(--color-white);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size);
-    border: 3px solid var(--hover-color);
-    color: var(--color-black);
-}

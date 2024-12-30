@@ -1,16 +1,22 @@
 import axios from "axios";
 import store from "shared/store";
 import { handleAccountDeactivatedAt } from "shared/store/auth-slice";
-import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 
 const DEACTIVATED_ACCOUNT_DAYS =
   Number(process.env.REACT_APP_DEACTIVATED_ACCOUNT_DAYS) || 30;
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5050/api";
 
+const getTokenFromLocalStorage = () => {
+  const state = JSON.parse(localStorage.getItem("persist:auth") || "{}");
+  const userData = state.userData ? JSON.parse(state.userData) : null;
+  return userData ? userData.token : null;
+};
+
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    Authorization: `Bearer ${getTokenFromLocalStorage()}`,
   },
 });
 

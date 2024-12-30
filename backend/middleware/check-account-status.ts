@@ -1,6 +1,6 @@
 import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";
-import User, { IUser } from "@models/user/user-model";
+import  User, {IUser} from "@models/user/user-model";
 import {
   excludedPaths,
   getUserIdFromRequest,
@@ -14,27 +14,10 @@ const checkAccountStatus = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = getUserIdFromRequest(req as JWTRequest);
+  const { deactivated_at } = (req as JWTRequest).userData || {};
   try {
-    const user: IUser | null = await User.findById(userId);
-    if (!user) {
-      return next();
-    }
-    (req as JWTRequest).user = user;
     //todo: check for 30 days
-    //append the res for deactivated account
-    if (user && user.deactivated_at) {
-      const originalSend = res.send;
-
-      res.send = function (body: any) {
-        const modifiedBody = {
-          ...JSON.parse(body),
-          deactivated_at: (req as JWTRequest).user.deactivated_at,
-        };
-
-        return originalSend.call(this, JSON.stringify(modifiedBody));
-      };
-
+    if (deactivated_at) {
       const isOptional = optionalPaths.some((path) => {
         if (isRegExp(path)) {
           return path.test(req.path);

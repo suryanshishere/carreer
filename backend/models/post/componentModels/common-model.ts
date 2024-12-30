@@ -1,23 +1,12 @@
-import mongoose, { Schema, Types } from "mongoose";
+import { COMMON_COMPONENT_POST_CHAR_LIMITS } from "@shared/env-data";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
-// AgeCriteria Schema
 const ageCriteriaSchema: Schema = new Schema({
   minimum_age: { type: Number },
   maximum_age: { type: Number },
   age_relaxation: { type: String },
 });
 
-// ICategory Schema
-// const categoryAgeSchema: Schema = new Schema({
-//   general: AgeCriteriaSchema,
-//   obc: AgeCriteriaSchema,
-//   ews: AgeCriteriaSchema,
-//   sc: AgeCriteriaSchema,
-//   st: AgeCriteriaSchema,
-//   ph_dviyang: AgeCriteriaSchema,
-// });
-
-// ICategoryVacancy Schema
 const categoryVacancySchema: Schema = new Schema({
   general: { type: Number },
   obc: { type: Number },
@@ -27,37 +16,45 @@ const categoryVacancySchema: Schema = new Schema({
   ph_dviyang: { type: Number },
 });
 
-// VacancyDetail Schema
 const VacancyDetailSchema: Schema = new Schema({
   post_name: { type: String, required: true },
   total_post: { type: Number, required: true },
   post_eligibility: { type: String, required: true },
 });
 
-// CategoryWiseVacancy Schema
-// export const CategoryWiseVacancySchema: Schema = new Schema({
-//   male: { type: CategoryVacancySchema },
-//   female: { type: CategoryVacancySchema },
-//   other: { type: CategoryVacancySchema },
-//   additional_resources: { type: String },
-// });
-
-// Applicants Schema
 const ApplicantsSchema: Schema = new Schema({
   number_of_applicants_each_year: { type: Number },
   number_of_applicants_selected: { type: Number },
 });
 
-// ICommon Schema
+const { short_information, highlighted_information, department, stage_level } =
+  COMMON_COMPONENT_POST_CHAR_LIMITS;
+
 export const commonSchema: Schema = new Schema<ICommon>(
   {
     created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
     contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
     approved: { type: Boolean, default: false, required: true },
-    short_information: { type: String },
-    highlighted_information: { type: String },
-    department: { type: String },
-    stage_level: { type: String },
+    short_information: {
+      type: String,
+      minlength: short_information.min,
+      maxlength: short_information.max,
+    },
+    highlighted_information: {
+      type: String,
+      minlength: highlighted_information.min,
+      maxlength: highlighted_information.max,
+    },
+    department: {
+      type: String,
+      minlength: department.min,
+      maxlength: department.max,
+    },
+    stage_level: {
+      type: String,
+      minlength: stage_level.min,
+      maxlength: stage_level.max,
+    },
     applicants: ApplicantsSchema,
     post_importance: { type: String },
     post_exam_toughness_ranking: { type: Number },
@@ -135,7 +132,7 @@ interface VacancyDetail {
 //   additional_resources?: string;
 // }
 
-interface ICommon {
+export interface ICommon extends Document {
   createdAt: Date;
   updatedAt: Date;
   created_by: Types.ObjectId;

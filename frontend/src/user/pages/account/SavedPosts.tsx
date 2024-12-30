@@ -1,10 +1,10 @@
-import { IPostList } from "models/postModels/IPostList";
+import { IPostList } from "models/postModels/IPost";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import PostList from "shared/components/PostList";
+import PostList from "post/shared/PostList";
 import { Fragment } from "react/jsx-runtime";
 import { startCase } from "lodash";
 
@@ -31,8 +31,6 @@ const SavedPosts = () => {
     queryFn: () => fetchSavedPosts(token),
   });
 
-  console.log(data);
-
   const savedPost = data.data.saved_posts;
   const savedPostLength = Object.keys(savedPost).length;
   const queryStateMessage = useQueryStates({
@@ -45,18 +43,16 @@ const SavedPosts = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      {Object.keys(savedPost).map((key, index) => {
-        const isLastSection = index === Object.keys(savedPost).length - 1;
+      {Object.keys(savedPost).map((key) => {
+        const data = savedPost[key];
         return (
-          savedPost[key].length > 0 && (
+          data.length > 0 &&
+          Array.isArray(data) && (
             <Fragment key={key}>
-              <h2 className="w-fit py-1 text-custom-gray font-bold px-2 mt-3">{startCase(key)}</h2>
+              <h2 className="mt-3 self-start">{startCase(key)}</h2>
               <div className="pl-2">
                 <PostList data={savedPost[key]} section={key} isSaved />
               </div>
-              {!isLastSection && (
-                <hr className="w-full border-t-1 border-custom-less-gray" />
-              )}
             </Fragment>
           )
         );

@@ -1,7 +1,7 @@
 import mongoose, { Types, Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
 
-const importantSchema = new Schema<IImportantDetail>({
+const importantSchema = new Schema<IImportant>({
   how_to_fill_the_form: { type: String },
 });
 
@@ -13,6 +13,6 @@ const ImportantModel = mongoose.model("Important", importantSchema);
 
 export default ImportantModel;
 
-export interface IImportantDetail extends ICommonDetailData {
+export interface IImportant extends ICommonDetailData {
   how_to_fill_the_form?: string;
 }

@@ -24,7 +24,10 @@
       ],
       "@middleware/*": [
         "middleware/*"
-      ]
+      ],
+      "@shared/*": [
+        "shared/*"
+      ],
     }
   }
 }

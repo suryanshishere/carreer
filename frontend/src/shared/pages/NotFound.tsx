@@ -1,5 +1,4 @@
 import React from "react";
-import "./NotFound.css";
 
 interface NotFoundProps {
   children?: React.ReactNode;

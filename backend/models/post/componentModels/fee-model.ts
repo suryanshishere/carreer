@@ -1,4 +1,5 @@
 import mongoose, { Schema, Types } from "mongoose";
+import { Document } from "mongoose";
 
 interface ICategoryFees extends Document {
   general?: number;
@@ -6,18 +7,20 @@ interface ICategoryFees extends Document {
   ews?: number;
   sc?: number;
   st?: number;
-  "ph_dviyang"?: number;
+  ph_dviyang?: number;
 }
 
-interface IFee extends Document {
+export interface IFee extends Document {
   createdAt: Date;
   updatedAt: Date;
   created_by: Types.ObjectId;
   contributors?: Types.ObjectId[];
   approved: boolean;
-  male?: ICategoryFees;
-  female?: ICategoryFees;
-  other?: ICategoryFees;
+
+  male?: number;
+  female?: number;
+  category_wise?: ICategoryFees;
+
   additional_resources?: string;
 }
 
@@ -27,7 +30,7 @@ const CategoryFeesSchema: Schema = new Schema<ICategoryFees>({
   ews: { type: Number },
   sc: { type: Number },
   st: { type: Number },
-  "ph_dviyang": { type: Number },
+  ph_dviyang: { type: Number },
 });
 
 const FeeSchema: Schema = new Schema<IFee>(
@@ -35,9 +38,11 @@ const FeeSchema: Schema = new Schema<IFee>(
     created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
     contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
     approved: { type: Boolean, default: false, required: true },
-    male: { type: CategoryFeesSchema },
-    female: { type: CategoryFeesSchema },
-    other: { type: CategoryFeesSchema },
+
+    male: { type: Number },
+    female: { type: Number },
+    category_wise: CategoryFeesSchema,
+
     additional_resources: { type: String },
   },
   { timestamps: true }

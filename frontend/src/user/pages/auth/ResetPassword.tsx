@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Input } from "shared/utils/form/input/Input";
+import { Input } from "shared/utils/form/Input";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "shared/utils/form/Button";
 import { useForm, SubmitHandler } from "react-hook-form";

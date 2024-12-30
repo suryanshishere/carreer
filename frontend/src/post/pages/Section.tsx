@@ -1,49 +1,26 @@
 import React from "react";
-import PostList from "shared/components/PostList";
-import { IPostList } from "models/postModels/IPostList";
+import PostList from "post/shared/PostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import useQueryStates from "shared/hooks/query-states-hook";
-import { RootState } from "shared/store";
-import { useSelector } from "react-redux";
-
-// Fetch function with type annotations
-const fetchCategoryPostList = async (
-  section: string,
-  token?: string
-): Promise<{
-  data: {
-    [key: string]: IPostList;
-  };
-}> => {
-  const { data } = await axiosInstance.get(`/public/sections/${section}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return data;
-};
 
 const Section: React.FC = () => {
   const { section = "" } = useParams<{ section: string }>();
-  const { token } = useSelector((state: RootState) => state.auth.userData);
+
   const {
     data = { data: {} },
     isLoading,
     error,
-  } = useQuery<
-    {
-      data: {
-        [key: string]: IPostList;
-      };
-    },
-    Error
-  >({
+  } = useQuery({
     queryKey: ["categoryPostList", section],
-    queryFn: () => fetchCategoryPostList(section, token),
+    queryFn: async () => {
+      const response = await axiosInstance.get(`/public/sections/${section}`);
+      return response.data;
+    },
     enabled: Boolean(section),
-    staleTime: 5 * 60 * 1000,
+    retry: 3,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const queryStateMessage = useQueryStates({
@@ -53,7 +30,6 @@ const Section: React.FC = () => {
   });
 
   if (queryStateMessage) return queryStateMessage;
-
   return (
     <div className="flex flex-col gap-3">
       {Object.keys(data.data).map((key) => (

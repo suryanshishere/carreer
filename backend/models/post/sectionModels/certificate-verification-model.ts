@@ -1,7 +1,7 @@
 import mongoose, { Schema, Types } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
 
-const certificateVerificationSchema = new Schema<ICertificateVerificationDetail>({
+const certificateVerificationSchema = new Schema<ICertificateVerification>({
   how_to_fill_the_form: { type: String },
 });
 
@@ -16,6 +16,6 @@ const CertificateVerificationModel = mongoose.model(
 
 export default CertificateVerificationModel;
 
-export interface ICertificateVerificationDetail extends ICommonDetailData {
+export interface ICertificateVerification extends ICommonDetailData {
   how_to_fill_the_form?: string;
 }
