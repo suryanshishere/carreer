@@ -10,7 +10,7 @@ import {
   applyContri,
   getContriPost,
   getContriPostCodes,
-} from "@controllers/admin/approver-controllers";
+} from "@controllers/admin/approver/approver-controllers";
 
 const router = express.Router();
 

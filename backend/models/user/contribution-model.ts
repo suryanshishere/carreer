@@ -5,7 +5,7 @@ import { Schema, Document, model } from "mongoose";
 export interface IContribution extends Document {
   approved: Array<{
     approver: Schema.Types.ObjectId | string; // Reference to the Admin model
-    data: Record<string, any>; // Flexible data structure
+    data: Map<string, Record<string, any>>; // Flexible data structure
   }>;
   contribution: Map<string, Record<string, any>>; // Map: post_id -> section data
 }
@@ -13,7 +13,8 @@ export interface IContribution extends Document {
 // Initialize dynamic fields from POST_ENV_DATA.SECTIONS
 const dynamicFields = POST_ENV_DATA.SECTIONS.reduce(
   (fields: Record<string, any>, key: string) => {
-    fields[key] = { type: Schema.Types.Mixed }; // Flexible structure per section
+    // Define a dynamic schema for each section where keys are strings and values are of any type
+    fields[key] = { type: Schema.Types.Mixed };
     return fields;
   },
   {}
@@ -23,7 +24,10 @@ const dynamicFields = POST_ENV_DATA.SECTIONS.reduce(
 const ApprovedContributionSchema = new Schema(
   {
     approver: { type: Schema.Types.ObjectId, ref: "Admin", required: true },
-    data: { type: Schema.Types.Mixed, required: true },
+    data: {
+      type: Map,
+      of: new Schema(dynamicFields, { _id: false }), // Map with dynamic fields
+    },
   },
   { _id: false } // No ID for nested schema
 );
@@ -33,7 +37,7 @@ export const ContributionSchema = new Schema<IContribution>(
   {
     approved: {
       type: [ApprovedContributionSchema],
-      default: [], // Initialize as an empty array
+      default: [],
     },
     contribution: {
       type: Map,
@@ -41,14 +45,14 @@ export const ContributionSchema = new Schema<IContribution>(
     },
   },
   {
-    timestamps: true, // Automatically manage createdAt and updatedAt
+    timestamps: true,
   }
 );
 
-// Add an index to improve query performance
-ContributionSchema.index({ "approved.approver": 1 });
-
 // Create and export the Contribution model
-const ContributionModel = model<IContribution>("Contribution", ContributionSchema);
+const ContributionModel = model<IContribution>(
+  "Contribution",
+  ContributionSchema
+);
 
 export default ContributionModel;

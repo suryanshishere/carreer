@@ -67,7 +67,7 @@ const Contri = () => {
   const applyHandler = (id: string, key: string, value: any) => {
     applyMutation.mutate({ id, key, value });
   };
-
+console.log(data.data)
   return (
     <div className="flex gap-2">
       <div className="flex items-start flex-col gap-2">

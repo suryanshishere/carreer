@@ -1,21 +1,24 @@
 import ContributionModel from "@models/user/contribution-model";
-import { set, snakeCase } from "lodash";
+import { snakeCase } from "lodash";
 import {
   MODAL_MAP,
   SECTION_POST_MODAL_MAP,
 } from "@controllers/sharedControllers/post-model-map";
-import { postIdGeneration } from "./publisher/publisher-controllers-utils";
-import { postDetail } from "@controllers/posts/posts-controllers";
+import { postIdGeneration } from "../publisher/publisher-controllers-utils";
 import {
   COMMON_POST_DETAIL_SELECT_FIELDS,
   sectionPostDetailSelect,
 } from "@controllers/posts/postsControllersUtils/postSelect/sectionPostDetailSelect";
 import { sectionDetailPopulateModels } from "@controllers/posts/postsControllersUtils/postPopulate/posts-populate";
-import mongoose, { Schema } from "mongoose";
-import { SECTION_POST_SCHEMA_MAP } from "@controllers/sharedControllers/post-schema-map";
 import { NextFunction, Request, Response } from "express";
 import HttpError from "@utils/http-errors";
 import { JWTRequest } from "@middleware/check-auth";
+import {
+  updateApproverData,
+  updateContributorApproval,
+  updateContributorContribution,
+  updatePostData,
+} from "./approver-controllers-utils";
 
 export const getContriPostCodes = async (
   req: Request,
@@ -76,6 +79,23 @@ export const getContriPostCodes = async (
   }
 };
 
+export const flattenContributionData = (data: any, prefix: string = ''): any => {
+  let result: any = {};
+
+  for (let key in data) {
+    if (data.hasOwnProperty(key)) {
+      const newKey = prefix ? `${prefix}.${key}` : key;
+      if (typeof data[key] === 'object' && data[key] !== null) {
+        // If the value is an object, recursively flatten it
+        Object.assign(result, flattenContributionData(data[key], newKey));
+      } else {
+        result[newKey] = data[key];
+      }
+    }
+  }
+  return result;
+};
+
 export const getContriPost = async (
   req: Request,
   res: Response,
@@ -83,13 +103,18 @@ export const getContriPost = async (
 ) => {
   try {
     const { section, postCode } = req.params;
-    const sec = snakeCase(section);
+    const sec = snakeCase(section); // Convert section to snake_case
 
+    // Dynamically retrieve the modal based on section name
     const modal = MODAL_MAP[sec];
+
+    // Generate the postId from the postCode
     const postId = await postIdGeneration(postCode);
 
+    // Retrieve the post document
     const post = await modal.findById(postId);
 
+    // Find the contribution posts for the specified section and postCode
     const contributionPosts = await ContributionModel.find({
       [`contribution.${postCode}.${sec}`]: { $exists: true },
     })
@@ -97,27 +122,37 @@ export const getContriPost = async (
       .limit(5)
       .exec();
 
-    const flattenedData = contributionPosts.map((doc: any) => {
-      const postDetails =
-        (doc.contribution as Map<string, { [key: string]: any }>).get(
-          postCode
-        )?.[sec] || {};
+    // Flatten each contribution entry and add it to the response
+    const flattenedPosts = contributionPosts.map((contri) => {
+      const contributionData = contri.contribution.get(postCode)?.[sec]; /// Safe access
 
+      // Check if contributionData exists before flattening
+      if (contributionData) {
+        const flattenedContribution = flattenContributionData(contributionData);
+
+        return {
+          _id: contri._id,
+          ...flattenedContribution,
+        };
+      }
+
+      // Return the contribution without flattening if contributionData doesn't exist
       return {
-        _id: doc._id,
-        ...postDetails,
+        _id: contri._id,
+        message: "No contribution data found for the specified section",
       };
     });
 
+    // Return the response with the cleaned-up flattened data
     return res.status(200).json({
-      data: flattenedData,
+      data: flattenedPosts,
       post_data: post,
       message: "Contributed post fetched successfully!",
     });
   } catch (error) {
     console.log(error);
     return next(
-      new HttpError("Fetching contibution post failed, please try again!", 500)
+      new HttpError("Fetching contribution post failed, please try again!", 500)
     );
   }
 };
@@ -128,18 +163,21 @@ export const applyContri = async (
   next: NextFunction
 ) => {
   try {
-    let { post_code, data, section, contributor_id } = req.body;
-    section = snakeCase(section);
-
+    const { post_code, data, section, contributor_id } = req.body;
+    const snakeCaseSection = snakeCase(section);
     const approverId = (req as JWTRequest).userData.userId;
+
+    // Generate post ID from post_code
     const postId = await postIdGeneration(post_code);
 
-    const model = SECTION_POST_MODAL_MAP[section];
+    // Validate section model
+    const model = SECTION_POST_MODAL_MAP[snakeCaseSection];
     if (!model) {
       return next(new HttpError("Invalid section specified.", 400));
     }
 
-    const sectionSelect = sectionPostDetailSelect[section] || "";
+    // Prepare fields to select for the section
+    const sectionSelect = sectionPostDetailSelect[snakeCaseSection] || "";
     let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
 
     if (sectionSelect.startsWith("-")) {
@@ -148,82 +186,53 @@ export const applyContri = async (
       selectFields.push(...sectionSelect.split(" "));
     }
 
+    // Find the post with the provided postId
     const post = await model
       .findOne({ _id: postId, approved: true })
       .select(selectFields)
-      .populate(sectionDetailPopulateModels[section]);
+      .populate(sectionDetailPopulateModels[snakeCaseSection]);
 
-    // Updating the post
-    Object.keys(data).forEach((key) => {
-      set(post, key, data[key]);
-    });
-
-    if (post.common) {
-      await post.common.save();
+    if (!post) {
+      return next(new HttpError("Post not found or not approved.", 404));
     }
 
-    if (post.important_dates) {
-      await post.important_dates.save();
-    }
-
-    if (post.important_links) {
-      await post.important_links.save();
-    }
-
-    if (post.application_fee) {
-      await post.application_fee.save();
-    }
+    // Update post data
+    updatePostData(post, data);
+    const contributor = await ContributionModel.findById(contributor_id).select(
+      `contribution.${post_code}.${section} approved`
+    );
+  
+    if (!contributor) throw new HttpError("Contributor not found!", 400);
 
     // Contributor updates
-    const contributor = await ContributionModel.findById(contributor_id).select(
-      `contribution.${post_code}.${section}`
+    await updateContributorContribution(
+      contributor,
+      post_code,
+      snakeCaseSection,
+      data
     );
-    if (!contributor) return next(new HttpError("Contributor not found!", 400));
 
-    const contributionMap = contributor.contribution.get(post_code);
-    if (!contributionMap) {
-      return next(new HttpError("Post code data not found.", 404));
-    }
+    // // Add or update the approved data
+    // // const key = `${post_code}.${section}`;
 
-    const contributedData = contributionMap[section];
-    if (!contributedData) {
-      return next(new HttpError("Contributed section data not found.", 404));
-    }
+    // // Use the utility function to update the data
+    // await updateApproverData(contributor, approverId, post_code,section, data);
+   
+    await updateContributorApproval(
+      contributor,
+      approverId,
+      post_code,
+      section,
+      data
+    );
 
-    // Remove the provided key-value pairs from the contributed data
-    Object.keys(data).forEach((key) => {
-      if (key in contributedData) {
-        delete contributedData[key]; // Remove the key from the contributed data
-      }
-    });
-
-    // If the section is empty after deletion, remove the section
-    if (Object.keys(contributedData).length === 0) {
-      delete contributionMap[section];
-    }
-
-
-      //TODO
-    // If the post code is empty after the section removal, delete the post code from the map
-    if (Object.keys(contributionMap).length === 0) {
-        contributionMap.delete(post_code);
-
-         console.log(contributionMap)
-    } else {
-      // Update the contribution map for the post code
-      contributionMap[section] = contributedData;
-      contributor.contribution.set(post_code, contributionMap);
-    }
-
-    // Mark the 'contribution' map as modified so Mongoose knows to save it
-    contributor.markModified("contribution");
-
-    // Save the updated contribution document
+    // Save post and contributor data
     await contributor.save();
-
     await post.save();
 
-    return res.status(200).json({ key: "good" });
+    return res
+      .status(200)
+      .json({ message: "Post updated and configured successfully!" });
   } catch (error) {
     console.error("Error in applyContri:", error);
     return next(new HttpError("Something went wrong. Please try again.", 500));
