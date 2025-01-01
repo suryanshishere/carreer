@@ -26,10 +26,10 @@ app.use(bodyParser.json());
 
 app.use(
   cors({
-    origin: "*",  // Allow any origin for testing (not recommended for production)
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
+    origin: '*',  // Allow all origins (for testing purposes, adjust for production)
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],  // Allowed methods
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],  // Allowed headers
+    credentials: true,  // Include credentials if necessary
   })
 );
 
