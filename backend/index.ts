@@ -26,13 +26,13 @@ app.use(bodyParser.json());
 
 app.use(
   cors({
-    origin: '*',  // Allow all origins (for testing purposes, adjust for production)
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],  // Allowed methods
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],  // Allowed headers
-    credentials: true,  // Include credentials if necessary
+    origin: '*', // Allow all origins, similar to the res.setHeader('Access-Control-Allow-Origin', '*')
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Allow specific methods
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'], // Allow specific headers
+    preflightContinue: false, // Preflight requests (OPTIONS) will respond with 200 automatically
+    optionsSuccessStatus: 200, // For legacy browsers that might have issues with 204 response
   })
 );
-
 
 app.delete("/api/deletePost", deletePost);
 app.use(checkAuth);
