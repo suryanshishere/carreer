@@ -23,17 +23,7 @@ const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
 const app = express();
 
 app.use(bodyParser.json());
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-  next();
-});
-
+app.use(cors());
 
 app.delete("/api/deletePost", deletePost);
 app.use(checkAuth);
