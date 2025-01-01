@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "target": "ES6",
     "module": "commonjs",
     "strict": true,
@@ -7,27 +9,21 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": ".",
-    "baseUrl": ".",
+    "rootDir": "./",
+    "baseUrl": "./",
     "paths": {
-      "@models/*": [
-        "models/*"
-      ],
-      "@controllers/*": [
-        "controllers/*"
-      ],
-      "@routes/*": [
-        "routes/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@middleware/*": [
-        "middleware/*"
-      ],
-      "@shared/*": [
-        "shared/*"
-      ],
+      "@models/*": ["models/*"],
+      "@controllers/*": ["controllers/*"],
+      "@routes/*": ["routes/*"],
+      "@utils/*": ["utils/*"],
+      "@middleware/*": ["middleware/*"],
+      "@shared/*": ["shared/*"]
     }
-  }
+  },
+  "include": [
+    "**/*.ts"  // This should include all .ts files in the backend directory
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

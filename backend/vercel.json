@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "version": 2,
     "builds": [
       {
@@ -11,6 +12,13 @@
         "src": "/api/(.*)",   
         "dest": "/dist/index.js"  
       }
+=======
+    "builds": [
+      {
+        "src": "dist/index.js",
+        "use": "@vercel/node"
+      }
+>>>>>>> 03cce7959098b25280b369ba6280dd628643280b
     ]
   }
   

@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.ts"
+   "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "nodemon index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -29,9 +29,7 @@
     "nodemailer": "^6.9.13",
     "openai": "^4.77.0",
     "p-retry": "^6.2.1",
-    "uuid": "^9.0.1"
-  },
-  "devDependencies": {
+    "uuid": "^9.0.1",
     "@types/async-retry": "^1.4.9",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
@@ -47,11 +45,12 @@
     "ts-node": "^10.9.2"
   },
   "_moduleAliases": {
-    "@models": "models",
-    "@controllers": "controllers",
-    "@routes": "routes",
-    "@middleware": "middleware",
-    "@utils": "utils",
-    "@shared": "shared"
-  }
+  "@models": "dist/models",
+  "@controllers": "dist/controllers",
+  "@routes": "dist/routes",
+  "@utils": "dist/utils",
+  "@middleware": "dist/middleware",
+  "@shared": "dist/shared"
+}
+
 }
