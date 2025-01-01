@@ -24,15 +24,16 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use(
-  cors({
-    origin: '*', // Allow all origins, similar to the res.setHeader('Access-Control-Allow-Origin', '*')
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'], // Allow specific methods
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'], // Allow specific headers
-    preflightContinue: false, // Preflight requests (OPTIONS) will respond with 200 automatically
-    optionsSuccessStatus: 200, // For legacy browsers that might have issues with 204 response
-  })
-);
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+  next();
+});
+
 
 app.delete("/api/deletePost", deletePost);
 app.use(checkAuth);
