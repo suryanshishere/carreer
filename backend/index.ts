@@ -23,21 +23,16 @@ const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
 const app = express();
 
 app.use(bodyParser.json());
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', process.env.FRONTEND_URL);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(200); // Success for preflight
-});
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
-    methods: ["GET", "POST", "PUT", "DELETE", 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: "*",  // Allow any origin for testing (not recommended for production)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+
 
 app.delete("/api/deletePost", deletePost);
 app.use(checkAuth);
