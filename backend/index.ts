@@ -23,6 +23,13 @@ const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
 const app = express();
 
 app.use(bodyParser.json());
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', process.env.FRONTEND_URL);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.sendStatus(200); // Success for preflight
+});
+
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
