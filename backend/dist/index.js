@@ -25,13 +25,7 @@ const MONGO_URL = process.env.MONGO_URL || "";
 const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
-app.use((0, cors_1.default)({
-    origin: '*', // Allow all origins, similar to the res.setHeader('Access-Control-Allow-Origin', '*')
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'], // Allow specific methods
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'], // Allow specific headers
-    preflightContinue: false, // Preflight requests (OPTIONS) will respond with 200 automatically
-    optionsSuccessStatus: 200, // For legacy browsers that might have issues with 204 response
-}));
+app.use((0, cors_1.default)());
 app.delete("/api/deletePost", publisher_controllers_1.deletePost);
 app.use(check_auth_1.default);
 app.post("/api/user/account/activate-account", activate_account_1.default);
