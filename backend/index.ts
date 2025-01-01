@@ -34,14 +34,6 @@ app.use(
   })
 );
 
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'https://sirkari-lm7fbmku6-suryasingh11112003gmailcoms-projects.vercel.app');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(200);
-});
-
-
 app.delete("/api/deletePost", deletePost);
 app.use(checkAuth);
 app.post("/api/user/account/activate-account", activateAccount);
