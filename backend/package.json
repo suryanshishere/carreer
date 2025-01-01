@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node dist/index.js",
-    "build": "tsc"
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "stage":"git add . && git commit -m 'stage' && git push"
   },
   "author": "",
   "license": "ISC",
