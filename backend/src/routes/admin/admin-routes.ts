@@ -5,7 +5,7 @@ import {
   getRole,
 } from "@controllers/admin/admin-controllers";
 import { check } from "express-validator";
-import { ADMIN_DATA } from "src/shared/env-data";
+import { ADMIN_DATA } from "@shared/env-data";
 import approverRoutes from "./approver-routes";
 
 const router = express.Router();

@@ -1,9 +1,9 @@
 import validationError from "@controllers/sharedControllers/validation-error";
-import  User  from "src/models/user/user-model";
-import HttpError from "src/utils/http-errors";
+import  User  from "@models/user/user-model";
+import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";
 import bcrypt from "bcryptjs";
-import { getUserIdFromRequest, JWTRequest } from "src/middleware/check-auth";
+import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import { validationResult } from "express-validator";
 
 export const changePassword = async (

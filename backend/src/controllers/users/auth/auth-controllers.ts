@@ -1,8 +1,8 @@
 import { Response, NextFunction, Request } from "express";
-import HttpError from "src/utils/http-errors";
+import HttpError from "@utils/http-errors";
 import bcrypt from "bcryptjs";
 import sendEmail from "./send-email";
-import  User, {IUser}  from "src/models/user/user-model";
+import  User, {IUser}  from "@models/user/user-model";
 import {
   checkRequestDelay,
   sendAuthenticatedResponse,
@@ -10,10 +10,10 @@ import {
   updateUnverifiedUser,
 } from "./auth-utils";
 import validationError from "../../sharedControllers/validation-error";
-import { getUserIdFromRequest, JWTRequest } from "src/middleware/check-auth";
+import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import { random } from "lodash";
 import { validationResult } from "express-validator";
-import { USER_ENV_DATA } from "src/shared/env-data";
+import { USER_ENV_DATA } from "@shared/env-data";
 
 const FRONTEND_URL =
   `${process.env.FRONTEND_URL}/user/reset_password` ||

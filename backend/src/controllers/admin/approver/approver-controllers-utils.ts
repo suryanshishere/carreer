@@ -1,10 +1,10 @@
-import { ICommon } from "src/models/post/componentModels/common-model";
-import { IDates } from "src/models/post/componentModels/date-model";
-import { IFee } from "src/models/post/componentModels/fee-model";
-import { ILinks } from "src/models/post/componentModels/link-model";
-import { ISection } from "src/models/post/post-interface";
-import { IContribution } from "src/models/user/contribution-model";
-import HttpError from "src/utils/http-errors";
+import { ICommon } from "@models/post/componentModels/common-model";
+import { IDates } from "@models/post/componentModels/date-model";
+import { IFee } from "@models/post/componentModels/fee-model";
+import { ILinks } from "@models/post/componentModels/link-model";
+import { ISection } from "@models/post/post-interface";
+import { IContribution } from "@models/user/contribution-model";
+import HttpError from "@utils/http-errors";
 import { set } from "lodash";
 import { ObjectId } from "mongodb";
 import mongoose from "mongoose";

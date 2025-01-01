@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createNewPostValidators = exports.postCodeCheck = void 0;
 const express_validator_1 = require("express-validator");
 const lodash_1 = __importDefault(require("lodash"));
-const env_data_1 = require("src/shared/env-data");
-const posts_routes_1 = require("src/routes/posts/posts-routes");
+const env_data_1 = require("@shared/env-data");
+const posts_routes_1 = require("@routes/posts/posts-routes");
 const { ALPHA_NUM_UNDERSCORE, MIN_POST_NAME_PUBLISHER, MAX_POST_NAME, MIN_POST_CODE, MAX_POST_CODE, } = env_data_1.POST_ENV_DATA;
 const postCodeCheck = (source) => {
     const validator = source === "param" ? (0, express_validator_1.param)("postCode") : (0, express_validator_1.body)("post_code");

@@ -8,7 +8,7 @@ const express_1 = __importDefault(require("express"));
 const posts_controllers_1 = require("@controllers/posts/posts-controllers");
 const express_validator_1 = require("express-validator");
 const lodash_1 = require("lodash");
-const env_data_1 = require("src/shared/env-data");
+const env_data_1 = require("@shared/env-data");
 const router = express_1.default.Router();
 const sectionCheck = (source) => {
     const validator = source === "param" ? (0, express_validator_1.param)("section") : (0, express_validator_1.body)("section");

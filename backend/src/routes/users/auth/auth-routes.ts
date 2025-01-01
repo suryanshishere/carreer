@@ -7,7 +7,7 @@ import {
   resetPassword,
   sendPasswordResetLink,
 } from "@controllers/users/auth/auth-controllers";
-import { USER_ENV_DATA } from "src/shared/env-data";
+import { USER_ENV_DATA } from "@shared/env-data";
 
 const router = express.Router();
 const {

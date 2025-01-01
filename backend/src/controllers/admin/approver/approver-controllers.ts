@@ -1,4 +1,4 @@
-import ContributionModel from "src/models/user/contribution-model";
+import ContributionModel from "@models/user/contribution-model";
 import { snakeCase } from "lodash";
 import {
   MODAL_MAP,
@@ -11,8 +11,8 @@ import {
 } from "@controllers/posts/postsControllersUtils/postSelect/sectionPostDetailSelect";
 import { sectionDetailPopulateModels } from "@controllers/posts/postsControllersUtils/postPopulate/posts-populate";
 import { NextFunction, Request, Response } from "express";
-import HttpError from "src/utils/http-errors";
-import { JWTRequest } from "src/middleware/check-auth";
+import HttpError from "@utils/http-errors";
+import { JWTRequest } from "@middleware/check-auth";
 import {
   flattenContributionData,
   updateContributorApproval,
@@ -22,7 +22,7 @@ import {
 import mongoose from "mongoose";
 import { handleValidationErrors } from "@controllers/sharedControllers/validation-error";
 import { getSectionPostDetails } from "@controllers/posts/postsControllersUtils/posts-controllers-utils";
-import { ISection } from "src/models/post/post-interface";
+import { ISection } from "@models/post/post-interface";
 
 export const getContriPostCodes = async (
   req: Request,

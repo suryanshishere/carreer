@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { JWTRequest } from "src/middleware/check-auth";
-import HttpError from "src/utils/http-errors";
+import { JWTRequest } from "@middleware/check-auth";
+import HttpError from "@utils/http-errors";
 import { handleValidationErrors } from "@controllers/sharedControllers/validation-error";
-import AdminModel from "src/models/admin/admin-model";
-import RequestModal, { IRequest } from "src/models/admin/request-model";
+import AdminModel from "@models/admin/admin-model";
+import RequestModal, { IRequest } from "@models/admin/request-model";
 import { authorisedAdmin } from "./admin-controllers-utils";
 
 

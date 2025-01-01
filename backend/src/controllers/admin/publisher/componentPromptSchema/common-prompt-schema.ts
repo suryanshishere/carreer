@@ -1,5 +1,5 @@
 import { SchemaType } from "@google/generative-ai";
-import { COMMON_COMPONENT_POST_CHAR_LIMITS } from "src/shared/env-data";
+import { COMMON_COMPONENT_POST_CHAR_LIMITS } from "@shared/env-data";
 
 const {short_information, highlighted_information,department,stage_level} = COMMON_COMPONENT_POST_CHAR_LIMITS
 

@@ -1,4 +1,4 @@
-import { POST_ENV_DATA } from "src/shared/env-data";
+import { POST_ENV_DATA } from "@shared/env-data";
 import { Schema, Document, model } from "mongoose";
 
 // Interface for a Contribution Document

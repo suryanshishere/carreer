@@ -8,10 +8,10 @@ const express_1 = __importDefault(require("express"));
 const auth_routes_1 = __importDefault(require("./auth/auth-routes"));
 const account_routes_1 = __importDefault(require("./account/account-routes"));
 const express_validator_1 = require("express-validator");
-const env_data_1 = require("src/shared/env-data");
+const env_data_1 = require("@shared/env-data");
 const user_controllers_1 = require("@controllers/users/user-controllers");
-const posts_routes_1 = require("src/routes/posts/posts-routes");
-const publisher_routes_utils_1 = require("src/routes/admin/publisher/publisher-routes-utils");
+const posts_routes_1 = require("@routes/posts/posts-routes");
+const publisher_routes_utils_1 = require("@routes/admin/publisher/publisher-routes-utils");
 const router = express_1.default.Router();
 const { MIN_REASON_LENGTH, MAX_REASON_LENGTH } = env_data_1.CONTACT_US_ENV_DATA;
 const objectCheck = (fieldName) => {

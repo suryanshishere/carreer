@@ -1,7 +1,7 @@
 import { param, body, ValidationChain, check } from "express-validator";
 import _ from "lodash";
-import { POST_ENV_DATA } from "src/shared/env-data";
-import { sectionCheck } from "src/routes/posts/posts-routes";
+import { POST_ENV_DATA } from "@shared/env-data";
+import { sectionCheck } from "@routes/posts/posts-routes";
 
 const {
   ALPHA_NUM_UNDERSCORE,

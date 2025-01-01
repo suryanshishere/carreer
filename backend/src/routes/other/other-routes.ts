@@ -1,5 +1,5 @@
 import { contactUs } from "@controllers/other/other-controllers";
-import { CONTACT_US_ENV_DATA } from "src/shared/env-data";
+import { CONTACT_US_ENV_DATA } from "@shared/env-data";
 import express from "express";
 import { check } from "express-validator";
 const router = express.Router();

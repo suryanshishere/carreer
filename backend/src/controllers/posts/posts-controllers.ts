@@ -1,14 +1,14 @@
 import { Response, NextFunction } from "express";
-import HttpError from "src/utils/http-errors";
+import HttpError from "@utils/http-errors";
 import { sectionDetailPopulateModels } from "./postsControllersUtils/postPopulate/posts-populate";
 import { Request } from "express-jwt";
 import { snakeCase } from "lodash";
-import { getUserIdFromRequest, JWTRequest } from "src/middleware/check-auth";
-import CommonModel from "src/models/post/componentModels/common-model";
-import FeeModel from "src/models/post/componentModels/fee-model";
-import DateModel from "src/models/post/componentModels/date-model";
-import LinkModel from "src/models/post/componentModels/link-model";
-import PostModel from "src/models/post/post-model";
+import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
+import CommonModel from "@models/post/componentModels/common-model";
+import FeeModel from "@models/post/componentModels/fee-model";
+import DateModel from "@models/post/componentModels/date-model";
+import LinkModel from "@models/post/componentModels/link-model";
+import PostModel from "@models/post/post-model";
 import {
   fetchPostList,
   getSectionPostDetails,
@@ -22,7 +22,7 @@ import validationError, {
   handleValidationErrors,
 } from "@controllers/sharedControllers/validation-error";
 import { validationResult } from "express-validator";
-import User from "src/models/user/user-model";
+import User from "@models/user/user-model";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo

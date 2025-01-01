@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleValidationErrors = void 0;
-const http_errors_1 = __importDefault(require("src/utils/http-errors"));
+const http_errors_1 = __importDefault(require("@utils/http-errors"));
 const express_validator_1 = require("express-validator");
 const validationError = (errors) => {
     const errorMessages = errors

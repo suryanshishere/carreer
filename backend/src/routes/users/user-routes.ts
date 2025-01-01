@@ -2,13 +2,13 @@ import express from "express";
 import authRoutes from "./auth/auth-routes";
 import accountRoutes from "./account/account-routes";
 import { body, check, ValidationChain } from "express-validator";
-import { ADMIN_DATA, CONTACT_US_ENV_DATA } from "src/shared/env-data";
+import { ADMIN_DATA, CONTACT_US_ENV_DATA } from "@shared/env-data";
 import {
   contributeToPost,
   reqAccess,
 } from "@controllers/users/user-controllers";
-import { sectionCheck } from "src/routes/posts/posts-routes";
-import { postCodeCheck } from "src/routes/admin/publisher/publisher-routes-utils";
+import { sectionCheck } from "@routes/posts/posts-routes";
+import { postCodeCheck } from "@routes/admin/publisher/publisher-routes-utils";
 
 const router = express.Router();
 const { MIN_REASON_LENGTH, MAX_REASON_LENGTH } = CONTACT_US_ENV_DATA;

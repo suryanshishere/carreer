@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const other_controllers_1 = require("@controllers/other/other-controllers");
-const env_data_1 = require("src/shared/env-data");
+const env_data_1 = require("@shared/env-data");
 const express_1 = __importDefault(require("express"));
 const express_validator_1 = require("express-validator");
 const router = express_1.default.Router();

@@ -1,4 +1,4 @@
-import { IUser } from "src/models/user/user-model";
+import { IUser } from "@models/user/user-model";
 import { sendVerificationOtp } from "./auth-controllers";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";

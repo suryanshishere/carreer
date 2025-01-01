@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.adminSchema = void 0;
-const env_data_1 = require("src/shared/env-data");
+const env_data_1 = require("@shared/env-data");
 const mongoose_1 = __importStar(require("mongoose"));
 //temp: explicitly called it for admin, and role will be on admin only.
 //temp: admin have approver, publisher and other list power and work

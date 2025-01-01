@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContributionSchema = void 0;
-const env_data_1 = require("src/shared/env-data");
+const env_data_1 = require("@shared/env-data");
 const mongoose_1 = require("mongoose");
 // Initialize dynamic fields from POST_ENV_DATA.SECTIONS
 const dynamicFields = env_data_1.POST_ENV_DATA.SECTIONS.reduce((fields, key) => {

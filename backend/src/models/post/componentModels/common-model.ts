@@ -1,4 +1,4 @@
-import { COMMON_COMPONENT_POST_CHAR_LIMITS } from "src/shared/env-data";
+import { COMMON_COMPONENT_POST_CHAR_LIMITS } from "@shared/env-data";
 import mongoose, { Document, Schema, Types } from "mongoose";
 
 const ageCriteriaSchema: Schema = new Schema({

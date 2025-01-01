@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const admin_controllers_1 = require("@controllers/admin/admin-controllers");
 const express_validator_1 = require("express-validator");
-const env_data_1 = require("src/shared/env-data");
+const env_data_1 = require("@shared/env-data");
 const approver_routes_1 = __importDefault(require("./approver-routes"));
 const router = express_1.default.Router();
 const statusAndRoleCheck = [

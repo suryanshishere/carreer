@@ -1,9 +1,9 @@
 import validationError from "@controllers/sharedControllers/validation-error";
 import { NextFunction, Response, Request } from "express";
-import HttpError from "src/utils/http-errors";
+import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
-import PostModel from "src/models/post/post-model";
-import { JWTRequest } from "src/middleware/check-auth";
+import PostModel from "@models/post/post-model";
+import { JWTRequest } from "@middleware/check-auth";
 import {
   COMPONENT_POST_MODAL_MAP,
   MODAL_MAP,
@@ -18,7 +18,7 @@ import {
 } from "./publisher-controllers-utils";
 import { validationResult } from "express-validator";
 import { updateSchema } from "@controllers/posts/postsControllersUtils/post-sort-map";
-import AdminModel, { IAdmin } from "src/models/admin/admin-model";
+import AdminModel, { IAdmin } from "@models/admin/admin-model";
 
 //may be used in future
 export const deletePost = async (

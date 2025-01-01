@@ -1,4 +1,4 @@
-import { POST_ENV_DATA, USER_ENV_DATA } from "src/shared/env-data";
+import { POST_ENV_DATA, USER_ENV_DATA } from "@shared/env-data";
 import _ from "lodash";
 import mongoose, { Schema, Types, Document } from "mongoose";
 

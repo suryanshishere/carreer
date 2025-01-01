@@ -1,4 +1,4 @@
-import User from "src/models/user/user-model";
+import User from "@models/user/user-model";
 import cron from "node-cron";
 
 const EMAIL_VERIFICATION_TOKEN_EXPIRY =

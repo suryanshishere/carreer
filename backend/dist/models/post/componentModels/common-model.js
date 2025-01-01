@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.commonSchema = void 0;
-const env_data_1 = require("src/shared/env-data");
+const env_data_1 = require("@shared/env-data");
 const mongoose_1 = __importStar(require("mongoose"));
 const ageCriteriaSchema = new mongoose_1.Schema({
     minimum_age: { type: Number },

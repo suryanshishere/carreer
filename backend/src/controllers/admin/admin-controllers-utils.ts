@@ -1,5 +1,5 @@
-import AdminModel from "src/models/admin/admin-model";
-import HttpError from "src/utils/http-errors";
+import AdminModel from "@models/admin/admin-model";
+import HttpError from "@utils/http-errors";
 import { NextFunction } from "express";
 
 export const authorisedAdmin = async (userId: string, next: NextFunction) => {

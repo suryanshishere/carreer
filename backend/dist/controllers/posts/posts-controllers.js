@@ -57,19 +57,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postDetail = exports.section = exports.home = exports.helpless = void 0;
-const http_errors_1 = __importDefault(require("src/utils/http-errors"));
+const http_errors_1 = __importDefault(require("@utils/http-errors"));
 const lodash_1 = require("lodash");
-const check_auth_1 = require("src/middleware/check-auth");
-const common_model_1 = __importDefault(require("src/models/post/componentModels/common-model"));
-const fee_model_1 = __importDefault(require("src/models/post/componentModels/fee-model"));
-const date_model_1 = __importDefault(require("src/models/post/componentModels/date-model"));
-const link_model_1 = __importDefault(require("src/models/post/componentModels/link-model"));
-const post_model_1 = __importDefault(require("src/models/post/post-model"));
+const check_auth_1 = require("@middleware/check-auth");
+const common_model_1 = __importDefault(require("@models/post/componentModels/common-model"));
+const fee_model_1 = __importDefault(require("@models/post/componentModels/fee-model"));
+const date_model_1 = __importDefault(require("@models/post/componentModels/date-model"));
+const link_model_1 = __importDefault(require("@models/post/componentModels/link-model"));
+const post_model_1 = __importDefault(require("@models/post/post-model"));
 const posts_controllers_utils_1 = require("./postsControllersUtils/posts-controllers-utils");
 const post_model_map_1 = require("@controllers/sharedControllers/post-model-map");
 const validation_error_1 = __importStar(require("@controllers/sharedControllers/validation-error"));
 const express_validator_1 = require("express-validator");
-const user_model_1 = __importDefault(require("src/models/user/user-model"));
+const user_model_1 = __importDefault(require("@models/user/user-model"));
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
 const CATEGORY_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_CATEGORYLIST) || 25;

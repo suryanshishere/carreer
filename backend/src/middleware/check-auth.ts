@@ -1,5 +1,5 @@
-import { IUser } from "src/models/user/user-model";
-import HttpError from "src/utils/http-errors";
+import { IUser } from "@models/user/user-model";
+import HttpError from "@utils/http-errors";
 import { Response, NextFunction, Request } from "express";
 import { expressjwt } from "express-jwt";
 import { isRegExp } from "lodash";

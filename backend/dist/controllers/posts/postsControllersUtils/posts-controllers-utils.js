@@ -17,9 +17,9 @@ exports.getSectionPostDetails = getSectionPostDetails;
 const post_model_map_1 = require("@controllers/sharedControllers/post-model-map");
 const posts_populate_1 = require("./postPopulate/posts-populate");
 const sectionPostListSelect_1 = require("./postSelect/sectionPostListSelect");
-const date_model_1 = __importDefault(require("src/models/post/componentModels/date-model"));
+const date_model_1 = __importDefault(require("@models/post/componentModels/date-model"));
 const post_sort_map_1 = __importDefault(require("./post-sort-map"));
-const http_errors_1 = __importDefault(require("src/utils/http-errors"));
+const http_errors_1 = __importDefault(require("@utils/http-errors"));
 const sectionPostDetailSelect_1 = require("./postSelect/sectionPostDetailSelect");
 const getSortedDateIds = (section) => __awaiter(void 0, void 0, void 0, function* () {
     const currentDate = new Date();

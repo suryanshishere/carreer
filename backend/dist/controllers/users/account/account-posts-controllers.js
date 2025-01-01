@@ -13,12 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.unBookmarkPost = exports.bookmarkPost = exports.savedPosts = void 0;
-const user_model_1 = __importDefault(require("src/models/user/user-model"));
-const http_errors_1 = __importDefault(require("src/utils/http-errors"));
-const check_auth_1 = require("src/middleware/check-auth");
+const user_model_1 = __importDefault(require("@models/user/user-model"));
+const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const check_auth_1 = require("@middleware/check-auth");
 const posts_populate_1 = require("@controllers/posts/postsControllersUtils/postPopulate/posts-populate");
 const sectionPostListSelect_1 = require("@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect");
-const env_data_1 = require("src/shared/env-data");
+const env_data_1 = require("@shared/env-data");
 const postSectionsArray = env_data_1.POST_ENV_DATA.SECTIONS;
 const savedPosts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.userData.userId;

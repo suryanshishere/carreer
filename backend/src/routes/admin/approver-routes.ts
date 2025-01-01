@@ -3,11 +3,11 @@ import {
   getContriPost,
   getContriPostCodes,
 } from "@controllers/admin/approver/approver-controllers";
-import { sectionCheck } from "src/routes/posts/posts-routes";
+import { sectionCheck } from "@routes/posts/posts-routes";
 import express from "express";
 import { postCodeCheck } from "./publisher/publisher-routes-utils";
 import { body, param } from "express-validator";
-import { objectCheck } from "src/routes/users/user-routes";
+import { objectCheck } from "@routes/users/user-routes";
 
 const router = express.Router();
 

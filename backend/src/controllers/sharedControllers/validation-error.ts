@@ -1,4 +1,4 @@
-import HttpError from "src/utils/http-errors";
+import HttpError from "@utils/http-errors";
 import { NextFunction, Request } from "express";
 import { validationResult } from "express-validator";
 

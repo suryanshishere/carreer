@@ -1,5 +1,5 @@
-import { ADMIN_DATA } from "src/shared/env-data";
-import { IAdminData } from "src/shared/type-check-data";
+import { ADMIN_DATA } from "@shared/env-data";
+import { IAdminData } from "@shared/type-check-data";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IAdmin extends Document {

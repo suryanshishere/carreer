@@ -6,7 +6,7 @@ import {
 } from "@controllers/posts/posts-controllers";
 import { body, param } from "express-validator";
 import { snakeCase } from "lodash";
-import { POST_ENV_DATA } from "src/shared/env-data";
+import { POST_ENV_DATA } from "@shared/env-data";
 
 const router = express.Router();
 

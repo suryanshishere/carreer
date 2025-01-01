@@ -12,8 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_model_1 = __importDefault(require("src/models/user/user-model"));
-const http_errors_1 = __importDefault(require("src/utils/http-errors"));
+const user_model_1 = __importDefault(require("@models/user/user-model"));
+const http_errors_1 = __importDefault(require("@utils/http-errors"));
 const activateAccount = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.userData.userId;
     try {
