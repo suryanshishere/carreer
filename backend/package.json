@@ -29,9 +29,7 @@
     "nodemailer": "^6.9.13",
     "openai": "^4.77.0",
     "p-retry": "^6.2.1",
-    "uuid": "^9.0.1"
-  },
-  "devDependencies": {
+    "uuid": "^9.0.1",
     "@types/async-retry": "^1.4.9",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
