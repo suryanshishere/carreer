@@ -10,31 +10,19 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "rootDir": "./",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@models/*": [
-        "models/*"
-      ],
-      "@controllers/*": [
-        "controllers/*"
-      ],
-      "@routes/*": [
-        "routes/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@middleware/*": [
-        "middleware/*"
-      ],
-      "@shared/*": [
-        "shared/*"
-      ],
+      "@models/*": ["models/*"],
+      "@controllers/*": ["controllers/*"],
+      "@routes/*": ["routes/*"],
+      "@utils/*": ["utils/*"],
+      "@middleware/*": ["middleware/*"],
+      "@shared/*": ["shared/*"]
     }
   },
-  // "include": [
-  //   "backend/**/*.ts"
-  // ], // Include all TypeScript files in the backend folder
+  "include": [
+    "**/*.ts"  // This should include all .ts files in the backend directory
+  ],
   "exclude": [
     "node_modules"
   ]
