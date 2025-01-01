@@ -46,7 +46,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                     to={`/sections/${section}/${
                       item.post
                         ? item.post.post_code
-                        : snakeCase(item.name_of_the_post)
+                        : snakeCase(item.name_of_the_post) //TODO: remove name of the post completly
                     }?is_saved=${item.is_saved}`}
                     state={{ postId: item._id }}
                     className="text-custom-red font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray hover:decoration-custom-gray"

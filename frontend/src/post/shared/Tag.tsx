@@ -68,7 +68,7 @@ const Tag = (importantDates: IDates, section: string) => {
     );
   if (isLive)
     return (
-      <mark className="text-xs px-2 text-custom-white bg-custom-green rounded-full">
+      <mark className="text-xs px-2 text-custom-white bg-custom-green rounded-full  ">
         LIVE
       </mark>
     );

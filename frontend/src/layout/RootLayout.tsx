@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import Footer from "shared/components/footer/Footer";
 import NavBar from "shared/components/navbar/NavBar";
@@ -23,7 +23,7 @@ const RootLayout: React.FC = () => {
             : "translate-y-0"
         }`}
       >
-        <Outlet key={token || "no-token"} /> 
+        <Outlet key={token || "no-token"} />
       </div>
       <Footer />
     </div>

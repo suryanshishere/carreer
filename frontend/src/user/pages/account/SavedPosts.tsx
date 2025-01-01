@@ -31,27 +31,21 @@ const SavedPosts = () => {
     queryFn: () => fetchSavedPosts(token),
   });
 
-  const savedPost = data.data.saved_posts;
-  const savedPostLength = Object.keys(savedPost).length;
-  const queryStateMessage = useQueryStates({
-    isLoading,
-    error: error ? error.message : null,
-    empty: savedPostLength === 0,
-  });
-
-  if (queryStateMessage) return queryStateMessage;
-
+  const savedPost = data?.data?.saved_posts || {}; // Safeguard in case data is undefined or null
+  if (Object.keys(savedPost).length === 0) {
+    return <div className="">COOOOL</div>;
+  }
   return (
     <div className="flex flex-col gap-2">
       {Object.keys(savedPost).map((key) => {
-        const data = savedPost[key];
+        const posts = savedPost[key];
         return (
-          data.length > 0 &&
-          Array.isArray(data) && (
+          posts.length > 0 &&
+          Array.isArray(posts) && (
             <Fragment key={key}>
               <h2 className="mt-3 self-start">{startCase(key)}</h2>
               <div className="pl-2">
-                <PostList data={savedPost[key]} section={key} isSaved />
+                <PostList data={posts} section={key} isSaved />
               </div>
             </Fragment>
           )

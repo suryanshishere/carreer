@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Bookmark from "post/shared/Bookmark";
 import RenderPostDetail from "../components/RenderPostDetail";
-import { lowerCase, snakeCase, startCase } from "lodash";
+import _, { lowerCase, snakeCase, startCase } from "lodash";
 import { excludedPostListKeys } from "post/shared/post-list-render-define";
 import Tag from "./Tag";
 import { IPostList, IPostListData } from "models/postModels/IPost";
+import RenderField from "shared/ui/RenderField";
 
 interface ListProps {
   data: IPostList;
@@ -22,6 +23,8 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
     return Object.entries(obj)
       .filter(([key]) => !excludedPostListKeys.includes(key))
       .map(([key, value]) => {
+        const dateCheck = (value?.current_year || value?.previous_year) != null;
+
         if (typeof value === "object" && value !== null) {
           const nestedEntries = Object.entries(value);
           if (
@@ -32,15 +35,19 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
           ) {
             return (
               <span key={key}>
-                <span className="pl-2">{startCase(key)}:</span>
-                <span className="pl-2">
-                  {(value?.current_year || value?.previous_year) != null ? (
+                <span
+                  className={`mr-1 ${!dateCheck && "text-custom-less-gray"}`}
+                >
+                  {startCase(key)}:
+                </span>
+                <span className="mr-1">
+                  {dateCheck ? (
                     <span>
-                      <RenderPostDetail
-                        value={`${
+                      <RenderField
+                        stringValue={`${
                           value.current_year || `${value.previous_year}`
                         }`}
-                        keyProp={key}
+                        uniqueKey={key}
                       />
                     </span>
                   ) : (
@@ -50,21 +57,25 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
               </span>
             );
           } else {
-            return <span key={key}>{renderObject(value)}</span>;
+            return (
+              <span key={key} className="mr-2">
+                {renderObject(value)}
+              </span>
+            );
           }
         } else {
           return (
-            <span key={key} className="mr-2">
-              <span>{startCase(key)}:</span>
-              <span className="ml-1">
-                <RenderPostDetail value={value} keyProp={key} />
+            <span key={key} className="mr-1">
+              <span className={`mr-1`}>{startCase(key)}:</span>
+              <span className="mr-1">
+                <RenderField stringValue={_.toString(value)} uniqueKey={key} />
               </span>
             </span>
           );
         }
       });
   };
-  console.log("post code", data);
+
   return (
     <ul className="self-start p-0 m-0 flex flex-col gap-2 text-base">
       {data.map((item, index) => (
@@ -74,11 +85,11 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
               <Link
                 to={`/sections/${section}/${
                   item.post
-                    ? (item.post.post_code)
-                    : snakeCase(item.name_of_the_post)
+                    ? item.post.post_code
+                    : snakeCase(item.name_of_the_post) //TODO: remove name of the post completly
                 }?is_saved=${item.is_saved}`}
                 state={{ postId: item._id }}
-                className="text-custom-red font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray  hover:decoration-custom-gray "
+                className="text-custom-red zig-zag-line font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray  hover:decoration-custom-gray "
               >
                 {item.name_of_the_post}
               </Link>

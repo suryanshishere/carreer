@@ -3,13 +3,17 @@ import PostList from "post/shared/PostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import useQueryStates from "shared/hooks/query-states-hook";
+import DataStates from "shared/ui/DataStates";
 
 const Section: React.FC = () => {
   const { section = "" } = useParams<{ section: string }>();
 
   const {
-    data = { data: {} },
+    data = {
+      data: {
+        [section]: [],
+      },
+    },
     isLoading,
     error,
   } = useQuery({
@@ -20,21 +24,16 @@ const Section: React.FC = () => {
     },
     enabled: Boolean(section),
     retry: 3,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
-  const queryStateMessage = useQueryStates({
-    isLoading,
-    error: error ? error.message : null,
-    empty: Object.keys(data.data).length === 0,
-  });
+  if (data.data[section].length === 0 && !isLoading) {
+    return <DataStates noData={data.data[section].length === 0} />;
+  }
 
-  if (queryStateMessage) return queryStateMessage;
   return (
     <div className="flex flex-col gap-3">
-      {Object.keys(data.data).map((key) => (
-        <PostList key={key} data={data.data[key] || []} section={key} />
-      ))}
+      <PostList data={data.data[section] || []} section={section} />
     </div>
   );
 };

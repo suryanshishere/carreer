@@ -12,6 +12,7 @@ import { snakeCase } from "lodash";
 import { IPostDetail } from "models/postModels/IPost";
 import { postDetailPriorities } from "../shared/post-priority-array";
 import ContributeToPost from "post/components/ContributeToPost";
+import Info from "post/shared/Info";
 
 // Fetch Post Detail API Call
 const fetchPostDetail = async (
@@ -32,7 +33,7 @@ const getIsSavedStatus = (
 
 // PostDetail Component
 const PostDetail: React.FC = () => {
-  const { section = "", postCode = "" } = useParams<{
+  const { section = ""} = useParams<{
     section: string;
     postCode: string;
   }>();
@@ -79,12 +80,9 @@ const PostDetail: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="self-end flex gap-2 items-center justify-center">
-        <ContributeToPost
-          section={section}
-          postCode={postCode}
-        />
+    <div className="flex flex-col items-center relative min-h-screen">
+      <div className="self-end flex gap-2 items-center justify-center sticky top-0 bg-white z-10">
+        <Info />
         <Bookmark section={section} postId={postId} isSaved={isSaved} />
       </div>
       {orderedData && <PostDetailItem data={orderedData} />}

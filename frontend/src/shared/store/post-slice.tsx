@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface PostState {
   isEditPostClicked: boolean;
   isAllKeyValuePairsStored: boolean;
-  keyValuePairs: Record<string, any>; // To explicitly track stored key-value pairs
+  keyValuePairs: Record<string, any>; 
 }
 
 const initialState: PostState = {
@@ -23,6 +23,7 @@ const postSlice = createSlice({
       const { key, value } = action.payload;
       state.keyValuePairs[key] = value;
 
+      //TODO
       // Update `isAllKeyValuePairsStored` based on a condition, e.g.,
       // when the number of key-value pairs reaches a certain number.
       // Replace the condition with your own logic if needed.
