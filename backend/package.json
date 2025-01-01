@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-   "start": "nodemon -r module-alias/register dist/index.js",
+   "start": "node dist/index.js",
     "build": "tsc",
     "dev": "nodemon index.ts"
   },
