@@ -13,10 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.accessUpdate = exports.getReqAccess = exports.getRole = void 0;
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const http_errors_1 = __importDefault(require("src/utils/http-errors"));
 const validation_error_1 = require("@controllers/sharedControllers/validation-error");
-const admin_model_1 = __importDefault(require("@models/admin/admin-model"));
-const request_model_1 = __importDefault(require("@models/admin/request-model"));
+const admin_model_1 = __importDefault(require("src/models/admin/admin-model"));
+const request_model_1 = __importDefault(require("src/models/admin/request-model"));
 const admin_controllers_utils_1 = require("./admin-controllers-utils");
 const getRole = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.userData.userId;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const env_data_1 = require("@shared/env-data");
+const env_data_1 = require("src/shared/env-data");
 const mongoose_1 = require("mongoose");
 const applyDefaultId = function () {
     return this._id; // Set the reference to the document's _id

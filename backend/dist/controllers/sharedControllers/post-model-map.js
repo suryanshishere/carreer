@@ -4,20 +4,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.COMPONENT_POST_MODAL_MAP = exports.SECTION_POST_MODAL_MAP = exports.MODAL_MAP = void 0;
-const env_data_1 = require("@shared/env-data");
+const env_data_1 = require("src/shared/env-data");
 const lodash_1 = require("lodash");
-const certificate_verification_model_1 = __importDefault(require("@models/post/sectionModels/certificate-verification-model"));
-const date_model_1 = __importDefault(require("@models/post/componentModels/date-model"));
-const link_model_1 = __importDefault(require("@models/post/componentModels/link-model"));
-const common_model_1 = __importDefault(require("@models/post/componentModels/common-model"));
-const fee_model_1 = __importDefault(require("@models/post/componentModels/fee-model"));
-const admission_model_1 = __importDefault(require("@models/post/sectionModels/admission-model"));
-const important_model_1 = __importDefault(require("@models/post/sectionModels/important-model"));
-const answer_key_model_1 = __importDefault(require("@models/post/sectionModels/answer-key-model"));
-const syllabus_model_1 = __importDefault(require("@models/post/sectionModels/syllabus-model"));
-const latest_job_model_1 = __importDefault(require("@models/post/sectionModels/latest-job-model"));
-const admit_card_model_1 = __importDefault(require("@models/post/sectionModels/admit-card-model"));
-const result_model_1 = __importDefault(require("@models/post/sectionModels/result-model"));
+const certificate_verification_model_1 = __importDefault(require("src/models/post/sectionModels/certificate-verification-model"));
+const date_model_1 = __importDefault(require("src/models/post/componentModels/date-model"));
+const link_model_1 = __importDefault(require("src/models/post/componentModels/link-model"));
+const common_model_1 = __importDefault(require("src/models/post/componentModels/common-model"));
+const fee_model_1 = __importDefault(require("src/models/post/componentModels/fee-model"));
+const admission_model_1 = __importDefault(require("src/models/post/sectionModels/admission-model"));
+const important_model_1 = __importDefault(require("src/models/post/sectionModels/important-model"));
+const answer_key_model_1 = __importDefault(require("src/models/post/sectionModels/answer-key-model"));
+const syllabus_model_1 = __importDefault(require("src/models/post/sectionModels/syllabus-model"));
+const latest_job_model_1 = __importDefault(require("src/models/post/sectionModels/latest-job-model"));
+const admit_card_model_1 = __importDefault(require("src/models/post/sectionModels/admit-card-model"));
+const result_model_1 = __importDefault(require("src/models/post/sectionModels/result-model"));
 const OVERALL_MODELS = {
     CertificateVerificationModel: certificate_verification_model_1.default,
     DateModel: date_model_1.default,

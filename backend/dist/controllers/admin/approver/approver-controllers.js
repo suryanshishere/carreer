@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.applyContri = exports.getContriPost = exports.getContriPostCodes = void 0;
-const contribution_model_1 = __importDefault(require("@models/user/contribution-model"));
+const contribution_model_1 = __importDefault(require("src/models/user/contribution-model"));
 const publisher_controllers_utils_1 = require("../publisher/publisher-controllers-utils");
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const http_errors_1 = __importDefault(require("src/utils/http-errors"));
 const approver_controllers_utils_1 = require("./approver-controllers-utils");
 const mongoose_1 = __importDefault(require("mongoose"));
 const validation_error_1 = require("@controllers/sharedControllers/validation-error");

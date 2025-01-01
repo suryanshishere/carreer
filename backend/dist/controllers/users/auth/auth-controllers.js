@@ -13,16 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyEmail = exports.sendVerificationOtp = exports.resetPassword = exports.sendPasswordResetLink = exports.auth = void 0;
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const http_errors_1 = __importDefault(require("src/utils/http-errors"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const send_email_1 = __importDefault(require("./send-email"));
-const user_model_1 = __importDefault(require("@models/user/user-model"));
+const user_model_1 = __importDefault(require("src/models/user/user-model"));
 const auth_utils_1 = require("./auth-utils");
 const validation_error_1 = __importDefault(require("../../sharedControllers/validation-error"));
-const check_auth_1 = require("@middleware/check-auth");
+const check_auth_1 = require("src/middleware/check-auth");
 const lodash_1 = require("lodash");
 const express_validator_1 = require("express-validator");
-const env_data_1 = require("@shared/env-data");
+const env_data_1 = require("src/shared/env-data");
 const FRONTEND_URL = `${process.env.FRONTEND_URL}/user/reset_password` ||
     "http://localhost:3000/user/reset_password";
 const { EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY } = env_data_1.USER_ENV_DATA;

@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const env_data_1 = require("@shared/env-data");
+const env_data_1 = require("src/shared/env-data");
 const postSectionsArray = env_data_1.POST_ENV_DATA.SECTIONS;
 const sectionFields = postSectionsArray.reduce((fields, section) => {
     fields[section] = {

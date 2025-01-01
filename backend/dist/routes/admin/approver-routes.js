@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const approver_controllers_1 = require("@controllers/admin/approver/approver-controllers");
-const posts_routes_1 = require("@routes/posts/posts-routes");
+const posts_routes_1 = require("src/routes/posts/posts-routes");
 const express_1 = __importDefault(require("express"));
 const publisher_routes_utils_1 = require("./publisher/publisher-routes-utils");
 const express_validator_1 = require("express-validator");
-const user_routes_1 = require("@routes/users/user-routes");
+const user_routes_1 = require("src/routes/users/user-routes");
 const router = express_1.default.Router();
 router.post("/apply-contri", [
     (0, posts_routes_1.sectionCheck)("body"),

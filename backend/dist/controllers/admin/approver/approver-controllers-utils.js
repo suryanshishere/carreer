@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateContributorApproval = exports.updateContributorContribution = exports.updatePostData = exports.flattenContributionData = void 0;
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const http_errors_1 = __importDefault(require("src/utils/http-errors"));
 const lodash_1 = require("lodash");
 const mongodb_1 = require("mongodb");
 const flattenContributionData = (data, prefix = "") => {

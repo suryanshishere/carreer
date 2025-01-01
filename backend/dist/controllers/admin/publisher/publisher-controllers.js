@@ -14,14 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createNewPost = exports.createComponentPost = exports.deletePost = void 0;
 const validation_error_1 = __importDefault(require("@controllers/sharedControllers/validation-error"));
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const http_errors_1 = __importDefault(require("src/utils/http-errors"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const post_model_1 = __importDefault(require("@models/post/post-model"));
+const post_model_1 = __importDefault(require("src/models/post/post-model"));
 const post_model_map_1 = require("@controllers/sharedControllers/post-model-map");
 const publisher_controllers_utils_1 = require("./publisher-controllers-utils");
 const express_validator_1 = require("express-validator");
 const post_sort_map_1 = require("@controllers/posts/postsControllersUtils/post-sort-map");
-const admin_model_1 = __importDefault(require("@models/admin/admin-model"));
+const admin_model_1 = __importDefault(require("src/models/admin/admin-model"));
 //may be used in future
 const deletePost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { postId, section } = req.body;

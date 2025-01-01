@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserIdFromRequest = exports.optionalPaths = exports.excludedPaths = void 0;
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const http_errors_1 = __importDefault(require("src/utils/http-errors"));
 const express_jwt_1 = require("express-jwt");
 const lodash_1 = require("lodash");
 const JWT_KEY = process.env.JWT_KEY || "";

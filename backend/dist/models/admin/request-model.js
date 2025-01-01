@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.requestSchema = void 0;
-const env_data_1 = require("@shared/env-data");
+const env_data_1 = require("src/shared/env-data");
 const mongoose_1 = __importStar(require("mongoose"));
 const { MIN_REASON_LENGTH, MAX_REASON_LENGTH } = env_data_1.CONTACT_US_ENV_DATA;
 exports.requestSchema = new mongoose_1.Schema({

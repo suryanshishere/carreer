@@ -7,26 +7,26 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "./src",  
     "baseUrl": ".",
     "paths": {
       "@models/*": [
-        "models/*"
+        "src/models/*"  
       ],
       "@controllers/*": [
-        "controllers/*"
+        "src/controllers/*"
       ],
       "@routes/*": [
-        "routes/*"
+        "src/routes/*"
       ],
       "@utils/*": [
-        "utils/*"
+        "src/utils/*"
       ],
       "@middleware/*": [
-        "middleware/*"
+        "src/middleware/*"
       ],
       "@shared/*": [
-        "shared/*"
+        "src/shared/*"
       ]
     }
   },

@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const env_data_1 = require("@shared/env-data");
+const env_data_1 = require("src/shared/env-data");
 const lodash_1 = __importDefault(require("lodash"));
 const mongoose_1 = __importStar(require("mongoose"));
 const { MIN_EMAIL_OTP, MAX_EMAIL_OTP, PWD_RESET_ERROR_MSG, OTP_ERROR_MSG, EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY, } = env_data_1.USER_ENV_DATA;
