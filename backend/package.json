@@ -2,11 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/index.js",
+   "start": "nodemon -r module-alias/register dist/index.js",
     "build": "tsc",
-    "stage":"git add . && git commit -m 'stage' && git push"
+    "dev": "nodemon index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -47,11 +46,12 @@
     "ts-node": "^10.9.2"
   },
   "_moduleAliases": {
-    "@models": "dist/models",
-    "@controllers": "dist/controllers",
-    "@routes": "dist/routes",
-    "@utils": "dist/utils",
-    "@middleware": "dist/middleware",
-    "@shared": "dist/shared"
-  }
+  "@models": "dist/models",
+  "@controllers": "dist/controllers",
+  "@routes": "dist/routes",
+  "@utils": "dist/utils",
+  "@middleware": "dist/middleware",
+  "@shared": "dist/shared"
+}
+
 }

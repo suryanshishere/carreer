@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "./",
     "baseUrl": ".",
     "paths": {
       "@models/*": [
@@ -29,5 +29,11 @@
         "shared/*"
       ],
     }
-  }
+  },
+  // "include": [
+  //   "backend/**/*.ts"
+  // ], // Include all TypeScript files in the backend folder
+  "exclude": [
+    "node_modules"
+  ]
 }
