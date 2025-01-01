@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
@@ -47,11 +47,11 @@
     "ts-node": "^10.9.2"
   },
   "_moduleAliases": {
-    "@models": "models",
-    "@controllers": "controllers",
-    "@routes": "routes",
-    "@middleware": "middleware",
-    "@utils": "utils",
-    "@shared": "shared"
+    "@models": "dist/models",
+    "@controllers": "dist/controllers",
+    "@routes": "dist/routes",
+    "@utils": "dist/utils",
+    "@middleware": "dist/middleware",
+    "@shared": "dist/shared"
   }
 }
