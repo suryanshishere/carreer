@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import  dateHandler  from "../../helper/date-handler";
+// import  dateHandler  from "../../helper/date-handler";
 
 export interface IUserDetail extends Document {
   _id: string;
@@ -16,7 +16,7 @@ const userDetailSchema: Schema = new Schema<IUserDetail>({
   country_phone_code: { type: Number },
   language: { type: String },
   gender: { type: String },
-  date_of_birth: { type: Date, set: dateHandler },
+  // date_of_birth: { type: Date, set: dateHandler },
 });
 
 const AccountDetail = mongoose.model<IUserDetail>(
