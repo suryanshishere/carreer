@@ -23,7 +23,9 @@ const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(
+  
+));
 
 app.delete("/api/deletePost", deletePost);
 app.use(checkAuth);
