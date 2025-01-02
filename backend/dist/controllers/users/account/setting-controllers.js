@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivateAccount = exports.changePassword = void 0;
-const validation_error_1 = __importDefault(require("@controllers/sharedControllers/validation-error"));
-const user_model_1 = __importDefault(require("@models/user/user-model"));
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const validation_error_1 = __importDefault(require("../../sharedControllers/validation-error"));
+const user_model_1 = __importDefault(require("../../../models/user/user-model"));
+const http_errors_1 = __importDefault(require("../../../utils/http-errors"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const check_auth_1 = require("@middleware/check-auth");
+const check_auth_1 = require("../../../middleware/check-auth");
 const express_validator_1 = require("express-validator");
 const changePassword = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = (0, express_validator_1.validationResult)(req);

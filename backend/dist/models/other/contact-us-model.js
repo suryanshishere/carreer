@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const modelsUtils_1 = require("@models/modelsUtils");
-const env_data_1 = require("@shared/env-data");
+const modelsUtils_1 = require("../modelsUtils");
+const env_data_1 = require("../../shared/env-data");
 const mongoose_1 = require("mongoose");
 const { MIN_NAME_LENGTH, MAX_NAME_LENGTH, MIN_REASON_LENGTH, MAX_REASON_LENGTH, } = env_data_1.CONTACT_US_ENV_DATA;
 const contactUsSchema = new mongoose_1.Schema({

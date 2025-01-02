@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const express_validator_1 = require("express-validator");
-const setting_controllers_1 = require("@controllers/users/account/setting-controllers");
+const setting_controllers_1 = require("../../../controllers/users/account/setting-controllers");
 const router = express_1.default.Router();
 const PWD_LENGTH = Number(process.env.PWD_LENGTH) || 6;
 // router.post(

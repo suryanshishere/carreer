@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_model_1 = __importDefault(require("@models/user/user-model"));
+const user_model_1 = __importDefault(require("../../models/user/user-model"));
 const node_cron_1 = __importDefault(require("node-cron"));
 const EMAIL_VERIFICATION_TOKEN_EXPIRY = Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY) || 3;
 const PASSWORD_RESET_TOKEN_EXPIRY = Number(process.env.PASSWORD_RESET_TOKEN_EXPIRY) || 3;

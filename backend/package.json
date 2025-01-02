@@ -3,14 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-   "start": "node dist/index.js",
-    "build": "tsc",
-    "dev": "nodemon index.ts"
+    "start": "node dist/index.js",
+  "build": "tsc && tsc-alias",
+  "dev": "nodemon src/index.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
+    "@types/async-retry": "^1.4.9",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/express-jwt": "^6.0.4",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/lodash": "^4.17.7",
+    "@types/ms": "^0.7.34",
+    "@types/node": "^20.12.7",
+    "@types/node-cron": "^3.0.11",
+    "@types/nodemailer": "^6.4.14",
+    "@vercel/node": "^5.0.0",
     "async-retry": "^1.3.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -27,30 +39,22 @@
     "ms": "^2.1.3",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
+    "nodemon": "^3.1.0",
     "openai": "^4.77.0",
     "p-retry": "^6.2.1",
-    "uuid": "^9.0.1",
-    "@types/async-retry": "^1.4.9",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/express-jwt": "^6.0.4",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/lodash": "^4.17.7",
-    "@types/ms": "^0.7.34",
-    "@types/node": "^20.12.7",
-    "@types/node-cron": "^3.0.11",
-    "@types/nodemailer": "^6.4.14",
-    "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "uuid": "^9.0.1"
   },
   "_moduleAliases": {
-  "@models": "dist/models",
-  "@controllers": "dist/controllers",
-  "@routes": "dist/routes",
-  "@utils": "dist/utils",
-  "@middleware": "dist/middleware",
-  "@shared": "dist/shared"
-}
-
+    "@models": "src/models",
+    "@controllers": "src/controllers",
+    "@routes": "src/routes",
+    "@utils": "src/utils",
+    "@middleware": "src/middleware",
+    "@shared": "src/shared"
+  },
+  "devDependencies": {
+    "tsc-alias": "^1.8.10"
+  }
 }

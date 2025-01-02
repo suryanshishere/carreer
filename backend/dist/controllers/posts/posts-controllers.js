@@ -15,13 +15,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -47,19 +57,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postDetail = exports.section = exports.home = exports.helpless = void 0;
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const http_errors_1 = __importDefault(require("../../utils/http-errors"));
 const lodash_1 = require("lodash");
-const check_auth_1 = require("@middleware/check-auth");
-const common_model_1 = __importDefault(require("@models/post/componentModels/common-model"));
-const fee_model_1 = __importDefault(require("@models/post/componentModels/fee-model"));
-const date_model_1 = __importDefault(require("@models/post/componentModels/date-model"));
-const link_model_1 = __importDefault(require("@models/post/componentModels/link-model"));
-const post_model_1 = __importDefault(require("@models/post/post-model"));
+const check_auth_1 = require("../../middleware/check-auth");
+const common_model_1 = __importDefault(require("../../models/post/componentModels/common-model"));
+const fee_model_1 = __importDefault(require("../../models/post/componentModels/fee-model"));
+const date_model_1 = __importDefault(require("../../models/post/componentModels/date-model"));
+const link_model_1 = __importDefault(require("../../models/post/componentModels/link-model"));
+const post_model_1 = __importDefault(require("../../models/post/post-model"));
 const posts_controllers_utils_1 = require("./postsControllersUtils/posts-controllers-utils");
-const post_model_map_1 = require("@controllers/sharedControllers/post-model-map");
-const validation_error_1 = __importStar(require("@controllers/sharedControllers/validation-error"));
+const post_model_map_1 = require("../sharedControllers/post-model-map");
+const validation_error_1 = __importStar(require("../sharedControllers/validation-error"));
 const express_validator_1 = require("express-validator");
-const user_model_1 = __importDefault(require("@models/user/user-model"));
+const user_model_1 = __importDefault(require("../../models/user/user-model"));
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
 const CATEGORY_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_CATEGORYLIST) || 25;

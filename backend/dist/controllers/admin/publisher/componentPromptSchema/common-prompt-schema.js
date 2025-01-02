@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const generative_ai_1 = require("@google/generative-ai");
-const env_data_1 = require("@shared/env-data");
+const env_data_1 = require("../../../../shared/env-data");
 const { short_information, highlighted_information, department, stage_level } = env_data_1.COMMON_COMPONENT_POST_CHAR_LIMITS;
 const ageCriteria = {
     minimum_age: { type: generative_ai_1.SchemaType.NUMBER },

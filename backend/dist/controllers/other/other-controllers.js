@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.contactUs = void 0;
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
-const contact_us_model_1 = __importDefault(require("@models/other/contact-us-model"));
+const http_errors_1 = __importDefault(require("../../utils/http-errors"));
+const contact_us_model_1 = __importDefault(require("../../models/other/contact-us-model"));
 const contactUs = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, reason } = req.body;

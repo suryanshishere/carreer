@@ -13,13 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.contributeToPost = exports.reqAccess = void 0;
-const validation_error_1 = require("@controllers/sharedControllers/validation-error");
-const admin_model_1 = __importDefault(require("@models/admin/admin-model"));
-const request_model_1 = __importDefault(require("@models/admin/request-model"));
-const contribution_model_1 = __importDefault(require("@models/user/contribution-model"));
-const user_model_1 = __importDefault(require("@models/user/user-model"));
-const env_data_1 = require("@shared/env-data");
-const http_errors_1 = __importDefault(require("@utils/http-errors"));
+const validation_error_1 = require("../sharedControllers/validation-error");
+const admin_model_1 = __importDefault(require("../../models/admin/admin-model"));
+const request_model_1 = __importDefault(require("../../models/admin/request-model"));
+const contribution_model_1 = __importDefault(require("../../models/user/contribution-model"));
+const user_model_1 = __importDefault(require("../../models/user/user-model"));
+const env_data_1 = require("../../shared/env-data");
+const http_errors_1 = __importDefault(require("../../utils/http-errors"));
 const mongoose_1 = __importDefault(require("mongoose"));
 //TEMP: someone can send none, while expireAt active. to start new req to remove expireAt, but the person will have to loose earlier access then.
 const reqAccess = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
