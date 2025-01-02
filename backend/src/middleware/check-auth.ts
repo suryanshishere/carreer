@@ -16,6 +16,7 @@ export const excludedPaths: (string | RegExp)[] = [
 
 // Define paths that optionally require authorization (only if token is present)
 export const optionalPaths: (string | RegExp)[] = [
+  "/api/public",
   "/api/public/home",
   /^\/api\/public\/sections\/[^/]+$/,
   /^\/api\/public\/sections\/[^/]+\/[^/]+$/,
