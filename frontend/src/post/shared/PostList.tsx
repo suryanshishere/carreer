@@ -89,12 +89,17 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                     : snakeCase(item.name_of_the_post) //TODO: remove name of the post completly
                 }?is_saved=${item.is_saved}`}
                 state={{ postId: item._id }}
-                className="text-custom-red zig-zag-line font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray  hover:decoration-custom-gray "
+                className="custom-link"
               >
                 {item.name_of_the_post}
               </Link>
               <div className="self-end flex gap-1 items-center">
-                {item.important_dates && Tag(item.important_dates, section)}
+                {item.important_dates && (
+                  <Tag
+                    importantDates={item.important_dates}
+                    section={section}
+                  />
+                )}
                 <Bookmark
                   section={section}
                   postId={item._id}

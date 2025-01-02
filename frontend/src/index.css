@@ -2,13 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   h2 {
     @apply text-lg font-bold p-1 self-center w-fit;
   }
   hr {
-    @apply w-full border-t-1 border-custom-less-gray;
+    @apply w-full border-t-1 border-custom-black;
+  }
+
+  .custom-link {
+    @apply underline decoration-1 decoration-custom-red underline-offset-4 hover:text-custom-red visited:text-custom-red;
   }
 }
 

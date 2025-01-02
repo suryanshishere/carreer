@@ -14,9 +14,15 @@ interface IBookmark {
   section: string;
   postId: string;
   isSaved: boolean;
+  classProp?: string;
 }
 
-const Bookmark: React.FC<IBookmark> = ({ section, postId, isSaved }) => {
+const Bookmark: React.FC<IBookmark> = ({
+  section,
+  postId,
+  isSaved,
+  classProp,
+}) => {
   const { token } = useSelector((state: RootState) => state.auth.userData);
   const dispatch = useDispatch<AppDispatch>();
   const [isBookmarked, setIsBookmarked] = useState<boolean>(isSaved);
@@ -61,7 +67,7 @@ const Bookmark: React.FC<IBookmark> = ({ section, postId, isSaved }) => {
   };
 
   return (
-    <div className="flex items-center">
+    <div className={`${classProp}`}>
       {isBookmarked ? (
         <button
           {...bookmarkButtonProps}

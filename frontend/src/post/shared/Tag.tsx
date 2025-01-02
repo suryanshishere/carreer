@@ -1,6 +1,13 @@
 import React from "react";
 import { IDates } from "models/postModels/overallInterfaces/IDates";
 import moment from "moment";
+
+interface TagProps {
+  importantDates: IDates;
+  section: string;
+  classProp?: string; // Optional prop for custom styling
+}
+
 const calculateDateDifference = (importantDates: IDates, section: string) => {
   const tagSectionMap: Record<string, string> = {
     result: "result_announcement_date",
@@ -32,7 +39,7 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
 
   // Calculate the difference in days for the same year
   let daysDifference = resultDate.diff(currentDate, "days");
-  // // Handle year wrap-around cases (e.g., Dec -> Jan or Jan -> Dec)
+  // Handle year wrap-around cases (e.g., Dec -> Jan or Jan -> Dec)
   if (daysDifference < -183) {
     // If resultDate is far in the past, assume it's in the next year
     daysDifference = resultDate.add(1, "year").diff(currentDate, "days");
@@ -41,39 +48,33 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
     daysDifference = resultDate.subtract(1, "year").diff(resultDate, "days");
   }
 
-  // console.log(daysDifference,resultDate)
   return daysDifference;
 };
 
-const Tag = (importantDates: IDates, section: string) => {
+const Tag: React.FC<TagProps> = ({ importantDates, section, classProp }) => {
   const days = calculateDateDifference(importantDates, section);
 
   if (days === null) return null;
 
-  const isReleased = days <= -4;
-  const isEarly = days >= 3;
-  const isLive = days > -3 && days < 2;
+  // Initialize label and styles for the tag
+  let label = "";
+  let styles =
+    "text-xs font-semibold h-full w-[2px] ";
 
-  if (isReleased)
-    return (
-      <mark className="text-xs px-2 bg-custom-super-less-gray rounded-full">
-        RELEASED
-      </mark>
-    );
-  if (isEarly)
-    return (
-      <mark className="text-xs px-2 bg-custom-pale-orange rounded-full">
-        EARLY
-      </mark>
-    );
-  if (isLive)
-    return (
-      <mark className="text-xs px-2 text-custom-white bg-custom-green rounded-full  ">
-        LIVE
-      </mark>
-    );
+  // Determine the tag properties based on `days`
+  if (days <= -4) {
+    label = "Released";
+    styles += "bg-custom-gray";
+  } else if (days >= 3) {
+    label = "Early";
+    styles += "bg-custom-pale-yellow";
+  } else if (days > -3 && days < 2) {
+    label = "Live";
+    styles += "bg-custom-green ";
+  }
 
-  return null;
+  // Return the styled tag if a label is assigned
+  return label ? <span className={`${styles} ${classProp}`}> </span> : null;
 };
 
 export default Tag;

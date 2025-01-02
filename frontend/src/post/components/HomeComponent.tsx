@@ -28,33 +28,41 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
         <hr className="border-t-2" />
       </div>
       <div className="h-full flex flex-col justify-between mr-1">
-        <ul className="flex flex-col gap-2 ml-0 pr-0">
+        <ul className="flex flex-col   ml-0 pr-0">
           {ListItemData.length > 0 &&
             Array.isArray(ListItemData) &&
             ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
               <React.Fragment key={index}>
-                <li className="w-full">
-                  <div className="float-right flex items-center gap-1">
-                    {item.important_dates && Tag(item.important_dates, section)}
-                    <Bookmark
-                      section={section}
-                      postId={item._id}
-                      isSaved={item.is_saved}
-                    />
+                <li className="group inline-flex justify-between items-center  min-h-7">
+                  <div className="self-end h-full flex gap-2 items-center">
+                    {item.important_dates && (
+                      <Tag
+                        importantDates={item.important_dates}
+                        section={section}
+                      />
+                    )}
+                    <Link
+                      to={`/sections/${section}/${
+                        item.post
+                          ? item.post.post_code
+                          : snakeCase(item.name_of_the_post) //TODO: remove name of the post completly
+                      }?is_saved=${item.is_saved}`}
+                      state={{ postId: item._id }}
+                      className="custom-link my-2"
+                    >
+                      {item.name_of_the_post}
+                    </Link>
                   </div>
-                  <Link
-                    to={`/sections/${section}/${
-                      item.post
-                        ? item.post.post_code
-                        : snakeCase(item.name_of_the_post) //TODO: remove name of the post completly
-                    }?is_saved=${item.is_saved}`}
-                    state={{ postId: item._id }}
-                    className="text-custom-red font-semibold underline decoration-1 underline-offset-2 visited:text-custom-gray hover:decoration-custom-gray"
-                  >
-                    {item.name_of_the_post}
-                  </Link>
+                  <Bookmark
+                    section={section}
+                    postId={item._id}
+                    isSaved={item.is_saved}
+                    classProp={`${
+                      !item.is_saved && "hidden"
+                    } group-hover:block`}
+                  />
                 </li>
-                {index !== ListItemData.length - 1 && <hr />}
+                {index !== ListItemData.length - 1 && <hr  className="text-custom-black"/>}
               </React.Fragment>
             ))}
         </ul>

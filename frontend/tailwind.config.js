@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "custom-red": "#A52A2A",
-        "custom-less-red": "#F5004F",
+        "custom-red": "rgb(165, 42, 42)",
+        "custom-less-red": "rgba(165, 42, 42, 0.85)",
         "custom-white": "rgba(255, 255, 255, 1)",
         "custom-less-white": "rgba(255, 255, 255, 0.75)",
         "custom-black": "#000000",
@@ -28,13 +28,24 @@ module.exports = {
         "auth-nav": "5rem",
         "sub-nav": "2rem",
         "auth-sub-nav": "8rem",
-        "nav-overall": "8rem",
+        "nav-overall": "10rem",
         footer: "5.5rem",
       },
       padding: {
         page: "15vw",
         button: ".35rem .5rem", //y,x
       }
+      ,
+
+      animation: {
+        marquee: "marquee 30s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+      },
     },
   },
   plugins: [
