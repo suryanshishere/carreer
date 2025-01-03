@@ -1,6 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx,html}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx,html}",
+    {
+      //for dynamic rendering
+      raw: `
+      border-custom-green
+      border-custom-pale-orange
+      border-custom-gray
+      border-custom-red
+      border-custom-black
+    `,
+    },
+  ],
   theme: {
     extend: {
       colors: {
@@ -21,22 +33,20 @@ module.exports = {
         "custom-pale-orange": "#E8B86D",
       },
       borderWidth: {
-        1: '1px', 
+        1: "1px",
       },
       spacing: {
         "main-nav": "3rem",
         "auth-nav": "5rem",
         "sub-nav": "2rem",
         "auth-sub-nav": "8rem",
-        "nav-overall": "10rem",
-        footer: "5.5rem",
+        "nav-overall": "8rem",
+        "footer": "5.5rem",
       },
       padding: {
         page: "15vw",
         button: ".35rem .5rem", //y,x
-      }
-      ,
-
+      },
       animation: {
         marquee: "marquee 30s linear infinite",
       },

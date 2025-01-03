@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { snakeCase, startCase } from "lodash";
 import Bookmark from "post/shared/Bookmark";
-import Tag from "post/shared/Tag";
 import { IPostList } from "models/postModels/IPost";
+import tag from "post/shared/tag";
 
 interface HomeListItemProps {
   ListItemData: IPostList;
@@ -33,14 +33,13 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
             Array.isArray(ListItemData) &&
             ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
               <React.Fragment key={index}>
-                <li className="group inline-flex justify-between items-center  min-h-7">
+                <li
+                  className={`group inline-flex justify-between items-center min-h-7 ${tag(
+                    section,
+                    item.important_dates
+                  )}`}
+                >
                   <div className="self-end h-full flex gap-2 items-center">
-                    {item.important_dates && (
-                      <Tag
-                        importantDates={item.important_dates}
-                        section={section}
-                      />
-                    )}
                     <Link
                       to={`/sections/${section}/${
                         item.post
@@ -62,7 +61,9 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                     } group-hover:block`}
                   />
                 </li>
-                {index !== ListItemData.length - 1 && <hr  className="text-custom-black"/>}
+                {index !== ListItemData.length - 1 && (
+                  <hr className="text-custom-black" />
+                )}
               </React.Fragment>
             ))}
         </ul>

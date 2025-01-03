@@ -1,9 +1,10 @@
 import React from "react";
 import { IDates } from "models/postModels/overallInterfaces/IDates";
 import moment from "moment";
+import TAGS from "db/postDb/tags.json";
 
 interface TagProps {
-  importantDates: IDates;
+  importantDates?: IDates;
   section: string;
   classProp?: string; // Optional prop for custom styling
 }
@@ -51,30 +52,19 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
   return daysDifference;
 };
 
-const Tag: React.FC<TagProps> = ({ importantDates, section, classProp }) => {
+const tag = (section: string, importantDates?: IDates) => {
+  if (!importantDates) return "";
   const days = calculateDateDifference(importantDates, section);
+  if (days === null) return "";
 
-  if (days === null) return null;
-
-  // Initialize label and styles for the tag
-  let label = "";
-  let styles =
-    "text-xs font-semibold h-full w-[2px] ";
-
-  // Determine the tag properties based on `days`
-  if (days <= -4) {
-    label = "Released";
-    styles += "bg-custom-gray";
-  } else if (days >= 3) {
-    label = "Early";
-    styles += "bg-custom-pale-yellow";
-  } else if (days > -3 && days < 2) {
-    label = "Live";
-    styles += "bg-custom-green ";
-  }
+  // Find the matching tag based on the number of days
+  const matchingTag = TAGS.find(
+    (tag) =>
+      tag.daysRange && days >= tag.daysRange[0] && days <= tag.daysRange[1]
+  );
 
   // Return the styled tag if a label is assigned
-  return label ? <span className={`${styles} ${classProp}`}> </span> : null;
+  return matchingTag ? `pl-2 border-l-2 border-${matchingTag?.color}` : "";
 };
 
-export default Tag;
+export default tag;

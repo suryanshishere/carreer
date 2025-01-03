@@ -4,7 +4,6 @@ import Bookmark from "post/shared/Bookmark";
 import RenderPostDetail from "../components/RenderPostDetail";
 import _, { lowerCase, snakeCase, startCase } from "lodash";
 import { excludedPostListKeys } from "post/shared/post-list-render-define";
-import Tag from "./Tag";
 import { IPostList, IPostListData } from "models/postModels/IPost";
 import RenderField from "shared/ui/RenderField";
 
@@ -94,12 +93,12 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                 {item.name_of_the_post}
               </Link>
               <div className="self-end flex gap-1 items-center">
-                {item.important_dates && (
+                {/* {item.important_dates && (
                   <Tag
                     importantDates={item.important_dates}
                     section={section}
                   />
-                )}
+                )} */}
                 <Bookmark
                   section={section}
                   postId={item._id}

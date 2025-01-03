@@ -5,7 +5,7 @@ import { startCase } from "lodash";
 
 const Navlinks: React.FC = () => {
   return (
-    <ul className="m-0 p-0 h-full flex-1 flex gap-2 items-center overflow-x-auto scrollbar-hide">
+    <ul className="m-0 p-0 h-full flex gap-2 items-center overflow-x-auto scrollbar-hide">
       {Object.entries(NAVLINKS).map(([key, link]) => (
         <NavLink
           key={link}
