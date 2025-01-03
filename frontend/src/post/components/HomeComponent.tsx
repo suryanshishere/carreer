@@ -34,7 +34,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
             ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
               <React.Fragment key={index}>
                 <li
-                  className={`group inline-flex justify-between items-center min-h-7 ${tag(
+                  className={`group inline-flex justify-between items-center ml-1 min-h-7 ${tag(
                     section,
                     item.important_dates
                   )}`}

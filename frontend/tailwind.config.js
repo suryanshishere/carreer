@@ -36,7 +36,7 @@ module.exports = {
         1: "1px",
       },
       spacing: {
-        "main-nav": "3rem",
+        "main-nav": "2.5rem",
         "auth-nav": "5rem",
         "sub-nav": "2rem",
         "auth-sub-nav": "8rem",
@@ -44,7 +44,7 @@ module.exports = {
         "footer": "5.5rem",
       },
       padding: {
-        page: "15vw",
+        page: "13vw",
         button: ".35rem .5rem", //y,x
       },
       animation: {

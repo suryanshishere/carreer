@@ -11,7 +11,7 @@
   }
 
   .custom-link {
-    @apply underline decoration-1 decoration-custom-red underline-offset-4 hover:text-custom-red visited:text-custom-red;
+    @apply underline decoration-1 text-custom-red  decoration-custom-red underline-offset-4 hover:text-custom-blue visited:decoration-custom-black visited:text-custom-black;
   }
 }
 
