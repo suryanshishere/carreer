@@ -30,7 +30,7 @@ const Info = () => {
 
       <button
         onClick={() => {
-          dispatch(toggleDropdownState("info"));
+          dispatch(toggleDropdownState({ id: "info" }));
         }}
         className={
           "p-1 m-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-custom-pale-yellow"

@@ -29,7 +29,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
   );
 
   const navItems = Object.entries(data).map(([header, item], index) => {
-    let component;
+    let component = null;
 
     if (!item) {
       component = (
@@ -37,54 +37,52 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
           onClick={
             header === "logout"
               ? logoutHandler
-              : () => dispatch(toggleDropdownState(header))
+              : () => dispatch(toggleDropdownState({ id: header }))
           }
-          className={`py-1 px-2 rounded w-full hover:bg-custom-less-white ${
+          className={`py-1 px-2 w-full hover:bg-custom-less-white ${
             dropdownStates[header] ? "bg-custom-less-white" : ""
           }`}
         >
           {startCase(header)}
         </button>
       );
-    } else {
-      const { role: getRole, link } = item;
-      if (link) {
-        component = (
-          <>
-            {(!getRole ||
-              role === getRole ||
-              (Array.isArray(getRole) && role && getRole.includes(role))) && (
-              <NavLink
-                to={link}
-                className={({ isActive }) =>
-                  `py-1 px-2 rounded block ${
-                    isActive
-                      ? "bg-custom-less-white"
-                      : "hover:bg-custom-less-white"
-                  }`
-                }
-                onClick={() => dispatch(closeAllDropdowns())}
-              >
-                {startCase(header)}
-              </NavLink>
-            )}
-          </>
-        );
-      }
+    }
+
+    const { role: getRole, link } = item || {};
+
+    if (
+      link &&
+      (!getRole ||
+        role === getRole ||
+        (Array.isArray(getRole) && role && getRole.includes(role)))
+    ) {
+      component = (
+        <NavLink
+          to={link}
+          className={({ isActive }) =>
+            `py-1 px-2 block ${
+              isActive ? "bg-custom-less-white" : "hover:bg-custom-less-white"
+            }`
+          }
+          onClick={() => dispatch(closeAllDropdowns())}
+        >
+          {startCase(header)}
+        </NavLink>
+      );
     }
 
     return (
-      <div key={header} className="w-full text-center">
-        {component}
-        {index < Object.entries(data).length - 1 && (
-          <hr className="my-1 mx-[2px] border-custom-gray" />
-        )}
-      </div>
+      component && (
+        <li key={header} className="w-full text-center">
+          {component}
+          {index < Object.entries(data).length - 1 && <hr className="my-1" />}
+        </li>
+      )
     );
   });
 
   return (
-    <ul className="h-fit w-fit rounded text-sm flex flex-col items-center text-custom-black bg-custom-pale-orange p-1">
+    <ul className="absolute top-full rounded -translate-x-1/2 h-fit w-fit text-sm flex flex-col items-center text-custom-black bg-custom-less-gray p-1">
       {navItems}
     </ul>
   );

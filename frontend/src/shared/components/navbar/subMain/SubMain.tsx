@@ -20,7 +20,7 @@ const SubMain: React.FC = () => {
           <Navlinks />
           <div className="flex gap-2">
             {TAGS.map((item) => (
-              <div key={item.label} className="flex items-center gap-1 text-xs font-semibold">
+              <div key={item.label} className="flex items-center gap-1 text-xs font-medium">
                 <span className={`h-3 w-3 bg-${item.color}`}></span>
                 <h6>{item.label}</h6>
               </div>

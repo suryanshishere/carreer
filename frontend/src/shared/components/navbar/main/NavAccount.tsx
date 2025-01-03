@@ -1,13 +1,18 @@
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { handleAuthClick } from "shared/store/auth-slice";
-import { toggleDropdownState } from "shared/store/dropdown-slice";
+import {
+  toggleDropdownState,
+  closeAllDropdowns,
+} from "shared/store/dropdown-slice";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";
 import NAV_ACCOUNT_LIST from "db/shared/nav/navAccountList.json";
 import SETTING_LIST from "db/shared/nav/setting.json";
+import useOutsideClick from "shared/hooks/click-outside-hook";
 
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,6 +27,10 @@ const NavAccount = () => {
   );
 
   const showNavDropdown = dropdownStates["main_nav_account"] || false;
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(dropdownRef, () =>
+    dispatch(toggleDropdownState({ id: "main_nav_account", state: false }))
+  );
 
   let LoginSignup = (
     <>
@@ -61,30 +70,26 @@ const NavAccount = () => {
         Saved Posts
       </NavLink>
       <div className="flex justify-center items-center gap-2">
-        <div>
-          {/* {email &&
-            `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`}  */}
-          Cool
-        </div>
-        <div className="relative">
+        <div>Cool</div>
+        <div ref={dropdownRef} className="relative">
           <button
             onClick={() => {
-              dispatch(toggleDropdownState("main_nav_account"));
+              dispatch(toggleDropdownState({ id: "main_nav_account" }));
               if (dropdownStates["setting"])
-                dispatch(toggleDropdownState("setting"));
+                dispatch(toggleDropdownState({ id: "setting" }));
             }}
             className={`h-6 w-6 flex items-center justify-center rounded-full ${
               showNavDropdown
-                ? "text-custom-black bg-custom-pale-orange"
-                : "hover:bg-custom-pale-orange hover:text-custom-black"
+                ? "text-custom-black bg-custom-less-gray"
+                : "hover:bg-custom-less-gray hover:text-custom-black"
             }`}
           >
             <ArrowDropDownIcon />
           </button>
-          <div className="absolute top-full left-1/2 mt-2 -translate-x-1/2">
+          <div className="absolute top-full left-1/2 mt-1 shadow rounded shadow-custom-black -translate-x-1/2">
             {showNavDropdown && <NavAccountList data={NAV_ACCOUNT_LIST} />}
           </div>
-          <div className="absolute top-full right-4 mt-2 -translate-x-1/2">
+          <div className="absolute top-full shadow round shadow-custom-black">
             {dropdownStates["setting"] && (
               <NavAccountList data={SETTING_LIST} />
             )}

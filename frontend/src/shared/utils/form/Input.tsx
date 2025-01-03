@@ -84,11 +84,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder || startCase(name)}
             value={value}
             onChange={onChange}
-            className={`w-full pl-2 py-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
+            className={`w-full pl-2 py-2 outline outline-2 focus:outline-custom-gray outline-custom-less-gray text-base rounded ${classProp} ${
               error ? "outline-custom-red" : ""
             } ${
               error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"
-            }`}
+            }
+            `}
             style={style}
           />
           {endAdornment && (
