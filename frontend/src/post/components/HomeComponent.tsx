@@ -39,19 +39,17 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                     item.important_dates
                   )}`}
                 >
-                  <div className="self-end h-full flex gap-2 items-center">
-                    <Link
-                      to={`/sections/${section}/${
-                        item.post
-                          ? item.post.post_code
-                          : snakeCase(item.name_of_the_post) //TODO: remove name of the post completly
-                      }?is_saved=${item.is_saved}`}
-                      state={{ postId: item._id }}
-                      className="custom-link my-2"
-                    >
-                      {item.name_of_the_post}
-                    </Link>
-                  </div>
+                  <Link
+                    to={`/sections/${section}/${
+                      item.post
+                        ? item.post.post_code
+                        : snakeCase(item.name_of_the_post) //TODO: remove name of the post completly
+                    }?is_saved=${item.is_saved}`}
+                    state={{ postId: item._id }}
+                    className="custom-link my-2"
+                  >
+                    {item.name_of_the_post}
+                  </Link>
                   <Bookmark
                     section={section}
                     postId={item._id}

@@ -6,7 +6,7 @@ import TAGS from "db/postDb/tags.json";
 interface TagProps {
   importantDates?: IDates;
   section: string;
-  classProp?: string; // Optional prop for custom styling
+  classProp?: string;  
 }
 
 const calculateDateDifference = (importantDates: IDates, section: string) => {

@@ -5,9 +5,11 @@ import _ from "lodash";
 const RenderField = ({
   stringValue,
   uniqueKey,
+  linkClassProp
 }: {
   stringValue: string;
-  uniqueKey: string;
+  uniqueKey: string;  
+  linkClassProp?:string;
 }) => {
   if (stringValue === stringValue.toUpperCase() && stringValue.includes("_")) {
     return <Link to={stringValue}>{_.startCase(_.toLower(stringValue))}</Link>;
@@ -19,7 +21,7 @@ const RenderField = ({
         href={stringValue}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-custom-red underline hover:decoration-custom-gray visited:text-custom-gray"
+        className={`underline ${linkClassProp}`}
       >
         Click here
       </a>
