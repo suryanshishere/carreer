@@ -20,7 +20,7 @@ const PersistMain = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -40, opacity: 0 }}
           transition={{ ease: "easeInOut", duration: 0.3 }}
-          className="h-auth-nav bg-custom-white w-full px-page flex items-center justify-between z-20 text-base gap-4"
+          className="h-auth-nav bg-custom-white w-full flex items-center justify-between z-20 text-base gap-4"
         >
           <Auth />
         </motion.div>
@@ -31,7 +31,7 @@ const PersistMain = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -40, opacity: 0 }}
           transition={{ ease: "easeInOut", duration: 0.3 }}
-          className="h-auth-nav bg-custom-white w-full px-page flex items-center justify-between z-20 text-base gap-4"
+          className="h-auth-nav bg-custom-white w-full flex items-center justify-between z-20 text-base gap-4"
         >
           <ActivateAccount />
         </motion.div>

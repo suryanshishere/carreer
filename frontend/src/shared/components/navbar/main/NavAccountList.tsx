@@ -39,7 +39,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
               ? logoutHandler
               : () => dispatch(toggleDropdownState({ id: header }))
           }
-          className={`py-1 px-2 w-full hover:bg-custom-less-white ${
+          className={`py-1 px-2 w-full rounded hover:bg-custom-less-white ${
             dropdownStates[header] ? "bg-custom-less-white" : ""
           }`}
         >
@@ -60,7 +60,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
         <NavLink
           to={link}
           className={({ isActive }) =>
-            `py-1 px-2 block ${
+            `py-1 px-2 block rounded ${
               isActive ? "bg-custom-less-white" : "hover:bg-custom-less-white"
             }`
           }
@@ -73,7 +73,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
 
     return (
       component && (
-        <li key={header} className="w-full text-center">
+        <li key={header} className="w-full text-center ">
           {component}
           {index < Object.entries(data).length - 1 && <hr className="my-1" />}
         </li>

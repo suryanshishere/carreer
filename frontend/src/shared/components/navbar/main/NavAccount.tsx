@@ -70,22 +70,21 @@ const NavAccount = () => {
         Saved Posts
       </NavLink>
       <div className="flex justify-center items-center gap-2">
-        <div>Cool</div>
-        <div ref={dropdownRef} className="relative">
-          <button
+        <span>Cool</span>
+        <span ref={dropdownRef} className="relative flex items-center z-10">
+          <ArrowDropDownIcon
+            fontSize="small"
             onClick={() => {
               dispatch(toggleDropdownState({ id: "main_nav_account" }));
               if (dropdownStates["setting"])
                 dispatch(toggleDropdownState({ id: "setting" }));
             }}
-            className={`h-6 w-6 flex items-center justify-center rounded-full ${
+            className={`h-6 w-6 flex items-center justify-center rounded-full hover:cursor-pointer bg-custom-less-gray text-custom-gray ${
               showNavDropdown
                 ? "text-custom-black bg-custom-less-gray"
                 : "hover:bg-custom-less-gray hover:text-custom-black"
             }`}
-          >
-            <ArrowDropDownIcon />
-          </button>
+          />
           <div className="absolute top-full left-1/2 mt-1 shadow rounded shadow-custom-black -translate-x-1/2">
             {showNavDropdown && <NavAccountList data={NAV_ACCOUNT_LIST} />}
           </div>
@@ -94,7 +93,7 @@ const NavAccount = () => {
               <NavAccountList data={SETTING_LIST} />
             )}
           </div>
-        </div>
+        </span>
       </div>
     </>
   );

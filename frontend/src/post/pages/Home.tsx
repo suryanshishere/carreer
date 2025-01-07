@@ -34,7 +34,7 @@ const Home: React.FC = () => {
   if (queryStateMessage) return queryStateMessage;
 
   return (
-    <div className="grid grid-cols-3 gap-x-2 gap-y-10">
+    <div className="md:grid md:grid-cols-3 md:gap-x-2 md:gap-y-10 flex flex-col ">
       {Object.keys(data.data).map((key) => (
         <HomeListItem
           key={key}

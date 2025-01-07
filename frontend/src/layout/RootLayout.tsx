@@ -17,7 +17,7 @@ const RootLayout: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <NavBar />
       <div
-        className={`flex-grow px-page mt-nav-overall mb-footer transition-transform ease-in-out duration-300 ${
+        className={`flex-grow lg:px-page md:px-page-medium px-page-small mt-nav-overall mb-footer transition-transform ease-in-out duration-300 ${
           isNavAuthClicked || (token && (!isEmailVerified || deactivatedAt))
             ? "translate-y-auth-nav"
             : "translate-y-0"

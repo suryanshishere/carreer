@@ -6,7 +6,7 @@ import Main from "./main/Main";
 
 const NavBar: React.FC = () => {
   return (
-    <div className="fixed w-full flex flex-col justify-center z-30">
+    <div className="fixed w-full z-30">
       <Main />
       <PersistMain />
       <SubMain />

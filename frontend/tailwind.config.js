@@ -37,14 +37,18 @@ module.exports = {
       },
       spacing: {
         "main-nav": "2.5rem",
+        "main-nav-sm": "3.5rem",
         "auth-nav": "5rem",
         "sub-nav": "2rem",
+        "sub-nav-sm": "2.5rem",
         "auth-sub-nav": "8rem",
         "nav-overall": "8rem",
         "footer": "5.5rem",
       },
       padding: {
         page: "13vw",
+        "page-small": "4vw",
+        "page-medium":"8vw",
         button: ".35rem .5rem", //y,x
       },
       animation: {
