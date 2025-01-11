@@ -13,7 +13,7 @@ const Tags: React.FC = () => {
       {/* Button for Tags Dropdown on Mobile */}
       <button
         onClick={() => setShowTagsDropdown(!showTagsDropdown)}
-        className="w-full h-full rounded-full bg-custom-less-gray px-2 flex items-center justify-center gap-2 lg:hidden"
+        className={`rounded-full w-full h-full bg-custom-less-gray px-2 flex items-center justify-center gap-2 lg:hidden ${showTagsDropdown && "shadow-md shadow-custom-black"}`}
       >
         Tags
         <ArrowDropDownIcon
@@ -24,7 +24,7 @@ const Tags: React.FC = () => {
 
       {/* Tags Dropdown for Mobile */}
       {showTagsDropdown && (
-        <div className="absolute top-full mt-[2px] w-full bg-custom-less-gray z-10 ">
+        <div className="absolute rounded top-full mt-1 w-full bg-custom-less-gray z-10 shadow-md shadow-custom-black">
           {TAGS.map((item, index) => (
             <div key={item.label}>
               <div className="flex items-center gap-2 py-1 px-2 text-xs font-medium hover:bg-custom-less-gray">

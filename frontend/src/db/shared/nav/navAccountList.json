@@ -3,6 +3,10 @@
     "role": ["publisher", "admin"],
     "link": "/publisher/create-new-post"
   },
-  "setting": null,
+  "setting": {
+    "change_password": { "link": "/user/account/setting/change-password" },
+    "forgot_password": { "link": "/user/account/setting/forgot-password" },
+    "deactivate_account": { "link": "/user/account/setting/deactivate-account" }
+  },
   "logout": null
 }

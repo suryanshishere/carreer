@@ -7,7 +7,6 @@ interface DropdownState {
 const initialState: DropdownState = {
   dropdownStates: {},
 };
-
 const dropdownSlice = createSlice({
   name: "dropdown",
   initialState,

@@ -66,7 +66,7 @@ const Navlinks: React.FC = () => {
       {dropdownLinks.length > 0 && (
         <div ref={dropdownRef} className="relative h-full flex-1 w-full">
           <button
-            className="w-full h-full bg-custom-less-gray px-2 flex items-center justify-center gap-2"
+            className={`rounded-full w-full h-full bg-custom-less-gray px-2 flex items-center justify-center gap-2 ${showDropdown && "shadow-md shadow-custom-black"}`}
             onClick={() => setShowDropdown(!showDropdown)}
           >
             More Section
@@ -76,14 +76,14 @@ const Navlinks: React.FC = () => {
             />
           </button>
           {showDropdown && (
-            <ul className="absolute top-full mt-[2px] w-full bg-custom-less-gray">
+            <ul className="rounded absolute top-full mt-1 w-full bg-custom-less-gray shadow-md shadow-custom-black">
               {dropdownLinks.map(([key, link], index) => (
                 <>
                   <li key={link} className="text-center">
                     <NavLink
                       to={link}
                       className={({ isActive }) =>
-                        `m-1 py-1 block ${
+                        `m-1 py-1 block rounded ${
                           isActive
                             ? "bg-custom-less-white"
                             : "hover:bg-custom-less-white"
