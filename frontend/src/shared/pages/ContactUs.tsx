@@ -90,7 +90,7 @@ const ContactUs: React.FC = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         onReset={() => submitMutation.isSuccess}
-        className="w-1/2 flex flex-col gap-3"
+        className="lg:w-1/2 w-full  flex flex-col gap-3"
       >
         <Input
           type="text"

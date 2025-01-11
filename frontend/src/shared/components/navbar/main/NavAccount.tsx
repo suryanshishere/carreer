@@ -13,7 +13,7 @@ import Button from "shared/utils/form/Button";
 import NAV_ACCOUNT_LIST from "db/shared/nav/navAccountList.json"; 
 import useOutsideClick from "shared/hooks/click-outside-hook";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
-
+ 
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isNavAuthClicked = useSelector(
@@ -74,11 +74,11 @@ const NavAccount = () => {
           isActive ? "text-custom-pale-orange" : ""
         }
       >
-        Saved Posts
+        Saved  
       </NavLink>
       <div
         onClick={dropdownHandler}
-        className={`py-[2px] px-2 rounded-full flex items-center hover:cursor-pointer  ${
+        className={`py-[2px] px-1 rounded-full flex items-center hover:cursor-pointer  ${
           dropdownStates["main_nav_account"]
             ? "bg-custom-less-gray text-custom-gray shadow-md shadow-custom-black"
             : ""

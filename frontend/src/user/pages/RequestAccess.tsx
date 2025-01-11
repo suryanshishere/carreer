@@ -90,7 +90,7 @@ const RequestAccess: React.FC = () => {
   return (
     <div className="w-full flex flex-col items-center gap-4">
       <h2>Apply for Access</h2>
-      <p className="w-1/2 text-start italic text-sm">
+      <p className="lg:w-4/5 w-full  text-start">
         1. Once you have been granted publisher access, you will be able to
         create new posts. These posts can then be sent for approval before being
         published. <br />
@@ -106,10 +106,11 @@ const RequestAccess: React.FC = () => {
       </p>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-1/2 flex gap-2 flex-col"
+        className="lg:w-1/2 w-full  flex gap-2 flex-col"
       >
         <Dropdown
           name="role_applied"
+          label
           data={ADMIN_DB.ROLE_APPLIED}
           register={register}
           error={!!errors.role_applied}

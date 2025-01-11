@@ -85,7 +85,7 @@ const CreateNewPost: React.FC = () => {
     <div className="w-full flex flex-col items-center">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="w-1/2 flex flex-col gap-4"
+        className="lg:w-1/2 w-full flex flex-col gap-4"
       >
         <div className="flex flex-col gap-2">
           <TextArea

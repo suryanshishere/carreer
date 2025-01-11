@@ -20,17 +20,6 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
   }
 
   const renderObject = (obj: IPostListData) => {
-    const renderNestedEntries = (
-      key: string,
-      value: any,
-      dateCheck: boolean
-    ) => {
-      if (dateCheck) {
-        return <span></span>;
-      } else {
-        return <span key={key}>{renderObject(value)}</span>;
-      }
-    };
 
     return Object.entries(obj)
       .filter(([key]) => !excludedPostListKeys.includes(key))
@@ -80,7 +69,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
       {data.map((item, index) => (
         <React.Fragment key={item._id}>
           <li
-            className={`group ml-1 py-2 flex flex-col gap-1 justify-center ${tag(
+            className={`group py-2 flex flex-col gap-1 justify-center ${tag(
               section,
               item.important_dates
             )}`}
