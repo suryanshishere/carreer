@@ -28,7 +28,7 @@ module.exports = {
         "custom-green": "#7F9F80",
         "custom-dark-blue": "#131921",
         "custom-blue": "#1679AB",
-        "custom-yellow": "#EEEBDD",
+        "custom-yellow": "rgb(231, 210, 131)",
         "custom-pale-yellow": "#EBE4D1",
         "custom-pale-orange": "#E8B86D",
       },
@@ -47,9 +47,9 @@ module.exports = {
       },
       padding: {
         page: "13vw",
-        "page-small": "4vw",
+        "page-small": "2vw",
         "page-medium":"8vw",
-        button: ".35rem .5rem", //y,x
+        button: ".45rem .5rem", //y,x
       },
       animation: {
         marquee: "marquee 30s linear infinite",

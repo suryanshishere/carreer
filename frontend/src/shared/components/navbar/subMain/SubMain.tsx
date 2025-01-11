@@ -16,7 +16,7 @@ const SubMain: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -40, opacity: 0 }}
           transition={{ ease: "easeInOut", duration: 0.3 }}
-          className="lg:px-page px-page-small w-full bg-custom-pale-yellow md:h-sub-nav h-sub-nav-sm text-base flex justify-center items-center gap-2"
+          className="page-padding bg-custom-pale-yellow md:h-sub-nav h-sub-nav-sm text-base flex justify-center items-center gap-2"
         >
           <Navlinks />
           <Tags />

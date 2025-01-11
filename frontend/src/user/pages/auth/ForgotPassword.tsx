@@ -38,7 +38,8 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   });
 
   const location = useLocation();
-  const isForgotPasswordPage = location.pathname === "/user/account/setting/forgot-password";
+  const isForgotPasswordPage =
+    location.pathname === "/user/account/setting/forgot-password";
 
   const submitMutation = useMutation({
     mutationFn: async (data: IForgotPassword) => {
@@ -80,7 +81,9 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
     <form
       onSubmit={handleSubmit(submitHandler)}
       className={
-        isForgotPasswordPage ? "w-1/2 flex flex-col gap-2" : "flex-1 flex items-center gap-2 justify-end"
+        isForgotPasswordPage
+          ? "w-1/2 flex flex-col gap-2"
+          : "flex-1 flex flex-col md:flex-row md:items-center gap-2"
       }
     >
       <Input
@@ -93,27 +96,32 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
         classProp={`placeholder:text-sm`}
         outerClassProp={`flex-1`}
       />
-      {onBack && (
-        <button className="rounded-full flex items-center justify-center p-1 hover:bg-custom-super-less-gray" onClick={onBack}>
-          <ArrowBackIcon />
-        </button>
-      )}
-      <Button
-        authButtonType={!isForgotPasswordPage}
-        outline={isForgotPasswordPage ? true : undefined}
-        classProp={
-          !isForgotPasswordPage
-            ? `${
-                submitMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
-              } py-2 rounded-full text-white font-bold px-3 hover:bg-custom-black`
-            : undefined
-        }
-        type="submit"
-      >
-        {submitMutation.isPending
-          ? "Sending reset password link.."
-          : "Send reset password link"}
-      </Button>
+      <div className="flex-1 flex items-center gap-2">
+        {onBack && (
+          <ArrowBackIcon
+            onClick={onBack}
+            className="rounded-full hover:cursor-pointer h-3 w-3 p-1 hover:bg-custom-super-less-gray"
+          />
+        )}
+        <Button
+          authButtonType={!isForgotPasswordPage}
+          outline={isForgotPasswordPage ? true : undefined}
+          classProp={
+            !isForgotPasswordPage
+              ? `${
+                  submitMutation.isPending
+                    ? "bg-custom-black"
+                    : "bg-custom-gray"
+                } py-2 flex-1 rounded-full text-white font-bold px-3 hover:bg-custom-black`
+              : undefined
+          }
+          type="submit"
+        >
+          {submitMutation.isPending
+            ? "Sending reset password link.."
+            : "Send reset password link"}
+        </Button>
+      </div>
     </form>
   );
 

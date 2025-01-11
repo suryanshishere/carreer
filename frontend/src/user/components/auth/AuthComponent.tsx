@@ -68,7 +68,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
   return (
     <form
       onSubmit={handleSubmit(submitHandler)}
-      className="flex-1 flex items-center gap-2 justify-end"
+      className="flex-1 flex flex-col md:flex-row md:items-center gap-2 justify-end"
     >
       <Input
         type="email"

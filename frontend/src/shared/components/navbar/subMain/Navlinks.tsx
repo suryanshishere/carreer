@@ -64,9 +64,9 @@ const Navlinks: React.FC = () => {
       )}
 
       {dropdownLinks.length > 0 && (
-        <div ref={dropdownRef} className="relative h-full flex-1 w-full">
+        <div ref={dropdownRef} className="relative flex-1 w-full">
           <button
-            className={`rounded-full w-full h-full bg-custom-less-gray px-2 flex items-center justify-center gap-2 ${showDropdown && "shadow-md shadow-custom-black"}`}
+            className={`rounded-full outline outline-custom-gray w-full h-full bg-custom-less-gray px-2 py-[1px] flex items-center justify-center gap-2 ${showDropdown && "shadow-md shadow-custom-black"}`}
             onClick={() => setShowDropdown(!showDropdown)}
           >
             More Section

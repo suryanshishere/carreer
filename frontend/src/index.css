@@ -10,6 +10,10 @@
     @apply w-full border-t-1 border-custom-black;
   }
 
+  .page-padding{
+    @apply lg:px-page px-page-small w-full
+  }
+
   .custom-link {
     @apply underline decoration-1 text-custom-red  decoration-custom-red underline-offset-4 hover:text-custom-blue visited:decoration-custom-black visited:text-custom-black;
   }
