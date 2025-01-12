@@ -19,7 +19,7 @@ const About = () => {
         </p>
         <span className="font-semibold">
           For job application, suggestion, and other related query:
-          <Link className="text-custom-red hover:underline" to="/contact-us">
+          <Link className="text-custom-red hover:underline pl-2" to="/contact-us">
             Contact Us
           </Link>
         </span>

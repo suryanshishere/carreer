@@ -87,7 +87,7 @@ const NavAccount = () => {
         <PermIdentityOutlinedIcon fontSize="small" />
         <ArrowDropDownIcon fontSize="small" />
       </div>
-      <div className="absolute right-0 top-full -mt-[2px] flex float-start flex-row-reverse gap-1">
+      <div className="absolute right-0 top-full -mt-[4px] flex float-start flex-row-reverse gap-1">
         {dropdownStates["main_nav_account"] && (
           <NavAccountList data={NAV_ACCOUNT_LIST} />
         )}

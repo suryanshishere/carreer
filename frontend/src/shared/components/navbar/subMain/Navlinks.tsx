@@ -41,7 +41,16 @@ const Navlinks: React.FC = () => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showDropdown, setShowDropdown] = React.useState(false);
+  const [selectedSection, setSelectedSection] = React.useState<string | null>(
+    null
+  );
+  
   useOutsideClick(dropdownRef, () => setShowDropdown(false));
+
+  const handleSelectLink = (sectionName: string) => {
+    setSelectedSection(sectionName);  // Set the selected section name
+    setShowDropdown(false);  // Close the dropdown after selection
+  };
 
   return (
     <div className="flex-1 h-full flex items-center gap-2 min-w-30">
@@ -69,7 +78,7 @@ const Navlinks: React.FC = () => {
             className={`rounded-full outline outline-custom-gray w-full h-full bg-custom-less-gray px-2 py-[1px] flex items-center justify-center gap-2 ${showDropdown && "shadow-md shadow-custom-black"}`}
             onClick={() => setShowDropdown(!showDropdown)}
           >
-            More Section
+            {selectedSection ? startCase(selectedSection) : "More Section"}   
             <ArrowDropDownIcon
               fontSize="small"
               className="rounded-full bg-custom-gray text-custom-less-gray"
@@ -89,7 +98,7 @@ const Navlinks: React.FC = () => {
                             : "hover:bg-custom-less-white"
                         }`
                       }
-                      onClick={() => setShowDropdown(false)}
+                      onClick={() => handleSelectLink(key)}  
                     >
                       {startCase(key)}
                     </NavLink>

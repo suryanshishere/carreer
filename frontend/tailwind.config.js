@@ -36,8 +36,8 @@ module.exports = {
         1: "1px",
       },
       spacing: {
-        "main-nav": "2.5rem",
-        "main-nav-sm": "3.5rem",
+        "main-nav": "3rem",
+        // "main-nav-sm": "3.5rem",
         "auth-nav": "5rem",
         "sub-nav": "2rem",
         "sub-nav-sm": "2.5rem",
