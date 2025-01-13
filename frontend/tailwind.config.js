@@ -47,7 +47,7 @@ module.exports = {
       },
       padding: {
         page: "13vw",
-        "page-small": "2vw",
+        "page-small": "3vw",
         "page-medium":"8vw",
         button: ".45rem .5rem", //y,x
       },

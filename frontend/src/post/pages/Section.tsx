@@ -3,7 +3,7 @@ import PostList from "post/shared/PostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import DataStates from "shared/ui/DataStates";
+import NoData from "shared/components/dataStates/NoData";
 
 const Section: React.FC = () => {
   const { section = "" } = useParams<{ section: string }>();
@@ -27,13 +27,13 @@ const Section: React.FC = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  if (data.data[section].length === 0 && !isLoading) {
-    return <DataStates noData={data.data[section].length === 0} />;
+  if(!isLoading && data.data[section].length === 0 ){
+    return <NoData/>
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <PostList data={data.data[section] || []} section={section} />
+      <PostList data={  []} section={section} />
     </div>
   );
 };

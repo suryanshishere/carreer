@@ -2,7 +2,7 @@ import React from "react";
 import HomeListItem from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import useQueryStates from "shared/hooks/query-states-hook";
+import NoData from "shared/components/dataStates/NoData";
 
 const heights: Record<string, string> = {
   result: "55rem",
@@ -25,24 +25,25 @@ const Home: React.FC = () => {
     retry: 3,
   });
 
-  const queryStateMessage = useQueryStates({
-    isLoading,
-    error: error ? error.message : null,
-    empty: Object.keys(data.data).length === 0,
-  });
-
-  if (queryStateMessage) return queryStateMessage;
+  if (!isLoading && Object.keys(data.data).length === 0) {
+    return <NoData />;
+  }
 
   return (
     <div className="md:grid md:grid-cols-3 md:gap-x-2 md:gap-y-10 flex flex-col">
-      {Object.keys(data.data).map((key) => (
-        <HomeListItem
-          key={key}
-          ListItemData={data.data[key] || []}
-          section={key}
-          height={heights[key] || heights.default}
-        />
-      ))}
+      {Object.keys(data.data).map((key) => {
+        // if (!isLoading && data.data[key].length === 0) {
+        //   return <NoData key={key} />;
+        // }
+        return (
+          <HomeListItem
+            key={key}
+            ListItemData={  []}
+            section={key}
+            height={heights[key] || heights.default}
+          />
+        );
+      })}
     </div>
   );
 };

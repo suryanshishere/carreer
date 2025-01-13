@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import useQueryStates from "shared/hooks/query-states-hook";
 import Bookmark from "post/shared/Bookmark";
 import PostDetailItem from "post/components/PostDetailItem";
 import rearrangeObjectByPriority, {
@@ -11,10 +10,8 @@ import rearrangeObjectByPriority, {
 import { snakeCase } from "lodash";
 import { IPostDetail } from "models/postModels/IPost";
 import { postDetailPriorities } from "../shared/post-priority-array";
-import ContributeToPost from "post/components/ContributeToPost";
 import Info from "post/shared/Info";
 
-// Fetch Post Detail API Call
 const fetchPostDetail = async (
   section: string,
   postId: string
@@ -25,15 +22,13 @@ const fetchPostDetail = async (
   return data;
 };
 
-// Helper to get isSaved status
 const getIsSavedStatus = (
   params: URLSearchParams,
   backendIsSaved: boolean
 ): boolean => params.get("is_saved") === "true" || backendIsSaved;
 
-// PostDetail Component
 const PostDetail: React.FC = () => {
-  const { section = ""} = useParams<{
+  const { section = "" } = useParams<{
     section: string;
     postCode: string;
   }>();
@@ -44,10 +39,6 @@ const PostDetail: React.FC = () => {
     [location.search]
   );
 
-  //TODO
-  // const dispatch = useDispatch();
-
-  // Fetch Post Details
   const {
     data = { data: {}, is_saved: false },
     isLoading,
@@ -57,14 +48,6 @@ const PostDetail: React.FC = () => {
     queryFn: () => fetchPostDetail(section, postId),
   });
 
-  // Query State Message Handling
-  const queryStateMessage = useQueryStates({
-    isLoading,
-    error: error ? error.message : null,
-    empty: Object.keys(data.data).length === 0,
-  });
-
-  // Order Data by Priority
   const orderedData = useMemo(() => {
     return rearrangeObjectByPriority(
       data.data,
@@ -73,11 +56,6 @@ const PostDetail: React.FC = () => {
   }, [data.data, section]);
 
   const isSaved = getIsSavedStatus(params, data.is_saved);
-
-  // Avoid early return; render query state as part of JSX
-  if (queryStateMessage) {
-    return <div>{queryStateMessage}</div>;
-  }
 
   return (
     <div className="flex flex-col items-center relative min-h-screen">

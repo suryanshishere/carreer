@@ -1,12 +1,12 @@
 import { IPostList } from "models/postModels/IPost";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import useQueryStates from "shared/hooks/query-states-hook";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostList from "post/shared/PostList";
 import { Fragment } from "react/jsx-runtime";
 import { startCase } from "lodash";
+import NoData from "shared/components/dataStates/NoData";
 
 const fetchSavedPosts = async (
   token: string = ""
@@ -31,10 +31,11 @@ const SavedPosts = () => {
     queryFn: () => fetchSavedPosts(token),
   });
 
-  const savedPost = data?.data?.saved_posts || {}; // Safeguard in case data is undefined or null
-  if (Object.keys(savedPost).length === 0) {
-    return <div className="">COOOOL</div>;
+  const savedPost = data?.data?.saved_posts || {};
+  if (!isLoading && Object.keys(savedPost).length === 0) {
+    return <NoData />;
   }
+
   return (
     <div className="flex flex-col gap-2">
       {Object.keys(savedPost).map((key) => {

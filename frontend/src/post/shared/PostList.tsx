@@ -1,11 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Bookmark from "post/shared/Bookmark";
-import RenderPostDetail from "../components/RenderPostDetail";
+import RenderField from "shared/ui/RenderField";
 import _ from "lodash";
 import { excludedPostListKeys } from "post/shared/post-list-render-define";
 import { IPostList, IPostListData } from "models/postModels/IPost";
-import RenderField from "shared/ui/RenderField";
 import tag from "./tag";
 
 interface ListProps {
@@ -15,12 +14,23 @@ interface ListProps {
 }
 
 const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
-  if (!Array.isArray(data) || data.length === 0) {
-    return null;
+  if (data.length === 0) {
+    return (
+      <ul className="self-start w-full p-0 m-0 flex flex-col gap-2">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <li key={index} className="py-2 flex flex-col gap-2 animate-pulse">
+               <div  style={{ width: `${Math.random() * 50 + 50}%` }} className="h-7 w-1/2 bg-custom-less-gray rounded-sm"></div>
+             <div className="flex flex-col gap-1">
+              <div className="h-4 w-full bg-custom-less-gray rounded-sm"></div>
+              <div  style={{ width: `${Math.random() * 50 + 51}%` }} className="h-4 w-2/3 bg-custom-less-gray rounded-sm"></div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   const renderObject = (obj: IPostListData) => {
-
     return Object.entries(obj)
       .filter(([key]) => !excludedPostListKeys.includes(key))
       .map(([key, value]: [string, any]) => {
@@ -28,8 +38,6 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
 
         if (typeof value === "object") {
           if (Object.keys(value).length === 0) return null;
-
-          console.log(value, "postlist")
 
           const dateCheck =
             (value?.current_year || value?.previous_year) != null;
@@ -79,7 +87,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                 to={`/sections/${section}/${
                   item.post
                     ? item.post.post_code
-                    : _.snakeCase(item.name_of_the_post) //TODO: remove name of the post completly
+                    : _.snakeCase(item.name_of_the_post)
                 }?is_saved=${item.is_saved}`}
                 state={{ postId: item._id }}
                 className="custom-link"

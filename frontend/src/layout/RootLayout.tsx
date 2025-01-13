@@ -17,7 +17,7 @@ const RootLayout: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <NavBar />
       <div
-        className={`flex-grow page-padding mt-5 mb-5 transition-transform ease-in-out duration-300`}
+        className={`flex-grow page-padding mt-4 mb-6 transition-transform ease-in-out duration-300`}
       >
         <Outlet key={token || "no-token"} />
       </div>
