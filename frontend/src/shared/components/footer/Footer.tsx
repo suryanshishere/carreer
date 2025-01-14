@@ -35,14 +35,14 @@ const Footer: React.FC = () => {
     },
   });
 
-  const footerLinkClassName = "hover:underline text-custom-red text-sm";
+  const footerLinkClassName = "hover:underline text-start";
 
   return (
     <footer className="bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex flex-col lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
       <div className="select-none self-center">
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
       </div>
-      <div className="text-center grid grid-cols-2">
+      <div className="grid grid-cols-2 gap-x-2 text-sm text-custom-red">
         <Link to="/about" className={footerLinkClassName}>
           About
         </Link>

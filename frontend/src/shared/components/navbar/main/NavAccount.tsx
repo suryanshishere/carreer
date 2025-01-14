@@ -10,10 +10,10 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";
-import NAV_ACCOUNT_LIST from "db/shared/nav/navAccountList.json"; 
+import NAV_ACCOUNT_LIST from "db/shared/nav/navAccountList.json";
 import useOutsideClick from "shared/hooks/click-outside-hook";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
- 
+
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isNavAuthClicked = useSelector(
@@ -40,7 +40,6 @@ const NavAccount = () => {
     </>
   );
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const accountDropdownRef = useRef<HTMLDivElement>(null);
 
   useOutsideClick(accountDropdownRef, () => dispatch(closeAllDropdowns()));
@@ -74,7 +73,7 @@ const NavAccount = () => {
           isActive ? "text-custom-pale-orange" : ""
         }
       >
-        Saved  
+        Saved
       </NavLink>
       <div
         onClick={dropdownHandler}
