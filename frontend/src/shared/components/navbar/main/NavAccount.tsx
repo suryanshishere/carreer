@@ -101,7 +101,7 @@ const NavAccount = () => {
   return (
     <div
       ref={accountDropdownRef}
-      className="relative flex gap-3 items-center h-main-nav z-20"
+      className="relative flex gap-2 items-center h-main-nav z-20"
     >
       {!token ? LoginSignup : onAuthenticated}
     </div>

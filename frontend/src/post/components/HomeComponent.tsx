@@ -36,8 +36,8 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
       className="w-full text-base flex flex-col justify-center gap-2"
       style={{ height }}
     >
-      <div className="flex flex-col justify-center gap-2">
-        <h2>{startCase(section)}</h2>
+      <div className=" flex flex-col justify-center items-center gap-2">
+        <h2 className="p-0">{startCase(section)}</h2>
         <hr className="border-t-2" />
       </div>
       <div className="flex flex-col justify-between h-full">

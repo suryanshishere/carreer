@@ -9,7 +9,7 @@ const Response = () => {
   // const isLoading = useSelector(selectIsLoading);
 
   return (
-    <div className="text-sm text-custom-white rounded font-bold flex justify-end mt-1 w-full gap-2 z-19">
+    <div className="absolute text-sm page-padding text-custom-white rounded font-bold flex justify-end mt-1 w-full gap-2 z-19">
       {successMsg && (
         <motion.p
           initial={{ y: -20, opacity: 0 }}

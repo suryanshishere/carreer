@@ -28,6 +28,7 @@ module.exports = {
         "custom-green": "#7F9F80",
         "custom-dark-blue": "#131921",
         "custom-blue": "#1679AB",
+        "custom-less-blue": "rgb(137, 168, 178)",
         "custom-yellow": "rgb(231, 210, 131)",
         "custom-pale-yellow": "#EBE4D1",
         "custom-pale-orange": "#E8B86D",

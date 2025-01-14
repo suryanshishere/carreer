@@ -1,8 +1,9 @@
 import React from "react";
-import HomeListItem from "post/components/HomeComponent";
+import HomeComponent from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import NoData from "shared/components/dataStates/NoData";
+import SECTIONS from "db/postDb/sections.json"
 
 const heights: Record<string, string> = {
   result: "55rem",
@@ -30,10 +31,10 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="lg:grid lg:grid-cols-3 lg:gap-x-2 lg:gap-y-10 flex flex-col gap-2">
-      {Object.keys(data.data).map((key) => {
+    <div className="lg:grid lg:grid-cols-3 flex flex-col gap-y-6 lg:gap-y-4 lg:gap-x-2 ">
+      {SECTIONS.map((key) => {
         return (
-          <HomeListItem
+          <HomeComponent
             key={key}
             ListItemData={data.data[key] || []}
             section={key}
