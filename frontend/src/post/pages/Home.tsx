@@ -32,9 +32,6 @@ const Home: React.FC = () => {
   return (
     <div className="lg:grid lg:grid-cols-3 lg:gap-x-2 lg:gap-y-10 flex flex-col gap-2">
       {Object.keys(data.data).map((key) => {
-        if (!isLoading && data.data[key].length === 0) {
-          return <NoData key={key} />;
-        }
         return (
           <HomeListItem
             key={key}

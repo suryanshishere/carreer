@@ -29,7 +29,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   section,
   height,
 }) => {
-  const skeletonItemCount = getSkeletonItemCount(height); // Get the skeleton count based on height
+  const skeletonItemCount = getSkeletonItemCount(height);  
 
   return (
     <div
