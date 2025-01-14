@@ -30,10 +30,13 @@ export interface IUser extends Document {
 
   // Timestamps and activity fields
   deactivated_at?: Date;
+  
+  //status for personalised data rendering for the user
+  // mode: "max" | 
 
   // Relationships
   detail?: mongoose.Types.ObjectId;
-  contribution?: mongoose.Types.ObjectId | string;
+  contribution?: mongoose.Types.ObjectId | string; //contribution model id is contributor id so i have so when needed
 
   // Saved posts
   saved_posts?: SavedPosts;

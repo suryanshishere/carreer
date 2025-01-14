@@ -167,7 +167,7 @@ export const applyContri = async (
 
     const contributor = await ContributionModel.findById(contributor_id)
       .select(`contribution.${post_code}.${section} approved`)
-      .session(session); // Pass the session
+      .session(session);
 
     if (!contributor) return next(new HttpError("Contributor not found!", 400));
 

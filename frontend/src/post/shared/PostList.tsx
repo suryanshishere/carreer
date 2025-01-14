@@ -19,10 +19,16 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
       <ul className="self-start w-full p-0 m-0 flex flex-col gap-2">
         {Array.from({ length: 6 }).map((_, index) => (
           <li key={index} className="py-2 flex flex-col gap-2 animate-pulse">
-               <div  style={{ width: `${Math.random() * 50 + 50}%` }} className="h-7 w-1/2 bg-custom-less-gray rounded-sm"></div>
-             <div className="flex flex-col gap-1">
+            <div
+              style={{ width: `${Math.random() * 50 + 50}%` }}
+              className="h-7 w-1/2 bg-custom-less-gray rounded-sm"
+            ></div>
+            <div className="flex flex-col gap-1">
               <div className="h-4 w-full bg-custom-less-gray rounded-sm"></div>
-              <div  style={{ width: `${Math.random() * 50 + 51}%` }} className="h-4 w-2/3 bg-custom-less-gray rounded-sm"></div>
+              <div
+                style={{ width: `${Math.random() * 50 + 51}%` }}
+                className="h-4 w-2/3 bg-custom-less-gray rounded-sm"
+              ></div>
             </div>
           </li>
         ))}

@@ -11,6 +11,7 @@ import { snakeCase } from "lodash";
 import { IPostDetail } from "models/postModels/IPost";
 import { postDetailPriorities } from "../shared/post-priority-array";
 import Info from "post/shared/Info";
+import NoData from "shared/components/dataStates/NoData";
 
 const fetchPostDetail = async (
   section: string,
@@ -57,13 +58,17 @@ const PostDetail: React.FC = () => {
 
   const isSaved = getIsSavedStatus(params, data.is_saved);
 
+  if (!isLoading && Object.keys(orderedData).length === 0) {
+    return <NoData />;
+  }
+
   return (
     <div className="flex flex-col items-center relative min-h-screen">
       <div className="self-end flex gap-2 items-center justify-center sticky top-0 bg-white z-10">
         <Info />
         <Bookmark section={section} postId={postId} isSaved={isSaved} />
       </div>
-      {orderedData && <PostDetailItem data={orderedData} />}
+      <PostDetailItem data={orderedData || {}} />
     </div>
   );
 };

@@ -19,8 +19,7 @@ export const flattenContributionData = (
     if (data.hasOwnProperty(key)) {
       const newKey = prefix ? `${prefix}.${key}` : key;
       if (typeof data[key] === "object" && data[key] !== null) {
-        // If the value is an object, recursively flatten it
-        Object.assign(result, flattenContributionData(data[key], newKey));
+         Object.assign(result, flattenContributionData(data[key], newKey));
       } else {
         result[newKey] = data[key];
       }
@@ -35,16 +34,14 @@ export const updatePostData = async (
   contributor_id: string
 ) => {
   Object.keys(data).forEach((key) => {
-    set(post, key, data[key]); // Use lodash's set or other appropriate method
+    set(post, key, data[key]);  
   });
 
   if (!post.contributors) {
-    // Initialize the contributors array if it doesn't exist
     post.contributors = [];
   }
 
-  // Check if the contributor_id exists, and add it only if not present
-  if (!post.contributors.some((id) => id.toString() === contributor_id)) {
+   if (!post.contributors.some((id) => id.toString() === contributor_id)) {
     post.contributors.push(contributor_id);
   }
 
@@ -59,7 +56,7 @@ export const updateContributorContribution = async (
   post_code: string,
   section: string,
   data: Record<string, any>,
-  session: mongoose.ClientSession // Pass session here
+  session: mongoose.ClientSession  
 ) => {
   let contributionMap = contributor.contribution.get(post_code);
   if (!contributionMap) throw new HttpError("Post code data not found.", 404);
@@ -67,8 +64,7 @@ export const updateContributorContribution = async (
   const contributedData = contributionMap[section];
   if (!contributedData)
     throw new HttpError("Contributed section data not found.", 404);
-
-  // Replace old data with new data
+ 
   Object.keys(data).forEach((key) => {
     if (key in contributedData) {
       delete contributedData[key];
@@ -87,7 +83,7 @@ export const updateContributorContribution = async (
   }
 
   contributor.markModified("contribution");
-  await contributor.save({ session }); // Ensure the session is used here
+  await contributor.save({ session });  
   return contributor;
 };
 
@@ -97,7 +93,7 @@ export const updateContributorApproval = async (
   post_code: string,
   section: string,
   data: Record<string, any>,
-  session: mongoose.ClientSession // Accept session here
+  session: mongoose.ClientSession  
 ) => {
   if (!Array.isArray(contributor.approved)) {
     contributor.approved = [];
@@ -137,5 +133,5 @@ export const updateContributorApproval = async (
     });
   }
 
-  await contributor.save({ session }); // Save with session
+  await contributor.save({ session });  
 };
