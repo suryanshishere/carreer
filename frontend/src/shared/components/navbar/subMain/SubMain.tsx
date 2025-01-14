@@ -9,7 +9,7 @@ const SubMain: React.FC = () => {
   return (
     <>
       {showSubNav && (
-        <div className="page-padding bg-custom-pale-yellow md:h-sub-nav h-sub-nav-sm text-base flex justify-center items-center gap-2">
+        <div className="page-padding bg-custom-pale-yellow md:h-sub-nav py-2 text-base flex justify-center items-center gap-2">
           <Navlinks />
           <Tags />
         </div>

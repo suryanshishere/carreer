@@ -1,21 +1,20 @@
 import React, { useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import NAVLINKS from "db/shared/nav/navlinks.json";
 import { startCase } from "lodash";
 import useOutsideClick from "shared/hooks/click-outside-hook";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const Navlinks: React.FC = () => {
+  const { section = "" } = useParams<{ section: string }>();
   const navEntries = Object.entries(NAVLINKS);
 
-  // Dynamic breakpoints: adjust visible links based on screen size
   const breakpoints = {
     default: 0,
     md: 3,
     lg: 4,
   };
 
-  // Determine the number of displayed links based on screen width
   const [visibleLinksCount, setVisibleLinksCount] = React.useState(
     breakpoints.default
   );
@@ -31,8 +30,8 @@ const Navlinks: React.FC = () => {
       }
     };
 
-    updateVisibleLinks(); // Initial calculation
-    window.addEventListener("resize", updateVisibleLinks); // Listen for screen size changes
+    updateVisibleLinks();
+    window.addEventListener("resize", updateVisibleLinks);
     return () => window.removeEventListener("resize", updateVisibleLinks);
   }, []);
 
@@ -41,15 +40,15 @@ const Navlinks: React.FC = () => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showDropdown, setShowDropdown] = React.useState(false);
-  const [selectedSection, setSelectedSection] = React.useState<string | null>(
-    null
-  );
-  
+
+  // Determine the selected section for the dropdown button label
+  const selectedSection =
+    dropdownLinks.find(([key]) => key === section)?.[0] || null;
+
   useOutsideClick(dropdownRef, () => setShowDropdown(false));
 
   const handleSelectLink = (sectionName: string) => {
-    setSelectedSection(sectionName);  // Set the selected section name
-    setShowDropdown(false);  // Close the dropdown after selection
+    setShowDropdown(false);
   };
 
   return (
@@ -75,10 +74,12 @@ const Navlinks: React.FC = () => {
       {dropdownLinks.length > 0 && (
         <div ref={dropdownRef} className="relative flex-1 w-full">
           <button
-            className={`rounded-full outline outline-custom-gray w-full h-full bg-custom-less-gray px-2 py-[1px] flex items-center justify-center gap-2 ${showDropdown && "shadow-md shadow-custom-black"}`}
+            className={`rounded-full outline outline-custom-gray w-full bg-custom-less-gray px-2 sm:py-[1px] flex items-center justify-center gap-2 ${
+              visibleLinksCount === 0 && "py-1"
+            } ${showDropdown && "shadow-md shadow-custom-black"}`}
             onClick={() => setShowDropdown(!showDropdown)}
           >
-            {selectedSection ? startCase(selectedSection) : "More Section"}   
+            {selectedSection ? startCase(selectedSection) : "More Section"}
             <ArrowDropDownIcon
               fontSize="small"
               className="rounded-full bg-custom-gray text-custom-less-gray"
@@ -87,8 +88,8 @@ const Navlinks: React.FC = () => {
           {showDropdown && (
             <ul className="rounded absolute top-full mt-1 w-full bg-custom-less-gray shadow-md shadow-custom-black">
               {dropdownLinks.map(([key, link], index) => (
-                <>
-                  <li key={link} className="text-center">
+                <React.Fragment key={key}>
+                  <li className="text-center">
                     <NavLink
                       to={link}
                       className={({ isActive }) =>
@@ -98,15 +99,13 @@ const Navlinks: React.FC = () => {
                             : "hover:bg-custom-less-white"
                         }`
                       }
-                      onClick={() => handleSelectLink(key)}  
+                      onClick={() => handleSelectLink(key)}
                     >
                       {startCase(key)}
                     </NavLink>
                   </li>
-                  {index < Object.entries(dropdownLinks).length - 1 && (
-                    <hr className="my-1" />
-                  )}
-                </>
+                  {index < dropdownLinks.length - 1 && <hr className="my-1" />}
+                </React.Fragment>
               ))}
             </ul>
           )}

@@ -8,12 +8,27 @@ const Tags: React.FC = () => {
   const [showTagsDropdown, setShowTagsDropdown] = useState(false);
   useOutsideClick(dropdownRef, () => setShowTagsDropdown(false));
 
+  const [mobileView, setMobileView] = React.useState(false);
+
+  React.useEffect(() => {
+    const updateMobileView = () => {
+      if (window.innerWidth >= 768) {
+        setMobileView(false);
+      } else {
+        setMobileView(true);
+      }
+    };
+
+    updateMobileView();
+  }, []);
+
   return (
     <div ref={dropdownRef} className="relative min-w-28 flex items-center">
-      {/* Button for Tags Dropdown on Mobile */}
       <button
         onClick={() => setShowTagsDropdown(!showTagsDropdown)}
-        className={`rounded-full outline outline-custom-gray  w-full h-full bg-custom-less-gray px-2 py-[1px] flex items-center justify-center gap-2 lg:hidden ${showTagsDropdown && "shadow-md shadow-custom-black"}`}
+        className={`rounded-full outline outline-custom-gray  w-full h-full bg-custom-less-gray sm:py-[1px] flex items-center justify-center gap-2 lg:hidden ${
+          mobileView && "py-1"
+        }  ${showTagsDropdown && "shadow-md shadow-custom-black"}`}
       >
         Tags
         <ArrowDropDownIcon
@@ -22,7 +37,6 @@ const Tags: React.FC = () => {
         />
       </button>
 
-      {/* Tags Dropdown for Mobile */}
       {showTagsDropdown && (
         <div className="absolute rounded top-full mt-1 w-full bg-custom-less-gray z-10 shadow-md shadow-custom-black">
           {TAGS.map((item, index) => (
@@ -37,7 +51,6 @@ const Tags: React.FC = () => {
         </div>
       )}
 
-      {/* Inline Tags for Larger Screens */}
       <div className="hidden lg:flex gap-2">
         {TAGS.map((item) => (
           <div

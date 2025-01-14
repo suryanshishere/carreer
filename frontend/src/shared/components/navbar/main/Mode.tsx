@@ -17,8 +17,8 @@ const Mode = () => {
           className="sr-only"
         />
         <div
-          className={`h-6 w-full rounded-full transition bg-custom-less-gray text-xs font-bold flex items-center justify-center text-custom-black whitespace-nowrap ${
-            isChecked ? "bg-custom-less-blue" : ""
+          className={`h-6 w-full rounded-full transition  text-xs font-bold flex items-center justify-center text-custom-black whitespace-nowrap ${
+            isChecked ? "bg-custom-less-blue" : "bg-custom-less-gray"
           }`}
         >
           {!isChecked && <span className="ml-5 pr-1">MAX</span>}
@@ -26,7 +26,7 @@ const Mode = () => {
         <div
           className={`dot absolute top-[4px] mx-1 h-4 w-4 rounded-full transition-transform ${
             isChecked
-              ? "translate-x-8 bg-custom-white "
+              ? "translate-x-8 bg-custom-blue "
               : "translate-x-0 bg-custom-gray "
           }`}
         ></div>

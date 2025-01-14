@@ -31,7 +31,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="lg:grid lg:grid-cols-3 flex flex-col gap-y-6 lg:gap-y-4 lg:gap-x-2 ">
+    <div className="lg:grid lg:grid-cols-3 flex flex-col gap-y-6 lg:gap-y-8 lg:gap-x-2 ">
       {SECTIONS.map((key) => {
         return (
           <HomeComponent
