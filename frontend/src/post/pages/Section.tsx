@@ -27,13 +27,13 @@ const Section: React.FC = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  if(!isLoading && data.data[section].length === 0 ){
-    return <NoData/>
+  if (!isLoading && data.data[section].length === 0) {
+    return <NoData />;
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <PostList data={  []} section={section} />
+      <PostList data={data.data[section] || []} section={section} />
     </div>
   );
 };
