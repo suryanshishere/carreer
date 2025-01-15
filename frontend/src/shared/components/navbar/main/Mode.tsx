@@ -8,11 +8,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { updateUserData } from "shared/store/auth-slice";
-import { userAccountModeType } from "models/userModel/IUserData";
+import { IUserAccountMode } from "models/userModel/IUserData";
 
 const Mode = () => {
   const mode = useSelector((state: RootState) => state.auth.userData.mode);
-  const [isChecked, setIsChecked] = useState(mode?.includes("max") || false);
+  const [isChecked, setIsChecked] = useState(mode?.max || false);
   const dispatch = useDispatch<AppDispatch>();
 
   const mutation = useMutation({
@@ -22,25 +22,10 @@ const Mode = () => {
       });
       return response.data;
     },
-    onSuccess: (data) => {  // On success, you now get the response data
+    onSuccess: (data) => {
+      // On success, you now get the response data
       const { message } = data;
-      let updatedMode: userAccountModeType[] | undefined;
-
-      // Determine the new mode based on the mutation state
-      if (!mode) {
-        updatedMode = isChecked ? ["max"] : undefined;  // Use isChecked directly
-      } else {
-        updatedMode = isChecked
-          ? [...mode, "max"]
-          : mode.filter((item) => item !== "max");
-      }
-
-      // If the array is empty after removing 'max', set it to undefined
-      if (updatedMode?.length === 0) {
-        updatedMode = undefined;
-      }
-
-      dispatch(updateUserData({ mode: updatedMode }));
+      dispatch(updateUserData({ mode: { max: isChecked } }));
       dispatch(triggerSuccessMsg(message || "Max mode updated!"));
     },
     onError: (error: any) => {

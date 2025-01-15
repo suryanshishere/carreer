@@ -77,7 +77,11 @@ export const CONTACT_US_ENV_DATA: ContactUsEnvData = {
 
 // ---------------------------------------------
 
-export type accountModeType = "max";
+// enum AccountMode {
+//   MAX = "max",
+// }
+
+// export type AccountModeType = keyof typeof AccountMode;
 
 export interface IUserEnvData {
   ALPHA_NUM_SPECIAL_CHAR: RegExp;
@@ -89,7 +93,7 @@ export interface IUserEnvData {
   PASSWORD_RESET_TOKEN_EXPIRY: number;
   PWD_RESET_ERROR_MSG: string;
   OTP_ERROR_MSG: string;
-  ACCOUNT_MODE: accountModeType[];
+  // ACCOUNT_MODE: AccountModeType;
 }
 
 export const USER_ENV_DATA: IUserEnvData = {
@@ -104,7 +108,7 @@ export const USER_ENV_DATA: IUserEnvData = {
     Number(process.env.PASSWORD_RESET_TOKEN_EXPIRY) || 3,
   PWD_RESET_ERROR_MSG: "Invalid password reset token!",
   OTP_ERROR_MSG: "Invalid OTP!",
-  ACCOUNT_MODE: ["max"],
+  // ACCOUNT_MODE: AccountMode,
 };
 
 export const ADMIN_DATA: AdminData = {

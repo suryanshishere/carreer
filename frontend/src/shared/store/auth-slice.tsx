@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IRole } from "models/admin/IAdmin";
-import { IUserData, userAccountModeType } from "models/userModel/IUserData";
+import { IUserAccountMode, IUserData } from "models/userModel/IUserData";
 
 interface IAuthSlice {
   isNavAuthClicked: boolean;
@@ -37,7 +37,7 @@ const authSlice = createSlice({
         isEmailVerified: boolean;
         tokenExpiration?: string;
         role?: IRole;
-        mode?: userAccountModeType[];
+        mode?: IUserAccountMode;
       }>
     ) {
       const { token, tokenExpiration, isEmailVerified, role, mode } =

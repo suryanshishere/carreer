@@ -13,7 +13,7 @@ const {
   OTP_ERROR_MSG,
   EMAIL_VERIFICATION_OTP_EXPIRY,
   PASSWORD_RESET_TOKEN_EXPIRY,
-  ACCOUNT_MODE,
+  // ACCOUNT_MODE,
 } = USER_ENV_DATA;
 
 export interface IUser extends Document {
@@ -40,7 +40,7 @@ export interface IUser extends Document {
   saved_posts?: SavedPosts;
 
   //status for personalised data rendering for the user
-  mode?: "max"[];
+  mode?: Record<string,boolean>;
 }
 
 const dynamicReferences: Record<string, any> = {};
@@ -94,9 +94,7 @@ const userSchema: Schema = new Schema<IUser>(
     saved_posts: { type: new Schema(dynamicReferences) },
 
     mode: {
-      type: [String],
-      enum: ACCOUNT_MODE,
-      default: [],
+      max: { type: Boolean, default: false },
     },
   },
   { timestamps: true }

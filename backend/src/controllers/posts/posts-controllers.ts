@@ -1,6 +1,5 @@
 import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
-import { sectionDetailPopulateModels } from "./postsControllersUtils/postPopulate/posts-populate";
 import { Request } from "express-jwt";
 import { snakeCase } from "lodash";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
@@ -14,10 +13,6 @@ import {
   getSectionPostDetails,
 } from "./postsControllersUtils/posts-controllers-utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
-import {
-  COMMON_POST_DETAIL_SELECT_FIELDS,
-  sectionPostDetailSelect,
-} from "./postsControllersUtils/postSelect/sectionPostDetailSelect";
 import validationError, {
   handleValidationErrors,
 } from "@controllers/sharedControllers/validation-error";
