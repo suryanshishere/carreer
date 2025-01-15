@@ -18,11 +18,18 @@ const dropdownSlice = createSlice({
       const { id, state: newState } = action.payload;
       state.dropdownStates[id] = newState ?? !state.dropdownStates[id];
     },
+    closeSpecificDropdowns(state, action: PayloadAction<string[]>) {
+      action.payload.forEach((id) => {
+        if (state.dropdownStates[id]) {
+          state.dropdownStates[id] = false;
+        }
+      });
+    },
     closeAllDropdowns(state) {
       state.dropdownStates = {};
     },
   },
 });
 
-export const { toggleDropdownState, closeAllDropdowns } = dropdownSlice.actions;
+export const { toggleDropdownState,  closeSpecificDropdowns,closeAllDropdowns } = dropdownSlice.actions;
 export default dropdownSlice.reducer;

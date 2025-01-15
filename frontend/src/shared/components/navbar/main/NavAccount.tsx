@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from "shared/store";
 import { handleAuthClick } from "shared/store/auth-slice";
 import {
   closeAllDropdowns,
+  closeSpecificDropdowns,
   toggleDropdownState,
 } from "shared/store/dropdown-slice";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -42,7 +43,9 @@ const NavAccount = () => {
 
   const accountDropdownRef = useRef<HTMLDivElement>(null);
 
-  useOutsideClick(accountDropdownRef, () => dispatch(closeAllDropdowns()));
+  useOutsideClick(accountDropdownRef, () =>
+    dispatch(closeSpecificDropdowns(["main_nav_account", "setting"]))
+  );
 
   const dropdownHandler = () => {
     if (dropdownStates["main_nav_account"]) {

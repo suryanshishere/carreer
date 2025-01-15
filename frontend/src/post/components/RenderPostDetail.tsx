@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { removeKeyValuePair, setKeyValuePair } from "shared/store/post-slice";
 import RenderField from "shared/ui/RenderField";
+import Button from "shared/utils/form/Button";
 
 interface RenderPostDetailProps {
   value: Date | string | number;
@@ -48,7 +49,7 @@ const RenderPostDetail: React.FC<RenderPostDetailProps> = ({
   };
 
   const handleUndo = () => {
-    setInputValue(value instanceof Date ? value.toISOString()  : value);
+    setInputValue(value instanceof Date ? value.toISOString() : value);
     dispatch(removeKeyValuePair(keyProp));
     setIsChanged(false);
     setIsSaved(false);
@@ -82,7 +83,9 @@ export default RenderPostDetail;
 interface EditableFieldProps {
   value: Date | string | number;
   valueType: "string" | "number" | "object"; // Type of the value
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   onSave: () => void;
   onUndo: () => void;
   isChanged: boolean;
@@ -101,7 +104,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
   const isLongText = valueType === "string" && (value as string).length > 75;
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {isLongText ? (
         <textarea
           value={value as string}
@@ -110,7 +113,13 @@ const EditableField: React.FC<EditableFieldProps> = ({
         />
       ) : (
         <input
-          type={valueType === "number" ? "number" : valueType === "object" ? "date" : "text"}
+          type={
+            valueType === "number"
+              ? "number"
+              : valueType === "object"
+              ? "date"
+              : "text"
+          }
           value={value as string | number}
           className="outline outline-1 outline-custom-less-gray w-full pl-2 py-1"
           onChange={onChange}
@@ -119,19 +128,12 @@ const EditableField: React.FC<EditableFieldProps> = ({
       {isChanged && (
         <button
           onClick={onSave}
-          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+          className="bg-custom-blue text-white px-2 py-1 rounded hover:bg-custom-dark-blue transform ease-linear duration-200"
         >
           Save
         </button>
       )}
-      {isSaved && (
-        <button
-          onClick={onUndo}
-          className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2"
-        >
-          Undo
-        </button>
-      )}
+      {isSaved && <Button onClick={onUndo} classProp="py-1 bg-custom-white transform ease-linear duration-200">Undo</Button>}
     </div>
   );
 };

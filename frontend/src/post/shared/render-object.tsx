@@ -18,7 +18,7 @@ const renderObject = (value: any, parentKey: string) => (
         const fullKey = parentKey ? `${parentKey}.${subKey}` : subKey;
 
         return (
-          <div key={subKey} className="flex flex-col justify-start">
+          <div key={subKey} className="w-full flex flex-col justify-start">
             <h2 className="self-start flex items-center justify-start gap-2 text-custom-gray">
               <div className="w-2 h-2 bg-custom-gray rounded-sm"></div>
               {startCase(subKey)}

@@ -63,8 +63,8 @@ const PostDetail: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center relative min-h-screen">
-      <div className="self-end flex gap-2 items-center justify-center sticky top-0 bg-white z-10">
+    <div className="flex flex-col gap-3 items-center relative min-h-screen">
+      <div className="self-end flex gap-2 items-center justify-center z-10">
         <Info />
         <Bookmark section={section} postId={postId} isSaved={isSaved} />
       </div>

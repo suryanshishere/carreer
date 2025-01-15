@@ -6,37 +6,33 @@ import { AppDispatch, RootState } from "shared/store";
 import { toggleDropdownState } from "shared/store/dropdown-slice";
 import { useParams } from "react-router-dom";
 import ContributeToPost from "post/components/ContributeToPost";
+import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 
 const Info = () => {
   const { section = "", postCode = "" } = useParams<{
     section: string;
     postCode: string;
   }>();
+
   const dispatch = useDispatch<AppDispatch>();
   const dropdownStates = useSelector(
     (state: RootState) => state.dropdown.dropdownStates
   );
-  const showInfoDropdown = dropdownStates["info"] || false;
+
+  const infoButtonHandler = () => {
+    dispatch(toggleDropdownState({ id: "info" }));
+  };
 
   return (
     <div className="relative flex justify-center items-center gap-1">
-      <div className="relative">
-        {showInfoDropdown && (
-          <div className="bg-custom-pale-yellow px-2 py-1">
-            <ContributeToPost section={section} postCode={postCode} />
-          </div>
-        )}
-      </div>
-
+      {dropdownStates["info"] && (
+        <ContributeToPost section={section} postCode={postCode} />
+      )}
       <button
-        onClick={() => {
-          dispatch(toggleDropdownState({ id: "info" }));
-        }}
-        className={
-          "p-1 m-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-custom-pale-yellow"
-        }
+        onClick={infoButtonHandler}
+        className="p-1 m-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-custom-pale-yellow"
       >
-        {!showInfoDropdown ? (
+        {!dropdownStates["info"] ? (
           <InfoOutlinedIcon
             fontSize="small"
             className="text-custom-super-less-gray hover:text-custom-gray"
