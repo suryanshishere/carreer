@@ -106,15 +106,16 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
         <Button
           authButtonType={!isForgotPasswordPage}
           outline={isForgotPasswordPage ? true : undefined}
-          classProp={
-            !isForgotPasswordPage
-              ? `${
-                  submitMutation.isPending
-                    ? "bg-custom-black"
-                    : "bg-custom-gray"
-                } py-2 flex-1 rounded-full text-white font-bold px-3 hover:bg-custom-black`
-              : undefined
-          }
+          disabled={submitMutation.isPending}
+          // classProp={
+          //   !isForgotPasswordPage
+          //     ? `${
+          //         submitMutation.isPending
+          //           ? "bg-custom-black"
+          //           : "bg-custom-gray"
+          //       } py-2 flex-1 rounded-full text-white font-bold px-3 hover:bg-custom-black`
+          //     : undefined
+          // }
           type="submit"
         >
           {submitMutation.isPending

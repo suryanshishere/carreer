@@ -32,32 +32,36 @@ const Bookmark: React.FC<IBookmark> = ({
     bookmarkState: boolean;
   }
 
-  const mutation = useMutation<any, any, MutationVariables>({
+  const mutation = useMutation({
     mutationFn: async ({ url, bookmarkState }: MutationVariables) => {
       setIsBookmarked(bookmarkState);
-      const response = await axiosInstance.post(
-        url,
-        { section, post_id: postId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axiosInstance.post(url, {
+        section,
+        post_id: postId,
+      });
       return response.data;
     },
     onSuccess: ({ message }, { bookmarkState }) => {
       setIsBookmarked(bookmarkState);
-      dispatch(triggerSuccessMsg(message));
+      dispatch(triggerSuccessMsg(message || "Bookmark updated!"));
     },
     onError: (error: any, { bookmarkState }) => {
-      setIsBookmarked(!bookmarkState); // Revert state on error
-      dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
+      setIsBookmarked(!bookmarkState);
+      dispatch(
+        triggerErrorMsg(
+          `${error.response?.data?.message}` ||
+            "Bookmark not updated, try again!"
+        )
+      );
     },
   });
 
   const handleClick = (url: string, bookmarkState: boolean) => {
-    mutation.mutate({ url, bookmarkState });
+    if (token) {
+      mutation.mutate({ url, bookmarkState });
+    } else {
+      dispatch(triggerErrorMsg("Unauthorised, please login or sigup!"));
+    }
   };
 
   const bookmarkButtonProps = {

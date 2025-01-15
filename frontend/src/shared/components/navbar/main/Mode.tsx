@@ -1,14 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "shared/utils/api/axios-instance";
+import {
+  triggerErrorMsg,
+  triggerSuccessMsg,
+} from "shared/store/thunks/response-thunk";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
+import { updateUserData } from "shared/store/auth-slice";
+import { userAccountModeType } from "models/userModel/IUserData";
 
 const Mode = () => {
-  const [isChecked, setIsChecked] = React.useState(false);
+  const mode = useSelector((state: RootState) => state.auth.userData.mode);
+  const [isChecked, setIsChecked] = useState(mode?.includes("max") || false);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const mutation = useMutation({
+    mutationFn: async (modeState: boolean) => {
+      const response = await axiosInstance.post("/user/account/mode", {
+        mode: { max: modeState },
+      });
+      return response.data;
+    },
+    onSuccess: (data) => {  // On success, you now get the response data
+      const { message } = data;
+      let updatedMode: userAccountModeType[] | undefined;
+
+      // Determine the new mode based on the mutation state
+      if (!mode) {
+        updatedMode = isChecked ? ["max"] : undefined;  // Use isChecked directly
+      } else {
+        updatedMode = isChecked
+          ? [...mode, "max"]
+          : mode.filter((item) => item !== "max");
+      }
+
+      // If the array is empty after removing 'max', set it to undefined
+      if (updatedMode?.length === 0) {
+        updatedMode = undefined;
+      }
+
+      dispatch(updateUserData({ mode: updatedMode }));
+      dispatch(triggerSuccessMsg(message || "Max mode updated!"));
+    },
+    onError: (error: any) => {
+      dispatch(
+        triggerErrorMsg(
+          `${error.response?.data?.message}` || "Mode not updated, try again!"
+        )
+      );
+      // Revert the checkbox state in case of error
+      setIsChecked(!isChecked);
+    },
+  });
 
   const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
+    const newState = !isChecked;
+    setIsChecked(newState);
+    mutation.mutate(newState); // Pass the updated state to the mutation
   };
 
   return (
-    <div className="">
+    <div>
       <label className="relative w-14 flex cursor-pointer select-none items-center">
         <input
           type="checkbox"
@@ -17,7 +70,7 @@ const Mode = () => {
           className="sr-only"
         />
         <div
-          className={`h-6 w-full rounded-full transition  text-xs font-bold flex items-center justify-center text-custom-black whitespace-nowrap ${
+          className={`h-6 w-full rounded-full transition text-xs font-bold flex items-center justify-center text-custom-black whitespace-nowrap ${
             isChecked ? "bg-custom-less-blue" : "bg-custom-less-gray"
           }`}
         >
@@ -26,8 +79,8 @@ const Mode = () => {
         <div
           className={`dot absolute top-[4px] mx-1 h-4 w-4 rounded-full transition-transform ${
             isChecked
-              ? "translate-x-8 bg-custom-blue "
-              : "translate-x-0 bg-custom-gray "
+              ? "translate-x-8 bg-custom-blue"
+              : "translate-x-0 bg-custom-gray"
           }`}
         ></div>
       </label>

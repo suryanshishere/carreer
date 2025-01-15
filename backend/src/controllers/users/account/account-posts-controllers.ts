@@ -1,5 +1,5 @@
 import { Response, NextFunction, Request } from "express";
-import  User  from "@models/user/user-model";
+import User from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
@@ -38,17 +38,6 @@ export const savedPosts = async (
     });
 
     const userSavedPost = await query;
-
-    // .populate([
-    //   "saved_posts.answer_key_ref",
-    //   "saved_posts.admit_card_ref",
-    //   "saved_posts.latest_job_ref",
-    //   "saved_posts.admission_ref",
-    //   "saved_posts.certificate_verification_ref",
-    //   "saved_posts.important_ref",
-    //   "saved_posts.syllabus_ref",
-    //   "saved_posts.result_ref",
-    // ]);
 
     if (!userSavedPost) {
       return next(new HttpError("No user saved post found!", 404));
@@ -105,7 +94,7 @@ export const unBookmarkPost = async (
   try {
     const { section, post_id } = req.body;
 
-       const userId = getUserIdFromRequest(req as JWTRequest);
+    const userId = getUserIdFromRequest(req as JWTRequest);
     const user = await User.findById(userId);
 
     if (!user) {

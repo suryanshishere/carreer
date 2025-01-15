@@ -114,7 +114,7 @@ const ContactUs: React.FC = () => {
           error={!!errors.reason}
           helperText={errors.reason?.message}
         />
-        <Button type="submit">
+        <Button type="submit"  disabled={submitMutation.isPending}>
           {submitMutation.isPending ? "Submiting..." : "Submit"}
         </Button>
       </form>

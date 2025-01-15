@@ -31,7 +31,6 @@ interface IAuth {
 
 const AuthComponent: React.FC<AuthProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
-  // Setup form with React Hook Form
   const {
     register,
     handleSubmit,
@@ -41,7 +40,6 @@ const AuthComponent: React.FC<AuthProps> = () => {
     mode: "onSubmit",
   });
 
-  // Form submission handler
   const submitMutation = useMutation({
     mutationFn: async (data: IAuth) => {
       const response = await axiosInstance.post(
@@ -51,9 +49,16 @@ const AuthComponent: React.FC<AuthProps> = () => {
       );
       return response.data;
     },
-    onSuccess: ({ token, tokenExpiration, isEmailVerified, role, message }) => {
+    onSuccess: ({
+      token,
+      tokenExpiration,
+      isEmailVerified,
+      role,
+      mode,
+      message,
+    }) => {
       dispatch(triggerSuccessMsg(message));
-      dispatch(login({ token, tokenExpiration, isEmailVerified, role }));
+      dispatch(login({ token, tokenExpiration, isEmailVerified, role, mode }));
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));
@@ -88,13 +93,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
         classProp={`placeholder:text-sm`}
         outerClassProp={`flex-1`}
       />
-      <Button
-        authButtonType
-        classProp={`${
-          submitMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
-        }`}
-        type="submit"
-      >
+      <Button authButtonType disabled={submitMutation.isPending} type="submit">
         {submitMutation.isPending ? "Authenticating..." : "Authenticate"}
       </Button>
     </form>

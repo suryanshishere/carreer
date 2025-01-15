@@ -2,7 +2,7 @@ import { Response, NextFunction, Request } from "express";
 import HttpError from "@utils/http-errors";
 import bcrypt from "bcryptjs";
 import sendEmail from "./send-email";
-import  User, {IUser}  from "@models/user/user-model";
+import User, { IUser } from "@models/user/user-model";
 import {
   checkRequestDelay,
   sendAuthenticatedResponse,
@@ -15,10 +15,6 @@ import { random } from "lodash";
 import { validationResult } from "express-validator";
 import { USER_ENV_DATA } from "@shared/env-data";
 
-const FRONTEND_URL =
-  `${process.env.FRONTEND_URL}/user/reset_password` ||
-  "http://localhost:3000/user/reset_password";
-
 const { EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY } =
   USER_ENV_DATA;
 
@@ -30,6 +26,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
   const { email, password } = req.body;
   const existingUser: IUser | null = await User.findOne({ email });
+
   try {
     if (existingUser) {
       const isValidPassword = await bcrypt.compare(
@@ -52,7 +49,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
         email,
         password: hashedPassword,
         emailVerificationToken: random(100000, 999999),
-        emailVerificationTokenCreatedAt: new Date()
+        emailVerificationTokenCreatedAt: new Date(),
       });
       await newUser.save();
 
@@ -114,6 +111,10 @@ export const sendPasswordResetLink = async (
     existingUser.passwordResetTokenCreatedAt = new Date();
 
     await existingUser.save();
+
+    const FRONTEND_URL =
+      `${process.env.FRONTEND_URL}/user/reset_password` ||
+      "http://localhost:3000/user/reset_password";
 
     await sendEmail(
       next,
@@ -370,7 +371,7 @@ export const verifyEmail = async (
     // Check if the OTP has expired (e.g., 15 minutes)
     const tokenExpirationTime = new Date(
       existingUser.emailVerificationTokenCreatedAt.getTime() +
-      EMAIL_VERIFICATION_OTP_EXPIRY * 60 * 1000
+        EMAIL_VERIFICATION_OTP_EXPIRY * 60 * 1000
     );
     const currentTime = new Date();
 

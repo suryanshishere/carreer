@@ -101,7 +101,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {helperText && (
           <p
             className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
-              error ? "text-custom-red" : "text-grey"
+              error ? "text-custom-red" : "hidden"
             } ${errorClassProp}`}
           >
             {helperText.replace(/_/g, " ")}
@@ -112,7 +112,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = "Input"; // Optional: Set display name for better debugging
+Input.displayName = "Input";  
 
 // TextArea Component
 export const TextArea = forwardRef<
@@ -161,7 +161,7 @@ export const TextArea = forwardRef<
         {helperText && (
           <p
             className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
-              error ? "text-custom-red" : "text-grey"
+              error ? "text-custom-red" : "hidden"
             } ${errorClassProp}`}
           >
             {helperText.replace(/_/g, " ")}

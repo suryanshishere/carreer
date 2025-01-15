@@ -13,6 +13,7 @@ const {
   OTP_ERROR_MSG,
   EMAIL_VERIFICATION_OTP_EXPIRY,
   PASSWORD_RESET_TOKEN_EXPIRY,
+  ACCOUNT_MODE,
 } = USER_ENV_DATA;
 
 export interface IUser extends Document {
@@ -30,9 +31,6 @@ export interface IUser extends Document {
 
   // Timestamps and activity fields
   deactivated_at?: Date;
-  
-  //status for personalised data rendering for the user
-  // mode: "max" | 
 
   // Relationships
   detail?: mongoose.Types.ObjectId;
@@ -40,6 +38,9 @@ export interface IUser extends Document {
 
   // Saved posts
   saved_posts?: SavedPosts;
+
+  //status for personalised data rendering for the user
+  mode?: "max"[];
 }
 
 const dynamicReferences: Record<string, any> = {};
@@ -91,6 +92,12 @@ const userSchema: Schema = new Schema<IUser>(
 
     // Saved posts
     saved_posts: { type: new Schema(dynamicReferences) },
+
+    mode: {
+      type: [String],
+      enum: ACCOUNT_MODE,
+      default: [],
+    },
   },
   { timestamps: true }
 );

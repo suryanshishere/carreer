@@ -62,7 +62,6 @@ const CreateNewPost: React.FC = () => {
     },
     onSuccess: ({ message }) => {
       dispatch(triggerSuccessMsg(message || "Post submission successfull!"));
-      //not resetting the form cuz to preserve post code
     },
     onError: (error: any) => {
       dispatch(
@@ -114,7 +113,7 @@ const CreateNewPost: React.FC = () => {
           />
         </div>
 
-        <Button type="submit" disabled={submitMutation.isPending}>
+        <Button type="submit"  disabled={submitMutation.isPending}>
           {submitMutation.isPending ? "Submitting..." : "Submit"}
         </Button>
       </form>
