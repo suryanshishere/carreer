@@ -29,7 +29,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   section,
   height,
 }) => {
-  const skeletonItemCount = getSkeletonItemCount(height);  
+  const skeletonItemCount = getSkeletonItemCount(height);
 
   return (
     <div
@@ -82,9 +82,9 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                       section={section}
                       postId={item._id}
                       isSaved={item.is_saved}
-                      classProp={`${
-                        !item.is_saved && "hidden"
-                      } group-hover:block`}
+                      classProp={`block ${
+                        !item.is_saved ? "lg:hidden group-hover:block" : ""
+                      }`}
                     />
                   </li>
                   {index !== ListItemData.length - 1 && (

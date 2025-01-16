@@ -104,7 +104,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                 section={section}
                 postId={item._id}
                 isSaved={item.is_saved || isSaved}
-                classProp={`${!item.is_saved && "hidden"} group-hover:block`}
+                classProp={`block ${!item.is_saved ? "lg:hidden group-hover:block" : ""}`}
               />
             </div>
             <p className="text-sm text-custom-gray flex flex-col flex-wrap gap-[2px]">
