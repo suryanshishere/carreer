@@ -42,9 +42,8 @@ const Footer: React.FC = () => {
       <div className="select-none self-center">
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
       </div>
-      <hr className="lg:hidden"/>
+      <hr className="lg:hidden" />
       <div className="grid grid-cols-2 gap-x-2 text-sm text-custom-red text-center">
-
         <Link to="/about" className={footerLinkClassName}>
           About
         </Link>
@@ -71,6 +70,19 @@ const Footer: React.FC = () => {
           >
             Revoke access (TODO)
           </button>
+        )}
+        {(role === "admin" || role === "approver") && (
+          <Link
+            to="/approver/contributions-section"
+            className={footerLinkClassName}
+          >
+            Contributions
+          </Link>
+        )}
+        {role === "admin" && (
+          <Link to="/admin/access"  className={footerLinkClassName}>
+            Access
+          </Link>
         )}
       </div>
     </footer>

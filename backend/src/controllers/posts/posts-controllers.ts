@@ -115,7 +115,7 @@ export const postDetail = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { section, postIdOrCode } = req.params;
+  let { section, postIdOrCode } = req.params;
 
   try {
     let postId: string | null = null;
@@ -123,8 +123,8 @@ export const postDetail = async (
     if (mongoose.Types.ObjectId.isValid(postIdOrCode)) {
       postId = postIdOrCode;
     } else {
-      const postCode = postIdOrCode;
-      postId = await postIdGeneration(postCode);
+      postIdOrCode = postIdOrCode.toUpperCase();
+      postId = await postIdGeneration(postIdOrCode);
     }
 
     if (!postId) {
@@ -140,7 +140,7 @@ export const postDetail = async (
 
     const response = await getSectionPostDetails(section, postId);
 
-    if (!response) {
+    if (!response) { 
       return next(new HttpError("Post not found!", 404));
     }
 

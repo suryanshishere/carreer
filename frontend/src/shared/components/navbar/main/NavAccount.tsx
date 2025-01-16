@@ -12,7 +12,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";
 import NAV_ACCOUNT_LIST from "db/shared/nav/navAccountList.json";
-import useOutsideClick from "shared/hooks/click-outside-hook";
+import useOutsideClick from "shared/hooks/outside-click-hook";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
 const NavAccount = () => {
@@ -57,19 +57,6 @@ const NavAccount = () => {
 
   const onAuthenticated = (
     <>
-      {(role === "admin" || role === "approver") && (
-        <NavLink
-          to="/approver/contributions-section"
-          className="text-custom-pale-orange"
-        >
-          Contributions
-        </NavLink>
-      )}
-      {role === "admin" && (
-        <NavLink to="/admin/access" className="text-custom-pale-orange">
-          Access
-        </NavLink>
-      )}
       <NavLink
         to="/user/account/saved-posts"
         className={({ isActive }) =>
@@ -78,7 +65,7 @@ const NavAccount = () => {
       >
         Saved
       </NavLink>
-      <div
+      <button
         onClick={dropdownHandler}
         className={`py-[2px] px-1 rounded-full flex items-center hover:cursor-pointer  ${
           dropdownStates["main_nav_account"]
@@ -88,7 +75,7 @@ const NavAccount = () => {
       >
         <PermIdentityOutlinedIcon fontSize="small" />
         <ArrowDropDownIcon fontSize="small" />
-      </div>
+      </button>
       <div className="absolute right-0 top-full -mt-[4px] flex float-start flex-row-reverse gap-1">
         {dropdownStates["main_nav_account"] && (
           <NavAccountList data={NAV_ACCOUNT_LIST} />
@@ -103,7 +90,7 @@ const NavAccount = () => {
   return (
     <div
       ref={accountDropdownRef}
-      className="relative flex gap-2 items-center h-main-nav z-20"
+      className="relative flex gap-3 items-center h-main-nav z-20"
     >
       {!token ? LoginSignup : onAuthenticated}
     </div>

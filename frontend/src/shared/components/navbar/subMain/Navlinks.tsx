@@ -2,38 +2,27 @@ import React, { useRef } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import NAVLINKS from "db/shared/nav/navlinks.json";
 import { startCase } from "lodash";
-import useOutsideClick from "shared/hooks/click-outside-hook";
+import useOutsideClick from "shared/hooks/outside-click-hook";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import useResponsiveView, { ViewType } from "shared/hooks/responsive-view-hook";
+
+const visibleLinksMap = {
+  mobile: 0,
+  tablet: 4,
+  desktop: 4,
+} as const;
+
+type VisibleLinksKeys = keyof typeof visibleLinksMap;
 
 const Navlinks: React.FC = () => {
   const { section = "" } = useParams<{ section: string }>();
   const navEntries = Object.entries(NAVLINKS);
 
-  const breakpoints = {
-    default: 0,
-    md: 3,
-    lg: 4,
-  };
-
-  const [visibleLinksCount, setVisibleLinksCount] = React.useState(
-    breakpoints.default
-  );
-
-  React.useEffect(() => {
-    const updateVisibleLinks = () => {
-      if (window.innerWidth >= 1024) {
-        setVisibleLinksCount(breakpoints.lg);
-      } else if (window.innerWidth >= 768) {
-        setVisibleLinksCount(breakpoints.md);
-      } else {
-        setVisibleLinksCount(breakpoints.default);
-      }
-    };
-
-    updateVisibleLinks();
-    window.addEventListener("resize", updateVisibleLinks);
-    return () => window.removeEventListener("resize", updateVisibleLinks);
-  }, []);
+  const viewType: ViewType = useResponsiveView({
+    mobile: 768,
+    tablet: 1024,
+  });
+  const visibleLinksCount = visibleLinksMap[viewType as VisibleLinksKeys] ?? 0;
 
   const displayedLinks = navEntries.slice(0, visibleLinksCount);
   const dropdownLinks = navEntries.slice(visibleLinksCount);

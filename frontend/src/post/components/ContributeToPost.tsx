@@ -13,7 +13,7 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import Button from "shared/utils/form/Button";
-import useOutsideClick from "shared/hooks/click-outside-hook";
+import useOutsideClick from "shared/hooks/outside-click-hook";
 import {
   closeSpecificDropdowns,
   toggleDropdownState,

@@ -1,33 +1,27 @@
 import React, { useRef, useState } from "react";
 import TAGS from "db/postDb/tags.json";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import useOutsideClick from "shared/hooks/click-outside-hook";
+import useOutsideClick from "shared/hooks/outside-click-hook";
+import useResponsiveView, { ViewType } from "shared/hooks/responsive-view-hook";
 
 const Tags: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showTagsDropdown, setShowTagsDropdown] = useState(false);
   useOutsideClick(dropdownRef, () => setShowTagsDropdown(false));
 
-  const [mobileView, setMobileView] = React.useState(false);
+  const viewType: ViewType = useResponsiveView({
+    mobile: 768,
+    tablet: 1024,
+  });
 
-  React.useEffect(() => {
-    const updateMobileView = () => {
-      if (window.innerWidth >= 768) {
-        setMobileView(false);
-      } else {
-        setMobileView(true);
-      }
-    };
-
-    updateMobileView();
-  }, []);
+  const isMobileView = viewType === "mobile";
 
   return (
     <div ref={dropdownRef} className="relative min-w-28 flex items-center">
       <button
         onClick={() => setShowTagsDropdown(!showTagsDropdown)}
         className={`rounded-full outline outline-custom-gray  w-full h-full bg-custom-less-gray sm:py-[1px] flex items-center justify-center gap-2 lg:hidden ${
-          mobileView && "py-1"
+          isMobileView && "py-1"
         }  ${showTagsDropdown && "shadow-md shadow-custom-black"}`}
       >
         Tags
