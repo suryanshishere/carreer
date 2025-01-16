@@ -7,8 +7,7 @@ import {
   contributeToPost,
   reqAccess,
 } from "@controllers/users/user-controllers";
-import { sectionCheck } from "@routes/posts/posts-routes";
-import { postCodeCheck } from "@routes/admin/publisher/publisher-routes-utils";
+import { postCodeCheck, sectionCheck } from "@routes/validation-routes-utils";
 
 const router = express.Router();
 const { MIN_REASON_LENGTH, MAX_REASON_LENGTH } = CONTACT_US_ENV_DATA;

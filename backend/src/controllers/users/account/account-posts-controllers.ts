@@ -9,6 +9,7 @@ import {
   sectionPostListSelect,
 } from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
 import { POST_ENV_DATA } from "@shared/env-data";
+import ContributionModel from "@models/user/contribution-model";
 
 const postSectionsArray = POST_ENV_DATA.SECTIONS;
 
@@ -122,5 +123,33 @@ export const unBookmarkPost = async (
     return res
       .status(500)
       .json({ message: "Un-bookmarking failed, try again!" });
+  }
+};
+
+export const myContribution = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = (req as JWTRequest).userData.userId;
+    const contribution = await ContributionModel.findById(userId).select("contribution");
+
+    if (!contribution) {
+      return next(new HttpError("Contribution not found!", 404));
+    }
+
+    return res
+      .status(200)
+      .json({
+        data: contribution,
+        message: "Contribution fetched successfully!",
+      });
+
+  } catch (error) {
+    console.error("Error fetching contribution:", error);
+    return next(
+      new HttpError("Error fetching contribution, try again later!", 500)
+    );
   }
 };

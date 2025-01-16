@@ -29,6 +29,7 @@ const validationSchema = Yup.object().shape({
       "Post code can only contain letters, numbers, and spaces."
     )
     .required("Post code is required"),
+  api_key: Yup.string(),
   section: Yup.string()
     .required("Please select an option.")
     .oneOf(SECTIONS, `Status should be one of: ${SECTIONS.join(", ")}.`),
@@ -38,6 +39,7 @@ interface ICreateNewPostForm {
   name_of_the_post: string;
   post_code: string;
   section: string;
+  api_key?:string;
 }
 
 const CreateNewPost: React.FC = () => {
@@ -102,6 +104,14 @@ const CreateNewPost: React.FC = () => {
             error={!!errors.post_code}
             helperText={errors.post_code?.message}
           />
+          //TODO
+          <Input
+            label
+            placeholder="Gemini API Key"
+            {...register("api_key")}
+            error={!!errors.api_key}
+            helperText={errors.api_key?.message}
+          />
 
           <Dropdown
             data={SECTIONS}
@@ -113,7 +123,7 @@ const CreateNewPost: React.FC = () => {
           />
         </div>
 
-        <Button type="submit"  disabled={submitMutation.isPending}>
+        <Button type="submit" disabled={submitMutation.isPending}>
           {submitMutation.isPending ? "Submitting..." : "Submit"}
         </Button>
       </form>

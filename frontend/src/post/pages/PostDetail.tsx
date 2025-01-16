@@ -29,24 +29,26 @@ const getIsSavedStatus = (
 ): boolean => params.get("is_saved") === "true" || backendIsSaved;
 
 const PostDetail: React.FC = () => {
-  const { section = "" } = useParams<{
+  const { section = "", postCode = "" } = useParams<{
     section: string;
     postCode: string;
   }>();
   const location = useLocation();
   const postId = location.state?.postId;
+
   const params = useMemo(
     () => new URLSearchParams(location.search),
     [location.search]
   );
 
-  const {
-    data = { data: {}, is_saved: false },
-    isLoading,
-    error,
-  } = useQuery<{ data: IPostDetail; is_saved: boolean }, Error>({
+  const postIdOrCode = postId || postCode;
+
+  const { data = { data: {}, is_saved: false }, isLoading } = useQuery<
+    { data: IPostDetail; is_saved: boolean },
+    Error
+  >({
     queryKey: ["detailPost", section, postId],
-    queryFn: () => fetchPostDetail(section, postId),
+    queryFn: () => fetchPostDetail(section, postIdOrCode),
   });
 
   const orderedData = useMemo(() => {

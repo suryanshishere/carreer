@@ -1,5 +1,6 @@
 import {
   bookmarkPost,
+  myContribution,
   savedPosts,
   unBookmarkPost,
 } from "@controllers/users/account/account-posts-controllers";
@@ -8,6 +9,8 @@ import { check } from "express-validator";
 import _ from "lodash";
 
 const router = express.Router();
+
+router.get("/my-contribution", myContribution);
 
 router.get("/saved-posts", savedPosts);
 

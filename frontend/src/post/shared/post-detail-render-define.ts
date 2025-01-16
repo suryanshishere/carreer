@@ -18,7 +18,7 @@ export const excludedKeys = [
     "male",
     "female",
     "other",
-    "category_wise",
+    "common.vacancy.category_wise",
     "important_links",
     "important_dates",
     "eligibility",

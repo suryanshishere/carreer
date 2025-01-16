@@ -35,14 +35,16 @@ const Footer: React.FC = () => {
     },
   });
 
-  const footerLinkClassName = "hover:underline text-start";
+  const footerLinkClassName = "hover:underline lg:text-start";
 
   return (
-    <footer className="bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex flex-col lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
+    <footer className="bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex flex-col-reverse lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
       <div className="select-none self-center">
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
       </div>
-      <div className="grid grid-cols-2 gap-x-2 text-sm text-custom-red">
+      <hr className="lg:hidden"/>
+      <div className="grid grid-cols-2 gap-x-2 text-sm text-custom-red text-center">
+
         <Link to="/about" className={footerLinkClassName}>
           About
         </Link>
@@ -50,7 +52,7 @@ const Footer: React.FC = () => {
           Contact Us
         </Link>
         {token && (
-          <Link to="/user/apply-for-publisher" className={footerLinkClassName}>
+          <Link to="/user/req-access" className={footerLinkClassName}>
             Request Access
           </Link>
         )}

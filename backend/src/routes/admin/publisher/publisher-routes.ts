@@ -1,6 +1,6 @@
 import { createNewPost } from "@controllers/admin/publisher/publisher-controllers";
-import express from "express";
-import { createNewPostValidators } from "./publisher-routes-utils";
+import { createNewPostValidators } from "@routes/validation-routes-utils";
+import express from "express"; 
 
 const router = express.Router();
 router.post("/create-new-post", createNewPostValidators, createNewPost);

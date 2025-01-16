@@ -1,4 +1,6 @@
-import validationError from "@controllers/sharedControllers/validation-error";
+import validationError, {
+  handleValidationErrors,
+} from "@controllers/sharedControllers/validation-error";
 import { NextFunction, Response, Request } from "express";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
@@ -171,17 +173,13 @@ export const createNewPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(new HttpError(validationError(errors), 400));
-  }
-
   const { section, name_of_the_post, post_code } = req.body;
   const publisherId = (req as JWTRequest).userData.userId; //since publisher id will be same as user id but just in the publisher model
 
   const session = await mongoose.startSession();
 
   try {
+    handleValidationErrors(req, next);
     const publisher: IAdmin | null = await AdminModel.findById(publisherId)
       .select("role")
       .exec();

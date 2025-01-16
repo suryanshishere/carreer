@@ -40,7 +40,7 @@ export interface IUser extends Document {
   saved_posts?: SavedPosts;
 
   //status for personalised data rendering for the user
-  mode?: Record<string,boolean>;
+  mode?: Record<string, boolean>;
 }
 
 const dynamicReferences: Record<string, any> = {};
@@ -50,6 +50,8 @@ POST_ENV_DATA.SECTIONS.forEach((key) => {
     { type: Schema.Types.ObjectId, ref: _.upperFirst(camelCaseRef) },
   ];
 });
+
+const savedPostsSchema = new Schema(dynamicReferences, { _id: false });
 
 const userSchema: Schema = new Schema<IUser>(
   {
@@ -91,7 +93,7 @@ const userSchema: Schema = new Schema<IUser>(
     contribution: { type: mongoose.Types.ObjectId, ref: "Contribution" },
 
     // Saved posts
-    saved_posts: { type: new Schema(dynamicReferences) },
+    saved_posts: { type: savedPostsSchema },
 
     mode: {
       max: { type: Boolean, default: false },

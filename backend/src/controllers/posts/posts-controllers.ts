@@ -18,6 +18,8 @@ import validationError, {
 } from "@controllers/sharedControllers/validation-error";
 import { validationResult } from "express-validator";
 import User from "@models/user/user-model";
+import { postIdGeneration } from "@controllers/admin/publisher/publisher-controllers-utils";
+import mongoose from "mongoose";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
@@ -113,9 +115,27 @@ export const postDetail = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { section, postId } = req.params;
+  const { section, postIdOrCode } = req.params;
 
   try {
+    let postId: string | null = null;
+
+    if (mongoose.Types.ObjectId.isValid(postIdOrCode)) {
+      postId = postIdOrCode;
+    } else {
+      const postCode = postIdOrCode;
+      postId = await postIdGeneration(postCode);
+    }
+
+    if (!postId) {
+      return next(
+        new HttpError(
+          "Unable to resolve a valid post ID from the provided data.",
+          400
+        )
+      );
+    }
+
     handleValidationErrors(req, next);
 
     const response = await getSectionPostDetails(section, postId);
@@ -142,7 +162,7 @@ export const postDetail = async (
 
     return res.status(200).json(responseWithSavedStatus);
   } catch (err) {
-    // console.log(err);
+    console.error(err);
     return next(
       new HttpError("An error occurred while fetching the post.", 500)
     );

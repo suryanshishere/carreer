@@ -64,7 +64,7 @@ const Auth: React.FC<AuthProps> = () => {
   };
 
   const renderButtons = () => (
-    <div className="md:pl-4 gap-x-3 flex md:flex-col md:gap-[3px] items-start text-xs">
+    <div className="md:pl-4 gap-x-3 flex md:flex-col self-center md:gap-[3px] md:items-start text-xs">
       {buttonsConfig[authState]?.map(({ text, onClick }, index) => (
         <button
           key={index}

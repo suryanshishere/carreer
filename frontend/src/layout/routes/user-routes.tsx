@@ -2,8 +2,9 @@ import SavedPosts from "user/pages/account/SavedPosts";
 import ChangePassword from "user/pages/account/setting/ChangePassword";
 import ForgotPassword from "user/pages/auth/ForgotPassword";
 import DeactivateAccount from "user/pages/account/setting/DeactivateAccount";
-import ReqPublisherAccess from "user/pages/RequestAccess";
+import ReqAccess from "user/pages/RequestAccess";
 import ResetPassword from "user/pages/auth/ResetPassword";
+import MyContribution from "user/pages/account/MyContribution";
 
 const userRoutes = (token: string | null, role?: string) => {
   if (token) {
@@ -15,11 +16,12 @@ const userRoutes = (token: string | null, role?: string) => {
             path: "reset_password/:resetPasswordToken",
             element: <ResetPassword />,
           },
-          { path: "apply-for-publisher", element: <ReqPublisherAccess /> },
+          { path: "req-access", element: <ReqAccess /> },
           {
             path: "account",
             children: [
               { path: "saved-posts", element: <SavedPosts /> },
+              { path: "my-contribution" , element: <MyContribution/>},
               {
                 path: "setting",
                 children: [

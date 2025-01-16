@@ -55,10 +55,10 @@ const Navlinks: React.FC = () => {
     <div className="flex-1 h-full flex items-center gap-2 min-w-30">
       {displayedLinks.length > 0 && (
         <ul className="m-0 py-1 h-full flex gap-3 items-center overflow-x-auto scrollbar-hide">
-          {displayedLinks.map(([key, link]) => (
+          {displayedLinks.map(([key, item]) => (
             <NavLink
-              key={link}
-              to={link}
+              key={item.link}
+              to={item.link}
               className={({ isActive }) =>
                 `no-underline min-w-fit whitespace-nowrap ${
                   isActive ? "text-custom-red" : "hover:text-custom-red"
@@ -87,11 +87,11 @@ const Navlinks: React.FC = () => {
           </button>
           {showDropdown && (
             <ul className="rounded absolute top-full mt-1 w-full bg-custom-less-gray shadow-md shadow-custom-black">
-              {dropdownLinks.map(([key, link], index) => (
+              {dropdownLinks.map(([key, item], index) => (
                 <React.Fragment key={key}>
                   <li className="text-center">
                     <NavLink
-                      to={link}
+                      to={item.link}
                       className={({ isActive }) =>
                         `m-1 py-1 block rounded ${
                           isActive
