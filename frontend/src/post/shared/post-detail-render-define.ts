@@ -6,7 +6,7 @@ export const excludedKeys = [
     "contributors",
     "is_saved",
     "__v",
-    // "post_code"
+    "post"
   ];
   
   export const notDisplayKeys = [];
@@ -23,4 +23,5 @@ export const excludedKeys = [
     "important_dates",
     "eligibility",
     "applicants",
+    "application_fee.category_wise"
   ];

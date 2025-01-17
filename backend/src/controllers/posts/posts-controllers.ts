@@ -132,6 +132,8 @@ export const postDetail = async (
       );
     }
 
+    console.log(postId, "post id")
+
     const response = await getSectionPostDetails(section, postId);
 
     if (!response) {

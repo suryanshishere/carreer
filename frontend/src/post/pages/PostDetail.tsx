@@ -51,12 +51,10 @@ const PostDetail: React.FC = () => {
     queryFn: () => fetchPostDetail(section, postIdOrCode),
   });
 
-  const orderedData = useMemo(() => {
-    return rearrangeObjectByPriority(
-      data.data,
-      priorityMapping(postDetailPriorities)[snakeCase(section)]
-    );
-  }, [data.data, section]);
+  const orderedData = rearrangeObjectByPriority(
+    data.data,
+    priorityMapping(postDetailPriorities)[snakeCase(section)]
+  );
 
   const isSaved = getIsSavedStatus(params, data.is_saved);
 

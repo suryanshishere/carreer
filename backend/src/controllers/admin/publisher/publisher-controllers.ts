@@ -1,4 +1,4 @@
-import  handleValidationErrors  from "@controllers/sharedControllers/validation-error";
+import handleValidationErrors from "@controllers/sharedControllers/validation-error";
 import { NextFunction, Response, Request } from "express";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
@@ -9,13 +9,13 @@ import {
   SECTION_POST_MODAL_MAP,
 } from "@controllers/sharedControllers/post-model-map";
 import {
-  SECTION_DESCRIPTIONS,
   SECTION_POST_PROMPT_SCHEMA_MAP,
   createComponentPost,
   postCreation,
   postIdGeneration,
 } from "./publisher-controllers-utils";
 import AdminModel, { IAdmin } from "@models/admin/admin-model";
+import { SchemaType } from "@google/generative-ai";
 
 //may be used in future
 export const deletePost = async (
@@ -112,6 +112,8 @@ export const createNewPost = async (
       );
     }
 
+    console.log(postId, "post id generated");
+
     // allow time out constraint to be removed (with transaction)
     const result = await session.withTransaction(async () => {
       //checking the section cuz it's validated already by express validator from the same section it's mapped
@@ -131,16 +133,19 @@ export const createNewPost = async (
         properties: {
           ...schema.properties,
           name_of_the_post: {
-            description: SECTION_DESCRIPTIONS[section]
-              ? `${SECTION_DESCRIPTIONS[section]} Ensure it captures the intention and provides clarity to the audience.`
-              : `A well-described and engaging name for the post, tailored to the purpose and intention of the ${section} section.`,
-            type: "string",
+            description: `Ensure the post title is clear, specific, and reflects the nature of the post or exam in the ${section} section.`,
+            type: SchemaType.STRING,
           },
         },
         required: [...(schema.required || []), "name_of_the_post"],
       };
 
-      const dataJson = await postCreation(name_of_the_post, schema);
+      const apiKey = process.env.GEMINI_API_KEY;
+      // Initialize Google Generative AI with the provided API key
+      if (!apiKey) {
+        return next(new HttpError("Missing GEMINI API Key", 400));
+      }
+      const dataJson = await postCreation(apiKey, name_of_the_post, schema);
       if (!dataJson) {
         return new HttpError("Post creation returned no data.", 500);
       }

@@ -24,8 +24,11 @@ export const postCodeCheck = (
   if (optional) {
     chain = chain.optional({ nullable: true });
   }
- 
+
   return chain
+    .customSanitizer((value) => {
+      return _.toLower(_.snakeCase(value));
+    })
     .isLength({
       min: MIN_POST_CODE,
       max: MAX_POST_CODE,

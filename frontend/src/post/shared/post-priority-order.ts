@@ -23,42 +23,57 @@ const rearrangeObjectByPriority = (
   priorityKeys: string[]
 ) => {
   let result: { [key: string]: any } = {};
-  const getNestedValue = (obj: any, key: string) => {
-    // Check if the key exists and the object is not null or undefined
-    if (obj && typeof obj === "object" && key in obj) {
-      return obj[key];
-    }
-    return undefined;
+
+  // Helper to recursively get nested value
+  const getNestedValue = (obj: any, keys: string[]): any => {
+    return keys.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
   };
+
+  // Helper to recursively delete nested value
+  const deleteNestedValue = (obj: any, keys: string[]): void => {
+    if (keys.length === 1) {
+      delete obj[keys[0]];
+    } else {
+      const [firstKey, ...restKeys] = keys;
+      if (obj[firstKey]) {
+        deleteNestedValue(obj[firstKey], restKeys);
+        // Clean up empty objects
+        if (Object.keys(obj[firstKey]).length === 0) {
+          delete obj[firstKey];
+        }
+      }
+    }
+  };
+
+  // Process priority keys
   priorityKeys.forEach((key) => {
     const keys = key.split(".");
-    let value = getNestedValue(data, key);
-    // console.log(value)
-    // keys.forEach((subKey) => {
-    //   value = value ? value[subKey] : undefined;
-    // });
+    const value = getNestedValue(data, keys);
     if (value !== undefined) {
       result[key] = value;
-      delete data[key as keyof IPostDetail];
-      
-      // let currentData: any = data;
-      // keys.forEach((subKey, index) => {
-      //   if (index === keys.length - 1) {
-      //     delete currentData[subKey];
-      //   } else {
-      //     currentData = currentData[subKey];
-      //   }
-      // });
+      deleteNestedValue(data, keys);
     }
   });
 
-  Object.keys(data).forEach((key) => {
-    if (!priorityKeys.includes(key)) {
-      result[key] = data[key as keyof IPostDetail];
-    }
-  });
+  // Add remaining keys
+  const addRemainingKeys = (source: any, target: any, prefix = "") => {
+    Object.keys(source).forEach((key) => {
+      const fullKey = prefix ? `${prefix}.${key}` : key;
+      if (!priorityKeys.includes(fullKey)) {
+        if (typeof source[key] === "object" && !Array.isArray(source[key]) && source[key] !== null) {
+          target[key] = {};
+          addRemainingKeys(source[key], target[key]);
+        } else {
+          target[key] = source[key];
+        }
+      }
+    });
+  };
+
+  addRemainingKeys(data, result);
 
   return result;
 };
+
 
 export default rearrangeObjectByPriority;

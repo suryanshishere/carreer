@@ -41,26 +41,8 @@ export const COMPONENT_POST_PROMPT_SCHEMA_MAP: ISectionPromptSchema = {
   common: commonPromptSchema,
 };
 
-export const SECTION_DESCRIPTIONS: Record<string, string> = {
-  result:
-    "An engaging title for the post related to exam results, clearly conveying the purpose and outcome of the section.",
-  admit_card:
-    "A descriptive and attention-grabbing name for the post, highlighting essential admit card information for candidates.",
-  latest_job:
-    "An informative and compelling post title about job opportunities, designed to attract attention for job seekers.",
-  answer_key:
-    "A descriptive title for the post, focusing on providing clear and precise information about the answer key for the exam.",
-  syllabus:
-    "An engaging and detailed post name that provides essential syllabus details and exam preparation guidance.",
-  certificate_verification:
-    "A clear and concise post title, aimed at informing about certificate verification requirements or updates.",
-  admission:
-    "An engaging and well-crafted title for the post, centered on admission-related updates and guidance.",
-  important:
-    "An impactful title for the post, emphasizing critical and urgent information about the relevant section.",
-};
-
 export const postCreation = async (
+  apiKey: string,
   nameOfThePost: string,
   schema: { [key: string]: any }
 ) => {
@@ -71,13 +53,7 @@ export const postCreation = async (
       return null; // Return null for controlled error handling
     }
 
-    // Initialize Google Generative AI with the provided API key
-    if (!process.env.GEMINI_API_KEY) {
-      console.error("Missing GEMINI API Key");
-      return null; // Return null for controlled error handling
-    }
-
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-pro",
       generationConfig: {
@@ -130,9 +106,13 @@ export const createComponentPost = async (
     const userId = (req as JWTRequest).userData.userId;
     const { section, name_of_the_post } = req.body;
 
+    let runCount = 0; // Counter to track the number of iterations
+
     // Loop through the COMPONENT_POST_MODAL_MAP and execute each key in sequence
     for (const [key, model] of Object.entries(COMPONENT_POST_MODAL_MAP)) {
       try {
+        runCount++; // Increment the counter on each iteration
+
         if (!model) {
           throw new HttpError(`Model not found for key: ${key}`, 400);
         }
@@ -159,8 +139,6 @@ export const createComponentPost = async (
           }
         }
 
-        console.log("schema updated:", schema);
-
         // Check if schema properties are empty
         if (Object.keys(schema.properties).length === 0) {
           console.log(
@@ -169,7 +147,18 @@ export const createComponentPost = async (
           continue;
         }
 
-        const dataJson = await postCreation(name_of_the_post, schema);
+        // Determine which API key to use
+        const apiKey =
+          runCount === 3
+            ? process.env.GEMINI_BACKUP_API_KEY
+            : process.env.GEMINI_API_KEY;
+
+        if (!apiKey) {
+          throw new HttpError("Missing GEMINI API Key!", 400);
+        }
+
+        // Generate post data
+        const dataJson = await postCreation(apiKey, name_of_the_post, schema);
         if (!dataJson) {
           console.error("Post creation failed for:", key);
           throw new HttpError("Post creation returned no data", 500);

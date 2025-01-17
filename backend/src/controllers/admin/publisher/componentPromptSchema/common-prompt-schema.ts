@@ -58,7 +58,7 @@ const commonPromptSchema = {
       description: "The duration of the examination for the post, in minutes.",
     },
     age_criteria: {
-      description: "Details about the age requirements for the post.",
+      description: "Age eligiblity for the post.",
       type: SchemaType.OBJECT,
       properties: ageCriteria,
     },
