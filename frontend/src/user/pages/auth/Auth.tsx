@@ -35,6 +35,12 @@ const Auth: React.FC<AuthProps> = () => {
 
   const handleStateChange = (newState: AuthState) => setAuthState(newState);
 
+  React.useEffect(() => {
+    if (token && !isEmailVerified) {
+      setAuthState(AuthState.VERIFY_EMAIL);  
+    }
+  }, [token, isEmailVerified]);
+
   const buttonsConfig: Record<AuthState, ButtonConfig[]> = {
     [AuthState.LOGIN]: token
       ? []

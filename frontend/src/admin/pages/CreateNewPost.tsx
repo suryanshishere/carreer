@@ -40,12 +40,12 @@ const CreateNewPost: React.FC = () => {
       return response.data;
     },
     onSuccess: ({ message }) => {
-      dispatch(triggerSuccessMsg(message || "Post submission successfull!"));
+      dispatch(triggerSuccessMsg(message || "Post submission successfull!",7));
     },
     onError: (error: any) => {
       dispatch(
         triggerErrorMsg(
-          error.response?.data?.message || "Post submission failed!"
+          error.response?.data?.message || "Post submission failed!",7
         )
       );
     },

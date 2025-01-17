@@ -3,7 +3,7 @@ import HomeComponent from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import NoData from "shared/components/dataStates/NoData";
-import SECTIONS from "db/postDb/sections.json"
+import SECTIONS from "db/postDb/sections.json";
 
 const heights: Record<string, string> = {
   result: "55rem",
@@ -26,7 +26,15 @@ const Home: React.FC = () => {
     retry: 3,
   });
 
-  if (!isLoading && Object.keys(data.data).length === 0) {
+  const emptySectionsCount = SECTIONS.reduce((count, key) => {
+    const sectionData = data.data[key];
+    if (!sectionData || sectionData.length === 0 || !sectionData[0]) {
+      return count + 1;
+    }
+    return count;
+  }, 0);
+
+  if (!isLoading && emptySectionsCount >= 4) {
     return <NoData />;
   }
 

@@ -23,5 +23,6 @@ export const excludedKeys = [
     "important_dates",
     "eligibility",
     "applicants",
-    "application_fee.category_wise"
+    "application_fee.category_wise",
+    "common.age_criteria"
   ];

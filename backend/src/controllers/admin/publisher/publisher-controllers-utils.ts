@@ -49,8 +49,7 @@ export const postCreation = async (
   try {
     // Validate the schema argument to ensure it's a valid object
     if (Object.keys(schema).length === 0) {
-      console.error("Schema cannot be empty");
-      return null; // Return null for controlled error handling
+      throw new HttpError("Schema cannot be empty.", 500);
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -72,8 +71,7 @@ export const postCreation = async (
 
     return parsedContent; // Successfully parsed content
   } catch (error) {
-    console.error("Post Creation Error:", error);
-    return null; // Return null to signal an error occurred
+    throw new HttpError(`${error}`, 500);
   }
 };
 
@@ -83,9 +81,7 @@ const parseGeneratedContent = (content: string) => {
     const parsedContent = JSON.parse(content);
     return parsedContent;
   } catch (syntaxError) {
-    console.error("JSON Syntax Error in generated content:", syntaxError);
-    console.error("Generated content:", content);
-    return null;
+    throw new HttpError(`${syntaxError}`, 500);
   }
 };
 
@@ -139,7 +135,6 @@ export const createComponentPost = async (
           }
         }
 
-        // Check if schema properties are empty
         if (Object.keys(schema.properties).length === 0) {
           console.log(
             `Skipping post creation for key: ${key} as schema properties are empty`
@@ -147,20 +142,42 @@ export const createComponentPost = async (
           continue;
         }
 
-        // Determine which API key to use
-        const apiKey =
-          runCount === 3
-            ? process.env.GEMINI_BACKUP_API_KEY
-            : process.env.GEMINI_API_KEY;
+        let apiKey = process.env.GEMINI_API_KEY;
+        let dataJson = null;
+        let attemptCount = 0;
+        let success = false;
 
-        if (!apiKey) {
-          throw new HttpError("Missing GEMINI API Key!", 400);
+        // Retry up to 2 times if no data is returned
+        while (attemptCount < 2 && !success) {
+          if (attemptCount === 0 && key === "common") {
+            apiKey = process.env.GEMINI_API_KEY3;
+          }
+          if (!apiKey) {
+            throw new HttpError("Missing GEMINI API Key", 500);
+          }
+
+          try {
+            dataJson = await postCreation(apiKey, name_of_the_post, schema);
+          } catch (error: any) {
+            throw new HttpError(error.message, 500);
+          }
+
+          if (dataJson) {
+            success = true; // Exit the retry loop on success
+          } else {
+            attemptCount++;
+            console.error(
+              `Post creation failed for key: ${key}. Attempt ${attemptCount}/2`
+            );
+            if (attemptCount < 2) {
+              // Swap API keys: use backup API if no data is returned
+              apiKey = process.env.GEMINI_BACKUP_API_KEY;
+            }
+          }
         }
 
-        // Generate post data
-        const dataJson = await postCreation(apiKey, name_of_the_post, schema);
         if (!dataJson) {
-          console.error("Post creation failed for:", key);
+          console.error("Post creation failed after 2 attempts for:", key);
           throw new HttpError("Post creation returned no data", 500);
         }
 

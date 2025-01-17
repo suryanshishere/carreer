@@ -54,7 +54,7 @@ const Button: React.FC<ButtonProps> = ({
         disabled={disabled}
         className={`flex items-center justify-center min-w-fit whitespace-nowrap text-base overflow-hidden px-3 py-2 rounded-full text-custom-white font-bold  hover:bg-custom-black ${
           disabled ? "cursor-not-allowed bg-custom-black" : "cursor-pointer bg-custom-gray"
-        } ${classProp || "bg-custom-gray"}`}
+        } ${classProp }`}
       >
         {children}
       </button>
