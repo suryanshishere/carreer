@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IRole } from "models/admin/IAdmin";
-import { IUserData } from "models/userModel/IUserData";
+import { IUserAccountMode, IUserData } from "models/userModel/IUserData";
 
 interface IAuthSlice {
   isNavAuthClicked: boolean;
@@ -37,9 +37,11 @@ const authSlice = createSlice({
         isEmailVerified: boolean;
         tokenExpiration?: string;
         role?: IRole;
+        mode?: IUserAccountMode;
       }>
     ) {
-      const { token, tokenExpiration, isEmailVerified, role } = action.payload;
+      const { token, tokenExpiration, isEmailVerified, role, mode } =
+        action.payload;
 
       if (!token && isEmailVerified === undefined) return;
 
@@ -55,6 +57,7 @@ const authSlice = createSlice({
         isEmailVerified,
         tokenExpiration: localTokenExpiration.toISOString(),
         role,
+        mode,
       };
 
       if (isEmailVerified) {
@@ -69,11 +72,13 @@ const authSlice = createSlice({
         token: "",
         isEmailVerified: false,
         tokenExpiration: undefined,
+        role: undefined,
+        mode: undefined,
+        deactivatedAt: undefined,
         sessionExpireMsg: undefined,
       };
       // window.location.reload();
     },
-
     updateUserData(state, action: PayloadAction<Partial<IUserData>>) {
       const updatedData = action.payload;
       state.userData = { ...state.userData, ...updatedData };

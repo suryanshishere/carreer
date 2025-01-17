@@ -5,7 +5,6 @@ import renderTable from "./render-table";
 import renderObject from "./render-object";
 
 const renderData = (value: any, key: string) => {
-
   // Check if value is an array of objects and render the table for arrays
   if (
     Array.isArray(value) &&
@@ -24,7 +23,7 @@ const renderData = (value: any, key: string) => {
   if (value && typeof value === "object") {
     return renderObject(value, key);
   }
-  
+
   // Default case: Render the date or number directly
   return <RenderPostDetail value={value} keyProp={key} />;
 };

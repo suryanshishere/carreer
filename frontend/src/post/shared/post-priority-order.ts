@@ -33,7 +33,7 @@ const rearrangeObjectByPriority = (
   priorityKeys.forEach((key) => {
     const keys = key.split(".");
     let value = getNestedValue(data, key);
-    console.log(value)
+    // console.log(value)
     // keys.forEach((subKey) => {
     //   value = value ? value[subKey] : undefined;
     // });

@@ -1,11 +1,9 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import Dropdown from "shared/utils/form/Dropdown";
 import { Input, TextArea } from "shared/utils/form/Input";
-import SECTIONS from "db/postDb/sections.json";
 import Button from "shared/utils/form/Button";
 import { useDispatch } from "react-redux";
 import {
@@ -15,30 +13,11 @@ import {
 import { AppDispatch } from "shared/store";
 import axiosInstance from "shared/utils/api/axios-instance";
 import _ from "lodash";
-
-const validationSchema = Yup.object().shape({
-  name_of_the_post: Yup.string()
-    .min(6, `Name of the post must be between 6 and 1000 characters.`)
-    .max(500, `Name of the post must be between 6 and 1000 characters.`)
-    .required("Name of the post is required"),
-  post_code: Yup.string()
-    .min(6, `Post code must be between 6 and 1000 characters.`)
-    .max(100, `Post code must be between 6 and 1000 characters.`)
-    .matches(
-      /^[A-Za-z0-9_\s]+$/,
-      "Post code can only contain letters, numbers, and spaces."
-    )
-    .required("Post code is required"),
-  section: Yup.string()
-    .required("Please select an option.")
-    .oneOf(SECTIONS, `Status should be one of: ${SECTIONS.join(", ")}.`),
-});
-
-interface ICreateNewPostForm {
-  name_of_the_post: string;
-  post_code: string;
-  section: string;
-}
+import {
+  ICreateNewPostForm,
+  validationSchema,
+} from "shared/validation/admin-validation";
+import { POST_ENV_DATA } from "env-data";
 
 const CreateNewPost: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -62,7 +41,6 @@ const CreateNewPost: React.FC = () => {
     },
     onSuccess: ({ message }) => {
       dispatch(triggerSuccessMsg(message || "Post submission successfull!"));
-      //not resetting the form cuz to preserve post code
     },
     onError: (error: any) => {
       dispatch(
@@ -75,7 +53,7 @@ const CreateNewPost: React.FC = () => {
 
   const submitHandler: SubmitHandler<ICreateNewPostForm> = (data) => {
     // Preprocess post_code
-    const formattedPostCode = _.upperCase(data.post_code).replace(/\s+/g, "_");
+    const formattedPostCode = _.lowerCase(data.post_code).replace(/\s+/g, "_");
     const updatedData = { ...data, post_code: formattedPostCode };
 
     submitMutation.mutate(updatedData);
@@ -85,7 +63,7 @@ const CreateNewPost: React.FC = () => {
     <div className="w-full flex flex-col items-center">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="w-1/2 flex flex-col gap-4"
+        className="lg:w-1/2 w-full flex flex-col gap-4"
       >
         <div className="flex flex-col gap-2">
           <TextArea
@@ -95,7 +73,6 @@ const CreateNewPost: React.FC = () => {
             error={!!errors.name_of_the_post}
             helperText={errors.name_of_the_post?.message}
           />
-
           <Input
             label="post_code"
             placeholder="Post Code"
@@ -103,9 +80,16 @@ const CreateNewPost: React.FC = () => {
             error={!!errors.post_code}
             helperText={errors.post_code?.message}
           />
-
+          //TODO
+          <Input
+            label
+            placeholder="Gemini API Key"
+            {...register("api_key")}
+            error={!!errors.api_key}
+            helperText={errors.api_key?.message}
+          />
           <Dropdown
-            data={SECTIONS}
+            data={POST_ENV_DATA.SECTIONS}
             label="section"
             name="section"
             error={!!errors.section}

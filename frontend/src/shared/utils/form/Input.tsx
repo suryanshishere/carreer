@@ -4,7 +4,7 @@ import React, { useState, ChangeEvent, CSSProperties, forwardRef } from "react";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
-  label?: string;
+  label?: string | boolean;
   placeholder?: string;
   required?: boolean;
   style?: CSSProperties;
@@ -71,7 +71,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className={`${outerClassProp} flex flex-col`}>
         {label && (
           <label htmlFor={name} className="block text-sm font-medium mb-1">
-            {startCase(label)}
+            {typeof label === "string" ? startCase(label) : startCase(name)}
           </label>
         )}
         <div className="relative w-full flex items-center">
@@ -84,11 +84,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder || startCase(name)}
             value={value}
             onChange={onChange}
-            className={`w-full pl-2 py-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
+            className={`w-full pl-2 py-2 outline outline-2 focus:outline-custom-gray outline-custom-less-gray text-base rounded ${classProp} ${
               error ? "outline-custom-red" : ""
-            } ${
-              error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"
-            }`}
+            } ${error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"}
+            `}
             style={style}
           />
           {endAdornment && (
@@ -100,7 +99,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {helperText && (
           <p
             className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
-              error ? "text-custom-red" : "text-grey"
+              error ? "text-custom-red" : "hidden"
             } ${errorClassProp}`}
           >
             {helperText.replace(/_/g, " ")}
@@ -111,7 +110,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = "Input"; // Optional: Set display name for better debugging
+Input.displayName = "Input";
 
 // TextArea Component
 export const TextArea = forwardRef<
@@ -141,7 +140,7 @@ export const TextArea = forwardRef<
     return (
       <div className={`relative ${outerClassProp}`}>
         <label htmlFor={name} className="block text-sm font-medium mb-1">
-          {label ? startCase(label) || startCase(placeholder) : startCase(name)}
+          {typeof label === "string" ? startCase(label) : startCase(name)}
         </label>
         <textarea
           placeholder={placeholder}
@@ -160,7 +159,7 @@ export const TextArea = forwardRef<
         {helperText && (
           <p
             className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
-              error ? "text-custom-red" : "text-grey"
+              error ? "text-custom-red" : "hidden"
             } ${errorClassProp}`}
           >
             {helperText.replace(/_/g, " ")}

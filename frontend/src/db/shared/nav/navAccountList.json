@@ -3,7 +3,13 @@
     "role": ["publisher", "admin"],
     "link": "/publisher/create-new-post"
   },
-  "contribute_post": { "link": "/user/contribute-post" },
-  "setting": null,
+  "my_contribution": {
+    "link": "/user/account/my-contribution"
+  },
+  "setting": {
+    "change_password": { "link": "/user/account/setting/change-password" },
+    "forgot_password": { "link": "/user/account/setting/forgot-password" },
+    "deactivate_account": { "link": "/user/account/setting/deactivate-account" }
+  },
   "logout": null
 }

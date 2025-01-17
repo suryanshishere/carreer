@@ -1,13 +1,19 @@
+import { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { handleAuthClick } from "shared/store/auth-slice";
-import { toggleDropdownState } from "shared/store/dropdown-slice";
+import {
+  closeAllDropdowns,
+  closeSpecificDropdowns,
+  toggleDropdownState,
+} from "shared/store/dropdown-slice";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";
 import NAV_ACCOUNT_LIST from "db/shared/nav/navAccountList.json";
-import SETTING_LIST from "db/shared/nav/setting.json";
+import useOutsideClick from "shared/hooks/outside-click-hook";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,8 +26,6 @@ const NavAccount = () => {
   const { token, role } = useSelector(
     (state: RootState) => state.auth.userData
   );
-
-  const showNavDropdown = dropdownStates["main_nav_account"] || false;
 
   let LoginSignup = (
     <>
@@ -37,65 +41,57 @@ const NavAccount = () => {
     </>
   );
 
-  let onAuthenticated = (
+  const accountDropdownRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(accountDropdownRef, () =>
+    dispatch(closeSpecificDropdowns(["main_nav_account", "setting"]))
+  );
+
+  const dropdownHandler = () => {
+    if (dropdownStates["main_nav_account"]) {
+      dispatch(closeAllDropdowns());
+    } else {
+      dispatch(toggleDropdownState({ id: "main_nav_account" }));
+    }
+  };
+
+  const onAuthenticated = (
     <>
-      {(role === "admin" || role === "approver") && (
-        <NavLink
-          to="/approver/contributions-section"
-          className="text-custom-pale-orange"
-        >
-          Contributions
-        </NavLink>
-      )}
-      {role === "admin" && (
-        <NavLink to="/admin/access" className="text-custom-pale-orange">
-          Access
-        </NavLink>
-      )}
       <NavLink
         to="/user/account/saved-posts"
         className={({ isActive }) =>
           isActive ? "text-custom-pale-orange" : ""
         }
       >
-        Saved Posts
+        Saved
       </NavLink>
-      <div className="flex justify-center items-center gap-2">
-        <div>
-          {/* {email &&
-            `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`}  */}
-          Cool
-        </div>
-        <div className="relative">
-          <button
-            onClick={() => {
-              dispatch(toggleDropdownState("main_nav_account"));
-              if (dropdownStates["setting"])
-                dispatch(toggleDropdownState("setting"));
-            }}
-            className={`h-6 w-6 flex items-center justify-center rounded-full ${
-              showNavDropdown
-                ? "text-custom-black bg-custom-pale-orange"
-                : "hover:bg-custom-pale-orange hover:text-custom-black"
-            }`}
-          >
-            <ArrowDropDownIcon />
-          </button>
-          <div className="absolute top-full left-1/2 mt-2 -translate-x-1/2">
-            {showNavDropdown && <NavAccountList data={NAV_ACCOUNT_LIST} />}
-          </div>
-          <div className="absolute top-full right-4 mt-2 -translate-x-1/2">
-            {dropdownStates["setting"] && (
-              <NavAccountList data={SETTING_LIST} />
-            )}
-          </div>
-        </div>
+      <button
+        onClick={dropdownHandler}
+        className={`py-[2px] px-1 rounded-full flex items-center hover:cursor-pointer  ${
+          dropdownStates["main_nav_account"]
+            ? "bg-custom-less-gray text-custom-gray shadow-md shadow-custom-black"
+            : ""
+        }`}
+      >
+        <PermIdentityOutlinedIcon fontSize="small" />
+        <ArrowDropDownIcon fontSize="small" />
+      </button>
+      <div className="absolute right-0 top-full -mt-[4px] flex float-start flex-row-reverse gap-1">
+        {dropdownStates["main_nav_account"] && (
+          <NavAccountList data={NAV_ACCOUNT_LIST} />
+        )}
+        {dropdownStates["setting"] && (
+          <NavAccountList data={NAV_ACCOUNT_LIST.setting} />
+        )}
       </div>
     </>
   );
 
   return (
-    <div className="flex gap-3 items-center h-main-nav">
+    <div
+      ref={accountDropdownRef}
+      className="relative flex gap-3 items-center h-main-nav z-20"
+    >
       {!token ? LoginSignup : onAuthenticated}
     </div>
   );

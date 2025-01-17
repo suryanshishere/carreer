@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import ForgotPassword from "./ForgotPassword";
 import AuthComponent from "user/components/auth/AuthComponent";
-import Button from "shared/utils/form/Button";
 import EmailVerification from "user/components/auth/EmailVerification";
-import { AppDispatch, RootState } from "shared/store";
 import { useDispatch, useSelector } from "react-redux";
-import { handleAuthClick, logout } from "shared/store/auth-slice";
 import { Link } from "react-router-dom";
+import { handleAuthClick, logout } from "shared/store/auth-slice";
+import { AppDispatch, RootState } from "shared/store";
 
 enum AuthState {
   LOGIN,
@@ -22,101 +21,91 @@ export interface AuthProps {
   classProp?: string;
 }
 
+interface ButtonConfig {
+  text: string;
+  onClick: () => void;
+}
+
 const Auth: React.FC<AuthProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [authState, setAuthState] = useState<AuthState>(AuthState.LOGIN);
   const { token, isEmailVerified } = useSelector(
     (state: RootState) => state.auth.userData
   );
+
   const handleStateChange = (newState: AuthState) => setAuthState(newState);
 
-  const renderButtons = () => {
-    const needHelpLink = (
-      <Link
-        to="/contact-us"
-        className="hover:text-custom-less-red p-0 m-0 text-xs"
-      >
+  const buttonsConfig: Record<AuthState, ButtonConfig[]> = {
+    [AuthState.LOGIN]: token
+      ? []
+      : [
+          {
+            text: "Forgot Password?",
+            onClick: () => handleStateChange(AuthState.FORGOT_PASSWORD),
+          },
+        ],
+
+    [AuthState.FORGOT_PASSWORD]: [
+      {
+        text: "Login / Signup",
+        onClick: () => handleStateChange(AuthState.LOGIN),
+      },
+    ],
+
+    [AuthState.VERIFY_EMAIL]:
+      token && !isEmailVerified
+        ? [
+            {
+              text: "Logout",
+              onClick: () => dispatch(logout()),
+            },
+          ]
+        : [],
+  };
+
+  const renderButtons = () => (
+    <div className="md:pl-4 gap-x-3 flex md:flex-col self-center md:gap-[3px] md:items-start text-xs">
+      {buttonsConfig[authState]?.map(({ text, onClick }, index) => (
+        <button
+          key={index}
+          className={`hover:text-custom-less-red text-left ${
+            (text === "Forgot Password?" || text === "Login / Signup") &&
+            "text-custom-red"
+          }`}
+          onClick={onClick}
+        >
+          {text}
+        </button>
+      ))}
+      <Link to="/contact-us" className="hover:text-custom-less-red">
         Need help?
       </Link>
-    );
-
-    const closeButton = (
       <button
         onClick={() => dispatch(handleAuthClick(false))}
-        className="hover:text-custom-less-red p-0 m-0 text-xs"
+        className="hover:text-custom-less-red"
       >
         Close
       </button>
-    );
-
-    if (authState === AuthState.LOGIN && !token) {
-      return (
-        <>
-          <button
-            className="text-custom-red hover:text-custom-less-red p-0 m-0 text-xs"
-            onClick={() => handleStateChange(AuthState.FORGOT_PASSWORD)}
-          >
-            Forgot Password?
-          </button>
-          {needHelpLink}
-          {closeButton}
-        </>
-      );
-    }
-
-    if (authState === AuthState.FORGOT_PASSWORD) {
-      return (
-        <>
-          <button
-            className="text-custom-red hover:text-custom-less-red p-0 m-0 text-xs"
-            type="button"
-            onClick={() => handleStateChange(AuthState.LOGIN)}
-          >
-            Login / Signup
-          </button>
-          {needHelpLink}
-          {closeButton}
-        </>
-      );
-    }
-
-    if (token && !isEmailVerified) {
-      return (
-        <>
-          {needHelpLink}
-          <button
-            className="hover:text-custom-less-red p-0 m-0 ml-auto text-xs"
-            onClick={() => dispatch(logout())}
-          >
-            Logout
-          </button>
-        </>
-      );
-    }
-  };
+    </div>
+  );
 
   const renderComponents = () => {
-    if (authState === AuthState.FORGOT_PASSWORD) {
-      return (
-        <ForgotPassword
-          onBack={() => handleStateChange(AuthState.LOGIN)}
-        />
-      );
+    switch (authState) {
+      case AuthState.FORGOT_PASSWORD:
+        return (
+          <ForgotPassword onBack={() => handleStateChange(AuthState.LOGIN)} />
+        );
+      case AuthState.VERIFY_EMAIL:
+        return <EmailVerification />;
+      default:
+        return <AuthComponent />;
     }
-
-    if (token && !isEmailVerified) {
-      return <EmailVerification />;
-    }
-
-    return <AuthComponent />;
   };
 
   return (
-    <div className="w-full grid grid-cols-[85%_15%] items-center">
-      <div className="h-5/6 flex items-center">{renderComponents()}</div>
-      <div className="pl-8 flex flex-col gap-[3px] items-start">
-        {renderButtons()}
-      </div>
+    <div className="w-full flex flex-col md:grid grid-cols-[85%_15%] gap-y-3">
+      {renderComponents()}
+      {renderButtons()}
     </div>
   );
 };

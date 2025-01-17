@@ -42,7 +42,7 @@ const renderTable = (value: any, key: string) => {
                           keyProp={`${fullKey}.current_year`}
                         />
                       ) : (
-                        renderTable(subValue, fullKey) // Correct recursive call
+                        renderTable(subValue, fullKey)  
                       )
                     ) : (
                       <RenderPostDetail value={subValue} keyProp={fullKey} />

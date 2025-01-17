@@ -16,15 +16,15 @@ const renderObject = (value: any, parentKey: string) => (
         }
 
         const fullKey = parentKey ? `${parentKey}.${subKey}` : subKey;
-        
+
         return (
-          <div key={subKey} className="flex flex-col justify-start gap-1">
-            <h2 className="flex items-center justify-start gap-2 font-semibold text-custom-gray text-lg">
+          <div key={subKey} className="w-full flex flex-col justify-start">
+            <h2 className="self-start flex items-center justify-start gap-2 text-custom-gray">
               <div className="w-2 h-2 bg-custom-gray rounded-sm"></div>
               {startCase(subKey)}
             </h2>
 
-            <div className="pl-4 self-start">
+            <div className="ml-5 self-start">
               {(subValue?.current_year || subValue?.previous_year) != null ? (
                 <p>
                   <RenderPostDetail
@@ -32,11 +32,10 @@ const renderObject = (value: any, parentKey: string) => (
                     keyProp={`${fullKey}.current_year`}
                   />
                 </p>
-              ) 
-              // : typeof subValue === "object" && subValue !== null ? (
-              //   <>{renderObject(subValue, fullKey)}</>
-              // ) 
-              : (
+              ) : (
+                // : typeof subValue === "object" && subValue !== null ? (
+                //   <>{renderObject(subValue, fullKey)}</>
+                // )
                 <>{renderData(subValue, fullKey)}</>
               )}
             </div>

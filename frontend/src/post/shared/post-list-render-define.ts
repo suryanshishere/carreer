@@ -6,5 +6,5 @@ export const excludedPostListKeys = [
   "approved",
   "contributors",
   "__v",
-  "post_code"
+  "post"
 ];

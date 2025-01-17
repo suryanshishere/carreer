@@ -35,40 +35,56 @@ const Footer: React.FC = () => {
     },
   });
 
-  const footerLinkClassName = "hover:underline text-custom-red text-sm";
+  const footerLinkClassName = "hover:underline lg:text-start";
 
   return (
-    <footer className="bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex justify-center items-end w-full gap-4 text-base text-gray-600">
-      <div className="select-none self-center text-custom-less-gray">
+    <footer className="bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex flex-col-reverse lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
+      <div className="select-none self-center">
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
       </div>
-      <Link to="/about" className={footerLinkClassName}>
-        About
-      </Link>
-      <Link to="/contact-us" className={footerLinkClassName}>
-        Contact Us
-      </Link>
-      {token && (
-        <Link to="/user/apply-for-publisher" className={footerLinkClassName}>
-          Request Access
+      <hr className="lg:hidden" />
+      <div className="grid grid-cols-2 gap-x-2 text-sm text-custom-red text-center">
+        <Link to="/about" className={footerLinkClassName}>
+          About
         </Link>
-      )}
-      {token && !role && (
-        <button
-          onClick={() => activateAccess()}
-          className={footerLinkClassName}
-        >
-          Activate access
-        </button>
-      )}
-      {token && (
-        <button
-          onClick={() => activateAccess()}
-          className={footerLinkClassName}
-        >
-          Revoke access (TODO)
-        </button>
-      )}
+        <Link to="/contact-us" className={footerLinkClassName}>
+          Contact Us
+        </Link>
+        {token && (
+          <Link to="/user/req-access" className={footerLinkClassName}>
+            Request Access
+          </Link>
+        )}
+        {token && !role && (
+          <button
+            onClick={() => activateAccess()}
+            className={footerLinkClassName}
+          >
+            Activate access
+          </button>
+        )}
+        {token && (
+          <button
+            onClick={() => activateAccess()}
+            className={footerLinkClassName}
+          >
+            Revoke access (TODO)
+          </button>
+        )}
+        {(role === "admin" || role === "approver") && (
+          <Link
+            to="/approver/contributions-section"
+            className={footerLinkClassName}
+          >
+            Contributions
+          </Link>
+        )}
+        {role === "admin" && (
+          <Link to="/admin/access"  className={footerLinkClassName}>
+            Access
+          </Link>
+        )}
+      </div>
     </footer>
   );
 };

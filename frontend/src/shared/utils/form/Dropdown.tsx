@@ -7,7 +7,7 @@ interface IDropdown {
   data: string[] | IPostAdminData[];
   required?: boolean;
   multiple?: boolean;
-  label?: string;
+  label?: string | boolean;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   error?: boolean;
   helperText?: string;
@@ -39,7 +39,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
       <div className="flex flex-col">
         {label && (
           <label htmlFor={name} className="block text-sm font-medium mb-1">
-            {startCase(label)}
+            {typeof label === "string"? startCase(label): startCase(name)}
           </label>
         )}
         <select
@@ -73,7 +73,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
         </select>
         {helperText && (
           <p
-            className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
+            className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto ${
               error ? "text-custom-red" : "text-grey"
             } ${errorClassProp}`}
           >

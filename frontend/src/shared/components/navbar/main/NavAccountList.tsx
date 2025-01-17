@@ -7,9 +7,10 @@ import {
 } from "shared/store/dropdown-slice";
 import { startCase } from "lodash";
 import { RootState } from "shared/store";
+import { INavAccData, NavItem } from "models/shared/INavAccList";
 
 interface NavAccountListProps {
-  data: Record<string, { link: string; role?: string | string[] } | null>;
+  data: INavAccData;
 }
 
 const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
@@ -28,63 +29,76 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
     (state: RootState) => state.dropdown.dropdownStates
   );
 
-  const navItems = Object.entries(data).map(([header, item], index) => {
-    let component;
+  const navItems = Object.entries(data).map(([key, value], index) => {
+    let component = null;
 
-    if (!item) {
+    if (!value) {
       component = (
         <button
           onClick={
-            header === "logout"
+            key === "logout"
               ? logoutHandler
-              : () => dispatch(toggleDropdownState(header))
+              : () => dispatch(toggleDropdownState({ id: key }))
           }
-          className={`py-1 px-2 rounded w-full hover:bg-custom-less-white ${
-            dropdownStates[header] ? "bg-custom-less-white" : ""
+          className={`py-1 px-2 w-full rounded hover:bg-custom-less-white ${
+            dropdownStates[key] ? "bg-custom-less-white" : ""
           }`}
         >
-          {startCase(header)}
+          {startCase(key)}
         </button>
       );
     } else {
-      const { role: getRole, link } = item;
-      if (link) {
+      if (typeof value === "object" && !("role" in value || "link" in value)) {
         component = (
-          <>
-            {(!getRole ||
-              role === getRole ||
-              (Array.isArray(getRole) && role && getRole.includes(role))) && (
-              <NavLink
-                to={link}
-                className={({ isActive }) =>
-                  `py-1 px-2 rounded block ${
-                    isActive
-                      ? "bg-custom-less-white"
-                      : "hover:bg-custom-less-white"
-                  }`
-                }
-                onClick={() => dispatch(closeAllDropdowns())}
-              >
-                {startCase(header)}
-              </NavLink>
-            )}
-          </>
+          <button
+            onClick={() => dispatch(toggleDropdownState({ id: key }))}
+            className={`py-1 px-2 w-full rounded hover:bg-custom-less-white ${
+              dropdownStates[key] ? "bg-custom-less-white" : ""
+            }`}
+          >
+            {startCase(key)}
+          </button>
         );
+      } else if ("link" in value) {
+        const { role: getRole, link } = value as NavItem;
+
+        if (
+          link &&
+          (!getRole ||
+            (typeof getRole === "string" && role === getRole) ||
+            (Array.isArray(getRole) && role && getRole.includes(role)))
+        ) {
+          component = (
+            <NavLink
+              to={link}
+              className={({ isActive }) =>
+                `py-1 px-2 block rounded ${
+                  isActive
+                    ? "bg-custom-less-white"
+                    : "hover:bg-custom-less-white"
+                }`
+              }
+              onClick={() => dispatch(closeAllDropdowns())}
+            >
+              {startCase(key)}
+            </NavLink>
+          );
+        }
       }
     }
 
     return (
-      <div key={header} className="w-full text-center">
-        {component}
-        {index < Object.entries(data).length - 1 && (
-          <hr className="my-1 mx-[2px] border-custom-gray" />
-        )}
-      </div>
+      component && (
+        <li key={key} className="w-full text-center">
+          {component}
+          {index < Object.entries(data).length - 1 && <hr className="my-1" />}
+        </li>
+      )
     );
   });
 
   return (
-    <ul className="h-fit w-fit rounded text-sm flex flex-col items-center text-custom-black bg-custom-pale-orange p-1">
+    <ul className="h-fit rounded shadow-md shadow-custom-black text-sm flex flex-col items-center text-custom-black bg-custom-less-gray p-1">
       {navItems}
     </ul>
   );
