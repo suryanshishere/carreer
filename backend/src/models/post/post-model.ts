@@ -32,7 +32,7 @@ const createdByFields = postSectionsArray.reduce((fields, section) => {
   return fields;
 }, {} as Record<string, { type: typeof Schema.Types.ObjectId; ref: string; required: boolean }>);
 
-const { MIN_POST_CODE, MAX_POST_CODE, ALPHA_NUM_UNDERSCORE } = POST_ENV_DATA;
+const { MIN_POST_CODE, MAX_POST_CODE, LOWERCASE_ALPHA_NUM_UNDERSCORE } = POST_ENV_DATA;
 
 const postSchema = new Schema({
   post_code: {
@@ -49,7 +49,7 @@ const postSchema = new Schema({
     ],
     validate: {
       validator: function (value: string) {
-        return ALPHA_NUM_UNDERSCORE.test(value);
+        return LOWERCASE_ALPHA_NUM_UNDERSCORE.test(value);
       },
       message:
         "Post code can only contain letters, numbers, and underscores, with no spaces.",

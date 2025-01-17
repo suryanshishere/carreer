@@ -13,10 +13,7 @@ import {
   getSectionPostDetails,
 } from "./postsControllersUtils/posts-controllers-utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
-import validationError, {
-  handleValidationErrors,
-} from "@controllers/sharedControllers/validation-error";
-import { validationResult } from "express-validator";
+import handleValidationErrors from "@controllers/sharedControllers/validation-error";
 import User from "@models/user/user-model";
 import { postIdGeneration } from "@controllers/admin/publisher/publisher-controllers-utils";
 import mongoose from "mongoose";
@@ -36,8 +33,9 @@ export const helpless = () => {
 };
 
 export const home = async (req: Request, res: Response, next: NextFunction) => {
+  handleValidationErrors(req, next);
+  const userId = getUserIdFromRequest(req as JWTRequest);
   try {
-    const userId = getUserIdFromRequest(req as JWTRequest);
     const user = await User.findById(userId);
     const savedPost = user?.saved_posts || null;
 
@@ -75,12 +73,9 @@ export const section = async (
   res: Response,
   next: NextFunction
 ) => {
+  handleValidationErrors(req, next);
   try {
     const { section } = req.params;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new HttpError(validationError(errors), 400));
-    }
 
     const userId = getUserIdFromRequest(req as JWTRequest);
     const user = await User.findById(userId);
@@ -115,6 +110,7 @@ export const postDetail = async (
   res: Response,
   next: NextFunction
 ) => {
+  handleValidationErrors(req, next);
   let { section, postIdOrCode } = req.params;
 
   try {
@@ -136,11 +132,9 @@ export const postDetail = async (
       );
     }
 
-    handleValidationErrors(req, next);
-
     const response = await getSectionPostDetails(section, postId);
 
-    if (!response) { 
+    if (!response) {
       return next(new HttpError("Post not found!", 404));
     }
 

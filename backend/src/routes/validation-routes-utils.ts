@@ -1,75 +1,87 @@
-import { param, body, ValidationChain, check } from "express-validator";
+import { param, body, check } from "express-validator";
 import _, { snakeCase } from "lodash";
 import { POST_ENV_DATA } from "@shared/env-data";
 
 const {
-  ALPHA_NUM_UNDERSCORE,
-  MIN_POST_NAME_PUBLISHER,
-  MAX_POST_NAME,
   MIN_POST_CODE,
   MAX_POST_CODE,
+  SECTIONS,
+  LOWERCASE_ALPHA_NUM_UNDERSCORE,
+  MIN_POST_NAME_PUBLISHER,
+  MAX_POST_NAME_PUBLISHER,
 } = POST_ENV_DATA;
 
 export const postCodeCheck = (
   source: "param" | "body",
-  name?: string,
-  optional?: boolean
+  name: string = "post_code",
+  optional: boolean = false
 ) => {
-  const validator =
-    source === "param" ? param(name || "postCode") : body(name || "post_code");
+  const validator = source === "param" ? param(name) : body(name);
 
-  let chain = validator.trim().customSanitizer((value) => {
-    return _.toUpper(_.snakeCase(value)); // Convert to snake_case and uppercase
-  });
+  const friendlyName = _.startCase(_.toLower(name));
 
-  // If the field is optional and the value is empty, skip further validation
+  let chain = validator;
   if (optional) {
     chain = chain.optional({ nullable: true });
   }
-
-  // Validate length and match rules
-  chain = chain
+ 
+  return chain
     .isLength({
       min: MIN_POST_CODE,
       max: MAX_POST_CODE,
     })
     .withMessage(
-      `Post code must be between ${MIN_POST_CODE} and ${MAX_POST_CODE} characters.`
+      `${friendlyName} must be between ${MIN_POST_CODE} and ${MAX_POST_CODE} characters.`
     )
-    .matches(ALPHA_NUM_UNDERSCORE)
+    .matches(LOWERCASE_ALPHA_NUM_UNDERSCORE)
     .withMessage(
-      "Post code can only contain letters, numbers, and underscores, with no spaces."
-    );
-
-  return chain;
-};
-
-export const sectionCheck = (source: "param" | "body") => {
-  const validator = source === "param" ? param("section") : body("section");
-
-  return validator
-    .customSanitizer((value) => snakeCase(value))
-    .isIn(POST_ENV_DATA.SECTIONS)
-    .withMessage(
-      `Section must be one of the following: ${POST_ENV_DATA.SECTIONS.join(
-        ", "
-      )}.`
+      `${friendlyName} can only contain lowercase letters, numbers, and underscores, with no spaces.`
     );
 };
 
-export const createNewPostValidators = [
-  sectionCheck("body"),
-  check("name_of_the_post")
+export const sectionCheck = (
+  source: "param" | "body",
+  name: string = "section",
+  optional: boolean = false
+) => {
+  const validator = source === "param" ? param(name) : body(name);
+
+  const friendlyName = _.startCase(_.toLower(name));
+
+  let chain = validator.customSanitizer((value) => _.snakeCase(value));
+
+  if (optional) {
+    chain = chain.optional({ nullable: true });
+  }
+
+  return chain
+    .isIn(SECTIONS)
+    .withMessage(
+      `${friendlyName} must be one of the following: ${SECTIONS.join(", ")}.`
+    );
+};
+
+export const nameOfThePostCheck = (
+  source: "param" | "body",
+  name: string = "name_of_the_post",
+  optional: boolean = false
+) => {
+  const validator = source === "param" ? param(name) : body(name);
+
+  const friendlyName = _.startCase(_.toLower(name));
+
+  let chain = validator;
+  if (optional) {
+    chain = chain.optional({ nullable: true });
+  }
+
+  return chain
     .trim()
-    .not()
-    .isEmpty()
-    .withMessage("Name of the post is required.")
     .isLength({
       min: MIN_POST_NAME_PUBLISHER,
-      max: MAX_POST_NAME,
+      max: MAX_POST_NAME_PUBLISHER,
     })
     .withMessage(
-      `Name of the post must be between ${MIN_POST_NAME_PUBLISHER} and ${MAX_POST_NAME} characters.`
-    ),
-  postCodeCheck("body"),
-];
+      `${friendlyName} must be between ${MIN_POST_NAME_PUBLISHER} and ${MAX_POST_NAME_PUBLISHER} characters.`
+    );
+};

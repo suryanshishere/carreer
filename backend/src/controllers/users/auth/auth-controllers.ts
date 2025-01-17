@@ -14,15 +14,13 @@ import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import { random } from "lodash";
 import { validationResult } from "express-validator";
 import { USER_ENV_DATA } from "@shared/env-data";
+import handleValidationErrors from "../../sharedControllers/validation-error";
 
 const { EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY } =
   USER_ENV_DATA;
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(new HttpError(validationError(errors), 400));
-  }
+  handleValidationErrors(req, next);
 
   const { email, password } = req.body;
   const existingUser: IUser | null = await User.findOne({ email });
@@ -67,10 +65,8 @@ export const sendPasswordResetLink = async (
   res: Response,
   next: NextFunction
 ) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(new HttpError(validationError(errors), 400));
-  }
+  handleValidationErrors(req, next);
+
   const { email } = req.body;
   const userId = getUserIdFromRequest(req as JWTRequest);
 
@@ -141,10 +137,7 @@ export const resetPassword = async (
   res: Response,
   next: NextFunction
 ) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(new HttpError(validationError(errors), 400));
-  }
+  handleValidationErrors(req, next);
 
   const { resetPasswordToken, password } = req.body;
   const { userId } = req.params;
@@ -254,10 +247,7 @@ export const sendVerificationOtp = async (
   } = {}
 ) => {
   if (!options.isDirect) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new HttpError(validationError(errors), 400));
-    }
+    handleValidationErrors(req, next);
   }
   // optional routes: since in backend action won't have token hence conditional not workin
   const userId = options.isDirect
@@ -335,10 +325,7 @@ export const verifyEmail = async (
   next: NextFunction
 ) => {
   // Validate request
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(new HttpError(validationError(errors), 400));
-  }
+  handleValidationErrors(req, next);
 
   const { otp } = req.body;
   const userId = (req as JWTRequest).userData.userId;

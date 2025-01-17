@@ -20,7 +20,7 @@ import {
   updatePostData,
 } from "./approver-controllers-utils";
 import mongoose from "mongoose";
-import { handleValidationErrors } from "@controllers/sharedControllers/validation-error";
+import  handleValidationErrors  from "@controllers/sharedControllers/validation-error";
 import { getSectionPostDetails } from "@controllers/posts/postsControllersUtils/posts-controllers-utils";
 import { ISection } from "@models/post/post-interface";
 

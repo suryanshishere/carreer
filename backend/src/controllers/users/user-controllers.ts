@@ -1,10 +1,8 @@
-import validationError, {
-  handleValidationErrors,
-} from "@controllers/sharedControllers/validation-error";
+import handleValidationErrors from "@controllers/sharedControllers/validation-error";
 import { JWTRequest } from "@middleware/check-auth";
 import AdminModel from "@models/admin/admin-model";
 import RequestModal from "@models/admin/request-model";
-import PostModel from "@models/post/post-model";
+// import PostModel from "@models/post/post-model";
 import ContributionModel, {
   IContribution,
 } from "@models/user/contribution-model";
@@ -12,7 +10,6 @@ import UserModal from "@models/user/user-model";
 import { ADMIN_DATA } from "@shared/env-data";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
-import { snakeCase, upperCase } from "lodash";
 import mongoose from "mongoose";
 
 //TEMP: someone can send none, while expireAt active. to start new req to remove expireAt, but the person will have to loose earlier access then.
@@ -109,6 +106,7 @@ export const contributeToPost = async (
   res: Response,
   next: NextFunction
 ) => {
+  handleValidationErrors(req, next);
   let { data, section, post_code } = req.body;
   const userId = (req as JWTRequest).userData.userId;
 
@@ -117,7 +115,6 @@ export const contributeToPost = async (
   try {
     session.startTransaction(); // Start the transaction
 
-    handleValidationErrors(req, next);
 
     // Find the user and populate contribution field
     let user = await UserModal.findById(userId)

@@ -3,18 +3,6 @@ interface CharLimits {
   max: number;
 }
 
-interface IPostEnvData {
-  ALPHA_NUM_UNDERSCORE: RegExp;
-  MIN_POST_NAME_PUBLISHER: number;
-  MIN_POST_NAME: number;
-  MAX_POST_NAME: number;
-  MIN_POST_CODE: number;
-  MAX_POST_CODE: number;
-  SECTIONS: string[];
-  COMPONENTS: string[];
-  OVERALL: string[];
-}
-
 interface ContactUsEnvData {
   MIN_NAME_LENGTH: number;
   MAX_NAME_LENGTH: number;
@@ -38,11 +26,25 @@ export const COMMON_COMPONENT_POST_CHAR_LIMITS: Record<string, CharLimits> = {
 
 // ------------------------------
 
-const POST_ENV_DATA: IPostEnvData = {
-  ALPHA_NUM_UNDERSCORE: /^[A-Za-z0-9_]+$/,
+interface IPostEnvData {
+  LOWERCASE_ALPHA_NUM_UNDERSCORE: RegExp;
+  MIN_POST_NAME_PUBLISHER: number;
+  MAX_POST_NAME_PUBLISHER: number;
+  MIN_POST_NAME: number;
+  MAX_POST_NAME: number;
+  MIN_POST_CODE: number;
+  MAX_POST_CODE: number;
+  SECTIONS: string[];
+  COMPONENTS: string[];
+  OVERALL: string[];
+}
+
+const POST_ENV_DATA: IPostEnvData = { 
+  LOWERCASE_ALPHA_NUM_UNDERSCORE :/^[a-z0-9_]+$/,
   MIN_POST_NAME_PUBLISHER: Number(process.env.MIN_POST_NAME_PUBLISHER) || 6,
+  MAX_POST_NAME_PUBLISHER: Number(process.env.MAX_POST_NAME_PUBLISHER) || 750,
   MIN_POST_NAME: Number(process.env.MIN_POST_NAME) || 20,
-  MAX_POST_NAME: Number(process.env.MAX_POST_NAME) || 1000,
+  MAX_POST_NAME: Number(process.env.MAX_POST_NAME) || 750,
   MIN_POST_CODE: Number(process.env.MIN_POST_CODE) || 6,
   MAX_POST_CODE: Number(process.env.MAX_POST_CODE) || 100,
   SECTIONS: [
