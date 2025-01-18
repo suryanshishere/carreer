@@ -50,7 +50,7 @@ module.exports = {
         page: "13vw",
         "page-small": "3vw",
         "page-medium":"8vw",
-        button: ".45rem .5rem", //y,x
+        "button": ".45rem .5rem", //y,x 
       },
       animation: {
         marquee: "marquee 30s linear infinite",
