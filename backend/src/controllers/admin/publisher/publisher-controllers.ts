@@ -9,13 +9,13 @@ import {
   SECTION_POST_MODAL_MAP,
 } from "@controllers/sharedControllers/post-model-map";
 import {
-  SECTION_POST_PROMPT_SCHEMA_MAP,
   createComponentPost,
-  postCreation,
+  generatePostData,
   postIdGeneration,
 } from "./publisher-controllers-utils";
 import AdminModel, { IAdmin } from "@models/admin/admin-model";
 import { SchemaType } from "@google/generative-ai";
+import { SECTION_POST_PROMPT_SCHEMA_MAP } from "./post-prompt-schema-map";
 
 export const createNewPost = async (
   req: Request,
@@ -61,40 +61,37 @@ export const createNewPost = async (
       const model = SECTION_POST_MODAL_MAP[section];
 
       const existingPost = await model.findById(postId).session(session);
+
       if (existingPost) {
         return next(new HttpError("Post already exists!", 400));
       }
 
-      try {
-        await createComponentPost(postId, req, session);
-      } catch (error: any) {
-        return next(
-          new HttpError(`Error creating component post: ${error.message}`, 500)
-        );
-      }
+      await createComponentPost(postId, req, session);
 
-      // Adjust schema for the section
       let schema = SECTION_POST_PROMPT_SCHEMA_MAP[section];
       schema = {
         ...schema,
         properties: {
           ...schema.properties,
           name_of_the_post: {
-            description: `Ensure the title is clear and directly reflects the exam name along with the date in the ${section} section. For example: "UPSC Civil Services Examination - [post date year]"`,
+            description: `Ensure the title is clear and directly reflects the exam name along with the date or relevant event in the "${section}" section.
+
+For example:
+
+In the "latest_job" section, include the name of the exam and the post, followed by the year. Example: "UPSC Civil Services Examination - Assistant Manager Recruitment [post date year]".
+In the "result" section, include the name of the exam and append "Result Released", followed by the year. Example: "UPSC Civil Services Examination Result Released [post date year]".
+Each title should be contextually appropriate to its section, ensuring clarity, specificity, and relevance.`,
             type: SchemaType.STRING,
           },
         },
         required: [...(schema.required || []), "name_of_the_post"],
       };
 
-      const apiKey = process.env.GEMINI_API_KEY;
-       if (!apiKey) {
-        return next(new HttpError("Missing GEMINI API Key", 400));
-      }
-      const dataJson = await postCreation(apiKey, name_of_the_post, schema);
-      if (!dataJson) {
-        return new HttpError("Post creation returned no data.", 500);
-      }
+      const dataJson = await generatePostData({
+        keyOrSection: section,
+        name_of_the_post,
+        schema,
+      });
 
       // Save the new post document
       const newPost = new model({
@@ -105,6 +102,7 @@ export const createNewPost = async (
       });
       await newPost.save({ session });
 
+      //TODO TO REFACTOR
       const postInPostModel = await PostModel.findById(postId).session(session);
 
       if (postInPostModel) {
@@ -137,6 +135,7 @@ export const createNewPost = async (
 
       return { postId, newPost };
     });
+
     console.log("done successfully");
     return res
       .status(201)
