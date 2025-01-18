@@ -71,7 +71,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
           <span key={key} className="mr-1">
             <span className={`mr-1`}>{_.startCase(key)}:</span>
             <span className="mr-1">
-              <RenderField stringValue={_.toString(value)} uniqueKey={key} />
+              <RenderField stringValue={_.toString(value)} uniqueKey={key} noLinkClassProp/>
             </span>
           </span>
         );

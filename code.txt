@@ -1,1 +1,6 @@
 DEACTIVATED_ACCOUNT
+
+1) content generation
+2) setting post model related
+
+approve is true here but approving of the data created system is still left

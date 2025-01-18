@@ -78,8 +78,8 @@ export const createNewPost = async (
 
 For example:
 
-In the "latest_job" section, include the name of the exam and the post, followed by the year. Example: "UPSC Civil Services Examination - Assistant Manager Recruitment [post date year]".
-In the "result" section, include the name of the exam and append "Result Released", followed by the year. Example: "UPSC Civil Services Examination Result Released [post date year]".
+In the "latest_job" section, include the name of the exam and the post, followed by the year. Example: "UPSC Civil Services Examination - Assistant Manager Recruitment".
+In the "result" section, include the name of the exam and append "Result Released", followed by the year. Example: "UPSC Civil Services Examination Result Released".
 Each title should be contextually appropriate to its section, ensuring clarity, specificity, and relevance.`,
             type: SchemaType.STRING,
           },

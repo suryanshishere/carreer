@@ -4,7 +4,10 @@ import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
 import { Request } from "express";
-import { COMPONENT_POST_MODAL_MAP, SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
+import {
+  COMPONENT_POST_MODAL_MAP,
+  SECTION_POST_MODAL_MAP,
+} from "@controllers/sharedControllers/post-model-map";
 import {
   COMPONENT_POST_PROMPT_SCHEMA_MAP,
   updateSchema,
@@ -16,10 +19,6 @@ export const postGeneration = async (
   schema: { [key: string]: any }
 ) => {
   try {
-    // Validate the schema argument to ensure it's a valid object
-    if (Object.keys(schema).length === 0) {
-      throw new HttpError("Schema cannot be empty.", 500);
-    }
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
@@ -100,7 +99,9 @@ export const generatePostData = async ({
     } catch (error: any) {
       // Log error message and throw a new HttpError if it fails
       console.error(
-        `Error during post creation attempt ${attemptCount + 1} for ${keyOrSection}: ${error.message}`
+        `Error during post creation attempt ${
+          attemptCount + 1
+        } for ${keyOrSection}: ${error.message}`
       );
       throw new HttpError(error.message, 500);
     }
@@ -118,10 +119,11 @@ export const generatePostData = async ({
   }
 
   // Log failure after max retry attempts and throw an error
-  console.error(`Post creation failed after ${maxAttempts} attempts for ${keyOrSection}`);
+  console.error(
+    `Post creation failed after ${maxAttempts} attempts for ${keyOrSection}`
+  );
   throw new HttpError("Post creation returned no data after retries", 500);
 };
-
 
 // ------------------------------------------------------------------------------------
 
@@ -143,10 +145,12 @@ export const createComponentPost = async (
     for (const [key, model] of Object.entries(COMPONENT_POST_MODAL_MAP)) {
       try {
         runCount++;
-        
-        const existingPost = await COMPONENT_POST_MODAL_MAP[key].findById(postId);
-        if(existingPost){
-          console.warn("Component post exist!")
+
+        const existingPost = await COMPONENT_POST_MODAL_MAP[key].findById(
+          postId
+        );
+        if (existingPost) {
+          console.warn("Component post exist!");
           continue;
         }
 
@@ -177,7 +181,6 @@ export const createComponentPost = async (
             session,
           }
         );
-
       } catch (error: any) {
         console.error(
           `Error occurred while creating component post for key: ${key}.`,
