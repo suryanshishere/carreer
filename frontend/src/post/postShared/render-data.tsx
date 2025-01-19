@@ -1,6 +1,6 @@
 import { tableRequired } from "./post-detail-render-define";
-import RenderPostDetail from "../components/RenderPostDetail";
-import RenderArrayTable from "../../shared/ui/RenderArrayTable";
+import RenderPostDetail from "../components/postDetails/RenderPostDetail";
+import RenderArrayTable from "../components/postDetails/RenderArrayTable";
 import renderTable from "./render-table";
 import renderObject from "./render-object";
 
@@ -10,7 +10,7 @@ const renderData = (value: any, key: string) => {
     Array.isArray(value) &&
     value.length > 0 &&
     typeof value[0] === "object"
-  ) {
+  ) { 
     return <RenderArrayTable value={value} arrTableKey={key} />;
   }
 

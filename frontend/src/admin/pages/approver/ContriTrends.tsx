@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams } from "react-router-dom";
-import RenderArrayTable from "shared/ui/RenderArrayTable";
+import RenderArrayTable from "post/components/postDetails/RenderArrayTable";
 import axiosInstance from "shared/utils/api/axios-instance";
 
 const ContriTrends = () => {

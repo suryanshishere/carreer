@@ -29,7 +29,7 @@ interface IVacancyCategory {
 //   additional_resources?: string;
 // }
 
-interface IVacancyDetail {
+export interface IVacancyDetail {
   post_name: string;
   total_post: number;
   post_eligibility: string;

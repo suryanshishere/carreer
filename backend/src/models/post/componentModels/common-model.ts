@@ -20,7 +20,7 @@ const VacancyDetailSchema: Schema = new Schema({
   post_name: { type: String, required: true },
   total_post: { type: Number, required: true },
   post_eligibility: { type: String, required: true },
-});
+}, { _id: false }); 
 
 const ApplicantsSchema: Schema = new Schema({
   number_of_applicants_each_year: { type: Number },

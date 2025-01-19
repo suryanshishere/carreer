@@ -1,7 +1,7 @@
 import { IPostList } from "models/postModels/IPost";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query"; 
-import PostList from "post/shared/PostList";
+import PostList from "post/postShared/PostList";
 import { Fragment } from "react/jsx-runtime";
 import { startCase } from "lodash";
 import NoData from "shared/components/dataStates/NoData";

@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { snakeCase, startCase } from "lodash";
-import Bookmark from "post/shared/Bookmark";
+import Bookmark from "post/postShared/Bookmark";
 import { IPostList } from "models/postModels/IPost";
-import tag from "post/shared/tag";
+import tag from "post/postShared/tag";
 
 interface HomeListItemProps {
   ListItemData: IPostList;
