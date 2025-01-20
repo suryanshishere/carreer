@@ -19,7 +19,6 @@ export const postGeneration = async (
   schema: { [key: string]: any }
 ) => {
   try {
-
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-pro",
@@ -29,15 +28,13 @@ export const postGeneration = async (
       },
     });
 
-    // Generate the content for the post
     const prompt = `Generate a comprehensive and engaging post for the "${nameOfThePost}"`;
     const result = await model.generateContent(prompt);
 
-    // Ensure the result is in the correct format (JSON)
     const generatedContent = result.response.text();
     const parsedContent = parseGeneratedContent(generatedContent);
 
-    return parsedContent; // Successfully parsed content
+    return parsedContent;
   } catch (error) {
     throw new HttpError(`${error}`, 500);
   }
@@ -146,16 +143,32 @@ export const createComponentPost = async (
       try {
         runCount++;
 
-        const existingPost = await COMPONENT_POST_MODAL_MAP[key].findById(
-          postId
-        );
-        if (existingPost) {
-          console.warn("Component post exist!");
-          continue;
-        }
-
         let schema = COMPONENT_POST_PROMPT_SCHEMA_MAP[key];
         schema = updateSchema(schema, key, section);
+
+        //added to remove extra processing (much needed)
+        const existingComponent = await model.findById(postId).session(session);
+        console.log(existingComponent, "existing component");
+        if (existingComponent) {
+          for (const field in existingComponent.toObject()) {
+            if (schema.properties[field]) {
+              console.warn(`Removing field: ${field} from schema`);
+              delete schema.properties[field];
+            }
+            if (schema.required && schema.required.includes(field)) {
+              schema.required = schema.required.filter(
+                (requiredField: string) => requiredField !== field
+              );
+            }
+          }
+        }
+
+        if (Object.keys(schema.properties).length === 0) {
+          console.warn(
+            `Skipping post creation for key: ${key} as schema properties are empty`
+          );
+          continue;
+        }
 
         const postData = await generatePostData({
           keyOrSection: key,
@@ -179,8 +192,10 @@ export const createComponentPost = async (
             new: true,
             upsert: true,
             session,
+            runValidators: true,   
           }
         );
+        
       } catch (error: any) {
         console.error(
           `Error occurred while creating component post for key: ${key}.`,

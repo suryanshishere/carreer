@@ -1,8 +1,3 @@
-interface CharLimits {
-  min: number;
-  max: number;
-}
-
 interface ContactUsEnvData {
   MIN_NAME_LENGTH: number;
   MAX_NAME_LENGTH: number;
@@ -17,14 +12,59 @@ interface AdminData {
   REQUEST_DOC_EXPIRY: number;
 }
 
-export const COMMON_COMPONENT_POST_CHAR_LIMITS: Record<string, CharLimits> = {
-  short_information: { min: 100, max: 2500 },
-  highlighted_information: { min: 50, max: 500 },
-  department: { min: 5, max: 100 },
-  stage_level: { min: 5, max: 50 },
+// ------------------------------------ POST DATA LIMITS
+
+interface CharLimits {
+  min: number;
+  max: number;
+}
+
+interface ICommonComponentPostValidation {
+  rank_num: CharLimits;
+  medium_char_limit: CharLimits;
+  short_char_limit: CharLimits;
+  // super_short_limit: CharLimits;
+  long_char_limit: CharLimits;
+  job_type: string[];
+  stage_level: string[];
+  post_exam_mode: string[];
+  applicants_gender_that_can_apply: string[];
+  non_negative_num: CharLimits;
+  minute_num: CharLimits;
+  age_num: CharLimits;
+}
+
+export const POST_LIMITS: ICommonComponentPostValidation = {
+  long_char_limit: { min: 100, max: 2500 },
+  medium_char_limit: { min: 25, max: 500 },
+  short_char_limit: { min: 5, max: 200 },
+  non_negative_num: {
+    min: 0,
+    max: 10000000000,
+  },
+  rank_num: { min: 1, max: 10000 },
+  minute_num: { min: 11, max: 1440 },
+  age_num: { min: 11, max: 100 },
+  job_type: [
+    "permanent",
+    "temporary",
+    "contractual",
+    "part_time",
+    "internship",
+  ],
+  stage_level: [
+    "national",
+    "state",
+    "district",
+    "regional",
+    "local",
+    "international",
+  ],
+  applicants_gender_that_can_apply: ["male", "female", "other", "all"],
+  post_exam_mode: ["online", "offline_paper_based", "offline_computer_based"],
 };
 
-// ------------------------------
+// ------------------------------ POST DATA
 
 interface IPostEnvData {
   LOWERCASE_ALPHA_NUM_UNDERSCORE: RegExp;
@@ -39,8 +79,8 @@ interface IPostEnvData {
   OVERALL: string[];
 }
 
-const POST_ENV_DATA: IPostEnvData = { 
-  LOWERCASE_ALPHA_NUM_UNDERSCORE :/^[a-z0-9_]+$/,
+const POST_ENV_DATA: IPostEnvData = {
+  LOWERCASE_ALPHA_NUM_UNDERSCORE: /^[a-z0-9_]+$/,
   MIN_POST_NAME_PUBLISHER: Number(process.env.MIN_POST_NAME_PUBLISHER) || 6,
   MAX_POST_NAME_PUBLISHER: Number(process.env.MAX_POST_NAME_PUBLISHER) || 750,
   MIN_POST_NAME: Number(process.env.MIN_POST_NAME) || 20,

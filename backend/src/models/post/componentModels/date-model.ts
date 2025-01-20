@@ -1,60 +1,71 @@
-import mongoose, { Types, Schema, Document } from "mongoose";
+import { POST_LIMITS } from "@shared/env-data";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
-interface DateRange {
-  current_year?: Date;
-  previous_year: Date;
-}
-
-export interface IDates extends Document {
-  createdAt: Date;
-  updatedAt: Date;
-  created_by: Types.ObjectId;
-  contributors?: Types.ObjectId[];
-  approved: boolean;
-  application_start_date?: DateRange;
-  application_end_date?: DateRange;
-  exam_fee_payment_end_date?: DateRange;
-  form_correction_start_date?: DateRange;
-  form_correction_end_date?: DateRange;
-  exam_date?: DateRange;
-  admit_card_release_date?: DateRange;
-  exam_city_details_release_date?: DateRange;
-  answer_key_release_date?: DateRange;
-  result_announcement_date?: DateRange;
-  counseling_start_date?: DateRange;
-  counseling_end_date?: DateRange;
-  counseling_result_announcement_date?: DateRange;
-  additional_resources?: string;
-}
-
-const DateRangeSchema = new mongoose.Schema({
+const DateRangeSchema = new Schema<IDateRange>({
   current_year: { type: Date },
   previous_year: { type: Date, required: true },
-});
+},
+{ _id: false });
+
+const dateObject = { type: DateRangeSchema, required: false }
 
 export const dateSchema = new Schema<IDates>(
   {
     created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
     contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
     approved: { type: Boolean, default: false, required: true },
-    application_start_date: { type: DateRangeSchema },
-    application_end_date: { type: DateRangeSchema },
-    exam_fee_payment_end_date: { type: DateRangeSchema },
-    form_correction_start_date: { type: DateRangeSchema },
-    form_correction_end_date: { type: DateRangeSchema },
-    exam_date: { type: DateRangeSchema },
-    admit_card_release_date: { type: DateRangeSchema },
-    exam_city_details_release_date: { type: DateRangeSchema },
-    answer_key_release_date: { type: DateRangeSchema },
-    result_announcement_date: { type: DateRangeSchema },
-    counseling_start_date: { type: DateRangeSchema },
-    counseling_end_date: { type: DateRangeSchema },
-    counseling_result_announcement_date: { type: DateRangeSchema },
-    additional_resources: { type: String },
+    application_start_date: dateObject,
+    application_end_date: dateObject,
+    exam_fee_payment_end_date: dateObject,
+    form_correction_start_date: dateObject,
+    form_correction_end_date: dateObject,
+    exam_date:dateObject,
+    admit_card_release_date: dateObject,
+    exam_city_details_release_date: dateObject,
+    answer_key_release_date:dateObject,
+    result_announcement_date: dateObject,
+    counseling_start_date: dateObject,
+    counseling_end_date: dateObject,
+    counseling_result_announcement_date: dateObject,
+    additional_resources: {
+      type: String,
+      required: true,
+      minlength: POST_LIMITS.short_char_limit.min,
+      maxlength: POST_LIMITS.short_char_limit.max,
+    },
   },
   { timestamps: true }
 );
 
 const DateModel = mongoose.model("Date", dateSchema);
-
 export default DateModel;
+
+// ------------------------
+
+interface IDateRange {
+  current_year?: Date;
+  previous_year: Date;
+}
+
+export interface IDates extends Document {
+  _id?: Types.ObjectId;
+  created_by: Types.ObjectId;
+  contributors?: Types.ObjectId[];
+  approved: boolean;
+  application_start_date?: IDateRange;
+  application_end_date?: IDateRange;
+  exam_fee_payment_end_date?: IDateRange;
+  form_correction_start_date?: IDateRange;
+  form_correction_end_date?: IDateRange;
+  exam_date?: IDateRange;
+  admit_card_release_date?: IDateRange;
+  exam_city_details_release_date?: IDateRange;
+  answer_key_release_date?: IDateRange;
+  result_announcement_date?: IDateRange;
+  counseling_start_date?: IDateRange;
+  counseling_end_date?: IDateRange;
+  counseling_result_announcement_date?: IDateRange;
+  additional_resources?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

@@ -1,8 +1,10 @@
 import { SchemaType } from "@google/generative-ai";
+import { POST_LIMITS } from "@shared/env-data";
+
+const { short_char_limit } = POST_LIMITS;
 
 const linkPromptSchema = {
-  description:
-    "Schema representing detailed information about a post, including metadata and valid links for official resources.",
+  description: `If limits not provided then assume for strings, length should be between ${short_char_limit.min} and ${short_char_limit.max} characters.`,
   type: SchemaType.OBJECT,
   properties: {
     official_website: {
@@ -57,6 +59,7 @@ const linkPromptSchema = {
       required: ["faq", "contact_us"],
     },
   },
+  required: ["additional_resources"],
 };
 
 export default linkPromptSchema;

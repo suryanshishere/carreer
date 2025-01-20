@@ -1,14 +1,53 @@
+import { POST_LIMITS } from "@shared/env-data";
 import { Schema, model, Document, Types } from "mongoose";
 
-interface AdditionalResources extends Document {
-  faq?: string;
-  contact_us?: string;
-  // important_dates?: string;
+const { short_char_limit } = POST_LIMITS;
+
+const linkObject = {
+  type: String,
+  required: false,
+  minlength: short_char_limit.min,
+  maxlength: short_char_limit.max,
+};
+
+const AdditionalResourcesSchema = new Schema<IAdditionalResources>(
+  {
+    faq: { ...linkObject, required: true },
+    contact_us: { ...linkObject, required: true },
+  },
+  { _id: false }
+);
+
+export const LinksSchema = new Schema<ILinks>(
+  {
+    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    approved: { type: Boolean, default: false, required: true },
+    official_website: linkObject,
+    apply_online: linkObject,
+    register_now: linkObject,
+    download_sample_papers: linkObject,
+    get_admit_card: linkObject,
+    view_results: linkObject,
+    check_answer_key: linkObject,
+    counseling_portal: linkObject,
+    verify_certificates: linkObject,
+    additional_resources: { type: AdditionalResourcesSchema, required: true },
+  },
+  { timestamps: true }
+);
+
+const LinkModel = model("Link", LinksSchema);
+export default LinkModel;
+
+// ------------------------------
+
+interface IAdditionalResources {
+  faq: string;
+  contact_us: string;
 }
 
 export interface ILinks extends Document {
-  createdAt: Date;
-  updatedAt: Date;
   created_by: Types.ObjectId;
   contributors?: Types.ObjectId[];
   approved: boolean;
@@ -21,34 +60,7 @@ export interface ILinks extends Document {
   check_answer_key?: string;
   counseling_portal?: string;
   verify_certificates?: string;
-  additional_resources?: AdditionalResources;
+  additional_resources: IAdditionalResources;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
-
-const AdditionalResourcesSchema = new Schema<AdditionalResources>({
-  faq: { type: String },
-  contact_us: { type: String },
-  // important_dates: { type: String },
-});
-
-export const LinksSchema = new Schema<ILinks>(
-  {
-    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    approved: { type: Boolean, default: false, required: true },
-    official_website: { type: String },
-    apply_online: { type: String },
-    register_now: { type: String },
-    download_sample_papers: { type: String },
-    get_admit_card: { type: String },
-    view_results: { type: String },
-    check_answer_key: { type: String },
-    counseling_portal: { type: String },
-    verify_certificates: { type: String },
-    additional_resources: { type: AdditionalResourcesSchema },
-  },
-  { timestamps: true }
-);
-
-const LinkModel = model<ILinks>("Link", LinksSchema);
-
-export default LinkModel;

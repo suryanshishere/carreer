@@ -1,8 +1,11 @@
 import { SchemaType } from "@google/generative-ai";
+import { POST_LIMITS } from "@shared/env-data";
+
+const { non_negative_num, short_char_limit } = POST_LIMITS;
+ 
 
 const feePromptSchema = {
-  description:
-    "Schema representing fee details for various categories and genders in Indian rupees.",
+  description: `Fee details for various categories and genders in Indian rupees. If limits not provided then assume for strings, length should be between ${short_char_limit.min} and ${short_char_limit.max} characters, and for numbers, the value should be between ${non_negative_num.min} and ${non_negative_num.max}.`,
   type: SchemaType.OBJECT,
   properties: {
     category_wise: {
@@ -28,23 +31,22 @@ const feePromptSchema = {
           type: SchemaType.NUMBER,
         },
       },
-      required: ["general", "obc", "ews", "sc", "st", "ph_dviyang"],
     },
     female: {
       type: SchemaType.NUMBER,
-      description: "Fee for female candidates.",
+      description: `Fee for female candidates, within ${non_negative_num.min}-${non_negative_num.max} range.`,
     },
     male: {
       type: SchemaType.NUMBER,
-      description: "Fee for male candidates (display the general category fee here).",
+      description:
+        `Fee for male candidates (display the general category fee here), within ${non_negative_num.min}-${non_negative_num.max} range.`,
     },
     additional_resources: {
       type: SchemaType.STRING,
-      description:
-        "Additional information about fee details for other categories and payment modes.",
+      description: `Additional information about fee details for other categories and payment modes, within ${short_char_limit.min}-${short_char_limit.max} characters.`,
     },
   },
-  required: ["category_wise"],
+  required: ["additional_resources"],
 };
 
 export default feePromptSchema;

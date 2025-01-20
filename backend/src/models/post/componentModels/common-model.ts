@@ -1,109 +1,264 @@
-import { COMMON_COMPONENT_POST_CHAR_LIMITS } from "@shared/env-data";
+import { POST_LIMITS } from "@shared/env-data";
 import mongoose, { Document, Schema, Types } from "mongoose";
 
-const ageCriteriaSchema: Schema = new Schema({
-  minimum_age: { type: Number },
-  maximum_age: { type: Number },
-  age_relaxation: { type: String },
-});
+const {
+  short_char_limit,
+  rank_num,
+  job_type,
+  minute_num,
+  age_num,
+  non_negative_num,
+  medium_char_limit,
+  long_char_limit,
+  stage_level,
+  post_exam_mode,
+  applicants_gender_that_can_apply,
+} = POST_LIMITS;
 
-const categoryVacancySchema: Schema = new Schema({
-  general: { type: Number },
-  obc: { type: Number },
-  ews: { type: Number },
-  sc: { type: Number },
-  st: { type: Number },
-  ph_dviyang: { type: Number },
-});
+const ApplicantsSchema: Schema = new Schema<IApplicants>(
+  {
+    number_of_applicants_each_year: {
+      type: Number,
+      required: true,
+      min: non_negative_num.min,
+      max: non_negative_num.max,
+    },
+    number_of_applicants_selected: {
+      type: Number,
+      required: true,
+      min: non_negative_num.min,
+      max: non_negative_num.max,
+    },
+  },
+  { _id: false }
+);
 
-const VacancyDetailSchema: Schema = new Schema({
-  post_name: { type: String, required: true },
-  total_post: { type: Number, required: true },
-  post_eligibility: { type: String, required: true },
-}, { _id: false }); 
+const ageCriteriaSchema: Schema = new Schema<IAgeCriteria>(
+  {
+    minimum_age: {
+      type: Number,
+      require: true,
+      min: age_num.min,
+      max: age_num.max,
+    },
+    maximum_age: {
+      type: Number,
+      require: true,
+      min: age_num.min,
+      max: age_num.max,
+    },
+    age_relaxation: {
+      type: String,
+      require: true,
+      minlength: short_char_limit.min,
+      maxlength: short_char_limit.max,
+    },
+  },
+  { _id: false }
+);
 
-const ApplicantsSchema: Schema = new Schema({
-  number_of_applicants_each_year: { type: Number },
-  number_of_applicants_selected: { type: Number },
-});
-
-const { short_information, highlighted_information, department, stage_level } =
-  COMMON_COMPONENT_POST_CHAR_LIMITS;
+const vacancySchema: Schema = new Schema<IVacancy>(
+  {
+    detail: [
+      {
+        post_name: {
+          type: String,
+          required: true,
+          minlength: short_char_limit.min,
+          maxlength: short_char_limit.max,
+        },
+        total_post: {
+          type: Number,
+          required: true,
+          min: non_negative_num.min,
+          max: non_negative_num.max,
+        },
+        post_eligibility: {
+          type: String,
+          required: true,
+          minlength: short_char_limit.min,
+          maxlength: short_char_limit.max,
+        },
+      },
+    ],
+    category_wise: {
+      general: {
+        type: Number,
+        min: non_negative_num.min,
+        max: non_negative_num.max,
+      },
+      obc: {
+        type: Number,
+        min: non_negative_num.min,
+        max: non_negative_num.max,
+      },
+      ews: {
+        type: Number,
+        min: non_negative_num.min,
+        max: non_negative_num.max,
+      },
+      sc: {
+        type: Number,
+        min: non_negative_num.min,
+        max: non_negative_num.max,
+      },
+      st: {
+        type: Number,
+        min: non_negative_num.min,
+        max: non_negative_num.max,
+      },
+      ph_dviyang: {
+        type: Number,
+        min: non_negative_num.min,
+        max: non_negative_num.max,
+      },
+    },
+    additional_resources: {
+      type: String,
+      required: true,
+      minlength: short_char_limit.min,
+      maxlength: short_char_limit.max,
+    },
+  },
+  { _id: false }
+);
 
 export const commonSchema: Schema = new Schema<ICommon>(
   {
-    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    approved: { type: Boolean, default: false, required: true },
+    created_by: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    contributors: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    approved: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
     short_information: {
       type: String,
-      minlength: short_information.min,
-      maxlength: short_information.max,
+      minlength: long_char_limit.min,
+      maxlength: long_char_limit.max,
+      required: true,
     },
     highlighted_information: {
       type: String,
-      minlength: highlighted_information.min,
-      maxlength: highlighted_information.max,
+      minlength: long_char_limit.min,
+      maxlength: long_char_limit.max,
+      required: true,
     },
     department: {
       type: String,
-      minlength: department.min,
-      maxlength: department.max,
+      minlength: short_char_limit.min,
+      maxlength: short_char_limit.max,
+      required: true,
     },
     stage_level: {
       type: String,
-      minlength: stage_level.min,
-      maxlength: stage_level.max,
+      enum: stage_level,
+      required: true,
+      default: "national",
     },
-    applicants: ApplicantsSchema,
-    post_importance: { type: String },
-    post_exam_toughness_ranking: { type: Number },
-    job_type: { type: String },
-    post_exam_duration: { type: Number },
-    age_criteria: ageCriteriaSchema,
+    applicants: {
+      type: ApplicantsSchema,
+      required: true,
+    },
+    post_importance: {
+      type: String,
+      minlength: long_char_limit.min,
+      maxlength: long_char_limit.max,
+      required: true,
+    },
+    post_exam_toughness_ranking: {
+      type: Number,
+      required: true,
+      min: rank_num.min,
+      max: rank_num.max,
+    },
+    job_type: {
+      type: String,
+      enum: job_type,
+      required: true,
+      default: "permanent",
+    },
+    post_exam_duration: {
+      type: Number,
+      required: false,
+      min: minute_num.min,
+      max: minute_num.max,
+    },
+    age_criteria: {
+      type: ageCriteriaSchema,
+      required: true,
+    },
     vacancy: {
-      detail: [VacancyDetailSchema],
-      category_wise: categoryVacancySchema,
-      additional_resources: { type: String },
+      type: vacancySchema,
+      required: true,
     },
     eligibility: {
-      minimum_qualification: { type: String },
-      other_qualification: { type: String },
+      type: new Schema(
+        {
+          minimum_qualification: {
+            type: String,
+            minlength: short_char_limit.min,
+            maxlength: short_char_limit.max,
+            required: true,
+          },
+          other_qualification: {
+            type: String,
+            minlength: short_char_limit.min,
+            maxlength: short_char_limit.max,
+          },
+        },
+        { _id: false }
+      ),
+      required: true,
     },
     post_exam_mode: {
       type: String,
-      enum: ["online", "offline_paper_based", "offline_computer_based"],
+      enum: post_exam_mode,
+      required: true,
+      default: "offline_computer_based",
     },
     applicants_gender_that_can_apply: {
       type: String,
-      enum: ["male", "female", "other", "all"],
+      enum: applicants_gender_that_can_apply,
+      required: true,
+      default: "all",
     },
   },
   { timestamps: true }
 );
 
-// Export the model
 const CommonModel = mongoose.model("Common", commonSchema);
 export default CommonModel;
 
-// interface for the common model --------------------------------
+// -------------------------------------------
 
-interface IAgeCriteria {
-  minimum_age?: number;
-  maximum_age?: number;
-  age_relaxation?: string;
+interface IApplicants {
+  number_of_applicants_each_year: number;
+  number_of_applicants_selected: number;
 }
 
-// interface ICategory {
-//   general?: AgeCriteria;
-//   obc?: AgeCriteria;
-//   ews?: AgeCriteria;
-//   sc?: AgeCriteria;
-//   st?: AgeCriteria;
-//   ph_dviyang?: AgeCriteria;
-// }
+interface IAgeCriteria {
+  minimum_age: number;
+  maximum_age: number;
+  age_relaxation: string;
+}
 
-interface ICategoryVacancy {
+interface IVacancyDetail {
+  post_name: string;
+  total_post: number;
+  post_eligibility: string;
+}
+
+interface IVacancyCategoryWise {
   general?: number;
   obc?: number;
   ews?: number;
@@ -112,54 +267,35 @@ interface ICategoryVacancy {
   ph_dviyang?: number;
 }
 
-// interface CategoryAgeCriteria {
-//   male?: ICategory;
-//   female?: ICategory;
-//   other?: ICategory;
-//   additional_resources?: string;
-// }
-
-interface VacancyDetail {
-  post_name: string;
-  total_post: number;
-  post_eligibility: string;
+interface IVacancy {
+  detail: IVacancyDetail[];
+  category_wise: IVacancyCategoryWise;
+  additional_resources: string;
 }
 
-// export interface ICommonCategoryWise {
-//   male?: ICategoryVacancy;
-//   female?: ICategoryVacancy;
-//   other?: ICategoryVacancy;
-//   additional_resources?: string;
-// }
+interface IEligibility {
+  minimum_qualification?: string;
+  other_qualification?: string;
+}
 
 export interface ICommon extends Document {
-  createdAt: Date;
-  updatedAt: Date;
   created_by: Types.ObjectId;
   contributors?: Types.ObjectId[];
   approved: boolean;
-  short_information?: string;
-  highlighted_information?: string;
-  department?: string;
-  stage_level?: string;
-  applicants?: {
-    number_of_applicants_each_year?: number;
-    number_of_applicants_selected?: number;
-  };
-  post_importance?: string;
-  post_exam_toughness_ranking?: number;
-  job_type?: string;
+  short_information: string;
+  highlighted_information: string;
+  department: string;
+  stage_level: string;
+  applicants: IApplicants;
+  post_importance: string;
+  post_exam_toughness_ranking: number;
+  job_type: string;
   post_exam_duration?: number;
-  age_criteria?: IAgeCriteria;
-  vacancy?: {
-    detail?: VacancyDetail[];
-    category_wise?: ICategoryVacancy;
-    additional_resources?: string;
-  };
-  eligibility?: {
-    minimum_qualification?: string;
-    other_qualification?: string;
-  };
-  post_exam_mode?: "online" | "offline_paper_based" | "offline_computer_based";
-  applicants_gender_that_can_apply?: "male" | "female" | "other" | "all";
+  age_criteria: IAgeCriteria;
+  vacancy: IVacancy;
+  eligibility: IEligibility;
+  post_exam_mode: string;
+  applicants_gender_that_can_apply: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

@@ -1,7 +1,49 @@
+import { POST_LIMITS } from "@shared/env-data";
 import mongoose, { Schema, Types } from "mongoose";
 import { Document } from "mongoose";
 
-interface ICategoryFees extends Document {
+const { non_negative_num, short_char_limit } = POST_LIMITS;
+
+const numberObject = {
+  type: Number,
+  required: false,
+  min: non_negative_num.min,
+  max: non_negative_num.max,
+};
+
+const CategoryFeesSchema: Schema = new Schema<ICategoryFees>({
+  general: numberObject,
+  obc: numberObject,
+  ews: numberObject,
+  sc: numberObject,
+  st: numberObject,
+  ph_dviyang: numberObject,
+});
+
+const FeeSchema: Schema = new Schema<IFee>(
+  {
+    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    approved: { type: Boolean, default: false, required: true },
+    male: numberObject,
+    female: numberObject,
+    category_wise: CategoryFeesSchema,
+    additional_resources: {
+      type: String,
+      required: true,
+      minlength: short_char_limit.min,
+      maxlength: short_char_limit.max,
+    },
+  },
+  { timestamps: true }
+);
+
+const FeeModel = mongoose.model<IFee>("Fee", FeeSchema);
+export default FeeModel;
+
+// -------------------
+
+interface ICategoryFees {
   general?: number;
   obc?: number;
   ews?: number;
@@ -11,43 +53,13 @@ interface ICategoryFees extends Document {
 }
 
 export interface IFee extends Document {
-  createdAt: Date;
-  updatedAt: Date;
   created_by: Types.ObjectId;
   contributors?: Types.ObjectId[];
   approved: boolean;
-
   male?: number;
   female?: number;
-  category_wise?: ICategoryFees;
-
-  additional_resources?: string;
+  category_wise: ICategoryFees;
+  additional_resources: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
-
-const CategoryFeesSchema: Schema = new Schema<ICategoryFees>({
-  general: { type: Number },
-  obc: { type: Number },
-  ews: { type: Number },
-  sc: { type: Number },
-  st: { type: Number },
-  ph_dviyang: { type: Number },
-});
-
-const FeeSchema: Schema = new Schema<IFee>(
-  {
-    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    approved: { type: Boolean, default: false, required: true },
-
-    male: { type: Number },
-    female: { type: Number },
-    category_wise: CategoryFeesSchema,
-
-    additional_resources: { type: String },
-  },
-  { timestamps: true }
-);
-
-const FeeModel = mongoose.model<IFee>("Fee", FeeSchema);
-
-export default FeeModel;

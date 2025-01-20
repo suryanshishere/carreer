@@ -1,5 +1,5 @@
 import { POST_ENV_DATA } from "@shared/env-data";
-import { camelCase, upperFirst } from "lodash";
+import { camelCase } from "lodash";
 import resultPromptSchema from "./sectionPromptSchema/result-prompt-schema";
 import admitCardPromptSchema from "./sectionPromptSchema/admit-card-prompt-schema";
 import latestJobPromptSchema from "./sectionPromptSchema/latest-job-prompt-schema";

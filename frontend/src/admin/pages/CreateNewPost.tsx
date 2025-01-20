@@ -99,7 +99,7 @@ const CreateNewPost: React.FC = () => {
         </div>
 
         <Button type="submit" disabled={submitMutation.isPending}>
-          {submitMutation.isPending ? "Submitting..." : "Submit"}
+          {submitMutation.isPending ? "Generating..." : "Generate"}
         </Button>
       </form>
     </div>

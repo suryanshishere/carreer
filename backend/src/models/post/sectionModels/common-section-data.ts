@@ -16,7 +16,7 @@ export interface ICommonDetailData extends Document {
   important_dates: Types.ObjectId | IDates;
   application_fee: Types.ObjectId | IFee;
   common: Types.ObjectId | ICommon;
-  post: Types.ObjectId ; //TODO: additional / optional type check for the post 
+  post: Types.ObjectId; //TODO: additional / optional type check for the post
 }
 
 const applyDefaultId = function (this: Document) {
@@ -45,14 +45,8 @@ const commonDataSchema = new Schema<ICommonDetailData>(
       type: String,
       unique: true,
       required: true,
-      minlength: [
-        POST_ENV_DATA.MIN_POST_NAME,
-        `Post name must be at least ${POST_ENV_DATA.MIN_POST_NAME} characters long.`,
-      ],
-      maxlength: [
-        POST_ENV_DATA.MAX_POST_NAME,
-        `Post name must be at least ${POST_ENV_DATA.MAX_POST_NAME} characters long.`,
-      ],
+      minlength: POST_ENV_DATA.MIN_POST_NAME,
+      maxlength: POST_ENV_DATA.MAX_POST_NAME,
     },
     important_links: {
       type: Schema.Types.ObjectId,
