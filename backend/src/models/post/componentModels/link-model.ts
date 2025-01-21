@@ -13,7 +13,7 @@ const linkObject = {
 const AdditionalResourcesSchema = new Schema<IAdditionalResources>(
   {
     faq: { ...linkObject, required: true },
-    contact_us: { ...linkObject, required: true },
+    contact_us: linkObject,
   },
   { _id: false }
 );
@@ -23,7 +23,7 @@ export const LinksSchema = new Schema<ILinks>(
     created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
     contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
     approved: { type: Boolean, default: false, required: true },
-    official_website: linkObject,
+    official_website: { ...linkObject, required: true },
     apply_online: linkObject,
     register_now: linkObject,
     download_sample_papers: linkObject,
@@ -44,14 +44,17 @@ export default LinkModel;
 
 interface IAdditionalResources {
   faq: string;
-  contact_us: string;
+  contact_us?: string;
 }
 
 export interface ILinks extends Document {
   created_by: Types.ObjectId;
-  contributors?: Types.ObjectId[];
+  createdAt: Date;
+  updatedAt: Date;
   approved: boolean;
-  official_website?: string;
+  contributors?: Types.ObjectId[];
+  official_website: string;
+  additional_resources: IAdditionalResources;
   apply_online?: string;
   register_now?: string;
   download_sample_papers?: string;
@@ -60,7 +63,4 @@ export interface ILinks extends Document {
   check_answer_key?: string;
   counseling_portal?: string;
   verify_certificates?: string;
-  additional_resources: IAdditionalResources;
-  createdAt?: Date;
-  updatedAt?: Date;
 }

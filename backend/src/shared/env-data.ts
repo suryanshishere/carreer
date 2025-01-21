@@ -37,7 +37,7 @@ interface ICommonComponentPostValidation {
 export const POST_LIMITS: ICommonComponentPostValidation = {
   long_char_limit: { min: 100, max: 2500 },
   medium_char_limit: { min: 25, max: 500 },
-  short_char_limit: { min: 5, max: 200 },
+  short_char_limit: { min: 3, max: 200 },
   non_negative_num: {
     min: 0,
     max: 10000000000,

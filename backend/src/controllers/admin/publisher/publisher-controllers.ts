@@ -16,6 +16,7 @@ import {
 import AdminModel, { IAdmin } from "@models/admin/admin-model";
 import { SchemaType } from "@google/generative-ai";
 import { SECTION_POST_PROMPT_SCHEMA_MAP } from "./post-prompt-schema-map";
+import { POST_LIMITS } from "@shared/env-data";
 
 export const createNewPost = async (
   req: Request,
@@ -74,10 +75,8 @@ export const createNewPost = async (
         properties: {
           ...schema.properties,
           name_of_the_post: {
-            description: `Ensure the title is clear and directly reflects the exam name along with the date or relevant event in the "${section}" section.
-
+            description: `Ensure the title is clear and directly reflects the exam name along with the date or relevant event in the "${section}" section, within ${POST_LIMITS.medium_char_limit.min}-${POST_LIMITS.medium_char_limit.max} characters.
 For example:
-
 In the "latest_job" section, include the name of the exam and the post, followed by the year. Example: "UPSC Civil Services Examination - Assistant Manager Recruitment".
 In the "result" section, include the name of the exam and append "Result Released", followed by the year. Example: "UPSC Civil Services Examination Result Released".
 Each title should be contextually appropriate to its section, ensuring clarity, specificity, and relevance.`,

@@ -1,26 +1,14 @@
-import { POST_ENV_DATA } from "@shared/env-data";
+import { POST_LIMITS } from "@shared/env-data";
 import { Schema, Types, Document } from "mongoose";
 import { ILinks } from "../componentModels/link-model";
 import { IDates } from "../componentModels/date-model";
 import { IFee } from "../componentModels/fee-model";
 import { ICommon } from "../componentModels/common-model";
 
-export interface ICommonDetailData extends Document {
-  createdAt: Date;
-  updatedAt: Date;
-  created_by: Schema.Types.ObjectId;
-  contributors?: (Schema.Types.ObjectId | string)[];
-  approved: boolean;
-  name_of_the_post: string;
-  important_links: Types.ObjectId | ILinks;
-  important_dates: Types.ObjectId | IDates;
-  application_fee: Types.ObjectId | IFee;
-  common: Types.ObjectId | ICommon;
-  post: Types.ObjectId; //TODO: additional / optional type check for the post
-}
+const { medium_char_limit } = POST_LIMITS;
 
 const applyDefaultId = function (this: Document) {
-  return this._id; // Set the reference to the document's _id
+  return this._id;
 };
 
 const commonDataSchema = new Schema<ICommonDetailData>(
@@ -45,8 +33,8 @@ const commonDataSchema = new Schema<ICommonDetailData>(
       type: String,
       unique: true,
       required: true,
-      minlength: POST_ENV_DATA.MIN_POST_NAME,
-      maxlength: POST_ENV_DATA.MAX_POST_NAME,
+      minlength: medium_char_limit.min,
+      maxlength: medium_char_limit.max,
     },
     important_links: {
       type: Schema.Types.ObjectId,
@@ -83,3 +71,19 @@ const commonDataSchema = new Schema<ICommonDetailData>(
 );
 
 export default commonDataSchema;
+
+// ---------------------------
+
+export interface ICommonDetailData extends Document {
+  createdAt: Date;
+  updatedAt: Date;
+  created_by: Schema.Types.ObjectId;
+  contributors?: (Schema.Types.ObjectId | string)[];
+  approved: boolean;
+  name_of_the_post: string;
+  important_links: Types.ObjectId | ILinks;
+  important_dates: Types.ObjectId | IDates;
+  application_fee: Types.ObjectId | IFee;
+  common: Types.ObjectId | ICommon;
+  post: Types.ObjectId; //TODO: additional / optional type check for the post
+}

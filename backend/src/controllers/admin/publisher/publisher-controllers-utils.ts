@@ -148,7 +148,6 @@ export const createComponentPost = async (
 
         //added to remove extra processing (much needed)
         const existingComponent = await model.findById(postId).session(session);
-        console.log(existingComponent, "existing component");
         if (existingComponent) {
           for (const field in existingComponent.toObject()) {
             if (schema.properties[field]) {
@@ -162,7 +161,6 @@ export const createComponentPost = async (
             }
           }
         }
-
         if (Object.keys(schema.properties).length === 0) {
           console.warn(
             `Skipping post creation for key: ${key} as schema properties are empty`
@@ -192,10 +190,9 @@ export const createComponentPost = async (
             new: true,
             upsert: true,
             session,
-            runValidators: true,   
+            runValidators: true,
           }
         );
-        
       } catch (error: any) {
         console.error(
           `Error occurred while creating component post for key: ${key}.`,

@@ -1,32 +1,54 @@
-import mongoose, { Document, Types, Schema } from "mongoose";
+import mongoose, { Types, Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
+import { POST_LIMITS } from "@shared/env-data";
 
-interface HowToFillForm extends Document {
-  registration: string;
-  apply: string;
-  video_link: string | null;
-}
+const { long_char_limit, short_char_limit } = POST_LIMITS;
 
-export interface ILatestJob extends ICommonDetailData {
-  how_to_fill_the_form?: HowToFillForm;
-  syllabus?: Types.ObjectId;
-  // result_data?: Types.ObjectId;
-}
-
-const HowToFillFormSchema = new Schema<HowToFillForm>({
-  registration: { type: String, required: true },
-  apply: { type: String, required: true },
-  video_link: { type: String, required: false },
-});
-
-const latestJobSchema = new Schema<ILatestJob>({
-  how_to_fill_the_form: HowToFillFormSchema,
-});
+const latestJobSchema = new Schema<ILatestJob>(
+  {
+    how_to_fill_the_form: {
+      type: new Schema(
+        {
+          registration: {
+            type: String,
+            minlength: long_char_limit.min,
+            maxlength: long_char_limit.max,
+            required: true,
+          },
+          apply: {
+            type: String,
+            minlength: long_char_limit.min,
+            maxlength: long_char_limit.max,
+            required: true,
+          },
+          video_link: {
+            type: String,
+            minlength: short_char_limit.min,
+            maxlength: short_char_limit.max,
+            required: false,
+          },
+        },
+        { _id: false }
+      ),
+      required: true,
+    },
+  }
+);
 
 latestJobSchema.add(commonDataSchema);
-
 export { latestJobSchema };
 
 const LatestJobModel = mongoose.model("LatestJob", latestJobSchema);
-
 export default LatestJobModel;
+
+// -------------------------------
+
+export interface ILatestJob extends ICommonDetailData {
+  how_to_fill_the_form: {
+    registration: string;
+    apply: string;
+    video_link?: string;
+  };
+  syllabus?: Types.ObjectId;
+}
+

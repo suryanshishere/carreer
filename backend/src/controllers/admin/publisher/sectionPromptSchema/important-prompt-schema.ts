@@ -1,4 +1,5 @@
 import { SchemaType } from "@google/generative-ai";
+import { POST_LIMITS } from "@shared/env-data";
 
 const importantPromptSchema = {
   description: "Detailed post information",
@@ -6,7 +7,7 @@ const importantPromptSchema = {
   properties: {
     how_to_fill_the_form: {
       type: SchemaType.STRING,
-      description: "Step-by-step instructions for filling out the form",
+      description: `Step-by-step instructions for filling out the form, withing ${POST_LIMITS.long_char_limit.min}-${POST_LIMITS.long_char_limit.max} characters.`,
     },
   },
   required: ["how_to_fill_the_form"],

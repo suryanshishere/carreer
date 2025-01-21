@@ -8,7 +8,6 @@ const {
   minute_num,
   age_num,
   non_negative_num,
-  medium_char_limit,
   stage_level,
   post_exam_mode,
   applicants_gender_that_can_apply,
