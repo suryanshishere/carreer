@@ -28,6 +28,8 @@ const datePromptSchema = {
     result_announcement_date: dateRangePromptSchema,
     counseling_start_date: dateRangePromptSchema,
     counseling_end_date: dateRangePromptSchema,
+    certificate_verification_date: dateRangePromptSchema,
+    important_date: dateRangePromptSchema,
     counseling_result_announcement_date: dateRangePromptSchema,
     additional_resources: {
       description: `Additional information related to the dates (not links). Must be between ${POST_LIMITS.short_char_limit.min} and ${POST_LIMITS.short_char_limit.max} characters.`,

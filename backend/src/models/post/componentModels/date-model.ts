@@ -26,7 +26,9 @@ export const dateSchema = new Schema<IDates>(
     result_announcement_date: dateObject,
     counseling_start_date: dateObject,
     counseling_end_date: dateObject,
+    important_date: dateObject,
     counseling_result_announcement_date: dateObject,
+    certificate_verification_date: dateObject,
     additional_resources: {
       type: String,
       required: true,
@@ -63,6 +65,8 @@ export interface IDates extends Document {
   answer_key_release_date?: IDateRange;
   result_announcement_date?: IDateRange;
   counseling_start_date?: IDateRange;
+  important_date?: IDateRange;
+  certificate_verification_date?: IDateRange;
   counseling_end_date?: IDateRange;
   counseling_result_announcement_date?: IDateRange;
   additional_resources?: string;
