@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import undefinedFieldReducer from "./undefined-fields-slice";
 import dropdownReducer from "./dropdown-slice";
 import responseReducer from "./response-slice";
 import authReducer from "./auth-slice";
+import postReducer from "./post-slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -16,10 +16,10 @@ const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 const store = configureStore({
   reducer: {
-    undefinedFields: undefinedFieldReducer,
     dropdown: dropdownReducer,
     response: responseReducer,
     auth: persistedAuthReducer,
+    post: postReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -47,8 +47,7 @@ const DeactivateAccount: React.FC = () => {
     mutationFn: async (data: IDeactivateForm) => {
       const response = await axiosInstance.post(
         "/user/account/setting/deactivate-account",
-        JSON.stringify(data),
-        { headers: { Authorization: `Bearer ${token}` } }
+        JSON.stringify(data)
       );
       return response.data;
     },

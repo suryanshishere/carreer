@@ -61,17 +61,12 @@ const ChangePassword: React.FC = () => {
     mutationFn: async (data: IChangePasswordForm) => {
       const response = await axiosInstance.post(
         "user/account/setting/change-password",
-        JSON.stringify(data),
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        JSON.stringify(data)
       );
       return response.data;
     },
     onSuccess: ({ message }) => {
-      // setSuccessMsg(message || "Password changed successfully!");
+      dispatch(triggerSuccessMsg(message || "Password changed successfully!"));
     },
     onError: (error: any) => {
       dispatch(

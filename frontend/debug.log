@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [1202/010833.451:ERROR:crashpad_client_win.cc(810)] not connected
 [1202/011827.714:ERROR:crashpad_client_win.cc(810)] not connected
 [1202/011827.987:ERROR:crashpad_client_win.cc(810)] not connected
@@ -31,3 +32,6 @@
 [1215/200520.317:ERROR:crashpad_client_win.cc(810)] not connected
 [1216/090741.370:ERROR:crashpad_client_win.cc(810)] not connected
 [1216/145449.615:ERROR:crashpad_client_win.cc(810)] not connected
+=======
+[0117/143415.259:ERROR:crashpad_client_win.cc(810)] not connected
+>>>>>>> user

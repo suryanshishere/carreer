@@ -1,26 +1,9 @@
 import React from "react";
-import HomeListItem from "post/components/HomeComponent";
+import HomeComponent from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import { IPostList } from "models/postModels/IPostList";
-import useQueryStates from "shared/hooks/query-states-hook";
-import { useSelector } from "react-redux";
-import { RootState } from "shared/store";
-
-const fetchHomePostList = async (
-  token?: string
-): Promise<{
-  data: {
-    [key: string]: IPostList;
-  };
-}> => {
-  const { data } = await axiosInstance.get("/public/home", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return data;
-};
+import NoData from "shared/components/dataStates/NoData";
+import SECTIONS from "db/postDb/sections.json";
 
 const heights: Record< string, string> = {
   result: "55rem",
@@ -30,33 +13,33 @@ const heights: Record< string, string> = {
 };
 
 const Home: React.FC = () => {
-  const { token } = useSelector((state: RootState) => state.auth.userData);
   const {
     data = { data: {} },
     isLoading,
     error,
-  } = useQuery<
-    {
-      data: {
-        [key: string]: IPostList;
-      };
-    },
-    Error
-  >({
+  } = useQuery({
     queryKey: ["homePostList"],
-    queryFn: () => fetchHomePostList(token),
+    queryFn: async () => {
+      const response = await axiosInstance.get("/public/home");
+      return response.data;
+    },
     retry: 3,
   });
 
-  const queryStateMessage = useQueryStates({
-    isLoading,
-    error: error ? error.message : null,
-    empty: Object.keys(data.data).length === 0,
-  });
+  const emptySectionsCount = SECTIONS.reduce((count, key) => {
+    const sectionData = data.data[key];
+    if (!sectionData || sectionData.length === 0 || !sectionData[0]) {
+      return count + 1;
+    }
+    return count;
+  }, 0);
 
-  if (queryStateMessage) return queryStateMessage;
+  if (!isLoading && emptySectionsCount >= 4) {
+    return <NoData />;
+  }
 
   return (
+<<<<<<< HEAD
     <div className="grid grid-cols-3 gap-x-2 gap-y-10">
       {Object.keys(data.data).map((key) => (
         <HomeListItem
@@ -66,6 +49,19 @@ const Home: React.FC = () => {
           height={heights[key] || heights.default}
         />
       ))}
+=======
+    <div className="lg:grid lg:grid-cols-3 flex flex-col gap-y-6 lg:gap-y-8 lg:gap-x-2 ">
+      {SECTIONS.map((key) => {
+        return (
+          <HomeComponent
+            key={key}
+            ListItemData={data.data[key] || []}
+            section={key}
+            height={heights[key] || heights.default}
+          />
+        );
+      })}
+>>>>>>> user
     </div>
   );
 };

@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h2 {
+    @apply text-lg font-bold p-1 self-center w-fit;
+  }
+  hr {
+    @apply w-full border-t-1 border-custom-black;
+  }
+
+  .page-padding{
+    @apply lg:px-page px-page-small w-full
+  }
+
+  .custom-link {
+    @apply underline decoration-1 text-custom-red  decoration-custom-red underline-offset-4 hover:text-custom-blue visited:decoration-custom-black visited:text-custom-black;
+  }
+  
+  .custom-external-link {
+    @apply underline decoration-1 font-bold text-custom-red  decoration-custom-red underline-offset-2 hover:text-custom-blue;
+  }
+  
+}
 
 /* :root {
   --border-radius: 10px;
@@ -50,7 +71,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -62,4 +83,3 @@ input[type=number] {
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Webkit browsers */
 }
-

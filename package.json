@@ -1,0 +1,12 @@
+{
+  "name": "carreer",
+  "version": "1.0.0",
+  "description": "This is the projects I am working on for months.\r If you are interested in joining the journey and make this big contact me **heresuryanshsingh@gmail.com**.",
+  "main": "index.js",
+  "scripts": {
+    "stage": "git add . && git commit -m \"$npm_config_message\" && git push"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,14 @@
+{
+  "_id": { "$oid": "6759876e974db2ff2e3fdc76" },
+  "user": { "$oid": "6759876e974db2ff2e3fdc76" },
+  "contribution": {
+    "NATIONAL_INSTITUTE_OF_FASHION_TECHNOLOGY": {
+      "latest_job": {
+        "name_of_the_post": "NIFT Job Opportunities: Unleash Your Creative"
+      }
+    }
+  },
+  "createdAt": { "$date": { "$numberLong": "1735299451850" } },
+  "updatedAt": { "$date": { "$numberLong": "1735299451850" } },
+  "__v": { "$numberInt": "0" }
+}

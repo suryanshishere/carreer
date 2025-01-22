@@ -7,14 +7,23 @@ interface DropdownState {
 const initialState: DropdownState = {
   dropdownStates: {},
 };
-
 const dropdownSlice = createSlice({
   name: "dropdown",
   initialState,
   reducers: {
-    toggleDropdownState(state, action: PayloadAction<string>) {
-      const itemId = action.payload;
-      state.dropdownStates[itemId] = !state.dropdownStates[itemId];
+    toggleDropdownState(
+      state,
+      action: PayloadAction<{ id: string; state?: boolean }>
+    ) {
+      const { id, state: newState } = action.payload;
+      state.dropdownStates[id] = newState ?? !state.dropdownStates[id];
+    },
+    closeSpecificDropdowns(state, action: PayloadAction<string[]>) {
+      action.payload.forEach((id) => {
+        if (state.dropdownStates[id]) {
+          state.dropdownStates[id] = false;
+        }
+      });
     },
     closeAllDropdowns(state) {
       state.dropdownStates = {};
@@ -22,5 +31,5 @@ const dropdownSlice = createSlice({
   },
 });
 
-export const { toggleDropdownState, closeAllDropdowns } = dropdownSlice.actions;
+export const { toggleDropdownState,  closeSpecificDropdowns,closeAllDropdowns } = dropdownSlice.actions;
 export default dropdownSlice.reducer;

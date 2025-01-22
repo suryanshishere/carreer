@@ -1,51 +1,38 @@
 import React from "react";
+<<<<<<< HEAD
 import PostList from "shared/sharedPostComponents/PostList";
 import { IPostList } from "models/postModels/IPostList";
+=======
+import PostList from "post/postShared/PostList";
+>>>>>>> user
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import useQueryStates from "shared/hooks/query-states-hook";
-import { RootState } from "shared/store";
-import { useSelector } from "react-redux";
-
-// Fetch function with type annotations
-const fetchCategoryPostList = async (
-  section: string,
-  token?: string
-): Promise<{
-  data: {
-    [key: string]: IPostList;
-  };
-}> => {
-  const { data } = await axiosInstance.get(`/public/sections/${section}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return data;
-};
+import NoData from "shared/components/dataStates/NoData";
 
 const Section: React.FC = () => {
   const { section = "" } = useParams<{ section: string }>();
-  const { token } = useSelector((state: RootState) => state.auth.userData);
+
   const {
-    data = { data: {} },
+    data = {
+      data: {
+        [section]: [],
+      },
+    },
     isLoading,
     error,
-  } = useQuery<
-    {
-      data: {
-        [key: string]: IPostList;
-      };
-    },
-    Error
-  >({
+  } = useQuery({
     queryKey: ["categoryPostList", section],
-    queryFn: () => fetchCategoryPostList(section, token),
+    queryFn: async () => {
+      const response = await axiosInstance.get(`/public/sections/${section}`);
+      return response.data;
+    },
     enabled: Boolean(section),
+    retry: 3,
     staleTime: 5 * 60 * 1000,
   });
 
+<<<<<<< HEAD
   const queryStateMessage = useQueryStates({
     isLoading,
     error: error ? error.message : null,
@@ -54,11 +41,15 @@ const Section: React.FC = () => {
 
   if (queryStateMessage) return queryStateMessage;
 console.log(data.data)
+=======
+  if (!isLoading && data.data[section].length === 0) {
+    return <NoData />;
+  }
+
+>>>>>>> user
   return (
     <div className="flex flex-col gap-3">
-      {Object.keys(data.data).map((key) => (
-        <PostList key={key} data={data.data[key] || []} section={key} />
-      ))}
+      <PostList data={data.data[section] || []} section={section} />
     </div>
   );
 };
