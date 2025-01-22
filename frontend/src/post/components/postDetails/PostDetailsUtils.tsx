@@ -74,8 +74,8 @@ export const EditableField: React.FC<EditableFieldProps> = ({
       ) : isLongText ? (
         <textarea
           value={value as string}
-          className={`outline outline-1 outline-custom-less-gray pl-2 py-1 ${
-            !validation.isValid ? "outline-red-500" : ""
+          className={`outline outline-1 outline-custom-less-gray min-h-20 pl-2 py-1 ${
+            !validation.isValid ? "outline-custom-red" : ""
           }`}
           onChange={(e) => onChange(e)}
         />
@@ -90,13 +90,13 @@ export const EditableField: React.FC<EditableFieldProps> = ({
           }
           value={value as string | number}
           className={`outline outline-1 outline-custom-less-gray pl-2 py-1 ${
-            !validation.isValid ? "outline-red-500" : ""
+            !validation.isValid ? "outline-custom-red" : ""
           }`}
           onChange={(e) => onChange(e)}
         />
       )}
       {!validation.isValid && (
-        <span className="text-red-500 text-sm">{validation.error}</span>
+        <span className="text-custom-red text-sm">{validation.error}</span>
       )}
       {isChanged && (
         <button
@@ -106,8 +106,8 @@ export const EditableField: React.FC<EditableFieldProps> = ({
           disabled={!validation.isValid}
           className={`px-2 py-1 rounded transform ease-linear duration-200 ${
             validation.isValid
-              ? "bg-custom-blue text-white hover:bg-custom-dark-blue"
-              : "bg-gray-400 text-gray-700 cursor-not-allowed"
+              ? "bg-custom-blue text-custom-white hover:bg-custom-dark-blue"
+              : "bg-custom-less-gray text-custom-gray cursor-not-allowed"
           }`}
         >
           Save
@@ -116,7 +116,7 @@ export const EditableField: React.FC<EditableFieldProps> = ({
       {isSaved && (
         <Button
           onClick={onUndo}
-          classProp="py-1 bg-custom-white transform ease-linear duration-200"
+          classProp="py-1 bg-custom-custom-white transform ease-linear duration-200"
         >
           Undo
         </Button>
@@ -212,7 +212,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({ headers, onSaveData }) => {
               <td className="border border-custom-gray px-2 py-1 text-center">
                 <button
                   onClick={() => handleRemoveRow(rowIndex)}
-                  className="text-red-500 hover:underline"
+                  className="text-custom-red hover:underline"
                 >
                   Remove
                 </button>
@@ -223,13 +223,13 @@ const DynamicTable: React.FC<DynamicTableProps> = ({ headers, onSaveData }) => {
       </table>
       <button
         onClick={handleAddRow}
-        className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="mt-3 px-4 py-2 bg-custom-blue text-custom-white rounded hover:bg-custom-blue"
       >
         Add Row
       </button>
       <button
         onClick={handleSave}
-        className="mt-3 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        className="mt-3 px-4 py-2 bg-custom-green text-custom-white rounded hover:bg-green-600"
       >
         Save
       </button>

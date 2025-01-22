@@ -115,7 +115,7 @@ const commonPromptSchema = {
     },
     highlighted_information: {
       type: SchemaType.STRING,
-      description: `Key highlights about the post, such as primary responsibilities, benefits, or unique features, within the character range of ${long_char_limit.min} to ${long_char_limit.max}. This should capture the most important selling points that make the post stand out.`,
+      description: `Key highlights about the post that are SEO-friendly and engaging. Include primary responsibilities, unique benefits, and features using concise, keyword-rich phrases. Ensure content is within the character range of ${long_char_limit.min} to ${long_char_limit.max}. Focus on actionable, attention-grabbing language that appeals to the target audience while aligning with search engine optimization best practices.`,
     },
     department: {
       type: SchemaType.STRING,
