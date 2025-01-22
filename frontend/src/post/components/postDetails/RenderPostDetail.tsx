@@ -72,6 +72,7 @@ const RenderPostDetail: React.FC<RenderPostDetailProps> = ({
       onUndo={handleUndo}
       isChanged={isChanged}
       isSaved={isSaved}
+      keyProp={keyProp}
     />
   ) : (
     <RenderField stringValue={_.toString(value)} uniqueKey={keyProp} />

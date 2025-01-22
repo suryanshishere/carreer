@@ -24,7 +24,7 @@ const renderObject = (value: any, parentKey: string) => (
               {startCase(subKey)}
             </h2>
 
-            <div className="ml-5 self-start">
+            <div className="pl-5 w-full">
               {(subValue?.current_year || subValue?.previous_year) != null ? (
                 <p>
                   <RenderPostDetail

@@ -94,7 +94,7 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
         }
         const displayKey = key.includes(".") ? key.split(".")[1] : key;
         return (
-          <div key={index} className="flex flex-col gap-1 w-full text-base">
+          <div key={index} className="flex flex-col gap-1">
             <div className="flex items-end gap-2">
               <h2 className="flex-none text-custom-red">
                 {startCase(displayKey)}

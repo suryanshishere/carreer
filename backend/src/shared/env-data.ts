@@ -19,7 +19,7 @@ interface CharLimits {
   max: number;
 }
 
-interface ICommonComponentPostValidation {
+interface IPostLimits {
   rank_num: CharLimits;
   medium_char_limit: CharLimits;
   short_char_limit: CharLimits;
@@ -34,7 +34,7 @@ interface ICommonComponentPostValidation {
   age_num: CharLimits;
 }
 
-export const POST_LIMITS: ICommonComponentPostValidation = {
+export const POST_LIMITS: IPostLimits = {
   long_char_limit: { min: 100, max: 2500 },
   medium_char_limit: { min: 25, max: 500 },
   short_char_limit: { min: 3, max: 200 },
