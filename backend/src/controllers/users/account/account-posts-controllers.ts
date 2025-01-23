@@ -2,16 +2,31 @@ import { Response, NextFunction, Request } from "express";
 import User from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
+<<<<<<< HEAD:backend/controllers/users/account/account-posts-controllers.ts
+import { JWTRequest } from "@middleware/check-auth";
+=======
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
+>>>>>>> user:backend/src/controllers/users/account/account-posts-controllers.ts
 import { sectionListPopulate } from "@controllers/posts/postsControllersUtils/postPopulate/posts-populate";
 import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
 } from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
+<<<<<<< HEAD
+<<<<<<< HEAD:backend/controllers/users/account/account-posts-controllers.ts
+import { postSectionsArray } from "@shared/post-array";
+=======
+import { POST_ENV_DATA } from "@shared/env-data";
+import ContributionModel from "@models/user/contribution-model";
+
+const postSectionsArray = POST_ENV_DATA.SECTIONS;
+>>>>>>> user:backend/src/controllers/users/account/account-posts-controllers.ts
+=======
 import { POST_DATA } from "@shared/env-data";
 import ContributionModel from "@models/user/contribution-model";
 
 const postSectionsArray = POST_DATA.SECTIONS;
+>>>>>>> user
 
 export const savedPosts = async (
   req: Request,

@@ -9,18 +9,37 @@ import {
   sendVerificationResponse,
   updateUnverifiedUser,
 } from "./auth-utils";
+<<<<<<< HEAD:backend/controllers/users/auth/auth-controllers.ts
+import validationError from "../../controllersUtils/validation-error";
+=======
 import validationError from "../../sharedControllers/validation-error";
+>>>>>>> user:backend/src/controllers/users/auth/auth-controllers.ts
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import { random } from "lodash";
 import { validationResult } from "express-validator";
 import { USER_ENV_DATA } from "@shared/env-data";
+<<<<<<< HEAD:backend/controllers/users/auth/auth-controllers.ts
+
+const FRONTEND_URL =
+  `${process.env.FRONTEND_URL}/user/reset_password` ||
+  "http://localhost:3000/user/reset_password";
+
+=======
 import handleValidationErrors from "../../sharedControllers/validation-error";
 
+>>>>>>> user:backend/src/controllers/users/auth/auth-controllers.ts
 const { EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY } =
   USER_ENV_DATA;
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
+<<<<<<< HEAD:backend/controllers/users/auth/auth-controllers.ts
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
+=======
   handleValidationErrors(req, next);
+>>>>>>> user:backend/src/controllers/users/auth/auth-controllers.ts
 
   const { email, password } = req.body;
   const existingUser: IUser | null = await User.findOne({ email });
@@ -48,6 +67,10 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
         password: hashedPassword,
         emailVerificationToken: random(100000, 999999),
         emailVerificationTokenCreatedAt: new Date(),
+<<<<<<< HEAD:backend/controllers/users/auth/auth-controllers.ts
+        role: email === "heresuryanshsingh@gmail.com" && "publisher",
+=======
+>>>>>>> user:backend/src/controllers/users/auth/auth-controllers.ts
       });
       await newUser.save();
 
@@ -65,8 +88,15 @@ export const sendPasswordResetLink = async (
   res: Response,
   next: NextFunction
 ) => {
+<<<<<<< HEAD:backend/controllers/users/auth/auth-controllers.ts
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
+=======
   handleValidationErrors(req, next);
 
+>>>>>>> user:backend/src/controllers/users/auth/auth-controllers.ts
   const { email } = req.body;
   const userId = getUserIdFromRequest(req as JWTRequest);
 
@@ -137,7 +167,14 @@ export const resetPassword = async (
   res: Response,
   next: NextFunction
 ) => {
+<<<<<<< HEAD:backend/controllers/users/auth/auth-controllers.ts
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
+=======
   handleValidationErrors(req, next);
+>>>>>>> user:backend/src/controllers/users/auth/auth-controllers.ts
 
   const { resetPasswordToken, password } = req.body;
   const { userId } = req.params;
@@ -247,7 +284,14 @@ export const sendVerificationOtp = async (
   } = {}
 ) => {
   if (!options.isDirect) {
+<<<<<<< HEAD:backend/controllers/users/auth/auth-controllers.ts
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
+=======
     handleValidationErrors(req, next);
+>>>>>>> user:backend/src/controllers/users/auth/auth-controllers.ts
   }
   // optional routes: since in backend action won't have token hence conditional not workin
   const userId = options.isDirect
@@ -325,7 +369,14 @@ export const verifyEmail = async (
   next: NextFunction
 ) => {
   // Validate request
+<<<<<<< HEAD:backend/controllers/users/auth/auth-controllers.ts
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError(validationError(errors), 400));
+  }
+=======
   handleValidationErrors(req, next);
+>>>>>>> user:backend/src/controllers/users/auth/auth-controllers.ts
 
   const { otp } = req.body;
   const userId = (req as JWTRequest).userData.userId;
@@ -358,7 +409,11 @@ export const verifyEmail = async (
     // Check if the OTP has expired (e.g., 15 minutes)
     const tokenExpirationTime = new Date(
       existingUser.emailVerificationTokenCreatedAt.getTime() +
+<<<<<<< HEAD:backend/controllers/users/auth/auth-controllers.ts
+      EMAIL_VERIFICATION_OTP_EXPIRY * 60 * 1000
+=======
         EMAIL_VERIFICATION_OTP_EXPIRY * 60 * 1000
+>>>>>>> user:backend/src/controllers/users/auth/auth-controllers.ts
     );
     const currentTime = new Date();
 

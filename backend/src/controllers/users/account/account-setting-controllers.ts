@@ -1,17 +1,33 @@
+<<<<<<< HEAD:backend/controllers/users/account/setting-controllers.ts
+import validationError from "@controllers/controllersUtils/validation-error";
+=======
+>>>>>>> user:backend/src/controllers/users/account/account-setting-controllers.ts
 import User from "@models/user/user-model";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";
 import bcrypt from "bcryptjs";
+<<<<<<< HEAD:backend/controllers/users/account/setting-controllers.ts
+import { JWTRequest } from "@middleware/check-auth";
+import { validationResult } from "express-validator";
+=======
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
+>>>>>>> user:backend/src/controllers/users/account/account-setting-controllers.ts
 
 export const changePassword = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+<<<<<<< HEAD:backend/controllers/users/account/setting-controllers.ts
+  const errors =validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
+=======
   handleValidationErrors(req, next);
 
+>>>>>>> user:backend/src/controllers/users/account/account-setting-controllers.ts
   try {
     const { old_password, new_password } = req.body;
     const userId = getUserIdFromRequest(req as JWTRequest);
@@ -50,8 +66,15 @@ export const deactivateAccount = async (
   res: Response,
   next: NextFunction
 ) => {
+<<<<<<< HEAD:backend/controllers/users/account/setting-controllers.ts
+  const errors =validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new HttpError(validationError(errors), 400));
+    }
+=======
   handleValidationErrors(req, next);
 
+>>>>>>> user:backend/src/controllers/users/account/account-setting-controllers.ts
   try {
     const userId = getUserIdFromRequest(req as JWTRequest);
     const user = await User.findById(userId);

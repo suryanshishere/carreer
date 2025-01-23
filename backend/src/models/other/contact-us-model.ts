@@ -13,9 +13,14 @@ const contactUsSchema = new Schema(
   {
     status: {
       type: String,
+<<<<<<< HEAD:backend/models/other/contact-us-model.ts
+      enum: ["not_initiated", "in_process", "completed"],
+      default: "not_initiated",
+=======
       default: "pending",
       enum: ["pending", "approved", "rejected"],
       required: true,
+>>>>>>> user:backend/src/models/other/contact-us-model.ts
       index: true,
     },
     user_id: {

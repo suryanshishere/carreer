@@ -1,9 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
+import { IPostList } from "models/postModels/IPostList";
+import { snakeCase, startCase } from "lodash";
+import Bookmark from "shared/sharedPostComponents/Bookmark";
+import Tag from "shared/sharedPostComponents/Tag";
+=======
 import { snakeCase, startCase } from "lodash";
 import Bookmark from "post/postShared/Bookmark";
 import { IPostList } from "models/postModels/IPost";
 import tag from "post/postShared/tag";
+>>>>>>> user
 
 interface HomeListItemProps {
   ListItemData: IPostList;
@@ -29,13 +36,47 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   section,
   height,
 }) => {
+<<<<<<< HEAD
+  console.log(ListItemData);
+=======
   const skeletonItemCount = getSkeletonItemCount(height);
 
+>>>>>>> user
   return (
     <div
       className="w-full text-base flex flex-col justify-center gap-2"
       style={{ height }}
     >
+<<<<<<< HEAD
+      <div className="flex flex-col justify-center gap-2">
+        <h2 className="self-center py-1 text-custom-gray w-fit font-bold px-2 text-lg">
+          {startCase(section)}
+        </h2>
+        <hr className="w-full border-t-2 border-custom-less-gray" />
+      </div>
+      <div className="h-full flex flex-col justify-between mr-1">
+        <ul className="flex flex-col gap-2 ml-0 pr-0">
+          {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
+            <React.Fragment key={index}>
+              <li className="w-full">
+                <div className="float-right flex items-center gap-1">
+                  {item.important_dates && Tag(item.important_dates, section)}
+                  <Bookmark
+                    section={section}
+                    postId={item._id}
+                    isSaved={item.is_saved}
+                  />
+                </div>
+                <Link
+                  to={`/sections/${section}/${snakeCase(
+                    item.name_of_the_post
+                  )}?is_saved=${item.is_saved}`}
+                  state={{ postId: item._id }}
+                  className="text-custom-red underline decoration-1 underline-offset-2 visited:text-custom-gray hover:decoration-custom-gray"
+                >
+                  {item.name_of_the_post}
+                </Link>
+=======
       <div className=" flex flex-col justify-center items-center gap-2">
         <h2 className="p-0">{startCase(section)}</h2>
         <hr className="border-t-2" />
@@ -53,6 +94,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                   style={{ width: `${Math.random() * 50 + 50}%` }}
                   className="w-5/6 h-7 bg-custom-less-gray rounded-sm"
                 ></div>
+>>>>>>> user
               </li>
             ))}
           </ul>
