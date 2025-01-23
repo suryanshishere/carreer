@@ -12,7 +12,7 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
   const isEmpty = Object.keys(data).length === 0;
 
   // skeleton loading
-  if (true) {
+  if (isEmpty) {
     // Skeleton Rendering
     return (
       <div className="w-full flex flex-col gap-8 animate-pulse">
