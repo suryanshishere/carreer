@@ -1,4 +1,4 @@
-import SECTIONS from "db/postDb/sections.json";
+import { POST_DB } from "db/post-db";
 import { IPostDetail } from "models/postModels/IPost";
 
 export const priorityMapping = (priorities: {
@@ -6,7 +6,7 @@ export const priorityMapping = (priorities: {
 }): { [key: string]: string[] } => {
   const priorityMap: { [key: string]: string[] } = {};
 
-  SECTIONS.forEach((section) => {
+  POST_DB.sections.forEach((section) => {
     const priorityKey = `${section}_priority`;
     if (priorityKey in priorities) {
       priorityMap[section] = priorities[priorityKey];
@@ -26,7 +26,10 @@ const rearrangeObjectByPriority = (
 
   // Helper to recursively get nested value
   const getNestedValue = (obj: any, keys: string[]): any => {
-    return keys.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+    return keys.reduce(
+      (acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined),
+      obj
+    );
   };
 
   // Helper to recursively delete nested value
@@ -60,7 +63,11 @@ const rearrangeObjectByPriority = (
     Object.keys(source).forEach((key) => {
       const fullKey = prefix ? `${prefix}.${key}` : key;
       if (!priorityKeys.includes(fullKey)) {
-        if (typeof source[key] === "object" && !Array.isArray(source[key]) && source[key] !== null) {
+        if (
+          typeof source[key] === "object" &&
+          !Array.isArray(source[key]) &&
+          source[key] !== null
+        ) {
           target[key] = {};
           addRemainingKeys(source[key], target[key]);
         } else {
@@ -74,6 +81,5 @@ const rearrangeObjectByPriority = (
 
   return result;
 };
-
 
 export default rearrangeObjectByPriority;

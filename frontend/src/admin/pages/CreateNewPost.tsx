@@ -17,7 +17,7 @@ import {
   ICreateNewPostForm,
   validationSchema,
 } from "shared/validation/admin-validation";
-import { POST_DATA } from "env-data";
+import { POST_DB } from "db/post-db";
 
 const CreateNewPost: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -89,7 +89,7 @@ const CreateNewPost: React.FC = () => {
             helperText={errors.api_key?.message}
           />
           <Dropdown
-            data={POST_DATA.SECTIONS}
+            data={POST_DB.sections}
             label="section"
             name="section"
             error={!!errors.section}

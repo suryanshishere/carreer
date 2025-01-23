@@ -9,6 +9,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import BookmarkBorderSharpIcon from "@mui/icons-material/BookmarkBorderSharp";
 import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
+import RESPONSE_DB from "db/response-db";
 
 interface IBookmark {
   section: string;
@@ -60,7 +61,7 @@ const Bookmark: React.FC<IBookmark> = ({
     if (token) {
       mutation.mutate({ url, bookmarkState });
     } else {
-      dispatch(triggerErrorMsg("Unauthorised, please login or sigup!"));
+      dispatch(triggerErrorMsg(RESPONSE_DB.not_authenticated));
     }
   };
 

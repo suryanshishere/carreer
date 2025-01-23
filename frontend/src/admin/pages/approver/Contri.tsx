@@ -14,7 +14,7 @@ import axiosInstance from "shared/utils/api/axios-instance";
 const Contri = () => {
   const { section, postCode } = useParams();
   const {
-    data = { data: [], post_data: {} },
+    data = { data: [], POST_DB: {} },
     isLoading,
     error,
   } = useQuery({

@@ -1,4 +1,4 @@
-import { POST_LIMITS } from "env-data";
+import { POST_LIMITS_DB } from "db/post-db";
 import { useState } from "react";
 import Button from "shared/utils/form/Button";
 import Dropdown from "shared/utils/form/Dropdown";
@@ -25,7 +25,7 @@ const {
   post_exam_mode,
   rank_minute_num,
   age_num,
-} = POST_LIMITS;
+} = POST_LIMITS_DB;
 
 const dropdownKeys = [
   "job_type",

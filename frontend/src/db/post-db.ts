@@ -1,11 +1,16 @@
-interface IPostEnvData { 
-  SECTIONS: string[];
-  COMPONENTS: string[];
-  OVERALL: string[];
+interface IPostDb {
+  sections: string[];
+  components: string[];
+  overall: string[];
+  tags: {
+    color: string;
+    label: string;
+    daysRange?: [number, number];
+  }[];
 }
 
-const POST_DATA: IPostEnvData = {
-  SECTIONS: [
+const POST_DB: IPostDb = {
+  sections: [
     "result",
     "admit_card",
     "latest_job",
@@ -15,43 +20,50 @@ const POST_DATA: IPostEnvData = {
     "admission",
     "important",
   ],
-  COMPONENTS: ["date", "common", "link", "fee"],
-  OVERALL: [],
+  components: ["date", "common", "link", "fee"],
+  overall: [],
+  tags: [
+    { color: "custom-green", label: "LIVE", daysRange: [-3, 2] },
+    { color: "custom-pale-orange", label: "UPCOMING", daysRange: [3, 80] },
+    { color: "custom-gray", label: "RELEASED", daysRange: [-80, -4] },
+    {
+      color: "custom-red animate-pulse",
+      label: "EXPIRING",
+      daysRange: [-3, 0],
+    },
+    { color: "custom-black", label: "VISITED" },
+  ],
 };
 
 // Populate OVERALL dynamically
-POST_DATA.OVERALL = [
-  ...POST_DATA.SECTIONS,
-  ...POST_DATA.COMPONENTS,
-];
-export { POST_DATA };
+POST_DB.overall = [...POST_DB.sections, ...POST_DB.components];
+export { POST_DB };
 
 // -------------------------------------------------------
 
-interface CharLimits {
+interface ICharNumLimitsDb {
   min: number;
   max: number;
 }
 
-interface IPostLimits {
+interface IPostLimitsDb {
   lowercase_alpha_num_underscrore: RegExp;
   alpha_num_underscore_space: RegExp;
-  rank_minute_num: CharLimits;
-  medium_char_limit: CharLimits;
-  short_char_limit: CharLimits;
-  // super_short_limit: CharLimits;
-  long_char_limit: CharLimits;
+  rank_minute_num: ICharNumLimitsDb;
+  medium_char_limit: ICharNumLimitsDb;
+  short_char_limit: ICharNumLimitsDb; 
+  long_char_limit: ICharNumLimitsDb;
   job_type: string[];
   stage_level: string[];
   post_exam_mode: string[];
   applicants_gender_that_can_apply: string[];
-  non_negative_num: CharLimits;
-  age_num: CharLimits;
+  non_negative_num: ICharNumLimitsDb;
+  age_num: ICharNumLimitsDb;
 }
 
-export const POST_LIMITS: IPostLimits = {
+export const POST_LIMITS_DB: IPostLimitsDb = {
   lowercase_alpha_num_underscrore: /^[a-z0-9_]+$/,
-  alpha_num_underscore_space:/^[A-Za-z0-9_\s]+$/,
+  alpha_num_underscore_space: /^[A-Za-z0-9_\s]+$/,
   long_char_limit: { min: 100, max: 2500 },
   medium_char_limit: { min: 25, max: 700 },
   short_char_limit: { min: 3, max: 300 },

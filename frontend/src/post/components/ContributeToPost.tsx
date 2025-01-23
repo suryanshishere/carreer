@@ -15,9 +15,9 @@ import {
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import {
-  closeSpecificDropdowns,
-  toggleDropdownState,
+  closeSpecificDropdowns, 
 } from "shared/store/dropdown-slice";
+import RESPONSE_DB from "db/response-db";
 
 interface IContributeToPost {
   section: string;
@@ -76,7 +76,7 @@ const ContributeToPost: React.FC<IContributeToPost> = ({
     if (token) {
       dispatch(setEditPostClicked(true));
     } else {
-      dispatch(triggerErrorMsg("Unauthorised, please login or signup!"));
+      dispatch(triggerErrorMsg(RESPONSE_DB.not_authenticated));
     }
   };
 
