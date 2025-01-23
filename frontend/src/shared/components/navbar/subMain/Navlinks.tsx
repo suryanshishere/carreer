@@ -4,11 +4,14 @@ import NAVLINKS from "db/shared/nav/navlinks.json";
 import { startCase } from "lodash";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import useResponsiveView, { ViewType } from "shared/hooks/responsive-view-hook";
+import useResponsiveView, {
+  viewObject,
+  ViewType,
+} from "shared/hooks/responsive-view-hook";
 
 const visibleLinksMap = {
   mobile: 0,
-  tablet: 4,
+  tablet: 3,
   desktop: 4,
 } as const;
 
@@ -18,10 +21,7 @@ const Navlinks: React.FC = () => {
   const { section = "" } = useParams<{ section: string }>();
   const navEntries = Object.entries(NAVLINKS);
 
-  const viewType: ViewType = useResponsiveView({
-    mobile: 768,
-    tablet: 1024,
-  });
+  const viewType: ViewType = useResponsiveView(viewObject);
   const visibleLinksCount = visibleLinksMap[viewType as VisibleLinksKeys] ?? 0;
 
   const displayedLinks = navEntries.slice(0, visibleLinksCount);
@@ -41,7 +41,7 @@ const Navlinks: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 h-full flex items-center gap-2 min-w-30">
+    <div className="flex-1 h-full flex items-center gap-3 min-w-30">
       {displayedLinks.length > 0 && (
         <ul className="m-0 py-1 h-full flex gap-3 items-center overflow-x-auto scrollbar-hide">
           {displayedLinks.map(([key, item]) => (
@@ -63,8 +63,8 @@ const Navlinks: React.FC = () => {
       {dropdownLinks.length > 0 && (
         <div ref={dropdownRef} className="relative flex-1 w-full">
           <button
-            className={`rounded-full outline outline-custom-gray w-full bg-custom-less-gray px-2 sm:py-[1px] flex items-center justify-center gap-2 ${
-              visibleLinksCount === 0 && "py-1"
+            className={`rounded-full outline outline-custom-gray w-full bg-custom-less-gray px-2 flex items-center justify-center gap-2 ${
+              viewType === "tablet" || viewType === "mobile"? "py-1" : "py-[1px]"
             } ${showDropdown && "shadow-md shadow-custom-black"}`}
             onClick={() => setShowDropdown(!showDropdown)}
           >

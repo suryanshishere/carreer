@@ -52,6 +52,7 @@ const resultPromptSchema = {
           type: SchemaType.OBJECT,
           description: "Cutoff details for the current year.",
           properties: resultCategory,
+          required: ["additional_resources", "general"],
         },
         previous_year: {
           type: SchemaType.OBJECT,

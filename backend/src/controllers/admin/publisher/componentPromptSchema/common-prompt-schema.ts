@@ -3,9 +3,8 @@ import { POST_LIMITS } from "@shared/env-data";
 
 const {
   short_char_limit,
-  rank_num,
-  job_type,
-  minute_num,
+  rank_minute_num,
+  job_type, 
   age_num,
   non_negative_num,
   stage_level,
@@ -111,7 +110,7 @@ const commonPromptSchema = {
   properties: {
     short_information: {
       type: SchemaType.STRING,
-      description: `A detailed description of the post, providing a comprehensive overview within the allowed character range of ${long_char_limit.min} to ${long_char_limit.max} characters. The description should be informative and concise, summarizing the key aspects of the post and its relevance.`,
+      description: `A detailed and elaborative description of the post, providing a comprehensive overview within the allowed character range of ${long_char_limit.min} to ${long_char_limit.max} characters. The description should be informative and concise, summarizing the key aspects of the post and its relevance.`,
     },
     highlighted_information: {
       type: SchemaType.STRING,
@@ -141,11 +140,11 @@ const commonPromptSchema = {
     },
     post_exam_duration: {
       type: SchemaType.NUMBER,
-      description: `The duration of the examination for the post, in minutes, within ${minute_num.min}-${minute_num.max} range.`,
+      description: `The duration of the examination for the post, in minutes, within ${rank_minute_num.min}-${rank_minute_num.max} range.`,
     },
     post_exam_toughness_ranking: {
       type: SchemaType.NUMBER,
-      description: `The exam toughness ranking, withing ${rank_num.min}-${rank_num.max} range.`,
+      description: `The exam toughness ranking, withing ${rank_minute_num.min}-${rank_minute_num.max} range.`,
     },
     age_criteria: {
       description: `Age eligibility for the post.`,

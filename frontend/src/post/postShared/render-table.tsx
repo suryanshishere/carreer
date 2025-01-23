@@ -26,7 +26,7 @@ const renderTable = (value: any, key: string) => {
 
   if (value != null && typeof value === "object" && !Array.isArray(value)) {
     return (
-      <table className="border-collapse border border-custom-gray">
+      <table className="border-collapse border border-custom-gray w-full">
         <tbody>
           {Object.entries(value as IDates | ILinks | IFees | ICommon).map(
             ([subKey, subValue], index) => {

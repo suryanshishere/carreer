@@ -15,13 +15,12 @@ export const bgColors = [
   // "bg-gray-100",
 ];
 
-// Component to generate table headers
 const TableHeaders: React.FC<{ headers: string[] }> = ({ headers }) => {
   return (
     <thead>
       <tr>
         {headers.map((header) => (
-          <th key={header} className="border-2 border-custom-gray px-2 py-1">
+          <th key={header} className="border-2 border-custom-gray px-2 py-1 md:whitespace-nowrap">
             {startCase(header)}
           </th>
         ))}
@@ -30,13 +29,11 @@ const TableHeaders: React.FC<{ headers: string[] }> = ({ headers }) => {
   );
 };
 
-// Component to generate table rows
 const TableRows: React.FC<{
   value: any[];
   headers: string[];
   tableRowKey: string;
 }> = ({ value, headers, tableRowKey }) => {
-  
   return (
     <tbody>
       {value.map((item, rowIndex) => {
@@ -62,7 +59,10 @@ const TableRows: React.FC<{
 };
 
 // Main Table Component
-const RenderArrayTable: React.FC<{ value: any[]; arrTableKey: string }> = ({ value, arrTableKey }) => {
+const RenderArrayTable: React.FC<{ value: any[]; arrTableKey: string }> = ({
+  value,
+  arrTableKey,
+}) => {
   if (!value.length) return null; // Handle empty array case
 
   // Filter headers based on excluded keys
@@ -71,7 +71,7 @@ const RenderArrayTable: React.FC<{ value: any[]; arrTableKey: string }> = ({ val
   );
 
   return (
-    <table className="border-collapse border-2 border-custom-gray w-full mt-3">
+    <table className="border-collapse border-2 border-custom-gray w-full">
       <TableHeaders headers={headers} />
       <TableRows value={value} headers={headers} tableRowKey={arrTableKey} />
     </table>

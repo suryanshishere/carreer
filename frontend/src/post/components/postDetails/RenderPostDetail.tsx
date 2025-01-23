@@ -3,7 +3,7 @@ import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { removeKeyValuePair, setKeyValuePair } from "shared/store/post-slice";
-import RenderField from "post/components/postDetails/RenderField"; 
+import RenderField from "post/components/postDetails/RenderField";
 import { EditableField } from "./PostDetailsUtils";
 
 interface RenderPostDetailProps {
@@ -14,7 +14,7 @@ interface RenderPostDetailProps {
 const RenderPostDetail: React.FC<RenderPostDetailProps> = ({
   value,
   keyProp,
-}) => { 
+}) => {
   const { isEditPostClicked } = useSelector((state: RootState) => state.post);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -80,4 +80,3 @@ const RenderPostDetail: React.FC<RenderPostDetailProps> = ({
 };
 
 export default RenderPostDetail;
-

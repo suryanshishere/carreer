@@ -1,9 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
 import { POST_LIMITS } from "@shared/env-data";
-import { SchemaType } from "@google/generative-ai";
 
-const { long_char_limit, short_char_limit, medium_char_limit } = POST_LIMITS;
+const { long_char_limit, short_char_limit } = POST_LIMITS;
 
 const syllabusDataSchema = new Schema<ISyllabusData>(
   {
@@ -15,8 +14,8 @@ const syllabusDataSchema = new Schema<ISyllabusData>(
     },
     topics: {
       type: String,
-      minlength: medium_char_limit.min,
-      maxlength: medium_char_limit.max,
+      minlength: long_char_limit.min,
+      maxlength: long_char_limit.max,
       required: true,
     },
   },

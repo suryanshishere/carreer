@@ -21,7 +21,11 @@ const RenderField = ({
         href={stringValue}
         target="_blank"
         rel="noopener noreferrer"
-        className={noLinkClassProp ? "underline underline-offset-2 decoration-1" : "custom-external-link"}
+        className={
+          noLinkClassProp
+            ? "underline underline-offset-2 decoration-1"
+            : "custom-external-link"
+        }
       >
         Click here
       </a>
@@ -66,15 +70,24 @@ const RenderField = ({
     return <>{parts}</>;
   }
 
-  if (stringValue.includes("//") || stringValue.includes("\n")) {
+  if (
+    stringValue.includes("//") ||
+    stringValue.includes("\n") ||
+    stringValue.match(/(\.\s\d\.)/)
+  ) {
     return (
       <p>
-        {stringValue.split(/\/\/|\n/).map((part, index) => (
-          <span key={index}>
-            {part}
-            {index !== stringValue.split(/\/\/|\n/).length - 1 && <br />}
-          </span>
-        ))}
+        {stringValue
+          .split(/\/\/|\n|(?=\d\.)/) // Split before digits followed by a period
+          .filter((part) => part.trim() !== "") // Remove empty or whitespace-only parts
+          .map((part, index) => (
+            <span key={index}>
+              {part.trim()} {/* Trim extra spaces */}
+              {index !== stringValue.split(/\/\/|\n|(?=\d\.)/).length - 1 && (
+                <br />
+              )}
+            </span>
+          ))}
       </p>
     );
   }

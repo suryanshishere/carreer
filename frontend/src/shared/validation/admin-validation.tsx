@@ -1,7 +1,8 @@
 import * as Yup from "yup"; 
-import { POST_ENV_DATA } from "env-data";
+import { POST_DATA, POST_LIMITS } from "env-data";
 
-const {MIN_POST_CODE, MAX_POST_CODE, MIN_POST_NAME_PUBLISHER,MAX_POST_NAME_PUBLISHER,SECTIONS,ALPHA_NUM_UNDERSCORE_SPACE} = POST_ENV_DATA;
+const { SECTIONS, } = POST_DATA;
+const {short_char_limit, alpha_num_underscore_space} = POST_LIMITS;
 
 
 //Publisher---------------------------------------------------------------------------
@@ -14,20 +15,20 @@ export interface ICreateNewPostForm {
 
 export const validationSchema = Yup.object().shape({
     name_of_the_post: Yup.string()
-      .min(MIN_POST_NAME_PUBLISHER, `Name of the post must be between 6 and 1000 characters.`)
-      .max(MAX_POST_NAME_PUBLISHER, `Name of the post must be between 6 and 1000 characters.`)
-      .required("Name of the post is required"),
+      .min(short_char_limit.min, `Name of the post must be between ${short_char_limit.min}-${short_char_limit.max} characters.`)
+      .max(short_char_limit.max, `Name of the post must be between ${short_char_limit.min}-${short_char_limit.max} characters.`)
+      .required("Name of the post is required."),
     post_code: Yup.string()
-      .min(MIN_POST_CODE, `Post code must be between 6 and 1000 characters.`)
-      .max(MAX_POST_CODE, `Post code must be between 6 and 1000 characters.`)
+      .min(short_char_limit.min, `Post code must be between ${short_char_limit.min}-${short_char_limit.max} characters.`)
+      .max(short_char_limit.max,`Post code must be between ${short_char_limit.min}-${short_char_limit.max} characters.`)
       .matches(
-        ALPHA_NUM_UNDERSCORE_SPACE,
+        alpha_num_underscore_space,
         "Post code can only contain letters, numbers, and spaces."
       )
       .required("Post code is required"),
     api_key: Yup.string(),
     section: Yup.string()
       .required("Please select an option.")
-      .oneOf(SECTIONS, `Status should be one of: ${SECTIONS.join(", ")}.`),
+      .oneOf(SECTIONS, `Section should be one of: ${SECTIONS.join(", ")}.`),
   });
   

@@ -1,4 +1,4 @@
-import { POST_ENV_DATA } from "@shared/env-data";
+import { POST_DATA } from "@shared/env-data";
 import { Schema, Document, model } from "mongoose";
 
 // Interface for a Contribution Document
@@ -10,8 +10,8 @@ export interface IContribution extends Document {
   contribution: Map<string, Record<string, any>>; // Map: post_id -> section data
 }
 
-// Initialize dynamic fields from POST_ENV_DATA.SECTIONS
-const dynamicFields = POST_ENV_DATA.SECTIONS.reduce(
+// Initialize dynamic fields from POST_DATA.SECTIONS
+const dynamicFields = POST_DATA.SECTIONS.reduce(
   (fields: Record<string, any>, key: string) => {
     // Define a dynamic schema for each section where keys are strings and values are of any type
     fields[key] = { type: Schema.Types.Mixed };

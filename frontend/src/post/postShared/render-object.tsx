@@ -8,7 +8,7 @@ import RenderPostDetail from "post/components/postDetails/RenderPostDetail";
 import renderData from "./render-data";
 
 const renderObject = (value: any, parentKey: string) => (
-  <div className="w-full flex flex-col items-start gap-4 pt-3 pl-4">
+  <div className="w-full flex flex-col items-start gap-4">
     {Object.entries(value as IDates | ILinks | IFees | ICommon).map(
       ([subKey, subValue]) => {
         if (excludedKeys.includes(subKey)) {
@@ -23,7 +23,6 @@ const renderObject = (value: any, parentKey: string) => (
               <div className="w-2 h-2 bg-custom-gray rounded-sm"></div>
               {startCase(subKey)}
             </h2>
-
             <div className="pl-5 w-full">
               {(subValue?.current_year || subValue?.previous_year) != null ? (
                 <p>
@@ -33,10 +32,7 @@ const renderObject = (value: any, parentKey: string) => (
                   />
                 </p>
               ) : (
-                // : typeof subValue === "object" && subValue !== null ? (
-                //   <>{renderObject(subValue, fullKey)}</>
-                // )
-                <>{renderData(subValue, fullKey)}</>
+                renderData(subValue, fullKey)
               )}
             </div>
           </div>

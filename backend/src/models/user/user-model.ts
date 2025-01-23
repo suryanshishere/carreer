@@ -1,4 +1,4 @@
-import { POST_ENV_DATA, USER_ENV_DATA } from "@shared/env-data";
+import { POST_DATA, USER_ENV_DATA } from "@shared/env-data";
 import _ from "lodash";
 import mongoose, { Schema, Types, Document } from "mongoose";
 
@@ -44,7 +44,7 @@ export interface IUser extends Document {
 }
 
 const dynamicReferences: Record<string, any> = {};
-POST_ENV_DATA.SECTIONS.forEach((key) => {
+POST_DATA.SECTIONS.forEach((key) => {
   const camelCaseRef = _.camelCase(key);
   dynamicReferences[key] = [
     { type: Schema.Types.ObjectId, ref: _.upperFirst(camelCaseRef) },

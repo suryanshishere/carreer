@@ -3,9 +3,8 @@ import mongoose, { Document, Schema, Types } from "mongoose";
 
 const {
   short_char_limit,
-  rank_num,
-  job_type,
-  minute_num,
+  rank_minute_num,
+  job_type, 
   age_num,
   non_negative_num,
   long_char_limit,
@@ -177,8 +176,8 @@ export const commonSchema: Schema = new Schema<ICommon>(
     post_exam_toughness_ranking: {
       type: Number,
       required: true,
-      min: rank_num.min,
-      max: rank_num.max,
+      min: rank_minute_num.min,
+      max: rank_minute_num.max,
     },
     job_type: {
       type: String,
@@ -189,8 +188,8 @@ export const commonSchema: Schema = new Schema<ICommon>(
     post_exam_duration: {
       type: Number,
       required: false,
-      min: minute_num.min,
-      max: minute_num.max,
+      min: rank_minute_num.min,
+      max: rank_minute_num.max,
     },
     age_criteria: {
       type: ageCriteriaSchema,
