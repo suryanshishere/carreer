@@ -8,6 +8,7 @@ import { RootState } from "shared/store";
 import { authRoutes, publicRoutes } from "layout/routes/app-routes";
 import About from "shared/pages/About";
 
+
 const App: React.FC = () => {
   const { token, role } = useSelector(
     (state: RootState) => state.auth.userData
