@@ -6,7 +6,6 @@ import AdminModel from "@models/admin/admin-model";
 import RequestModal, { IRequest } from "@models/admin/request-model";
 import { authorisedAdmin } from "./admin-controllers-utils";
 
-
 export const getRole = async (
   req: Request,
   res: Response,
