@@ -158,19 +158,11 @@ export const EditableField: React.FC<EditableFieldProps> = ({
 
   return (
     <div className="w-full flex flex-col gap-2">
-      {/* Render dropdowns for dropdown keys */}
-      {limits?.type === "dropdown" ? (
+       {limits?.type === "dropdown" ? (
         <Dropdown
-          name={lastName}
-          data={
-            lastName === "job_type"
-              ? job_type
-              : lastName === "post_exam_mode"
-              ? post_exam_mode
-              : lastName === "applicants_gender_that_can_apply"
-              ? applicants_gender_that_can_apply
-              : []
-          }
+          name={keyProp}
+          defaultValue={value}
+          data={((POST_LIMITS_DB as any)[lastName] as string[]) ?? []}
         />
       ) : isLongText ? (
         <textarea

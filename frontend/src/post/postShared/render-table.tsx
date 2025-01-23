@@ -41,7 +41,7 @@ const renderTable = (value: any, key: string) => {
                   key={subKey}
                   className="border border-custom-gray px-2 py-1"
                 >
-                  <td className="border-2 border-custom-gray px-2 py-1">
+                  <td className="border-2 border-custom-gray px-2 py-1 font-bold">
                     {startCase(subKey)}
                   </td>
                   <td

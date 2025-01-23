@@ -37,7 +37,7 @@ const POST_DB: IPostDb = {
 
 // Populate OVERALL dynamically
 POST_DB.overall = [...POST_DB.sections, ...POST_DB.components];
-export { POST_DB };
+export default POST_DB;
 
 // -------------------------------------------------------
 
@@ -51,7 +51,7 @@ interface IPostLimitsDb {
   alpha_num_underscore_space: RegExp;
   rank_minute_num: ICharNumLimitsDb;
   medium_char_limit: ICharNumLimitsDb;
-  short_char_limit: ICharNumLimitsDb; 
+  short_char_limit: ICharNumLimitsDb;
   long_char_limit: ICharNumLimitsDb;
   job_type: string[];
   stage_level: string[];

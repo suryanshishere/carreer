@@ -17,7 +17,7 @@ import {
   ICreateNewPostForm,
   validationSchema,
 } from "shared/validation/admin-validation";
-import { POST_DB } from "db/post-db";
+import  POST_DB  from "db/post-db";
 
 const CreateNewPost: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
