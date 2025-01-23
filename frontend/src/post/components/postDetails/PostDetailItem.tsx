@@ -12,7 +12,7 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
   const isEmpty = Object.keys(data).length === 0;
 
   // skeleton loading
-  if (isEmpty) {
+  if (true) {
     // Skeleton Rendering
     return (
       <div className="w-full flex flex-col gap-8 animate-pulse">
@@ -22,16 +22,16 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
             <div className="flex items-end gap-2">
               <div
                 style={{ width: `${Math.random() * 50 + 50}%` }}
-                className="h-5 bg-custom-gray"
+                className="h-5 bg-custom-less-gray"
               ></div>
-              <div className="flex-1 h-1 bg-custom-gray"></div>
+              <div className="flex-1 h-1 bg-custom-less-gray"></div>
             </div>
             <div className="py-1 flex flex-col gap-3">
               {[...Array(2)].map((_, idx) => (
                 <div
                   key={idx}
                   style={{ width: `${Math.random() * 50 + 50}%` }}
-                  className="h-4 bg-custom-gray"
+                  className="h-4 bg-custom-less-gray"
                 ></div>
               ))}
             </div>
@@ -42,39 +42,39 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
         <div className="w-full flex flex-col gap-2">
           <div
             style={{ width: `${Math.random() * 50 + 50}%` }}
-            className="h-5 bg-custom-gray mb-2"
+            className="h-5 bg-custom-less-gray mb-2"
           ></div>
           <div className="w-full border border-custom-less-gray overflow-hidden">
             {[...Array(4)].map((_, rowIndex) => (
               <div
                 key={rowIndex}
                 className={`flex ${
-                  rowIndex === 0 ? "bg-custom-gray" : "bg-custom-gray"
+                  rowIndex === 0 ? "bg-custom-less-gray" : "bg-custom-white"
                 } p-2`}
               >
                 {[...Array(3)].map((_, colIndex) => (
-                  <div key={colIndex} className="h-4 bg-custom-gray mx-1"></div>
+                  <div key={colIndex} className="h-4 mx-1"></div>
                 ))}
               </div>
             ))}
           </div>
         </div>
 
-        {[...Array(5)].map((_, index) => (
+        {[...Array(3)].map((_, index) => (
           <div key={index} className="flex flex-col gap-1 w-full text-base">
             <div className="flex items-end gap-2">
               <div
                 style={{ width: `${Math.random() * 50 + 50}%` }}
-                className="h-5 bg-custom-gray "
+                className="h-5 bg-custom-less-gray "
               ></div>
-              <div className="flex-1 h-1 bg-custom-gray"></div>
+              <div className="flex-1 h-1 bg-custom-less-gray"></div>
             </div>
             <div className="py-1 flex flex-col gap-3">
               {[...Array(2)].map((_, idx) => (
                 <div
                   key={idx}
                   style={{ width: `${Math.random() * 50 + 50}%` }}
-                  className="h-4 bg-custom-gray"
+                  className="h-4 bg-custom-less-gray"
                 ></div>
               ))}
             </div>
