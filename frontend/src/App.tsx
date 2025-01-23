@@ -5,12 +5,9 @@ import ContactUs from "shared/pages/ContactUs";
 import NotFound from "./shared/pages/NotFound";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-<<<<<<< HEAD
-import { createAuthRoutes, publicRoutes } from "routes/app-routes";
-=======
 import { authRoutes, publicRoutes } from "layout/routes/app-routes";
->>>>>>> user
 import About from "shared/pages/About";
+
 
 const App: React.FC = () => {
   const { token, role } = useSelector(
