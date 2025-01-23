@@ -23,7 +23,7 @@ const syllabusPromptSchema = {
           },
           topics: {
             type: SchemaType.STRING,
-            description: `Comma-separated topics covered under this section, within ${medium_char_limit.min}-${medium_char_limit.max} characters.`,
+            description: `Comma-separated topics covered under this section, within ${long_char_limit.min}-${long_char_limit.max} characters.`,
           },
         },
         required: ["section", "topics"],

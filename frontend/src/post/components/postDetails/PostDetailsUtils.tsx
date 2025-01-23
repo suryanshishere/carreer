@@ -23,7 +23,67 @@ const {
   job_type,
   applicants_gender_that_can_apply,
   post_exam_mode,
+  rank_minute_num,
+  age_num,
 } = POST_LIMITS;
+
+const dropdownKeys = [
+  "job_type",
+  "post_exam_mode",
+  "applicants_gender_that_can_apply",
+  "stage_level",
+];
+const longCharKeys = [
+  "short_information",
+  "highlighted_information",
+  "post_importance",
+  "how_to_download_admit_card",
+  "how_to_download_answer_key",
+  "how_to_fill_the_form",
+  "registration",
+  "apply",
+  "how_to_download_result",
+  "sources_and_its_step_to_download_syllabus",
+  "topics",
+];
+const mediumCharKeys = ["name_of_the_post"];
+const shortCharKeys = [
+  "department",
+  "age_relaxation",
+  "post_name",
+  "post_eligibility",
+  "additional_resources",
+  "minimum_qualification",
+  "other_qualification",
+  "apply_online",
+  "register_now",
+  "download_sample_papers",
+  "get_admit_card",
+  "view_results",
+  "check_answer_key",
+  "counseling_portal",
+  "verify_certificates",
+  "faq",
+  "contact_us",
+  "video_link",
+  "section",
+];
+
+const nonNegativeNumKeys = [
+  "number_of_applicants_each_year",
+  "number_of_applicants_selected",
+  "total_post",
+  "general",
+  "obc",
+  "sc",
+  "st",
+  "ews",
+  "ph_dviyang",
+  "male",
+  "female",
+];
+const rankMinuteNumKeys = ["post_exam_toughness_ranking", "post_exam_duration"];
+const ageNumKeys = ["minimum_age", "maximum_age"];
 
 export const EditableField: React.FC<EditableFieldProps> = ({
   value,
@@ -35,26 +95,62 @@ export const EditableField: React.FC<EditableFieldProps> = ({
   isSaved,
   keyProp,
 }) => {
-  console.log(keyProp);
+  const lastName = keyProp.split(".").pop() || ""; // Extract the last name after "."
   const isLongText = valueType === "string" && (value as string).length > 75;
+
+  // Determine the validation ranges
+  const getValidationLimits = () => {
+    if (dropdownKeys.includes(lastName)) {
+      return { type: "dropdown" };
+    } else if (longCharKeys.includes(lastName)) {
+      return { min: long_char_limit.min, max: long_char_limit.max };
+    } else if (mediumCharKeys.includes(lastName)) {
+      return { min: short_char_limit.min, max: short_char_limit.max };
+    } else if (shortCharKeys.includes(lastName)) {
+      return { min: short_char_limit.min, max: short_char_limit.max };
+    } else if (nonNegativeNumKeys.includes(lastName)) {
+      return { min: non_negative_num.min, max: non_negative_num.max };
+    } else if (rankMinuteNumKeys.includes(lastName)) {
+      return { min: rank_minute_num.min, max: rank_minute_num.max };
+    } else if (ageNumKeys.includes(lastName)) {
+      return { min: age_num.min, max: age_num.max };
+    }
+    return null;
+  };
+
+  const limits = getValidationLimits();
+
   const validateValue = (): { isValid: boolean; error: string | null } => {
+    if (!limits) return { isValid: true, error: null };
+
+    if (limits.type === "dropdown") {
+      return { isValid: true, error: null }; //TODO for dropdown validation
+    }
+
     if (valueType === "string") {
       const length = (value as string).length;
-      if (length < short_char_limit.min || length > long_char_limit.max) {
+      if (
+        length < (limits.min || short_char_limit.min) ||
+        length > (limits.max || long_char_limit.max)
+      ) {
         return {
           isValid: false,
-          error: `String length must be between ${short_char_limit.min} and ${long_char_limit.max} characters.`,
+          error: `String length must be between ${limits.min} and ${limits.max} characters.`,
         };
       }
     } else if (valueType === "number" && typeof value === "number") {
       const numValue = value;
-      if (numValue < non_negative_num.min || numValue > non_negative_num.max) {
+      if (
+        numValue < (limits.min || non_negative_num.min) ||
+        numValue > (limits.max || non_negative_num.max)
+      ) {
         return {
           isValid: false,
-          error: `Number must be between ${non_negative_num.min} and ${non_negative_num.max}.`,
+          error: `Number must be between ${limits.min} and ${limits.max}.`,
         };
       }
     }
+
     return { isValid: true, error: null };
   };
 
@@ -62,20 +158,25 @@ export const EditableField: React.FC<EditableFieldProps> = ({
 
   return (
     <div className="w-full flex flex-col gap-2">
-      {keyProp === "common.job_type" ? (
-        <Dropdown name="job_type" data={job_type} />
-      ) : keyProp === "common.post_exam_mode" ? (
-        <Dropdown name="post_exam_mode" data={post_exam_mode} />
-      ) : keyProp === "common.applicants_gender_that_can_apply" ? (
+      {/* Render dropdowns for dropdown keys */}
+      {limits?.type === "dropdown" ? (
         <Dropdown
-          name="post_exam_mode"
-          data={applicants_gender_that_can_apply}
+          name={lastName}
+          data={
+            lastName === "job_type"
+              ? job_type
+              : lastName === "post_exam_mode"
+              ? post_exam_mode
+              : lastName === "applicants_gender_that_can_apply"
+              ? applicants_gender_that_can_apply
+              : []
+          }
         />
       ) : isLongText ? (
         <textarea
           value={value as string}
-          className={`outline outline-1 outline-custom-less-gray pl-2 py-1 ${
-            !validation.isValid ? "outline-red-500" : ""
+          className={`outline outline-1 outline-custom-less-gray min-h-20 pl-2 py-1 ${
+            !validation.isValid ? "outline-custom-red" : ""
           }`}
           onChange={(e) => onChange(e)}
         />
@@ -90,13 +191,13 @@ export const EditableField: React.FC<EditableFieldProps> = ({
           }
           value={value as string | number}
           className={`outline outline-1 outline-custom-less-gray pl-2 py-1 ${
-            !validation.isValid ? "outline-red-500" : ""
+            !validation.isValid ? "outline-custom-red" : ""
           }`}
           onChange={(e) => onChange(e)}
         />
       )}
       {!validation.isValid && (
-        <span className="text-red-500 text-sm">{validation.error}</span>
+        <span className="text-custom-red text-sm">{validation.error}</span>
       )}
       {isChanged && (
         <button
@@ -106,8 +207,8 @@ export const EditableField: React.FC<EditableFieldProps> = ({
           disabled={!validation.isValid}
           className={`px-2 py-1 rounded transform ease-linear duration-200 ${
             validation.isValid
-              ? "bg-custom-blue text-white hover:bg-custom-dark-blue"
-              : "bg-gray-400 text-gray-700 cursor-not-allowed"
+              ? "bg-custom-blue text-custom-white hover:bg-custom-dark-blue"
+              : "bg-custom-less-gray text-custom-gray cursor-not-allowed"
           }`}
         >
           Save
@@ -212,7 +313,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({ headers, onSaveData }) => {
               <td className="border border-custom-gray px-2 py-1 text-center">
                 <button
                   onClick={() => handleRemoveRow(rowIndex)}
-                  className="text-red-500 hover:underline"
+                  className="text-custom-red hover:underline"
                 >
                   Remove
                 </button>
@@ -223,13 +324,13 @@ const DynamicTable: React.FC<DynamicTableProps> = ({ headers, onSaveData }) => {
       </table>
       <button
         onClick={handleAddRow}
-        className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="mt-3 px-4 py-2 bg-custom-blue text-custom-white rounded hover:bg-custom-blue"
       >
         Add Row
       </button>
       <button
         onClick={handleSave}
-        className="mt-3 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        className="mt-3 px-4 py-2 bg-custom-green text-custom-white rounded hover:bg-green-600"
       >
         Save
       </button>

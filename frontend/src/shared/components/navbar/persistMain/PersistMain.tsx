@@ -13,13 +13,11 @@ const PersistMain = () => {
     <>
       {(isNavAuthClicked || (token && !isEmailVerified)) && (
         <div className={persistClassProp}>
-          {" "}
           <Auth />
         </div>
       )}
       {token && deactivatedAt && (
         <div className={persistClassProp}>
-          {" "}
           <ActivateAccount />
         </div>
       )}

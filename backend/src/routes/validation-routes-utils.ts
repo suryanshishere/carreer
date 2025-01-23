@@ -1,15 +1,12 @@
-import { param, body, check } from "express-validator";
-import _, { snakeCase } from "lodash";
-import { POST_ENV_DATA } from "@shared/env-data";
+import { param, body } from "express-validator";
+import _ from "lodash";
+import { POST_DATA, POST_LIMITS } from "@shared/env-data";
 
-const {
-  MIN_POST_CODE,
-  MAX_POST_CODE,
-  SECTIONS,
-  LOWERCASE_ALPHA_NUM_UNDERSCORE,
-  MIN_POST_NAME_PUBLISHER,
-  MAX_POST_NAME_PUBLISHER,
-} = POST_ENV_DATA;
+const {short_char_limit, lowercase_alpha_num_underscrore} = POST_LIMITS;
+
+const { 
+  SECTIONS, 
+} = POST_DATA;
 
 export const postCodeCheck = (
   source: "param" | "body",
@@ -30,13 +27,13 @@ export const postCodeCheck = (
       return _.toLower(_.snakeCase(value));
     })
     .isLength({
-      min: MIN_POST_CODE,
-      max: MAX_POST_CODE,
+      min: short_char_limit.min,
+      max: short_char_limit.max,
     })
     .withMessage(
-      `${friendlyName} must be between ${MIN_POST_CODE} and ${MAX_POST_CODE} characters.`
+      `${friendlyName} must be between ${short_char_limit.min} and ${short_char_limit.max} characters.`
     )
-    .matches(LOWERCASE_ALPHA_NUM_UNDERSCORE)
+    .matches(lowercase_alpha_num_underscrore)
     .withMessage(
       `${friendlyName} can only contain lowercase letters, numbers, and underscores, with no spaces.`
     );
@@ -81,10 +78,10 @@ export const nameOfThePostCheck = (
   return chain
     .trim()
     .isLength({
-      min: MIN_POST_NAME_PUBLISHER,
-      max: MAX_POST_NAME_PUBLISHER,
+      min: short_char_limit.min,
+      max: short_char_limit.max,
     })
     .withMessage(
-      `${friendlyName} must be between ${MIN_POST_NAME_PUBLISHER} and ${MAX_POST_NAME_PUBLISHER} characters.`
+      `${friendlyName} must be between ${short_char_limit.min} and ${short_char_limit.max} characters.`
     );
 };

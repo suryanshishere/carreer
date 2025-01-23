@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 
 export type ViewType = "mobile" | "desktop" | "tablet" | "other";
 
+export const viewObject = {
+  "mobile": 664,
+  "tablet": 804,
+}
+
 const useResponsiveView = (breakpoints = { mobile: 768, tablet: 1024 }) => {
   const [viewType, setViewType] = useState<ViewType>("other");
 

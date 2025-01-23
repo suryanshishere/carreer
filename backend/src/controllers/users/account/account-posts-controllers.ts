@@ -12,6 +12,7 @@ import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
 } from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
+<<<<<<< HEAD
 <<<<<<< HEAD:backend/controllers/users/account/account-posts-controllers.ts
 import { postSectionsArray } from "@shared/post-array";
 =======
@@ -20,6 +21,12 @@ import ContributionModel from "@models/user/contribution-model";
 
 const postSectionsArray = POST_ENV_DATA.SECTIONS;
 >>>>>>> user:backend/src/controllers/users/account/account-posts-controllers.ts
+=======
+import { POST_DATA } from "@shared/env-data";
+import ContributionModel from "@models/user/contribution-model";
+
+const postSectionsArray = POST_DATA.SECTIONS;
+>>>>>>> user
 
 export const savedPosts = async (
   req: Request,
