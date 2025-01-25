@@ -7,7 +7,7 @@ interface EditableFieldProps {
   value: Date | string | number;
   valueType: "string" | "number" | "object"; // Type of the value
   onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
   onSave: () => void;
   onUndo: () => void;
@@ -20,9 +20,6 @@ const {
   short_char_limit,
   long_char_limit,
   non_negative_num,
-  job_type,
-  applicants_gender_that_can_apply,
-  post_exam_mode,
   rank_minute_num,
   age_num,
 } = POST_LIMITS_DB;
@@ -163,6 +160,7 @@ export const EditableField: React.FC<EditableFieldProps> = ({
           name={keyProp}
           defaultValue={value}
           data={((POST_LIMITS_DB as any)[lastName] as string[]) ?? []}
+          onChange={onChange}
         />
       ) : isLongText ? (
         <textarea

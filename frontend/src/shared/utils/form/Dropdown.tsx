@@ -8,7 +8,7 @@ interface IDropdown {
   required?: boolean;
   multiple?: boolean;
   label?: string | boolean;
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   error?: boolean;
   helperText?: string;
   register?: any; // Register from React Hook Form

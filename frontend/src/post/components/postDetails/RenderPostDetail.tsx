@@ -26,10 +26,11 @@ const RenderPostDetail: React.FC<RenderPostDetailProps> = ({
   const [isSaved, setIsSaved] = useState(false);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const newValue =
-      typeof value === "number" ? +e.target.value : e.target.value;
+    typeof value === "number" ? +e.target.value : e.target.value;
+ 
     setInputValue(newValue);
     setIsChanged(true);
     setIsSaved(false);
