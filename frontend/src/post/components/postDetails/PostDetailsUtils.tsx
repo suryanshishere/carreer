@@ -1,217 +1,148 @@
 import { POST_LIMITS_DB } from "db/post-db";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "shared/store";
+import { removeKeyValuePair, setKeyValuePair } from "shared/store/post-slice";
 import Button from "shared/utils/form/Button";
 import Dropdown from "shared/utils/form/Dropdown";
+import { Input, TextArea } from "shared/utils/form/Input";
+import {
+  getFieldValidation,
+  validateFieldValue,
+} from "./postDetailsUtils/editable-validation";
+
+//FOR DATE 
 
 interface EditableFieldProps {
   value: Date | string | number;
-  valueType: "string" | "number" | "object"; // Type of the value
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => void;
-  onSave: () => void;
-  onUndo: () => void;
-  isChanged: boolean;
-  isSaved: boolean;
   keyProp: string;
 }
 
-const {
-  short_char_limit,
-  long_char_limit,
-  non_negative_num,
-  rank_minute_num,
-  age_num,
-} = POST_LIMITS_DB;
-
-const dropdownKeys = [
-  "job_type",
-  "post_exam_mode",
-  "applicants_gender_that_can_apply",
-  "stage_level",
-];
-const longCharKeys = [
-  "short_information",
-  "highlighted_information",
-  "post_importance",
-  "how_to_download_admit_card",
-  "how_to_download_answer_key",
-  "how_to_fill_the_form",
-  "registration",
-  "apply",
-  "how_to_download_result",
-  "sources_and_its_step_to_download_syllabus",
-  "topics",
-];
-const mediumCharKeys = ["name_of_the_post"];
-const shortCharKeys = [
-  "department",
-  "age_relaxation",
-  "post_name",
-  "post_eligibility",
-  "additional_resources",
-  "minimum_qualification",
-  "other_qualification",
-  "apply_online",
-  "register_now",
-  "download_sample_papers",
-  "get_admit_card",
-  "view_results",
-  "check_answer_key",
-  "counseling_portal",
-  "verify_certificates",
-  "faq",
-  "contact_us",
-  "video_link",
-  "section",
-];
-
-const nonNegativeNumKeys = [
-  "number_of_applicants_each_year",
-  "number_of_applicants_selected",
-  "total_post",
-  "general",
-  "obc",
-  "sc",
-  "st",
-  "ews",
-  "ph_dviyang",
-  "male",
-  "female",
-];
-const rankMinuteNumKeys = ["post_exam_toughness_ranking", "post_exam_duration"];
-const ageNumKeys = ["minimum_age", "maximum_age"];
-
 export const EditableField: React.FC<EditableFieldProps> = ({
   value,
-  valueType,
-  onChange,
-  onSave,
-  onUndo,
-  isChanged,
-  isSaved,
   keyProp,
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [inputValue, setInputValue] = useState<Date | string | number>(
+    value instanceof Date ? value.toISOString().slice(0, 10) : value
+  );
+  const [isChanged, setIsChanged] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
   const lastName = keyProp.split(".").pop() || ""; // Extract the last name after "."
-  const isLongText = valueType === "string" && (value as string).length > 75;
+  const validationConfig = getFieldValidation(lastName);
+  const { isValid, error } = validateFieldValue(
+    inputValue instanceof Date ? inputValue.toISOString() : inputValue,
+    validationConfig
+  );
 
-  // Determine the validation ranges
-  const getValidationLimits = () => {
-    if (dropdownKeys.includes(lastName)) {
-      return { type: "dropdown" };
-    } else if (longCharKeys.includes(lastName)) {
-      return { min: long_char_limit.min, max: long_char_limit.max };
-    } else if (mediumCharKeys.includes(lastName)) {
-      return { min: short_char_limit.min, max: short_char_limit.max };
-    } else if (shortCharKeys.includes(lastName)) {
-      return { min: short_char_limit.min, max: short_char_limit.max };
-    } else if (nonNegativeNumKeys.includes(lastName)) {
-      return { min: non_negative_num.min, max: non_negative_num.max };
-    } else if (rankMinuteNumKeys.includes(lastName)) {
-      return { min: rank_minute_num.min, max: rank_minute_num.max };
-    } else if (ageNumKeys.includes(lastName)) {
-      return { min: age_num.min, max: age_num.max };
-    }
-    return null;
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const newValue =
+      typeof value === "number" ? +e.target.value : e.target.value;
+    setInputValue(newValue);
+    setIsChanged(true);
+    setIsSaved(false);
   };
 
-  const limits = getValidationLimits();
+  const handleSave = () => {
+    const parsedValue =
+      typeof value === "number"
+        ? +inputValue
+        : typeof value === "string"
+        ? inputValue.toString()
+        : new Date(inputValue as string);
 
-  const validateValue = (): { isValid: boolean; error: string | null } => {
-    if (!limits) return { isValid: true, error: null };
-
-    if (limits.type === "dropdown") {
-      return { isValid: true, error: null }; //TODO for dropdown validation
-    }
-
-    if (valueType === "string") {
-      const length = (value as string).length;
-      if (
-        length < (limits.min || short_char_limit.min) ||
-        length > (limits.max || long_char_limit.max)
-      ) {
-        return {
-          isValid: false,
-          error: `String length must be between ${limits.min} and ${limits.max} characters.`,
-        };
-      }
-    } else if (valueType === "number" && typeof value === "number") {
-      const numValue = value;
-      if (
-        numValue < (limits.min || non_negative_num.min) ||
-        numValue > (limits.max || non_negative_num.max)
-      ) {
-        return {
-          isValid: false,
-          error: `Number must be between ${limits.min} and ${limits.max}.`,
-        };
-      }
-    }
-
-    return { isValid: true, error: null };
+    dispatch(setKeyValuePair({ key: keyProp, value: parsedValue }));
+    setIsChanged(false);
+    setIsSaved(true);
   };
 
-  const validation = validateValue();
+  const handleUndo = () => {
+    setInputValue(value instanceof Date ? value.toISOString() : value);
+    dispatch(removeKeyValuePair(keyProp));
+    setIsChanged(false);
+    setIsSaved(false);
+  };
 
-  return (
-    <div className="w-full flex flex-col gap-2">
-       {limits?.type === "dropdown" ? (
+  const renderInputField = () => {
+    if (validationConfig?.type === "dropdown") {
+      return (
         <Dropdown
           name={keyProp}
           defaultValue={value}
-          data={((POST_LIMITS_DB as any)[lastName] as string[]) ?? []}
-          onChange={onChange}
+          data={(POST_LIMITS_DB as any)[lastName] ?? []}
+          onChange={handleInputChange}
         />
-      ) : isLongText ? (
-        <textarea
-          value={value as string}
-          className={`outline outline-1 outline-custom-less-gray min-h-20 pl-2 py-1 ${
-            !validation.isValid ? "outline-custom-red" : ""
-          }`}
-          onChange={(e) => onChange(e)}
+      );
+    }
+
+    const isLongText = typeof value === "string" && value.length > 75;
+    const inputType =
+      typeof value === "number"
+        ? "number"
+        : value instanceof Date
+        ? "date"
+        : "text";
+
+    if (isLongText) {
+      return (
+        <TextArea
+          name={keyProp}
+          value={inputValue as string}
+          error={!isValid}
+          helperText={error}
+          onChange={handleInputChange}
         />
-      ) : (
-        <input
-          type={
-            valueType === "number"
-              ? "number"
-              : valueType === "object"
-              ? "date"
-              : "text"
-          }
-          value={value as string | number}
-          className={`outline outline-1 outline-custom-less-gray pl-2 py-1 ${
-            !validation.isValid ? "outline-custom-red" : ""
-          }`}
-          onChange={(e) => onChange(e)}
-        />
-      )}
-      {!validation.isValid && (
-        <span className="text-custom-red text-sm">{validation.error}</span>
-      )}
-      {isChanged && (
-        <button
-          onClick={() => {
-            if (validation.isValid) onSave();
-          }}
-          disabled={!validation.isValid}
-          className={`px-2 py-1 rounded transform ease-linear duration-200 ${
-            validation.isValid
-              ? "bg-custom-blue text-custom-white hover:bg-custom-dark-blue"
-              : "bg-custom-less-gray text-custom-gray cursor-not-allowed"
-          }`}
-        >
-          Save
-        </button>
-      )}
-      {isSaved && (
-        <Button
-          onClick={onUndo}
-          classProp="py-1 bg-custom-white transform ease-linear duration-200"
-        >
-          Undo
-        </Button>
-      )}
+      );
+    }
+
+    return (
+      <Input
+        name={keyProp}
+        type={inputType}
+        value={inputValue as string | number}
+        error={!isValid}
+        helperText={error}
+        onChange={handleInputChange}
+      />
+    );
+  };
+
+  return (
+    <div className="w-full flex flex-col gap-2">
+      {renderInputField()}
+
+      <div className="w-full flex items-center gap-2">
+        {isSaved && (
+          <Button
+            onClick={handleUndo}
+            classProp="py-1 bg-custom-white transform ease-linear duration-200"
+          >
+            Undo
+          </Button>
+        )}
+
+        {isChanged && (
+          <Button
+            contributeSaveButton
+            onClick={() => {
+              if (isValid) handleSave();
+            }}
+            disabled={!isValid}
+            className={`flex-1 px-2 py-1 rounded transform ease-linear duration-200 ${
+              isValid
+                ? "bg-custom-blue text-custom-white hover:bg-custom-dark-blue"
+                : "bg-custom-less-gray text-custom-gray cursor-not-allowed"
+            }`}
+          >
+            Save
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

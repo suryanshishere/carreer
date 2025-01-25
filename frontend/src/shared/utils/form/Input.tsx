@@ -139,9 +139,11 @@ export const TextArea = forwardRef<
   ) => {
     return (
       <div className={`relative ${outerClassProp}`}>
-        <label htmlFor={name} className="block text-sm font-medium mb-1">
-          {typeof label === "string" ? startCase(label) : startCase(name)}
-        </label>
+        {label && (
+          <label htmlFor={name} className="block text-sm font-medium mb-1">
+            {typeof label === "string" ? startCase(label) : startCase(name)}
+          </label>
+        )}
         <textarea
           placeholder={placeholder}
           ref={ref}
