@@ -1,6 +1,6 @@
 import { tableRequired } from "./post-detail-render-define";
-import RenderPostDetail from "../components/postDetails/RenderPostDetail";
-import RenderArrayTable from "../components/postDetails/RenderArrayTable";
+import RenderPostDetail from "./RenderPostDetail";
+import RenderArrayTable from "./RenderArrayTable";
 import renderTable from "./render-table";
 import renderObject from "./render-object";
 

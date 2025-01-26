@@ -16,6 +16,8 @@ export const getFieldValidation = (fieldName: string) => {
   )?.[0];
 
   switch (fieldType) {
+    case "date_keys":
+      return {type: "date"}
     case "dropdown_keys":
       return { type: "dropdown" };
     case "long_char_keys":

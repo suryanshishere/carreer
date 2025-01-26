@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import RenderDate from "./RenderDate";
+import RenderDate from "../components/postDetails/postDetailsUtils/RenderDate";
 import _ from "lodash";
 
 const RenderField = ({

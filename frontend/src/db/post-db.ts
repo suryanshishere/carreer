@@ -67,6 +67,7 @@ interface IPostLimitsDb {
     non_negative_num_keys: string[];
     rank_minute_num_keys: string[];
     age_num_keys: string[];
+    date_keys: string[];
   };
 }
 
@@ -156,5 +157,6 @@ export const POST_LIMITS_DB: IPostLimitsDb = {
     ],
     rank_minute_num_keys: ["post_exam_toughness_ranking", "post_exam_duration"],
     age_num_keys: ["minimum_age", "maximum_age"],
+    date_keys: ["current_year"]
   },
 };

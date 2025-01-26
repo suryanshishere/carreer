@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import _ from "lodash";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "shared/store";
-import { removeKeyValuePair, setKeyValuePair } from "shared/store/post-slice";
-import RenderField from "post/components/postDetails/RenderField";
-import { EditableField } from "./PostDetailsUtils";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
+import RenderField from "post/postShared/RenderField";
+import EditableField from "./PostDetailsEditable";
 
 interface RenderPostDetailProps {
   value: Date | string | number;

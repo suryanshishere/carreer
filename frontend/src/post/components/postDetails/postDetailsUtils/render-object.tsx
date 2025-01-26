@@ -4,7 +4,7 @@ import { IDates } from "models/postModels/overallInterfaces/IDates";
 import { IFees } from "models/postModels/overallInterfaces/IFees";
 import { ILinks } from "models/postModels/overallInterfaces/ILinks";
 import { excludedKeys } from "./post-detail-render-define";
-import RenderPostDetail from "post/components/postDetails/RenderPostDetail";
+import RenderPostDetail from "./RenderPostDetail";
 import renderData from "./render-data";
 
 const renderObject = (value: any, parentKey: string) => (
