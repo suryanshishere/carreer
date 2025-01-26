@@ -1,5 +1,5 @@
-import { POST_LIMITS } from "@shared/env-data";
 import mongoose, { Document, Schema, Types } from "mongoose";
+import { POST_LIMITS_ENV_DB } from "../post-env-db";
 
 const {
   short_char_limit,
@@ -11,7 +11,7 @@ const {
   stage_level,
   post_exam_mode,
   applicants_gender_that_can_apply,
-} = POST_LIMITS;
+} = POST_LIMITS_ENV_DB;
 
 const ApplicantsSchema: Schema = new Schema<IApplicants>(
   {

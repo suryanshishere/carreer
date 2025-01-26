@@ -1,4 +1,4 @@
-import { POST_LIMITS_DB } from "db/post-db";
+import { POST_LIMITS_ENV_DB } from "db/post-env-db";
 
 const {
   short_char_limit,
@@ -7,7 +7,7 @@ const {
   rank_minute_num,
   age_num,
   limit_keys_division,
-} = POST_LIMITS_DB;
+} = POST_LIMITS_ENV_DB;
 
 //this will be helpfull all across the app
 export const getFieldValidation = (fieldName: string) => {

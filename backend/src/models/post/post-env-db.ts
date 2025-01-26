@@ -1,64 +1,23 @@
-interface IPostDb {
-  sections: string[];
-  components: string[];
-  overall: string[];
-  tags: {
-    color: string;
-    label: string;
-    daysRange?: [number, number];
-  }[];
-}
+// ------------------------------------ POST DATA LIMITS
 
-const POST_DB: IPostDb = {
-  sections: [
-    "result",
-    "admit_card",
-    "latest_job",
-    "answer_key",
-    "syllabus",
-    "certificate_verification",
-    "admission",
-    "important",
-  ],
-  components: ["date", "common", "link", "fee"],
-  overall: [],
-  tags: [
-    { color: "custom-green", label: "LIVE", daysRange: [-3, 2] },
-    { color: "custom-pale-orange", label: "UPCOMING", daysRange: [3, 80] },
-    { color: "custom-gray", label: "RELEASED", daysRange: [-80, -4] },
-    {
-      color: "custom-red animate-pulse",
-      label: "EXPIRING",
-      daysRange: [-3, 0],
-    },
-    { color: "custom-black", label: "VISITED" },
-  ],
-};
-
-// Populate OVERALL dynamically
-POST_DB.overall = [...POST_DB.sections, ...POST_DB.components];
-export default POST_DB;
-
-// -------------------------------------------------------
-
-interface ICharNumLimitsDb {
+interface CharLimits {
   min: number;
   max: number;
 }
 
-interface IPostLimitsDb {
+interface IPostLimits {
   lowercase_alpha_num_underscrore: RegExp;
-  alpha_num_underscore_space: RegExp;
-  rank_minute_num: ICharNumLimitsDb;
-  medium_char_limit: ICharNumLimitsDb;
-  short_char_limit: ICharNumLimitsDb;
-  long_char_limit: ICharNumLimitsDb;
+  rank_minute_num: CharLimits;
+  medium_char_limit: CharLimits;
+  short_char_limit: CharLimits;
+  // super_short_limit: CharLimits;
+  long_char_limit: CharLimits;
   job_type: string[];
   stage_level: string[];
   post_exam_mode: string[];
   applicants_gender_that_can_apply: string[];
-  non_negative_num: ICharNumLimitsDb;
-  age_num: ICharNumLimitsDb;
+  non_negative_num: CharLimits;
+  age_num: CharLimits;
   limit_keys_division: {
     dropdown_keys: string[];
     long_char_keys: string[];
@@ -71,9 +30,8 @@ interface IPostLimitsDb {
   };
 }
 
-export const POST_LIMITS_DB: IPostLimitsDb = {
+export const POST_LIMITS_ENV_DB: IPostLimits = {
   lowercase_alpha_num_underscrore: /^[a-z0-9_]+$/,
-  alpha_num_underscore_space: /^[A-Za-z0-9_\s]+$/,
   long_char_limit: { min: 100, max: 2500 },
   medium_char_limit: { min: 25, max: 700 },
   short_char_limit: { min: 3, max: 300 },
@@ -157,6 +115,33 @@ export const POST_LIMITS_DB: IPostLimitsDb = {
     ],
     rank_minute_num_keys: ["post_exam_toughness_ranking", "post_exam_duration"],
     age_num_keys: ["minimum_age", "maximum_age"],
-    date_keys: ["current_year"]
+    date_keys: ["current_year"],
   },
 };
+
+// ------------------------------ POST DATA
+
+interface IPostEnvData {
+  sections: string[];
+  components: string[];
+  overall: string[];
+}
+
+const POST_ENV_DB: IPostEnvData = {
+  sections: [
+    "result",
+    "admit_card",
+    "latest_job",
+    "answer_key",
+    "syllabus",
+    "certificate_verification",
+    "admission",
+    "important",
+  ],
+  components: ["date", "common", "link", "fee"],
+  overall: [],
+};
+
+// Populate OVERALL dynamically
+POST_ENV_DB.overall = [...POST_ENV_DB.sections, ...POST_ENV_DB.components];
+export default POST_ENV_DB;

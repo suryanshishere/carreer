@@ -1,11 +1,11 @@
-import { POST_LIMITS } from "@shared/env-data";
+import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
 import { Schema, Types, Document } from "mongoose";
 import { ILinks } from "../componentModels/link-model";
 import { IDates } from "../componentModels/date-model";
 import { IFee } from "../componentModels/fee-model";
 import { ICommon } from "../componentModels/common-model";
 
-const { medium_char_limit } = POST_LIMITS;
+const { medium_char_limit } = POST_LIMITS_ENV_DB;
 
 const applyDefaultId = function (this: Document) {
   return this._id;

@@ -1,4 +1,4 @@
-import { POST_LIMITS_DB } from "db/post-db";
+import { POST_LIMITS_ENV_DB } from "db/post-env-db";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "shared/store";
@@ -8,7 +8,6 @@ import Dropdown from "shared/utils/form/Dropdown";
 import { Input, TextArea } from "shared/utils/form/Input";
 import { getFieldValidation, validateFieldValue } from "./editable-validation";
 
-//FOR DATE
 
 interface IPostDetailsEditable {
   value: Date | string | number;
@@ -71,7 +70,7 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
         <Dropdown
           name={keyProp}
           defaultValue={value}
-          data={(POST_LIMITS_DB as any)[lastName] ?? []}
+          data={(POST_LIMITS_ENV_DB as any)[lastName] ?? []}
           onChange={handleInputChange}
         />
       );

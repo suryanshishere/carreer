@@ -11,6 +11,7 @@ import { ADMIN_DATA } from "@shared/env-data";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
+import { getFieldValidation, validateFieldValue } from "./user-controllers-utils";
 
 //TEMP: someone can send none, while expireAt active. to start new req to remove expireAt, but the person will have to loose earlier access then.
 
@@ -108,13 +109,43 @@ export const contributeToPost = async (
 ) => {
   handleValidationErrors(req, next);
   let { data, section, post_code } = req.body;
-  const userId = (req as JWTRequest).userData.userId;
 
-  const session = await mongoose.startSession(); // Start the session
+  const errors = [];
+
+  // Loop through each field in the data object
+  for (const [key, inputValue] of Object.entries(data)) {
+    const lastName = key.split(".").pop() || "";
+    const validationConfig = getFieldValidation(lastName);
+  
+    // Ensure inputValue is of the correct type for validation
+    const valueToValidate: string | number = (inputValue as string | number | Date) instanceof Date 
+      ? (inputValue as Date).toISOString() 
+      : (inputValue as string | number);
+  
+    const { isValid, error } = validateFieldValue(valueToValidate, validationConfig);
+  
+    // Collect errors if validation fails
+    if (!isValid) {
+      errors.push({
+        field: key,
+        message: error || `Invalid value for ${lastName}`,
+      });
+    }
+  }
+
+  // Check if any errors were found
+  if (errors.length > 0) {
+    return res.status(400).json({
+      success: false,
+      errors: errors,
+    });
+  }
+
+  const userId = (req as JWTRequest).userData.userId;
+  const session = await mongoose.startSession();
 
   try {
     session.startTransaction(); // Start the transaction
-
 
     // Find the user and populate contribution field
     let user = await UserModal.findById(userId)

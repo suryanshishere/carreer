@@ -1,5 +1,5 @@
 import { SchemaType } from "@google/generative-ai";
-import { POST_LIMITS } from "@shared/env-data";
+import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
 
 const {
   short_char_limit,
@@ -11,7 +11,7 @@ const {
   post_exam_mode,
   applicants_gender_that_can_apply,
   long_char_limit,
-} = POST_LIMITS;
+} = POST_LIMITS_ENV_DB;
 
 const ageCriteria = {
   minimum_age: {

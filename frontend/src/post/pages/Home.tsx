@@ -3,7 +3,7 @@ import HomeComponent from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import NoData from "shared/components/dataStates/NoData"; 
-import  POST_DB  from "db/post-db";
+import  POST_DB  from "db/post-env-db";
 
 const heights: Record<string, string> = {
   result: "55rem",

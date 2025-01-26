@@ -131,7 +131,7 @@ export const getContriPost = async (
     // Return the response with the cleaned-up flattened data
     return res.status(200).json({
       data: flattenedPosts,
-      post_data: post,
+      POST_ENV_DB: post,
       message: "Contributed post fetched successfully!",
     });
   } catch (error) {

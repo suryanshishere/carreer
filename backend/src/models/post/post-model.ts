@@ -1,8 +1,8 @@
 import mongoose, { Schema, SchemaTypeOptions } from "mongoose";
-import { POST_DATA, POST_LIMITS } from "@shared/env-data";
+import POST_ENV_DB, { POST_LIMITS_ENV_DB } from "./post-env-db";
 
-const postSectionsArray = POST_DATA.SECTIONS;
-const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS;
+const postSectionsArray = POST_ENV_DB.sections;
+const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS_ENV_DB;
 
 const sectionFields = postSectionsArray.reduce((fields, section) => {
   fields[section] = {

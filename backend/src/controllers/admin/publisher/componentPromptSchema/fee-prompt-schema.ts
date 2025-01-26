@@ -1,7 +1,7 @@
 import { SchemaType } from "@google/generative-ai";
-import { POST_LIMITS } from "@shared/env-data";
+import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
 
-const { non_negative_num, short_char_limit } = POST_LIMITS;
+const { non_negative_num, short_char_limit } = POST_LIMITS_ENV_DB;
  
 
 const feePromptSchema = {

@@ -1,4 +1,4 @@
-import { POST_DATA } from "@shared/env-data";
+import  POST_ENV_DB  from "@models/post/post-env-db";
 import { camelCase } from "lodash";
 import resultPromptSchema from "./sectionPromptSchema/result-prompt-schema";
 import admitCardPromptSchema from "./sectionPromptSchema/admit-card-prompt-schema";
@@ -34,7 +34,7 @@ const OVERALL_PROMPT: ISectionPromptSchema = {
 
 // Dynamically map section prompts
 const SECTION_POST_PROMPT_SCHEMA_MAP: ISectionPromptSchema =
-  POST_DATA.SECTIONS.reduce((acc, key) => {
+  POST_ENV_DB.sections.reduce((acc, key) => {
     const camelKey = camelCase(key);
     const promptKey = `${camelKey}PromptSchema`;
     if (OVERALL_PROMPT[promptKey]) {
@@ -49,7 +49,7 @@ const SECTION_POST_PROMPT_SCHEMA_MAP: ISectionPromptSchema =
 
 // Dynamically map component prompts
 const COMPONENT_POST_PROMPT_SCHEMA_MAP: ISectionPromptSchema =
-  POST_DATA.COMPONENTS.reduce((acc, key) => {
+  POST_ENV_DB.components.reduce((acc, key) => {
     const camelKey = camelCase(key);
     const promptKey = `${camelKey}PromptSchema`;
     if (OVERALL_PROMPT[promptKey]) {

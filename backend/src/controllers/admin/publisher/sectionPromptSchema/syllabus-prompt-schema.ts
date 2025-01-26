@@ -1,6 +1,6 @@
 import { SchemaType } from "@google/generative-ai";
-import { POST_LIMITS } from "@shared/env-data";
-const { long_char_limit, short_char_limit, medium_char_limit } = POST_LIMITS;
+import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
+const { long_char_limit, short_char_limit, medium_char_limit } = POST_LIMITS_ENV_DB;
 
 const syllabusPromptSchema = {
   description: "Detailed syllabus categorized by sections and topics",
