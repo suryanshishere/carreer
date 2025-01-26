@@ -53,10 +53,12 @@ interface IPostLimitsDb {
   medium_char_limit: ICharNumLimitsDb;
   short_char_limit: ICharNumLimitsDb;
   long_char_limit: ICharNumLimitsDb;
-  job_type: string[];
-  stage_level: string[];
-  post_exam_mode: string[];
-  applicants_gender_that_can_apply: string[];
+  dropdown_data: {
+    job_type: string[];
+    stage_level: string[];
+    post_exam_mode: string[];
+    applicants_gender_that_can_apply: string[];
+  };
   non_negative_num: ICharNumLimitsDb;
   age_num: ICharNumLimitsDb;
   limit_keys_division: {
@@ -83,23 +85,25 @@ export const POST_LIMITS_ENV_DB: IPostLimitsDb = {
   },
   rank_minute_num: { min: 1, max: 10000 },
   age_num: { min: 11, max: 100 },
-  job_type: [
-    "permanent",
-    "temporary",
-    "contractual",
-    "part_time",
-    "internship",
-  ],
-  stage_level: [
-    "national",
-    "state",
-    "district",
-    "regional",
-    "local",
-    "international",
-  ],
-  applicants_gender_that_can_apply: ["male", "female", "other", "all"],
-  post_exam_mode: ["online", "offline_paper_based", "offline_computer_based"],
+  dropdown_data: {
+    job_type: [
+      "permanent",
+      "temporary",
+      "contractual",
+      "part_time",
+      "internship",
+    ],
+    stage_level: [
+      "national",
+      "state",
+      "district",
+      "regional",
+      "local",
+      "international",
+    ],
+    applicants_gender_that_can_apply: ["male", "female", "other", "all"],
+    post_exam_mode: ["online", "offline_paper_based", "offline_computer_based"],
+  },
   limit_keys_division: {
     dropdown_keys: [
       "job_type",
@@ -130,6 +134,7 @@ export const POST_LIMITS_ENV_DB: IPostLimitsDb = {
       "minimum_qualification",
       "other_qualification",
       "apply_online",
+      "official_website",
       "register_now",
       "download_sample_papers",
       "get_admit_card",

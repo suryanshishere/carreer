@@ -68,7 +68,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     })();
 
     return (
-      <div className={`${outerClassProp || ""} flex flex-col`}>
+      <div className={`${outerClassProp ?? ""} flex flex-col`}>
         {label && (
           <label htmlFor={name} className="block text-sm font-medium mb-1">
             {typeof label === "string" ? startCase(label) : startCase(name)}

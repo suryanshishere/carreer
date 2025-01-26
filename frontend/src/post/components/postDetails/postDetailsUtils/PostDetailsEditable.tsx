@@ -8,7 +8,6 @@ import Dropdown from "shared/utils/form/Dropdown";
 import { Input, TextArea } from "shared/utils/form/Input";
 import { getFieldValidation, validateFieldValue } from "./editable-validation";
 
-
 interface IPostDetailsEditable {
   value: Date | string | number;
   keyProp: string;
@@ -51,7 +50,7 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
         : typeof value === "string"
         ? inputValue.toString()
         : new Date(inputValue as string);
- 
+
     dispatch(setKeyValuePair({ key: keyProp, value: parsedValue }));
     setIsChanged(false);
     setIsSaved(true);
@@ -70,7 +69,11 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
         <Dropdown
           name={keyProp}
           defaultValue={value}
-          data={(POST_LIMITS_ENV_DB as any)[lastName] ?? []}
+          data={
+            POST_LIMITS_ENV_DB.dropdown_data[
+              lastName as keyof typeof POST_LIMITS_ENV_DB.dropdown_data
+            ] ?? []
+          }
           onChange={handleInputChange}
         />
       );
