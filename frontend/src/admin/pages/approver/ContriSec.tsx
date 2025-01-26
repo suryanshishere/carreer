@@ -1,12 +1,11 @@
-import React from "react";
-import SECTION from "db/postDb/sections.json";
 import { Link } from "react-router-dom";
 import { startCase } from "lodash";
+import  POST_DB  from "db/post-env-db";
 
 const ContriSec = () => {
   return (
     <ul className="flex flex-wrap justify-center gap-2">
-      {SECTION.map((item: string) => (
+      {POST_DB.sections.map((item: string) => (
         <Link
           to={item}
           key={item}

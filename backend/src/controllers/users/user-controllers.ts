@@ -11,6 +11,7 @@ import { ADMIN_DATA } from "@shared/env-data";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
+import { validateContributionField } from "./user-controllers-utils";
 
 //TEMP: someone can send none, while expireAt active. to start new req to remove expireAt, but the person will have to loose earlier access then.
 
@@ -108,13 +109,13 @@ export const contributeToPost = async (
 ) => {
   handleValidationErrors(req, next);
   let { data, section, post_code } = req.body;
-  const userId = (req as JWTRequest).userData.userId;
+  validateContributionField(req, next);
 
-  const session = await mongoose.startSession(); // Start the session
+  const userId = (req as JWTRequest).userData.userId;
+  const session = await mongoose.startSession();
 
   try {
     session.startTransaction(); // Start the transaction
-
 
     // Find the user and populate contribution field
     let user = await UserModal.findById(userId)

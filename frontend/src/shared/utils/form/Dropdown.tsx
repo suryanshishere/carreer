@@ -8,13 +8,14 @@ interface IDropdown {
   required?: boolean;
   multiple?: boolean;
   label?: string | boolean;
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   error?: boolean;
   helperText?: string;
   register?: any; // Register from React Hook Form
   errorClassProp?: string;
   classProp?: string;
   style?: CSSProperties;
+  defaultValue?: string | number | Date;
 }
 
 const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
@@ -32,6 +33,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
       required,
       multiple,
       register,
+      defaultValue,
     },
     ref
   ) => {
@@ -39,7 +41,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
       <div className="flex flex-col">
         {label && (
           <label htmlFor={name} className="block text-sm font-medium mb-1">
-            {typeof label === "string"? startCase(label): startCase(name)}
+            {typeof label === "string" ? startCase(label) : startCase(name)}
           </label>
         )}
         <select
@@ -50,7 +52,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
           {...register?.(name)}
           required={required}
           multiple={multiple}
-          defaultValue=""
+          defaultValue={defaultValue}
           className={`w-full p-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
             error ? "outline-custom-red" : ""
           } ${error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"}`}

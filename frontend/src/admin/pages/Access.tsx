@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Dropdown from "shared/utils/form/Dropdown";
 import Button from "shared/utils/form/Button";
 import * as yup from "yup";
@@ -13,11 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { useMutation } from "@tanstack/react-query";
 import DoneIcon from "@mui/icons-material/Done";
-import ADMIN_DB from "db/adminDb/admin-db";
+import ADMIN_DB from "db/admin-db";
 import { startCase, upperCase } from "lodash";
 import moment from "moment";
 
-const { STATUS, ROLE_APPLIED, STATUS_CLASSNAME } = ADMIN_DB;
+const { status, role_applied, status_classname } = ADMIN_DB;
 
 // Validation Schemas
 const filterSchema = yup.object().shape({
@@ -25,13 +25,13 @@ const filterSchema = yup.object().shape({
     .string()
     .required("Role applied is required.")
     .oneOf(
-      ROLE_APPLIED,
-      `Status should be one of: ${ROLE_APPLIED.join(", ")}.`
+      role_applied,
+      `Status should be one of: ${role_applied.join(", ")}.`
     ),
   status: yup
     .string()
     .required("Status is required.")
-    .oneOf(STATUS, `Status should be one of: ${STATUS.join(", ")}.`),
+    .oneOf(status, `Status should be one of: ${status.join(", ")}.`),
 });
 
 interface IAccessFilter {
@@ -119,7 +119,7 @@ const PublisherAccess = () => {
             register={filterRegister}
             error={!!filterErrors.role_applied}
             helperText={filterErrors.role_applied?.message}
-            data={ROLE_APPLIED}
+            data={role_applied}
             classProp="text-sm py-0"
           />
           <Dropdown
@@ -128,7 +128,7 @@ const PublisherAccess = () => {
             register={filterRegister}
             error={!!filterErrors.status}
             helperText={filterErrors.status?.message}
-            data={STATUS}
+            data={status}
             classProp="text-sm py-0"
           />
         </div>
@@ -169,7 +169,7 @@ const PublisherAccess = () => {
                     </div>
                   </div>
                   <div className="flex gap-2 mt-3 mb-2 items-center">
-                    {STATUS.map(
+                    {status.map(
                       (item: string) =>
                         item !== publisher.status && (
                           <button
@@ -181,7 +181,7 @@ const PublisherAccess = () => {
                                 status: item,
                               })
                             }
-                            className={`text-sm border rounded-full px-3 py-[2px] hover:text-custom-white ${STATUS_CLASSNAME[item]}`}
+                            className={`text-sm border rounded-full px-3 py-[2px] hover:text-custom-white ${status_classname[item]}`}
                           >
                             {startCase(item)}
                           </button>

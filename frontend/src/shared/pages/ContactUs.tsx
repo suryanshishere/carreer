@@ -67,16 +67,7 @@ const ContactUs: React.FC = () => {
     mutationFn: async (data: IContactUsFormInputs) => {
       const response = await axiosInstance.post(
         "/other/contact-us",
-<<<<<<< HEAD
-        JSON.stringify(data),
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-=======
         JSON.stringify(data)
->>>>>>> user
       );
       return response.data;
     },
@@ -99,11 +90,7 @@ const ContactUs: React.FC = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         onReset={() => submitMutation.isSuccess}
-<<<<<<< HEAD
-        className="w-1/2 flex flex-col gap-3"
-=======
         className="lg:w-1/2 w-full  flex flex-col gap-3"
->>>>>>> user
       >
         <Input
           type="text"
@@ -127,11 +114,7 @@ const ContactUs: React.FC = () => {
           error={!!errors.reason}
           helperText={errors.reason?.message}
         />
-<<<<<<< HEAD
-        <Button type="submit">
-=======
         <Button type="submit"  disabled={submitMutation.isPending}>
->>>>>>> user
           {submitMutation.isPending ? "Submiting..." : "Submit"}
         </Button>
       </form>

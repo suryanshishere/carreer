@@ -4,56 +4,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import Dropdown from "shared/utils/form/Dropdown";
 import { Input, TextArea } from "shared/utils/form/Input";
-<<<<<<< HEAD:frontend/src/user/publisher/pages/CreateNewPost.tsx
-import SECTIONS from "db/postDb/sections.json";
-import Button from "shared/utils/form/Button";
-import { useDispatch, useSelector } from "react-redux";
-=======
 import Button from "shared/utils/form/Button";
 import { useDispatch } from "react-redux";
->>>>>>> user:frontend/src/admin/pages/CreateNewPost.tsx
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import { AppDispatch } from "shared/store";
 import axiosInstance from "shared/utils/api/axios-instance";
-<<<<<<< HEAD:frontend/src/user/publisher/pages/CreateNewPost.tsx
-
-const validationSchema = Yup.object().shape({
-  name_of_the_post: Yup.string()
-    .min(6, `Name of the post must be between 6 and 1000 characters.`)
-    .max(500, `Name of the post must be between 6 and 1000 characters.`)
-    .required("Name of the post is required"),
-  post_code: Yup.string()
-    .min(6, `Post code must be between 6 and 1000 characters.`)
-    .max(100, `Post code must be between 6 and 1000 characters.`)
-    .matches(
-      /^[A-Za-z0-9_]+$/,
-      "Post code can only contain letters, numbers, and underscores, with no spaces."
-    )
-    .required("Post code is required"),
-  section: Yup.string().required("Please select an option."),
-});
-
-interface ICreateNewPostForm {
-  name_of_the_post: string;
-  post_code: string;
-  section: string;
-}
-
-const CreateNewPost: React.FC = () => {
-  const { token } = useSelector((state: RootState) => state.auth.userData);
-=======
 import _ from "lodash";
 import {
   ICreateNewPostForm,
   validationSchema,
 } from "shared/validation/admin-validation";
-import { POST_DATA } from "env-data";
+import  POST_DB  from "db/post-env-db";
 
 const CreateNewPost: React.FC = () => {
->>>>>>> user:frontend/src/admin/pages/CreateNewPost.tsx
   const dispatch = useDispatch<AppDispatch>();
 
   const {
@@ -74,12 +40,7 @@ const CreateNewPost: React.FC = () => {
       return response.data;
     },
     onSuccess: ({ message }) => {
-<<<<<<< HEAD:frontend/src/user/publisher/pages/CreateNewPost.tsx
-      dispatch(triggerSuccessMsg(message || "Post submission successfull!"));
-      //not resetting the form cuz to preserve post code
-=======
       dispatch(triggerSuccessMsg(message || "Post submission successfull!",7));
->>>>>>> user:frontend/src/admin/pages/CreateNewPost.tsx
     },
     onError: (error: any) => {
       dispatch(
@@ -128,7 +89,7 @@ const CreateNewPost: React.FC = () => {
             helperText={errors.api_key?.message}
           />
           <Dropdown
-            data={POST_DATA.SECTIONS}
+            data={POST_DB.sections}
             label="section"
             name="section"
             error={!!errors.section}

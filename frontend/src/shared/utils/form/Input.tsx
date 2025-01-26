@@ -68,7 +68,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     })();
 
     return (
-      <div className={`${outerClassProp} flex flex-col`}>
+      <div className={`${outerClassProp ?? ""} flex flex-col`}>
         {label && (
           <label htmlFor={name} className="block text-sm font-medium mb-1">
             {typeof label === "string" ? startCase(label) : startCase(name)}
@@ -132,23 +132,18 @@ export const TextArea = forwardRef<
       helperText,
       classProp,
       outerClassProp,
-<<<<<<< HEAD
-=======
       errorClassProp,
->>>>>>> user
       label,
     },
     ref
   ) => {
     return (
-      <div className={`relative ${outerClassProp}`}>
-        <label htmlFor={name} className="block text-sm font-medium mb-1">
-<<<<<<< HEAD
-          {label ? startCase(label) || startCase(placeholder) : startCase(name)}
-=======
-          {typeof label === "string" ? startCase(label) : startCase(name)}
->>>>>>> user
-        </label>
+      <div className={`relative ${outerClassProp || ""}`}>
+        {label && (
+          <label htmlFor={name} className="block text-sm font-medium mb-1">
+            {typeof label === "string" ? startCase(label) : startCase(name)}
+          </label>
+        )}
         <textarea
           placeholder={placeholder}
           ref={ref}
@@ -159,7 +154,7 @@ export const TextArea = forwardRef<
           disabled={disabled}
           value={value}
           onChange={onChange} // Now specific to HTMLTextAreaElement
-          className={`w-full pl-2 py-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
+          className={`w-full h-full pl-2 py-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
             error ? "outline-custom-red" : ""
           } ${error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"}`}
         />

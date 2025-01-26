@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import renderObject from "post/postShared/render-object";
+import renderObject from "post/components/postDetails/postDetailsUtils/render-object";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -14,7 +14,7 @@ import axiosInstance from "shared/utils/api/axios-instance";
 const Contri = () => {
   const { section, postCode } = useParams();
   const {
-    data = { data: [], post_data: {} },
+    data = { data: [], POST_DB: {} },
     isLoading,
     error,
   } = useQuery({

@@ -1,12 +1,11 @@
+import POST_ENV_DB, { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
 import { param, body } from "express-validator";
 import _ from "lodash";
-import { POST_DATA, POST_LIMITS } from "@shared/env-data";
 
-const {short_char_limit, lowercase_alpha_num_underscrore} = POST_LIMITS;
+const { short_char_limit, lowercase_alpha_num_underscrore } =
+  POST_LIMITS_ENV_DB;
 
-const { 
-  SECTIONS, 
-} = POST_DATA;
+const { sections } = POST_ENV_DB;
 
 export const postCodeCheck = (
   source: "param" | "body",
@@ -55,9 +54,9 @@ export const sectionCheck = (
   }
 
   return chain
-    .isIn(SECTIONS)
+    .isIn(sections)
     .withMessage(
-      `${friendlyName} must be one of the following: ${SECTIONS.join(", ")}.`
+      `${friendlyName} must be one of the following: ${sections.join(", ")}.`
     );
 };
 

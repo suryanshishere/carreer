@@ -47,15 +47,10 @@ module.exports = {
         "footer": "5.5rem",
       },
       padding: {
-<<<<<<< HEAD
-        page: "15vw",
-        button: ".35rem .5rem", //y,x
-=======
         page: "13vw",
         "page-small": "3vw",
         "page-medium":"8vw",
         "button": ".45rem .5rem", //y,x 
->>>>>>> user
       },
       animation: {
         marquee: "marquee 30s linear infinite",

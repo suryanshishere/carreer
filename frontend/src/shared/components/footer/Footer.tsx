@@ -38,18 +38,6 @@ const Footer: React.FC = () => {
   const footerLinkClassName = "hover:underline lg:text-start";
 
   return (
-<<<<<<< HEAD
-    <footer className="bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex justify-center items-end w-full gap-4 text-base text-gray-600">
-      <div className="select-none self-center text-custom-less-gray">
-        Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
-      </div>
-      <Link to="/about" className="hover:underline text-custom-red">
-        About
-      </Link>
-      <Link to="/contact-us" className="hover:underline text-custom-red">
-        Contact Us
-      </Link>
-=======
     <footer className="bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex flex-col-reverse lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
       <div className="select-none self-center">
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
@@ -97,7 +85,6 @@ const Footer: React.FC = () => {
           </Link>
         )}
       </div>
->>>>>>> user
     </footer>
   );
 };

@@ -1,7 +1,6 @@
-import React from "react";
+ import  POST_DB  from "db/post-env-db";
 import { IDates } from "models/postModels/overallInterfaces/IDates";
-import moment from "moment";
-import TAGS from "db/postDb/tags.json";
+import moment from "moment"; 
 
 interface TagProps {
   importantDates?: IDates;
@@ -58,7 +57,7 @@ const tag = (section: string, importantDates?: IDates) => {
   if (days === null) return "";
 
   // Find the matching tag based on the number of days
-  const matchingTag = TAGS.find(
+  const matchingTag = POST_DB.tags.find(
     (tag) =>
       tag.daysRange && days >= tag.daysRange[0] && days <= tag.daysRange[1]
   );

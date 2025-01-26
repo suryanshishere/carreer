@@ -1,11 +1,13 @@
 import React, { useRef, useState } from "react";
-import TAGS from "db/postDb/tags.json";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import useResponsiveView, {
   viewObject,
   ViewType,
 } from "shared/hooks/responsive-view-hook";
+import  POST_DB  from "db/post-env-db";
+
+const TAGS = POST_DB.tags;
 
 const Tags: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);

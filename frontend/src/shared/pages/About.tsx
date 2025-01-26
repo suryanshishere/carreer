@@ -4,11 +4,7 @@ import { Link } from "react-router-dom";
 const About = () => {
   return (
     <div className="w-full flex justify-center items-center">
-<<<<<<< HEAD
-      <div className="flex flex-col gap-2 text-base w-1/2">
-=======
       <div className="flex flex-col gap-2 text-base lg:w-1/2 w-full ">
->>>>>>> user
         <h2 className="self-start py-1 text-custom-gray w-fit font-bold text-lg">
           About
         </h2>
@@ -23,13 +19,8 @@ const About = () => {
         </p>
         <span className="font-semibold">
           For job application, suggestion, and other related query:
-<<<<<<< HEAD
-          <Link className="text-custom-red hover:underline" to="/contact-us">
-           {" "} Contact Us
-=======
           <Link className="text-custom-red hover:underline pl-2" to="/contact-us">
             Contact Us
->>>>>>> user
           </Link>
         </span>
       </div>

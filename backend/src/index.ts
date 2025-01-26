@@ -6,10 +6,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 import postsRoutes from "@routes/posts/posts-routes";
-<<<<<<< HEAD:backend/index.ts
-=======
 import adminRoutes from "@routes/admin/admin-routes";
->>>>>>> user:backend/src/index.ts
 import otherRoutes from "@routes/other/other-routes";
 import usersRoutes from "@routes/users/user-routes";
 import HttpError from "@utils/http-errors";
@@ -36,10 +33,7 @@ app.use(checkAccountStatus);
 app.use("/api/public", postsRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", usersRoutes);
-<<<<<<< HEAD:backend/index.ts
-=======
 app.use("/api/publisher", publisherRoutes);
->>>>>>> user:backend/src/index.ts
 app.use("/api/other", otherRoutes);
 
 //Error showing if none of the routes found!

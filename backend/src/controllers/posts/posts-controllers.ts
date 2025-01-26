@@ -1,9 +1,5 @@
 import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
-<<<<<<< HEAD:backend/controllers/posts/posts-controllers.ts
-import { sectionDetailPopulateModels } from "./postsControllersUtils/postPopulate/posts-populate";
-=======
->>>>>>> user:backend/src/controllers/posts/posts-controllers.ts
 import { Request } from "express-jwt";
 import { snakeCase } from "lodash";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
@@ -12,16 +8,6 @@ import FeeModel from "@models/post/componentModels/fee-model";
 import DateModel from "@models/post/componentModels/date-model";
 import LinkModel from "@models/post/componentModels/link-model";
 import PostModel from "@models/post/post-model";
-<<<<<<< HEAD:backend/controllers/posts/posts-controllers.ts
-import { fetchPostList } from "./postsControllersUtils/posts-controllers-utils";
-import { SECTION_POST_MODAL_MAP } from "@controllers/controllersUtils/post-model-map";
-import {
-  COMMON_POST_DETAIL_SELECT_FIELDS,
-  sectionPostDetailSelect,
-} from "./postsControllersUtils/postSelect/sectionPostDetailSelect";
-import validationError from "@controllers/controllersUtils/validation-error";
-import { validationResult } from "express-validator";
-=======
 import {
   fetchPostList,
   getSectionPostDetails,
@@ -31,7 +17,6 @@ import handleValidationErrors from "@controllers/sharedControllers/validation-er
 import User from "@models/user/user-model";
 import { postIdGeneration } from "@controllers/admin/publisher/publisher-controllers-utils";
 import mongoose from "mongoose";
->>>>>>> user:backend/src/controllers/posts/posts-controllers.ts
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
@@ -88,23 +73,12 @@ export const section = async (
   res: Response,
   next: NextFunction
 ) => {
-<<<<<<< HEAD:backend/controllers/posts/posts-controllers.ts
-  try {
-    const { section } = req.params;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new HttpError(validationError(errors), 400));
-    }
-
-    const user = (req as JWTRequest).user;
-=======
   handleValidationErrors(req, next);
   try {
     const { section } = req.params;
 
     const userId = getUserIdFromRequest(req as JWTRequest);
     const user = await User.findById(userId);
->>>>>>> user:backend/src/controllers/posts/posts-controllers.ts
     let savedIds: string[] = [];
     if (user) {
       if (user?.saved_posts?.[section]) {
@@ -136,33 +110,6 @@ export const postDetail = async (
   res: Response,
   next: NextFunction
 ) => {
-<<<<<<< HEAD:backend/controllers/posts/posts-controllers.ts
-  try {
-    const { section, postId } = req.params;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new HttpError(validationError(errors), 400));
-    }
-
-    const model = SECTION_POST_MODAL_MAP[section];
-    if (!model) {
-      return next(new HttpError("Invalid section specified.", 400));
-    }
-
-    const sectionSelect = sectionPostDetailSelect[section] || "";
-    let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
-
-    if (sectionSelect.startsWith("-")) {
-      selectFields = sectionSelect.split(" ");
-    } else if (sectionSelect) {
-      selectFields.push(...sectionSelect.split(" "));
-    }
-
-    const response = await model
-      .findOne({ _id: postId, approved: true })
-      .select(selectFields)
-      .populate(sectionDetailPopulateModels[section]);
-=======
   handleValidationErrors(req, next);
   let { section, postIdOrCode } = req.params;
 
@@ -186,7 +133,6 @@ export const postDetail = async (
     }
 
     const response = await getSectionPostDetails(section, postId);
->>>>>>> user:backend/src/controllers/posts/posts-controllers.ts
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));
@@ -210,11 +156,7 @@ export const postDetail = async (
 
     return res.status(200).json(responseWithSavedStatus);
   } catch (err) {
-<<<<<<< HEAD:backend/controllers/posts/posts-controllers.ts
-    // console.log(err);
-=======
     console.error(err);
->>>>>>> user:backend/src/controllers/posts/posts-controllers.ts
     return next(
       new HttpError("An error occurred while fetching the post.", 500)
     );

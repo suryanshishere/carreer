@@ -2,10 +2,10 @@ import React from "react";
 import HomeComponent from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import NoData from "shared/components/dataStates/NoData";
-import SECTIONS from "db/postDb/sections.json";
+import NoData from "shared/components/dataStates/NoData"; 
+import  POST_DB  from "db/post-env-db";
 
-const heights: Record< string, string> = {
+const heights: Record<string, string> = {
   result: "55rem",
   admit_card: "55rem",
   latest_job: "55rem",
@@ -26,7 +26,7 @@ const Home: React.FC = () => {
     retry: 3,
   });
 
-  const emptySectionsCount = SECTIONS.reduce((count, key) => {
+  const emptySectionsCount = POST_DB.sections.reduce((count, key) => {
     const sectionData = data.data[key];
     if (!sectionData || sectionData.length === 0 || !sectionData[0]) {
       return count + 1;
@@ -39,19 +39,8 @@ const Home: React.FC = () => {
   }
 
   return (
-<<<<<<< HEAD
-    <div className="grid grid-cols-3 gap-x-2 gap-y-10">
-      {Object.keys(data.data).map((key) => (
-        <HomeListItem
-          key={key}
-          ListItemData={data.data[key] || []}
-          section={key}
-          height={heights[key] || heights.default}
-        />
-      ))}
-=======
     <div className="lg:grid lg:grid-cols-3 flex flex-col gap-y-6 lg:gap-y-8 lg:gap-x-2 ">
-      {SECTIONS.map((key) => {
+    {POST_DB.sections.map((key) => {
         return (
           <HomeComponent
             key={key}
@@ -61,7 +50,6 @@ const Home: React.FC = () => {
           />
         );
       })}
->>>>>>> user
     </div>
   );
 };

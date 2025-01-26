@@ -6,10 +6,10 @@ import Bookmark from "post/postShared/Bookmark";
 import PostDetailItem from "post/components/postDetails/PostDetailItem";
 import rearrangeObjectByPriority, {
   priorityMapping,
-} from "../postShared/post-priority-order";
+} from "../components/postDetails/postDetailsUtils/post-priority-order";
 import { snakeCase } from "lodash";
 import { IPostDetail } from "models/postModels/IPost";
-import { postDetailPriorities } from "../postShared/post-priority-array";
+import { postDetailPriorities } from "../components/postDetails/postDetailsUtils/post-priority-array";
 import Info from "post/postShared/Info";
 import NoData from "shared/components/dataStates/NoData";
 

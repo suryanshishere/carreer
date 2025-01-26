@@ -1,12 +1,12 @@
 import mongoose, { Schema, Types } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
-import { POST_LIMITS } from "@shared/env-data";
+import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
 
 const certificateVerificationSchema = new Schema<ICertificateVerification>({
   how_to_fill_the_form: {
     type: String,
-    minlength: POST_LIMITS.long_char_limit.min,
-    maxlength: POST_LIMITS.long_char_limit.max,
+    minlength: POST_LIMITS_ENV_DB.long_char_limit.min,
+    maxlength: POST_LIMITS_ENV_DB.long_char_limit.max,
     required: true,
   },
 });

@@ -1,7 +1,7 @@
-import { POST_LIMITS } from "@shared/env-data";
 import { Schema, model, Document, Types } from "mongoose";
+import { POST_LIMITS_ENV_DB } from "../post-env-db";
 
-const { short_char_limit } = POST_LIMITS;
+const { short_char_limit } = POST_LIMITS_ENV_DB;
 
 const linkObject = {
   type: String,

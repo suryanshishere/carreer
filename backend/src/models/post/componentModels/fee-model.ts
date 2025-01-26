@@ -1,8 +1,8 @@
-import { POST_LIMITS } from "@shared/env-data";
 import mongoose, { Schema, Types } from "mongoose";
 import { Document } from "mongoose";
+import { POST_LIMITS_ENV_DB } from "../post-env-db";
 
-const { non_negative_num, short_char_limit } = POST_LIMITS;
+const { non_negative_num, short_char_limit } = POST_LIMITS_ENV_DB;
 
 const numberObject = {
   type: Number,

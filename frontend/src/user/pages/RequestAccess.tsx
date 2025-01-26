@@ -13,7 +13,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import axiosInstance from "shared/utils/api/axios-instance";
 import Dropdown from "shared/utils/form/Dropdown";
-import ADMIN_DB from "db/adminDb/admin-db";
+import ADMIN_DB from "db/admin-db";
 
 const MIN_REASON_LENGTH =
   Number(process.env.REACT_APP_MIN_REASON_LENGTH) || 100;
@@ -111,7 +111,7 @@ const RequestAccess: React.FC = () => {
         <Dropdown
           name="role_applied"
           label
-          data={ADMIN_DB.ROLE_APPLIED}
+          data={ADMIN_DB.role_applied}
           register={register}
           error={!!errors.role_applied}
           helperText={errors.role_applied?.message}

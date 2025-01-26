@@ -51,20 +51,11 @@
     "typescript": "^5.7.2"
   },
   "_moduleAliases": {
-<<<<<<< HEAD
-    "@models": "models",
-    "@controllers": "controllers",
-    "@routes": "routes",
-    "@middleware": "middleware",
-    "@utils": "utils",
-    "@shared": "shared"
-=======
     "@models": "src/models",
     "@controllers": "src/controllers",
     "@routes": "src/routes",
     "@utils": "src/utils",
     "@middleware": "src/middleware",
     "@shared": "src/shared"
->>>>>>> user
   }
 }

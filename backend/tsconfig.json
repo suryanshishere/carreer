@@ -12,33 +12,12 @@
     "rootDir": "./src",
     "baseUrl": "./src",
     "paths": {
-<<<<<<< HEAD
-      "@models/*": [
-        "models/*"
-      ],
-      "@controllers/*": [
-        "controllers/*"
-      ],
-      "@routes/*": [
-        "routes/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@middleware/*": [
-        "middleware/*"
-      ],
-      "@shared/*": [
-        "shared/*"
-      ],
-=======
       "@models/*": ["models/*"],
       "@controllers/*": ["controllers/*"],
       "@routes/*": ["routes/*"],
       "@utils/*": ["utils/*"],
       "@middleware/*": ["middleware/*"],
       "@shared/*": ["shared/*"]
->>>>>>> user
     }
   },
   "include": [
