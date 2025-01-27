@@ -93,29 +93,22 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
         error={!!errors.email}
         helperText={errors.email?.message}
         placeholder="Email"
-        classProp={`placeholder:text-sm`}
+        classProp={`placeholder:text-sm outline-custom-gray`}
         outerClassProp={`flex-1`}
       />
       <div className="flex-1 flex items-center gap-2">
         {onBack && (
           <ArrowBackIcon
             onClick={onBack}
-            className="rounded-full hover:cursor-pointer h-3 w-3 p-1 hover:bg-custom-super-less-gray"
+            fontSize="large"
+            className="rounded-full hover:cursor-pointer text-custom-gray hover:bg-custom-super-less-gray"
           />
         )}
         <Button
           authButtonType={!isForgotPasswordPage}
           outline={isForgotPasswordPage ? true : undefined}
           disabled={submitMutation.isPending}
-          // classProp={
-          //   !isForgotPasswordPage
-          //     ? `${
-          //         submitMutation.isPending
-          //           ? "bg-custom-black"
-          //           : "bg-custom-gray"
-          //       } py-2 flex-1 rounded-full text-white font-bold px-3 hover:bg-custom-black`
-          //     : undefined
-          // }
+          classProp="w-full" 
           type="submit"
         >
           {submitMutation.isPending
