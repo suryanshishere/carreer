@@ -60,7 +60,7 @@ const RequestAccess: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: IRequestAccess) => {
-      const response = await axiosInstance.post("/user/req-access", data, {
+      const response = await axiosInstance.post("/user/account/req-access", data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

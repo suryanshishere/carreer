@@ -1,5 +1,5 @@
 import POST_ENV_DB, { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
-import { param, body } from "express-validator";
+import { param, body, ValidationChain } from "express-validator";
 import _ from "lodash";
 
 const { short_char_limit, lowercase_alpha_num_underscrore } =
@@ -7,7 +7,7 @@ const { short_char_limit, lowercase_alpha_num_underscrore } =
 
 const { sections } = POST_ENV_DB;
 
-export const postCodeCheck = (
+export const validatePostCode = (
   source: "param" | "body",
   name: string = "post_code",
   optional: boolean = false
@@ -38,7 +38,50 @@ export const postCodeCheck = (
     );
 };
 
-export const sectionCheck = (
+export const validatePostIdOrCode = (
+  source: "param" | "body",
+  name: string = "postIdOrCode",
+  optional: boolean = false
+) => {
+  const validator = source === "param" ? param(name) : body(name);
+
+  let chain = validator;
+
+  // Apply optional logic
+  if (optional) {
+    chain = chain.optional({ nullable: true });
+  }
+
+  return chain
+    .custom(async (value, { req }) => {
+      // Skip validation if optional and the value is not provided
+      if (optional && (value === null || value === undefined || value === "")) {
+        return true;
+      }
+
+      // Check MongoDB ID validity
+      const isMongoId = /^[a-f\d]{24}$/i.test(value);
+
+      // Check post code validity
+      const isValidPostCode = validatePostCode(source, name)
+        .run(req)
+        .then((result) => result.isEmpty());
+
+      const [mongoIdValid, postCodeValid] = await Promise.all([
+        isMongoId,
+        isValidPostCode,
+      ]);
+
+      if (!mongoIdValid && !postCodeValid) {
+        throw new Error("Invalid MongoDB ID or post code format.");
+      }
+
+      return true;
+    })
+    .withMessage("Invalid MongoDB ID or post code format.");
+};
+
+export const validateSection = (
   source: "param" | "body",
   name: string = "section",
   optional: boolean = false
@@ -60,7 +103,7 @@ export const sectionCheck = (
     );
 };
 
-export const nameOfThePostCheck = (
+export const validateNameOfThePost = (
   source: "param" | "body",
   name: string = "name_of_the_post",
   optional: boolean = false
@@ -84,3 +127,17 @@ export const nameOfThePostCheck = (
       `${friendlyName} must be between ${short_char_limit.min} and ${short_char_limit.max} characters.`
     );
 };
+
+
+export const validateObject = (fieldName: string): ValidationChain => {
+  return body(fieldName)
+    .isObject()
+    .withMessage(`${fieldName} must be an object.`)
+    .custom((value) => {
+      if (Object.keys(value).length === 0) {
+        throw new Error(`${fieldName} must not be empty.`);
+      }
+      return true;
+    });
+};
+

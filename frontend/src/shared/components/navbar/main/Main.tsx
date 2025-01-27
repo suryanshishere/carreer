@@ -4,7 +4,7 @@ import Mode from "./Mode";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
-const LOGO = process.env.REACT_APP_LOGO || "SIRKARI";
+const LOGO = process.env.REACT_APP_LOGO || "saarkaari";
 
 const Main: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth.userData);

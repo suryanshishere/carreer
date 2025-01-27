@@ -1,9 +1,10 @@
 import React from "react";
-import _ from "lodash";
+import _, { startCase } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import NoData from "shared/components/dataStates/NoData";
 import axiosInstance from "shared/utils/api/axios-instance";
 import LaunchSharpIcon from "@mui/icons-material/LaunchSharp";
+import { Link } from "react-router-dom";
 
 // Define the types for the API response
 interface ContributionDetails {
@@ -44,6 +45,7 @@ const MyContribution: React.FC = () => {
     queryFn: fetchSavedPosts,
   });
   const { contribution } = data?.data || {};
+  console.log(data);
 
   if (isLoading) {
     return <div className="text-center text-gray-500">Loading...</div>;
@@ -54,54 +56,45 @@ const MyContribution: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* <h2 className="self-start w-full items-end p-0 flex gap-1">
-        My Contribution
-        <hr className="flex-1" />
-      </h2> */}
-      <div className="flex flex-col gap-2">
-        {Object.entries(contribution).map(([key, value]) => (
-          <div key={key} className=" ">
-            <h2>{key.replace(/_/g, " ")}</h2>
-            <div className="space-y-4 ">
-              {Object.entries(value).map(([subKey, subValue], index) => (
-                <>
-                  <div key={subKey} className="p-1">
-                    <a
-                      href={`/sections/${subKey}/${key.toLowerCase()}`}
-                      className="text-xs flex items-center gap-1 custom-link float-right"
+    <div className=" flex flex-col gap-4">
+      <h3 className="ml-auto text-custom-gray">sadfa</h3>
+      <div className="flex flex-col gap-3">
+        {Object.entries(contribution).map(([key, value], index) => (
+          <>
+            <div key={index} className="flex flex-col gap-2">
+              <h2>{startCase(key)}</h2>
+              {Object.entries(value).map(([subKey, subValue]) => (
+                <React.Fragment key={subKey}>
+                  <div className="flex items-center justify-start">
+                    <h2>{startCase(subKey)}</h2>
+                    <Link
+                      to={`/sections/${subKey}/${key.toLowerCase()}`}
+                      className="text-custom-red hover:text-custom-blue mb-1"
                     >
-                      Link to post{" "}
-                      <LaunchSharpIcon fontSize="small" className="mt-1" />
-                    </a>
-                    <div className="flex items-center gap-2 justify-between">
-                      <h2 className="capitalize">
-                        {subKey.replace(/_/g, " ")}
-                      </h2>
-                    </div>
-                    {typeof subValue === "object" &&
-                    !Array.isArray(subValue) ? (
-                      <ul className="pl-6">
-                        {Object.entries(subValue as ContributionDetails).map(
-                          ([detailKey, detailValue]) => (
-                            <li key={detailKey} className="list-disc">
-                              <span className="font-medium">
-                                {detailKey.replace(/_/g, " ")}:
-                              </span>{" "}
-                              {detailValue.toString()}
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    ) : (
-                      <p>{subValue.toString()}</p>
-                    )}
+                      <LaunchSharpIcon fontSize="small" />
+                    </Link>
                   </div>
-                  {index !== Object.entries(contribution).length - 1 && <hr />}
-                </>
+                  {typeof subValue === "object" && !Array.isArray(subValue) ? (
+                    <ul className="">
+                      {Object.entries(subValue as ContributionDetails).map(
+                        ([detailKey, detailValue]) => (
+                          <li key={detailKey} className="list-[square]">
+                            <span className="font-medium">
+                              {detailKey.replace(/_/g, " ")}:
+                            </span>{" "}
+                            {detailValue.toString()}
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  ) : (
+                    <p>{subValue.toString()}</p>
+                  )}
+                </React.Fragment>
               ))}
             </div>
-          </div>
+            {index !== Object.entries(contribution).length - 1 && <hr />}
+          </>
         ))}
       </div>
     </div>

@@ -5,17 +5,20 @@ import {
 } from "@controllers/admin/approver/approver-controllers";
 import express from "express";
 import { body } from "express-validator";
-import { objectCheck } from "@routes/users/user-routes";
-import { postCodeCheck, sectionCheck } from "@routes/validation-routes-utils";
+import {
+  validateObject,
+  validatePostCode,
+  validateSection,
+} from "@routes/routes-validation-utils";
 
 const router = express.Router();
 
 router.post(
   "/apply-contri",
   [
-    sectionCheck("body"),
-    postCodeCheck("body"),
-    objectCheck("data"),
+    validateSection("body"),
+    validatePostCode("body"),
+    validateObject("data"),
     body("contributor_id")
       .isMongoId()
       .withMessage("Contributor ID must be a valid MongoDB ObjectId."),
@@ -25,13 +28,13 @@ router.post(
 
 router.get(
   "/contri-post-codes/:section",
-  sectionCheck("param"),
+  validateSection("param"),
   getContriPostCodes
 );
 
 router.get(
   "/contri-post-codes/:section/:postCode",
-  [sectionCheck("param"), postCodeCheck("param")],
+  [validateSection("param"), validatePostCode("param")],
   getContriPost
 );
 

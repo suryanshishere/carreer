@@ -5,18 +5,30 @@ import {
   unBookmarkPost,
 } from "@controllers/users/account/account-posts-controllers";
 import express from "express";
-import { check } from "express-validator";
 import _ from "lodash";
+import {
+  validateObject,
+  validatePostCode,
+  validateSection,
+} from "@routes/routes-validation-utils";
+import { body } from "express-validator";
+import { contributeToPost } from "@controllers/users/account/account-controllers";
 
 const router = express.Router();
+
+router.post(
+  "/contribute-to-post",
+  [validateSection("body"), validatePostCode("body"), validateObject("data")],
+  contributeToPost
+);
 
 router.get("/my-contribution", myContribution);
 
 router.get("/saved-posts", savedPosts);
 
 const bookmarkMiddleware = [
-  check("post_id").trim().isLength({ min: 24, max: 24 }),
-  check("section").trim().notEmpty().withMessage("Section is required!"),
+  body("post_id").trim().isLength({ min: 24, max: 24 }),
+  body("section").trim().notEmpty().withMessage("Section is required!"),
 ];
 
 router.post("/bookmark", bookmarkMiddleware, bookmarkPost);

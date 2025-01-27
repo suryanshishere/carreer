@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 @layer base {
+  
+  /* h2 for all the header */
   h2 {
     @apply text-lg font-bold p-1 self-center w-fit;
   }
+
+  /* h3 for all the sub header  */
+  /* h3{
+
+  } */
+
   hr {
     @apply w-full border-t-1 border-custom-black;
   }

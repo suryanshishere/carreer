@@ -4,24 +4,18 @@ import {
   postDetail,
   section,
 } from "@controllers/posts/posts-controllers";
-import { param } from "express-validator";
-import { postCodeCheck, sectionCheck } from "@routes/validation-routes-utils";
+import { 
+  validatePostIdOrCode,
+  validateSection,
+} from "@routes/routes-validation-utils";
 
 const router = express.Router();
 
 router.get(["/", "/home"], home);
-router.get("/sections/:section", sectionCheck("param"), section);
+router.get("/sections/:section", validateSection("param"), section);
 router.get(
   "/sections/:section/:postIdOrCode",
-  [
-    sectionCheck("param"),
-    //TODO
-    // param("postIdOrCode")
-    //   .optional()
-    //   .isMongoId()
-    //   .withMessage("Post ID must be a valid MongoDB ObjectId."),
-    // postCodeCheck("param", "postIdOrCode", true),
-  ],
+  [validateSection("param"), validatePostIdOrCode("param")],
   postDetail
 );
 

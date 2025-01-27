@@ -119,7 +119,6 @@ export const postDetail = async (
     if (mongoose.Types.ObjectId.isValid(postIdOrCode)) {
       postId = postIdOrCode;
     } else {
-      postIdOrCode = postIdOrCode.toUpperCase();
       postId = await postIdGeneration(postIdOrCode);
     }
 

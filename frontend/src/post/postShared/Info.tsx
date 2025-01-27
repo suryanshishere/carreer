@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { toggleDropdownState } from "shared/store/dropdown-slice";
 import { useParams } from "react-router-dom";
-import ContributeToPost from "post/components/ContributeToPost";
-import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
+import ContributeToPost from "post/components/ContributeToPost"; 
 
 const Info = () => {
   const { section = "", postCode = "" } = useParams<{

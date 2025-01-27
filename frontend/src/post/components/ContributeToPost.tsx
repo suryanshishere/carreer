@@ -54,7 +54,7 @@ const ContributeToPost: React.FC<IContributeToPost> = ({
         section,
         post_code: postCode,
       })
-      const response = await axiosInstance.post("/user/contribute-to-post", {
+      const response = await axiosInstance.post("/user/account/post/contribute-to-post", {
         data: keyValuePairs,
         section,
         post_code: postCode,
