@@ -9,7 +9,8 @@ module.exports = {
       border-custom-pale-orange
       border-custom-gray
       border-custom-red
-      border-custom-black
+      border-custom-black 
+      outline-custom-gray
     `,
     },
   ],
@@ -64,6 +65,15 @@ module.exports = {
     },
   },
   plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.outline-custom-gray': {
+          outlineColor: "rgba(104, 109, 118)",
+        },
+        // Add more custom outline colors if needed
+      };
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    },
     function ({ addUtilities }) {
       addUtilities({
         ".cursor-default-important": {

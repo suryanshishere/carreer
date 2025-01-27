@@ -10,7 +10,7 @@ import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
-import { handleAuthClick, login } from "shared/store/auth-slice";
+import { login } from "shared/store/auth-slice";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { Input } from "shared/utils/form/Input";
 import Button from "shared/utils/form/Button";
@@ -81,7 +81,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
         error={!!errors.email}
         helperText={errors.email?.message}
         placeholder="Email"
-        classProp={`placeholder:text-sm`}
+        classProp={`placeholder:text-sm outline-custom-gray`}
         outerClassProp={`flex-1`}
       />
       <Input
@@ -90,7 +90,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
         error={!!errors.password}
         helperText={errors.password?.message}
         placeholder="Password / Create new password"
-        classProp={`placeholder:text-sm`}
+        classProp={`placeholder:text-sm outline-custom-gray`}
         outerClassProp={`flex-1`}
       />
       <Button authButtonType disabled={submitMutation.isPending} type="submit">

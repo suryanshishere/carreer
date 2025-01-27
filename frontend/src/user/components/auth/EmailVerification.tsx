@@ -165,7 +165,7 @@ const EmailVerification = () => {
             error={!!errors.email_verification_otp}
             helperText={errors.email_verification_otp?.message}
             type="number"
-            classProp="py-2 text-md rounded placeholder:text-sm min-w-[6rem] flex-1"
+            classProp="py-2 text-md rounded placeholder:text-sm min-w-[6rem] flex-1 outline-custom-gray"
             placeholder="Enter OTP"
             outerClassProp="flex-1"
           />
