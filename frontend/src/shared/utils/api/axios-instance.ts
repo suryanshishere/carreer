@@ -20,6 +20,20 @@ const axiosInstance = axios.create({
   },
 });
 
+// Add an interceptor to include the Authorization header for all requests
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = getTokenFromLocalStorage();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 //prevent any !get request before hand only
 axiosInstance.interceptors.request.use((config) => {
   const deactivatedAt = store.getState().auth.userData.deactivatedAt;

@@ -35,10 +35,12 @@ const Footer: React.FC = () => {
     },
   });
 
-  const footerLinkClassName = "hover:underline lg:text-start";
+  
+
+  const footerLinkClassName = "hover:underline lg:text-start w-fit";
 
   return (
-    <footer className="bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex flex-col-reverse lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
+    <footer className="lg:px-page px-page-small bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex flex-col-reverse lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
       <div className="select-none self-center">
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
       </div>
@@ -65,7 +67,7 @@ const Footer: React.FC = () => {
         )}
         {token && (
           <button
-            onClick={() => activateAccess()}
+            // onClick={() => activateAccess()}
             className={footerLinkClassName}
           >
             Revoke access (TODO)
