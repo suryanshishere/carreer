@@ -3,15 +3,10 @@ import { JWTRequest } from "@middleware/check-auth";
 import AdminModel from "@models/admin/admin-model";
 import RequestModal from "@models/admin/request-model";
 // import PostModel from "@models/post/post-model";
-import ContributionModel, {
-  IContribution,
-} from "@models/user/contribution-model";
-import UserModal from "@models/user/user-model";
 import { ADMIN_DATA } from "@shared/env-data";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
-import { validateContributionField } from "./account-controllers-utils";
 
 //TEMP: someone can send none, while expireAt active. to start new req to remove expireAt, but the person will have to loose earlier access then.
 
@@ -99,84 +94,5 @@ export const reqAccess = async (
     await session.abortTransaction();
     session.endSession();
     return next(new HttpError("Failed to process access request.", 500));
-  }
-};
-
-export const contributeToPost = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  handleValidationErrors(req, next);
-  let { data, section, post_code } = req.body;
-  validateContributionField(req, next);
-
-  const userId = (req as JWTRequest).userData.userId;
-  const session = await mongoose.startSession();
-
-  try {
-    session.startTransaction(); // Start the transaction
-
-    // Find the user and populate contribution field
-    let user = await UserModal.findById(userId)
-      .populate("contribution")
-      .select("contribution")
-      .session(session); // Use the session in the find query
-
-    if (!user) return next(new HttpError("No user found!", 400));
-
-    let contribution = user?.contribution as IContribution | undefined;
-
-    // If no contribution exists for the user, create a new one
-    if (!contribution) {
-      contribution = new ContributionModel({
-        _id: userId,
-        contribution: new Map(), // Initialize the contribution Map
-      });
-      user.contribution = userId;
-      await user.save({ session }); // Use the session in the save query
-    }
-
-    // Ensure contribution.contribution is always a Map
-    if (!(contribution.contribution instanceof Map)) {
-      contribution.contribution = new Map(); // Initialize it as a Map if not already
-    }
-
-    // Ensure the Map for the specific postCode exists
-    const postContribution = contribution.contribution.get(post_code) || {};
-
-    // If section is already present, merge data, else create a new entry
-    if (postContribution[section]) {
-      postContribution[section] = {
-        ...postContribution[section], // Keep existing data
-        ...data, // Add/Update new data
-      };
-    } else {
-      postContribution[section] = data; // Create new section if not present
-    }
-
-    // Set the updated contribution back to the Map
-    contribution.contribution.set(post_code, postContribution);
-
-    // Save the contribution document
-    await contribution.save({ session }); // Use the session in the save query
-
-    // Commit the transaction if all operations were successful
-    await session.commitTransaction();
-
-    // End the session
-    session.endSession();
-
-    // Return a success response
-    return res.status(200).json({
-      message: "Contributed to post successfully",
-    });
-  } catch (error) {
-    // If an error occurs, abort the transaction and roll back
-    await session.abortTransaction();
-    session.endSession();
-
-    console.log(error);
-    return next(new HttpError("An error occurred while contributing", 500));
   }
 };

@@ -8,8 +8,14 @@ import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
 } from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
-import  POST_ENV_DB  from "@models/post/post-env-db";
-import ContributionModel from "@models/user/contribution-model";
+import POST_ENV_DB from "@models/post/post-env-db";
+import ContributionModel, {
+  IContribution,
+} from "@models/user/contribution-model";
+import { validateContributionField } from "./account-controllers-utils";
+import handleValidationErrors from "@controllers/sharedControllers/validation-error";
+import UserModal from "@models/user/user-model";
+import { timeStamp } from "console";
 
 const postSectionsArray = POST_ENV_DB.sections;
 
@@ -133,23 +139,108 @@ export const myContribution = async (
 ) => {
   try {
     const userId = (req as JWTRequest).userData.userId;
-    const contribution = await ContributionModel.findById(userId).select("contribution");
+    const contribution: IContribution = await ContributionModel.findById(
+      userId
+    ).select("contribution updatedAt");
 
     if (!contribution) {
       return next(new HttpError("Contribution not found!", 404));
     }
 
-    return res
-      .status(200)
-      .json({
-        data: contribution,
-        message: "Contribution fetched successfully!",
-      });
+    const { contribution: contributionData, updatedAt } = contribution;
 
+    return res.status(200).json({
+      data: contributionData,
+      metadata: {
+        timeStamp: {
+          updatedAt,
+        },
+      },
+      message: "Contribution fetched successfully!",
+    });
   } catch (error) {
     console.error("Error fetching contribution:", error);
     return next(
       new HttpError("Error fetching contribution, try again later!", 500)
     );
+  }
+};
+
+export const contributeToPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  handleValidationErrors(req, next);
+  let { data, section, post_code } = req.body;
+  validateContributionField(req, next);
+
+  const userId = (req as JWTRequest).userData.userId;
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction(); // Start the transaction
+
+    // Find the user and populate contribution field
+    let user = await UserModal.findById(userId)
+      .populate("contribution")
+      .select("contribution")
+      .session(session); // Use the session in the find query
+
+    if (!user) return next(new HttpError("No user found!", 400));
+
+    let contribution = user?.contribution as IContribution | undefined;
+
+    // If no contribution exists for the user, create a new one
+    if (!contribution) {
+      contribution = new ContributionModel({
+        _id: userId,
+        contribution: new Map(), // Initialize the contribution Map
+      });
+      user.contribution = userId;
+      await user.save({ session }); // Use the session in the save query
+    }
+
+    // Ensure contribution.contribution is always a Map
+    if (!(contribution.contribution instanceof Map)) {
+      contribution.contribution = new Map(); // Initialize it as a Map if not already
+    }
+
+    // Ensure the Map for the specific postCode exists
+    const postContribution = contribution.contribution.get(post_code) || {};
+
+    // If section is already present, merge data, else create a new entry
+    if (postContribution[section]) {
+      postContribution[section] = {
+        ...postContribution[section], // Keep existing data
+        ...data, // Add/Update new data
+      };
+    } else {
+      postContribution[section] = data; // Create new section if not present
+    }
+
+    // Set the updated contribution back to the Map
+    contribution.contribution.set(post_code, postContribution);
+
+    // Save the contribution document
+    await contribution.save({ session }); // Use the session in the save query
+
+    // Commit the transaction if all operations were successful
+    await session.commitTransaction();
+
+    // End the session
+    session.endSession();
+
+    // Return a success response
+    return res.status(200).json({
+      message: "Contributed to post successfully",
+    });
+  } catch (error) {
+    // If an error occurs, abort the transaction and roll back
+    await session.abortTransaction();
+    session.endSession();
+
+    console.log(error);
+    return next(new HttpError("An error occurred while contributing", 500));
   }
 };

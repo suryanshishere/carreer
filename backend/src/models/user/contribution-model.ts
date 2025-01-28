@@ -1,13 +1,15 @@
-import  POST_ENV_DB  from "@models/post/post-env-db";
+import POST_ENV_DB from "@models/post/post-env-db";
 import { Schema, Document, model } from "mongoose";
 
 // Interface for a Contribution Document
 export interface IContribution extends Document {
+  createdAt: Date;
+  updatedAt: Date;
   approved: Array<{
-    approver: Schema.Types.ObjectId | string; // Reference to the Admin model
-    data: Map<string, Record<string, any>>; // Flexible data structure
+    approver: Schema.Types.ObjectId | string;
+    data: Map<string, Record<string, any>>;
   }>;
-  contribution: Map<string, Record<string, any>>; // Map: post_id -> section data
+  contribution: Map<string, Record<string, any>>;
 }
 
 // Initialize dynamic fields from POST_ENV_DB.sections
@@ -41,7 +43,7 @@ export const ContributionSchema = new Schema<IContribution>(
     },
     contribution: {
       type: Map,
-      of: new Schema(dynamicFields, { _id: false }), 
+      of: new Schema(dynamicFields, { _id: false }),
     },
   },
   {

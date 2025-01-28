@@ -9,12 +9,14 @@ import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthProps } from "user/pages/auth/Auth";
 import axiosInstance from "shared/utils/api/axios-instance";
 import Button from "shared/utils/form/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Input } from "shared/utils/form/Input";
+import PageHeader from "shared/ui/PageHeader";
+import IconButton from "@mui/material/IconButton";
 
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -27,6 +29,7 @@ interface IForgotPassword {
 const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { token } = useSelector((state: RootState) => state.auth.userData);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -69,6 +72,14 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
     submitMutation.mutate(data);
   };
 
+  const backHandler = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      navigate(-1);
+    }
+  };
+
   if (submitMutation.isSuccess) {
     return (
       <p className="text-base text-center text-custom-green p-button font-bold">
@@ -82,7 +93,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
       onSubmit={handleSubmit(submitHandler)}
       className={
         isForgotPasswordPage
-          ? "w-1/2 flex flex-col gap-2"
+          ? "lg:w-2/3 flex flex-col gap-3"
           : "flex-1 flex flex-col md:flex-row md:items-center gap-2"
       }
     >
@@ -97,18 +108,14 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
         outerClassProp={`flex-1`}
       />
       <div className="flex-1 flex items-center gap-2">
-        {onBack && (
-          <ArrowBackIcon
-            onClick={onBack}
-            fontSize="large"
-            className="rounded-full hover:cursor-pointer text-custom-gray hover:bg-custom-super-less-gray"
-          />
-        )}
+        <IconButton aria-label="delete" size="medium">
+          <ArrowBackIcon onClick={backHandler} fontSize="medium" />
+        </IconButton>
         <Button
           authButtonType={!isForgotPasswordPage}
           outline={isForgotPasswordPage ? true : undefined}
           disabled={submitMutation.isPending}
-          classProp="w-full" 
+          classProp="w-full"
           type="submit"
         >
           {submitMutation.isPending
@@ -120,7 +127,14 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   );
 
   return isForgotPasswordPage ? (
-    <div className="w-full flex justify-center">{formContent}</div>
+    <div className="w-full flex flex-col gap-4">
+      <PageHeader
+        header="Forgot Password"
+        subHeader={<>Make your email handy</>}
+      />
+
+      {formContent}
+    </div>
   ) : (
     formContent
   );

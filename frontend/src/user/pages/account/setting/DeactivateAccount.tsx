@@ -14,6 +14,9 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import { logout } from "shared/store/auth-slice";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import PageHeader from "shared/ui/PageHeader";
+import IconButton from "@mui/material/IconButton";
 
 // Validation schema using Yup
 const validationSchema = yup.object({
@@ -30,8 +33,7 @@ interface IDeactivateForm {
 const DeactivateAccount: React.FC = () => {
   const [confirm, setConfirm] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const { token } = useSelector((state: RootState) => state.auth.userData);
+  const navigate = useNavigate(); 
 
   // React Hook Form
   const {
@@ -72,43 +74,55 @@ const DeactivateAccount: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center gap-4">
-      <p className="w-1/2 text-custom-red text-justify font-bold">
+    <div className="w-full max-h-screen flex flex-col justify-center gap-4">
+      <PageHeader
+        header="Deactivate Account"
+        subHeader={<>Read the warming first, before any action</>}
+      />
+      <p className="text-custom-red text-justify font-bold">
         If you deactivate your account, it may be permanently deleted after 30
         days of inactivity. All saved posts will also be deleted, so ensure you
         back them up elsewhere.
       </p>
-      {!confirm ? (
-        <Button warning onClick={() => setConfirm(true)}>
-          Confirm that you read the warning
-        </Button>
-      ) : (
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-1/2 flex flex-col gap-3"
-        >
-          <Input
-            label="Enter your password"
-            type="password"
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            {...register("password")}
-          />
-          <div className="flex justify-between items-center gap-8">
-            <Link to="/" className="text-custom-blue text-sm">
-              Return home
-            </Link>
-            <Button
-              type="submit"
-              warning
-              classProp="flex-1"
-              disabled={deactivateMutation.isPending}
-            >
-              {deactivateMutation.isPending ? "Deactivating..." : "Deactivate"}
-            </Button>
-          </div>
-        </form>
-      )}
+      <div className="lg:w-3/5 flex items-end gap-2">
+        {!confirm ? (
+          <Button
+            classProp="w-full transform ease-linear duration-100"
+            warning
+            onClick={() => setConfirm(true)}
+          >
+            CONFIRMED
+          </Button>
+        ) : (
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-full flex flex-col gap-3"
+          >
+            <Input
+              label="Enter your password"
+              type="password"
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              {...register("password")}
+            />
+            <div className="flex justify-between items-center gap-2">
+              <IconButton aria-label="delete" size="medium">
+                <ArrowBackIcon onClick={() => navigate(-1)} fontSize="medium" />
+              </IconButton>
+              <Button
+                type="submit"
+                warning
+                classProp="flex-1"
+                disabled={deactivateMutation.isPending}
+              >
+                {deactivateMutation.isPending
+                  ? "Deactivating..."
+                  : "Deactivate"}
+              </Button>
+            </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 };

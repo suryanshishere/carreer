@@ -13,6 +13,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { Link } from "react-router-dom";
+import PageHeader from "shared/ui/PageHeader";
 
 // Validation schema using Yup
 const validationSchema = yup.object().shape({
@@ -90,7 +91,11 @@ const ChangePassword: React.FC = () => {
   }
 
   return (
-    <div className="w-full flex flex-col gap-4 items-center">
+    <div className="w-full flex flex-col gap-4">
+      <PageHeader
+        header="Change Your Password"
+        subHeader={<>Strong password for the best protection</>}
+      />
       {errors.old_password_not_match?.message && (
         <p className="text-custom-red">
           {errors.old_password_not_match?.message}
@@ -98,7 +103,7 @@ const ChangePassword: React.FC = () => {
       )}
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="w-1/2 flex flex-col gap-4"
+        className="lg:w-2/3 flex flex-col gap-4"
       >
         <div className="gap-2 flex flex-col">
           <Input
@@ -127,7 +132,7 @@ const ChangePassword: React.FC = () => {
           />
         </div>
         <div className="flex justify-between items-center gap-8">
-          <Link to="/user/forgot-password" className="text-custom-red text-sm">
+          <Link to="/user/account/setting/forgot-password" className="text-custom-red text-sm">
             Forgot Password?
           </Link>
           <Button

@@ -17,7 +17,8 @@ import {
   ICreateNewPostForm,
   validationSchema,
 } from "shared/validation/admin-validation";
-import  POST_DB  from "db/post-env-db";
+import POST_DB from "db/post-env-db";
+import PageHeader from "shared/ui/PageHeader";
 
 const CreateNewPost: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,12 +41,13 @@ const CreateNewPost: React.FC = () => {
       return response.data;
     },
     onSuccess: ({ message }) => {
-      dispatch(triggerSuccessMsg(message || "Post submission successfull!",7));
+      dispatch(triggerSuccessMsg(message || "Post submission successfull!", 7));
     },
     onError: (error: any) => {
       dispatch(
         triggerErrorMsg(
-          error.response?.data?.message || "Post submission failed!",7
+          error.response?.data?.message || "Post submission failed!",
+          7
         )
       );
     },
@@ -60,15 +62,20 @@ const CreateNewPost: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col gap-4">
+      <PageHeader
+        header="Create New Post"
+        subHeader={<>Post created through generative AI</>}
+      />
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="lg:w-1/2 w-full flex flex-col gap-4"
+        className="lg:w-2/3 w-full flex flex-col gap-4"
       >
         <div className="flex flex-col gap-2">
           <TextArea
             label="name_of_the_post"
             placeholder="Name of the Post"
+            row={2}
             {...register("name_of_the_post")}
             error={!!errors.name_of_the_post}
             helperText={errors.name_of_the_post?.message}
@@ -80,10 +87,9 @@ const CreateNewPost: React.FC = () => {
             error={!!errors.post_code}
             helperText={errors.post_code?.message}
           />
-          //TODO
+          {/* //TODO */}
           <Input
-            label
-            placeholder="Gemini API Key"
+             label="TODOoooooooooo"
             {...register("api_key")}
             error={!!errors.api_key}
             helperText={errors.api_key?.message}

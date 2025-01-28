@@ -1,5 +1,6 @@
 import {
   bookmarkPost,
+  contributeToPost,
   myContribution,
   savedPosts,
   unBookmarkPost,
@@ -12,7 +13,6 @@ import {
   validateSection,
 } from "@routes/routes-validation-utils";
 import { body } from "express-validator";
-import { contributeToPost } from "@controllers/users/account/account-controllers";
 
 const router = express.Router();
 
