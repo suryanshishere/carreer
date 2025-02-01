@@ -1,10 +1,12 @@
 import { IPostList } from "models/postModels/IPost";
 import axiosInstance from "shared/utils/api/axios-instance";
-import { useQuery } from "@tanstack/react-query"; 
+import { useQuery } from "@tanstack/react-query";
 import PostList from "post/postShared/PostList";
 import { Fragment } from "react/jsx-runtime";
 import { startCase } from "lodash";
 import NoData from "shared/components/dataStates/NoData";
+import Divider from "shared/ui/DoubleDivider";
+import PageHeader from "shared/ui/PageHeader";
 
 const fetchSavedPosts = async (): Promise<{
   data: { saved_posts: { [key: string]: IPostList } };
@@ -34,16 +36,17 @@ const SavedPosts = () => {
 
   return (
     <div className="flex flex-col gap-2">
+      <PageHeader header="Saved Bookmarks" subHeader="Quick access to your interested post" />
       {Object.keys(savedPost).map((key) => {
         const posts = savedPost[key];
         return (
           posts.length > 0 &&
           Array.isArray(posts) && (
             <Fragment key={key}>
-              <h2 className="self-start">{startCase(key)}</h2>
-              <div className="pl-2">
-                <PostList data={posts || []} section={key} isSaved />
-              </div>
+              <Divider>
+                <h2 className="self-start whitespace-nowrap">{startCase(key)}</h2>
+              </Divider>
+              <PostList data={posts || []} section={key} isSaved />
             </Fragment>
           )
         );

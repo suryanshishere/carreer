@@ -4,22 +4,32 @@ import { Link } from "react-router-dom";
 const About = () => {
   return (
     <div className="w-full flex justify-center items-center">
-      <div className="flex flex-col gap-2 text-base lg:w-1/2 w-full ">
+      <div className="flex flex-col gap-2 text-base lg:w-2/3 w-full ">
         <h2 className="self-start py-1 text-custom-gray w-fit font-bold text-lg">
           About
         </h2>
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam
-          placeat repellendus quas nemo perferendis, saepe dignissimos dicta
-          consequuntur praesentium, ad quidem, dolor harum inventore tenetur
-          esse aliquam! Possimus, sunt numquam. Lorem ipsum, dolor sit amet
-          consectetur adipisicing elit. Cupiditate, mollitia saepe! Id dolores
-          veritatis ea. Dolorum sed magni incidunt molestias? Rem possimus
-          mollitia, recusandae et doloremque esse veniam aperiam reiciendis!
+          1. A web application for users who want to apply for government posts.
+          <br />
+          <br />
+          2. Its exclusive purpose is to maintain a consistent platform where
+          users can reliably apply, access information, and discover
+          opportunities of interest they might not have known about initially.
+          <br />
+          <br />
+          3. Aims to absolutely reduce the complexity of government post
+          application procedures into a single data-driven platform.
         </p>
+
+        <br />
+        <br />
+
         <span className="font-semibold">
           For job application, suggestion, and other related query:
-          <Link className="text-custom-red hover:underline pl-2" to="/contact-us">
+          <Link
+            className="text-custom-red hover:underline pl-2"
+            to="/contact-us"
+          >
             Contact Us
           </Link>
         </span>

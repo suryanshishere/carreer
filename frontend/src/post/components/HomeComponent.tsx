@@ -4,6 +4,7 @@ import { snakeCase, startCase } from "lodash";
 import Bookmark from "post/postShared/Bookmark";
 import { IPostList } from "models/postModels/IPost";
 import tag from "post/postShared/tag";
+import Divider from "shared/ui/DoubleDivider";
 
 interface HomeListItemProps {
   ListItemData: IPostList;
@@ -33,13 +34,14 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
 
   return (
     <div
-      className="w-full text-base flex flex-col justify-center gap-2"
+      className="w-full text-base flex flex-col"
       style={{ height }}
     >
       <div className=" flex flex-col justify-center items-center gap-2">
-        <h2 className="p-0">{startCase(section)}</h2>
-        <hr className="border-t-2" />
-      </div>
+        <h2 className="w-full text-center">{startCase(section)}</h2>
+        {/* <hr className="border-t-2" /> */}
+      </div> 
+      <Divider />
       <div className="flex flex-col justify-between h-full">
         {ListItemData.length === 0 ? (
           <ul className="flex flex-col gap-3">
@@ -88,7 +90,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                     />
                   </li>
                   {index !== ListItemData.length - 1 && (
-                    <hr className="text-custom-black" />
+                    <hr/>
                   )}
                 </React.Fragment>
               ))}
