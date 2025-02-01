@@ -10,6 +10,7 @@ import {
 import BookmarkBorderSharpIcon from "@mui/icons-material/BookmarkBorderSharp";
 import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
 import RESPONSE_DB from "db/response-db";
+import Button from "shared/utils/form/Button";
 
 interface IBookmark {
   section: string;
@@ -35,6 +36,7 @@ const Bookmark: React.FC<IBookmark> = ({
 
   const mutation = useMutation({
     mutationFn: async ({ url, bookmarkState }: MutationVariables) => {
+      // Optimistically update the bookmark state.
       setIsBookmarked(bookmarkState);
       const response = await axiosInstance.post(url, {
         section,
@@ -47,53 +49,38 @@ const Bookmark: React.FC<IBookmark> = ({
       dispatch(triggerSuccessMsg(message || "Bookmark updated!"));
     },
     onError: (error: any, { bookmarkState }) => {
+      // Revert back to the previous state on error.
       setIsBookmarked(!bookmarkState);
       dispatch(
         triggerErrorMsg(
-          `${error.response?.data?.message}` ||
-            "Bookmark not updated, try again!"
+          error.response?.data?.message || "Bookmark not updated, try again!"
         )
       );
     },
   });
 
-  const handleClick = (url: string, bookmarkState: boolean) => {
+  const handleClick = () => {
     if (token) {
+      const bookmarkState = !isBookmarked;
+      const url = bookmarkState
+        ? "user/account/post/bookmark"
+        : "user/account/post/un-bookmark";
+
       mutation.mutate({ url, bookmarkState });
     } else {
       dispatch(triggerErrorMsg(RESPONSE_DB.not_authenticated));
     }
   };
 
-  const bookmarkButtonProps = {
-    className:
-      "p-1 m-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-custom-pale-yellow",
-    disabled: mutation.isPending,
-  };
-
   return (
-    <div className={`${classProp}`}>
-      {isBookmarked ? (
-        <button
-          {...bookmarkButtonProps}
-          onClick={() => handleClick("user/account/post/un-bookmark", false)}
-        >
-          <BookmarkSharpIcon
-            fontSize="small"
-            className="text-custom-super-less-gray hover:text-custom-gray"
-          />
-        </button>
-      ) : (
-        <button
-          {...bookmarkButtonProps}
-          onClick={() => handleClick("user/account/post/bookmark", true)}
-        >
-          <BookmarkBorderSharpIcon
-            fontSize="small"
-            className="text-custom-super-less-gray hover:text-custom-gray"
-          />
-        </button>
-      )}
+    <div className={classProp}>
+      <Button iconButton onClick={handleClick} disabled={mutation.isPending}>
+        {isBookmarked ? (
+          <BookmarkSharpIcon fontSize="small" />
+        ) : (
+          <BookmarkBorderSharpIcon fontSize="small" />
+        )}
+      </Button>
     </div>
   );
 };

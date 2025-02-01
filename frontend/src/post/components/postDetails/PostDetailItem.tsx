@@ -3,6 +3,7 @@ import { startCase } from "lodash";
 import { excludedKeys } from "./postDetailsUtils/post-detail-render-define";
 import { IPostDetail } from "models/postModels/IPost";
 import renderData from "./postDetailsUtils/render-data";
+import Divider from "shared/ui/DoubleDivider";
 
 interface DetailItemProps {
   data: IPostDetail;
@@ -93,12 +94,11 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
         const displayKey = key.includes(".") ? key.split(".")[1] : key;
         return (
           <div key={index} className="w-full flex flex-col gap-1">
-            <div className="flex items-end gap-2">
-              <h2 className="flex-none text-custom-red">
+            <Divider>
+              <h2 className="whitespace-nowrap text-custom-red">
                 {startCase(displayKey)}
-              </h2>
-              <hr className="mb-3 flex-1" />
-            </div>
+              </h2> 
+            </Divider>
             <div className="pl-1 flex flex-col">{renderData(value, key)}</div>
           </div>
         );

@@ -3,19 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+
+  h1{
+    @apply self-start p-0 font-bold text-2xl
+  }
   
   /* h2 for all the header */
   h2 {
-    @apply text-lg font-bold p-1 self-center w-fit;
+    @apply text-lg font-bold p-0;
   }
 
   /* h3 for all the sub header  */
-  /* h3{
-
-  } */
+  h3{
+    @apply text-base p-0
+  }
 
   hr {
-    @apply w-full border-t-1 border-custom-black;
+    @apply bg-custom-less-gray w-full;
   }
 
   .page-padding{
