@@ -159,10 +159,10 @@ const PublisherAccess = () => {
                   <div className="flex flex-col">
                     <h2 className="self-start pl-0">{publisher.user.email}</h2>
                     <div className="text-sm font-semibold flex gap-1 items-center">
-                      <span className="text-xs px-2 bg-custom-super-less-gray rounded-full">
+                      <span className="text-xs px-2 bg-custom-less-gray rounded-full">
                         {startCase(publisher.status)}
                       </span>
-                      <span className="text-xs px-2 bg-custom-super-less-gray rounded-full">
+                      <span className="text-xs px-2 bg-custom-less-gray rounded-full">
                         {startCase(publisher.role_applied)}
                       </span>
                       {moment(publisher.updatedAt).format("LL")}

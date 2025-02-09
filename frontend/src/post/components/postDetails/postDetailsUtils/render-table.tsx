@@ -12,7 +12,7 @@ import RenderPostDetail from "./RenderPostDetail";
 export const bgColors = [
   // "bg-custom-less-red",
   "bg-custom-pale-yellow",
-  "bg-custom-super-less-gray",
+  "bg-custom-less-gray",
   // "bg-custom-pale-orange",
   "bg-custom-less-white",
   // "bg-purple-100",

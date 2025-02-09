@@ -188,7 +188,7 @@ const EmailVerification = () => {
             sendOtpMutation.isPending
               ? "bg-custom-black"
               : resendTimer > 0
-              ? "bg-custom-super-less-gray"
+              ? "bg-custom-less-gray"
               : "bg-custom-gray"
           } ml-2`}
           onClick={handleOtpEmail}

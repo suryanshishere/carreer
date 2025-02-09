@@ -112,9 +112,9 @@ const Button: React.FC<ButtonProps> = ({
   // Default Button
   // Ensure "rounded" is present unless already provided in classProp
   const roundedClass = classProp.includes("rounded") ? "" : "rounded";
-  const baseClass = `flex items-center justify-center ${roundedClass} outline outline-custom-super-less-gray p-button hover:bg-custom-super-less-gray w-full whitespace-nowrap py-[.5rem] px-[0.5rem] md:py-[.45rem] text-base overflow-hidden`;
+  const baseClass = `flex items-center justify-center ${roundedClass} outline outline-custom-less-gray p-button hover:bg-custom-less-gray w-full whitespace-nowrap py-[.5rem] px-[0.5rem] md:py-[.45rem] text-base overflow-hidden`;
   const stateClass = disabled
-    ? "cursor-not-allowed text-custom-super-less-gray"
+    ? "cursor-not-allowed text-custom-less-gray"
     : "cursor-pointer";
   return (
     <button
