@@ -5,7 +5,6 @@ import PostList from "post/postShared/PostList";
 import { Fragment } from "react/jsx-runtime";
 import { startCase } from "lodash";
 import NoData from "shared/components/dataStates/NoData";
-import Divider from "shared/ui/DoubleDivider";
 import PageHeader from "shared/ui/PageHeader";
 
 const fetchSavedPosts = async (): Promise<{

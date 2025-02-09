@@ -34,7 +34,7 @@ const Info = () => {
         {!dropdownStates["info"] ? (
           <InfoOutlinedIcon
             fontSize="small"
-            className="text-custom-super-less-gray hover:text-custom-gray"
+            className="text-custom-less-gray hover:text-custom-gray"
           />
         ) : (
           <InfoSharpIcon fontSize="small" className="text-custom-gray" />

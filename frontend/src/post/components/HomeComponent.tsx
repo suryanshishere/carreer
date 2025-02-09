@@ -37,7 +37,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
       <div className=" flex flex-col justify-center items-center gap-2">
         <h2 className="w-full text-center">{startCase(section)}</h2>
       </div>
-      <Divider />
+      <hr />
       <div className="flex flex-col justify-between h-full">
         {ListItemData.length === 0 ? (
           <ul className="flex flex-col gap-3">

@@ -17,8 +17,10 @@
     @apply text-base p-0;
   }
 
-  hr {
-    @apply bg-custom-super-less-gray w-full;
+  @layer components {
+    hr {
+      @apply bg-custom-less-gray w-full; 
+    }
   }
 
   .page-padding {
