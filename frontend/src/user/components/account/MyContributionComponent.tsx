@@ -5,7 +5,7 @@ import { startCase } from "lodash";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import Button from "shared/utils/form/Button"; 
-import Divider from "shared/ui/DoubleDivider"; 
+import Divider from "shared/ui/Divider"; 
 
 const MyContributionComponent: React.FC<{ data: IContributionDetails }> = ({
   data,

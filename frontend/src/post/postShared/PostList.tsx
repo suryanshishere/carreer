@@ -83,7 +83,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
       {data.map((item, index) => (
         <React.Fragment key={item._id}>
           <li
-            className={`group py-2 flex flex-col gap-1 justify-center ${tag(
+            className={`group my-2 flex flex-col gap-1 justify-center ${tag(
               section,
               item.important_dates
             )}`}
