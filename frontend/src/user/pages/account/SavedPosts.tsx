@@ -36,16 +36,17 @@ const SavedPosts = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <PageHeader header="Saved Bookmarks" subHeader="Quick access to your interested post" />
+      <PageHeader
+        header="Saved Bookmarks"
+        subHeader="Quick access to your interested post"
+      />
       {Object.keys(savedPost).map((key) => {
         const posts = savedPost[key];
         return (
           posts.length > 0 &&
           Array.isArray(posts) && (
             <Fragment key={key}>
-              <Divider>
-                <h2 className="self-start whitespace-nowrap">{startCase(key)}</h2>
-              </Divider>
+              <h2 className="self-start whitespace-nowrap">{startCase(key)}</h2>
               <PostList data={posts || []} section={key} isSaved />
             </Fragment>
           )

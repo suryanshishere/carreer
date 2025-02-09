@@ -3,37 +3,35 @@
 @tailwind utilities;
 
 @layer base {
-
-  h1{
-    @apply self-start p-0 font-bold text-2xl
+  h1 {
+    @apply self-start p-0 font-bold text-2xl;
   }
-  
+
   /* h2 for all the header */
   h2 {
     @apply text-lg font-bold p-0;
   }
 
   /* h3 for all the sub header  */
-  h3{
-    @apply text-base p-0
+  h3 {
+    @apply text-base p-0;
   }
 
   hr {
-    @apply bg-custom-less-gray w-full;
+    @apply bg-custom-super-less-gray w-full;
   }
 
-  .page-padding{
-    @apply lg:px-page px-page-small w-full
+  .page-padding {
+    @apply lg:px-page px-page-small w-full;
   }
 
   .custom-link {
     @apply underline decoration-1 text-custom-red  decoration-custom-red underline-offset-4 hover:text-custom-blue visited:decoration-custom-black visited:text-custom-black;
   }
-  
+
   .custom-external-link {
     @apply underline decoration-1 font-bold text-custom-red  decoration-custom-red underline-offset-2 hover:text-custom-blue;
   }
-  
 }
 
 /* :root {

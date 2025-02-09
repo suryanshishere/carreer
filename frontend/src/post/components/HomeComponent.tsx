@@ -33,14 +33,10 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   const skeletonItemCount = getSkeletonItemCount(height);
 
   return (
-    <div
-      className="w-full text-base flex flex-col"
-      style={{ height }}
-    >
+    <div className="w-full text-base flex flex-col gap-1" style={{ height }}>
       <div className=" flex flex-col justify-center items-center gap-2">
         <h2 className="w-full text-center">{startCase(section)}</h2>
-        {/* <hr className="border-t-2" /> */}
-      </div> 
+      </div>
       <Divider />
       <div className="flex flex-col justify-between h-full">
         {ListItemData.length === 0 ? (
@@ -64,7 +60,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
               {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
                 <React.Fragment key={item._id}>
                   <li
-                    className={`group inline-flex justify-between items-center min-h-7 ${tag(
+                    className={`group inline-flex justify-between items-center min-h-7 my-2 ${tag(
                       section,
                       item.important_dates
                     )}`}
@@ -76,7 +72,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                           : snakeCase(item.name_of_the_post) //TODO: remove name of the post completely
                       }?is_saved=${item.is_saved}`}
                       state={{ postId: item._id }}
-                      className="custom-link my-2"
+                      className="custom-link"
                     >
                       {item.name_of_the_post}
                     </Link>
@@ -89,9 +85,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                       }`}
                     />
                   </li>
-                  {index !== ListItemData.length - 1 && (
-                    <hr/>
-                  )}
+                  {index !== ListItemData.length - 1 && <hr />}
                 </React.Fragment>
               ))}
             </ul>
