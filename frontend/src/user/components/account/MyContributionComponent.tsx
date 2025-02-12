@@ -6,10 +6,33 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import Button from "shared/utils/form/Button";
 import EditSharpIcon from "@mui/icons-material/EditSharp";
+import { useMutation } from "@tanstack/react-query";
 
 const MyContributionComponent: React.FC<{ data: IContributionDetails }> = ({
   data,
 }) => {
+
+  // const deleteContributeMutation = useMutation({
+  //   mutationFn: async (data: IAccessFilter) => {
+  //     const response = await axiosInstance.post("/admin/req-access", data);
+  //     return response.data;
+  //   },
+  //   onSuccess: ({ message }) => {
+  //     dispatch(triggerSuccessMsg(message || "Filter applied successfully!"));
+  //   },
+  //   onError: (error: any) => {
+  //     dispatch(
+  //       triggerErrorMsg(
+  //         error.response?.data?.message || "Filter request failed!"
+  //       )
+  //     );
+  //   },
+  // });
+
+const deleteContributeHandler = async(key:string)=>{
+    
+}
+
   return (
     <div className="flex flex-col gap-4">
       {Object.entries(data).map(([key, value]) => (
@@ -37,8 +60,8 @@ const MyContributionComponent: React.FC<{ data: IContributionDetails }> = ({
                     <span className="bg-custom-less-gray text-custom-white rounded-full px-3">
                       Pending
                     </span>
-                    <Button iconButton>
-                      <DeleteOutlineIcon fontSize="small" />
+                    <Button iconButton onClick={()=>deleteContributeHandler(key)}>
+                      <DeleteOutlineIcon  fontSize="small" />
                     </Button>
                   </div>
                 </div>

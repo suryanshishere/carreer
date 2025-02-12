@@ -108,9 +108,9 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
         outerClassProp={`flex-1`}
       />
       <div className="flex-1 flex items-center gap-2">
-        <IconButton aria-label="delete" size="medium">
-          <ArrowBackIcon onClick={backHandler} fontSize="medium" />
-        </IconButton>
+        <Button iconButton onClick={backHandler}>
+          <ArrowBackIcon fontSize="medium" />
+        </Button>
         <Button
           authButtonType={!isForgotPasswordPage}
           outline={isForgotPasswordPage ? true : undefined}
@@ -127,10 +127,10 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   );
 
   return isForgotPasswordPage ? (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col">
       <PageHeader
         header="Forgot Password"
-        subHeader={<>Make your email handy</>}
+        subHeader={<>Make your email handy for OTP</>}
       />
 
       {formContent}

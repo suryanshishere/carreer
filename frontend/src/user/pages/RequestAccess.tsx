@@ -14,6 +14,7 @@ import {
 import axiosInstance from "shared/utils/api/axios-instance";
 import Dropdown from "shared/utils/form/Dropdown";
 import ADMIN_DB from "db/admin-db";
+import PageHeader from "shared/ui/PageHeader";
 
 const MIN_REASON_LENGTH =
   Number(process.env.REACT_APP_MIN_REASON_LENGTH) || 100;
@@ -60,11 +61,15 @@ const RequestAccess: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: IRequestAccess) => {
-      const response = await axiosInstance.post("/user/account/req-access", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.post(
+        "/user/account/req-access",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     },
@@ -88,16 +93,17 @@ const RequestAccess: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center gap-4">
-      <h2>Apply for Access</h2>
-      <p className="lg:w-4/5 w-full  text-start">
+    <div className="w-full flex flex-col">
+      <PageHeader
+        header="Request for Access"
+        subHeader={<>Apply for certain degree of access</>}
+      />
+      <p className="lg:w-4/5 w-full text-start mb-4">
         1. Once you have been granted publisher access, you will be able to
         create new posts. These posts can then be sent for approval before being
         published. <br />
-        <br />
         2. Once you have been granted approver access, you will be able to
-        approve created posts. These posts will then be displayed on the site.{" "}
-        <br />
+        approve created posts. These posts will then be displayed on the site. 
         <br />
         3. Once you have been granted admin access, you will be able to create
         new posts, approve created posts, manage publisher and approver access
@@ -106,7 +112,7 @@ const RequestAccess: React.FC = () => {
       </p>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="lg:w-1/2 w-full  flex gap-2 flex-col"
+        className="lg:w-2/3 w-full  flex gap-2 flex-col"
       >
         <Dropdown
           name="role_applied"

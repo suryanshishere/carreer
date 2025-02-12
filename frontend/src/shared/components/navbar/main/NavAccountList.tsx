@@ -98,7 +98,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
   });
 
   return (
-    <ul className="h-fit rounded shadow-md shadow-custom-black text-sm flex flex-col items-center text-custom-black bg-custom-less-gray p-1">
+    <ul className="h-fit w-[5.95rem] rounded shadow-md shadow-custom-black text-sm flex flex-col items-center text-custom-black bg-custom-less-gray p-1">
       {navItems}
     </ul>
   );

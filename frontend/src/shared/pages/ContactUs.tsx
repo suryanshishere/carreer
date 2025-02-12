@@ -6,12 +6,13 @@ import Button from "shared/utils/form/Button";
 import { Input, TextArea } from "shared/utils/form/Input";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "shared/utils/api/axios-instance";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "shared/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "shared/store";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
+import PageHeader from "shared/ui/PageHeader";
 
 // Define form values interface
 interface IContactUsFormInputs {
@@ -52,7 +53,6 @@ const contactUsSchema = Yup.object().shape({
 
 const ContactUs: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { token } = useSelector((state: RootState) => state.auth.userData);
 
   const {
     register,
@@ -86,11 +86,15 @@ const ContactUs: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="w-full flex flex-col justify-center">
+      <PageHeader
+        header="contact us"
+        subHeader={<>Try to define your reason clearly</>}
+      />
       <form
         onSubmit={handleSubmit(onSubmit)}
         onReset={() => submitMutation.isSuccess}
-        className="lg:w-1/2 w-full  flex flex-col gap-3"
+        className="lg:w-2/3 w-full  flex flex-col gap-3"
       >
         <Input
           type="text"
@@ -109,12 +113,13 @@ const ContactUs: React.FC = () => {
           helperText={errors.email?.message}
         />
         <TextArea
+          label
           placeholder="Reason for which you are contacting us"
           {...register("reason")}
           error={!!errors.reason}
           helperText={errors.reason?.message}
         />
-        <Button type="submit"  disabled={submitMutation.isPending}>
+        <Button type="submit" disabled={submitMutation.isPending}>
           {submitMutation.isPending ? "Submiting..." : "Submit"}
         </Button>
       </form>

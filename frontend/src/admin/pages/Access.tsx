@@ -16,6 +16,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import ADMIN_DB from "db/admin-db";
 import { startCase, upperCase } from "lodash";
 import moment from "moment";
+import PageHeader from "shared/ui/PageHeader";
 
 const { status, role_applied, status_classname } = ADMIN_DB;
 
@@ -58,11 +59,7 @@ const PublisherAccess = () => {
 
   const filterMutation = useMutation({
     mutationFn: async (data: IAccessFilter) => {
-      const response = await axiosInstance.post("/admin/req-access", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.post("/admin/req-access", data);
       return response.data;
     },
     onSuccess: ({ message }) => {
@@ -107,10 +104,14 @@ const PublisherAccess = () => {
   });
 
   return (
-    <div className="w-full flex flex-col gap-3">
+    <div className="w-full flex flex-col">
+      <PageHeader
+        header="access"
+        subHeader={<>List of the access of the website</>}
+      />
       <form
         onSubmit={handleFilterSubmit(handleFilter)}
-        className="flex justify-end max-h-16 items-center gap-2 mb-4"
+        className="flex max-h-16 items-center gap-2 mb-4"
       >
         <div className="flex gap-2">
           <Dropdown
@@ -133,8 +134,9 @@ const PublisherAccess = () => {
           />
         </div>
         <Button
+          iconButton
           type="submit"
-          classProp="rounded-full self-end mb-1 flex justify-center items-center"
+          classProp="self-end outline"
         >
           <DoneIcon fontSize="small" />
         </Button>

@@ -33,7 +33,7 @@ interface IDeactivateForm {
 const DeactivateAccount: React.FC = () => {
   const [confirm, setConfirm] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   // React Hook Form
   const {
@@ -74,12 +74,12 @@ const DeactivateAccount: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-h-screen flex flex-col justify-center gap-4">
+    <div className="w-full flex flex-col justify-center">
       <PageHeader
         header="Deactivate Account"
         subHeader={<>Read the warming first, before any action</>}
       />
-      <p className="text-custom-red text-justify font-bold">
+      <p className="text-custom-red text-justify font-bold mb-4">
         If you deactivate your account, it may be permanently deleted after 30
         days of inactivity. All saved posts will also be deleted, so ensure you
         back them up elsewhere.
@@ -106,9 +106,9 @@ const DeactivateAccount: React.FC = () => {
               {...register("password")}
             />
             <div className="flex justify-between items-center gap-2">
-              <IconButton aria-label="delete" size="medium">
-                <ArrowBackIcon onClick={() => navigate(-1)} fontSize="medium" />
-              </IconButton>
+              <Button iconButton onClick={() => navigate(-1)}>
+                <ArrowBackIcon fontSize="medium" />
+              </Button>
               <Button
                 type="submit"
                 warning

@@ -90,7 +90,7 @@ const ResetPassword: React.FC = () => {
             <b>Try again</b> if problem persist.
           </div>
         )}
-        <ForgotPassword classProp="w-1/2 flex flex-col gap-2" />
+        <ForgotPassword classProp="w-2/3 flex flex-col gap-2" />
       </div>
     );
 
@@ -98,7 +98,7 @@ const ResetPassword: React.FC = () => {
     <div className="w-full flex justify-center">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="w-1/2 flex flex-col gap-3"
+        className="w-2/3 flex flex-col gap-3"
       >
         <Input
           {...register("new_password")}
