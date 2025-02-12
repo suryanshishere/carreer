@@ -5,7 +5,7 @@ import useResponsiveView, {
   viewObject,
   ViewType,
 } from "shared/hooks/responsive-view-hook";
-import  POST_DB  from "db/post-env-db";
+import  POST_DB  from "db/post-db";
 
 const TAGS = POST_DB.tags;
 

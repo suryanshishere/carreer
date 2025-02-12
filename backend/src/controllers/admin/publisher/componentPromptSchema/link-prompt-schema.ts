@@ -1,7 +1,7 @@
 import { SchemaType } from "@google/generative-ai";
-import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
+import { POST_LIMITS_DB } from "@models/post/post-env-db";
 
-const { short_char_limit } = POST_LIMITS_ENV_DB;
+const { short_char_limit } = POST_LIMITS_DB;
 
 const linkPromptSchema = {
   description: `Generate a real link for each of the following fields.`,

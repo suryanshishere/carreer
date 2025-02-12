@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { startCase } from "lodash";
-import  POST_DB  from "db/post-env-db";
+import  POST_DB  from "db/post-db";
 
 const ContriSec = () => {
   return (

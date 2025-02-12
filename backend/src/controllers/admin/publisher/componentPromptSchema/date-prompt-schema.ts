@@ -1,5 +1,5 @@
 import { SchemaType } from "@google/generative-ai";
-import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
+import { POST_LIMITS_DB } from "@models/post/post-env-db";
 
 const dateRangePromptSchema = {
   description: "MongoDB ISO 8601 date strings",
@@ -32,7 +32,7 @@ const datePromptSchema = {
     important_date: dateRangePromptSchema,
     counseling_result_announcement_date: dateRangePromptSchema,
     additional_resources: {
-      description: `Additional information related to the dates (not links). Must be between ${POST_LIMITS_ENV_DB.short_char_limit.min} and ${POST_LIMITS_ENV_DB.short_char_limit.max} characters.`,
+      description: `Additional information related to the dates (not links). Must be between ${POST_LIMITS_DB.short_char_limit.min} and ${POST_LIMITS_DB.short_char_limit.max} characters.`,
       type: SchemaType.STRING,
     },
   },

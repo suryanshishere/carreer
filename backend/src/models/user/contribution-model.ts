@@ -1,4 +1,4 @@
-import POST_ENV_DB from "@models/post/post-env-db";
+import POST_DB from "@models/post/post-env-db";
 import { Schema, Document, model } from "mongoose";
 
 // Interface for a Contribution Document
@@ -12,8 +12,8 @@ export interface IContribution extends Document {
   contribution: Map<string, Record<string, any>>;
 }
 
-// Initialize dynamic fields from POST_ENV_DB.sections
-const dynamicFields = POST_ENV_DB.sections.reduce(
+// Initialize dynamic fields from POST_DB.sections
+const dynamicFields = POST_DB.sections.reduce(
   (fields: Record<string, any>, key: string) => {
     // Define a dynamic schema for each section where keys are strings and values are of any type
     fields[key] = { type: Schema.Types.Mixed };

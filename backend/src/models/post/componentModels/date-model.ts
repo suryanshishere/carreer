@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-import { POST_LIMITS_ENV_DB } from "../post-env-db";
+import { POST_LIMITS_DB } from "../post-env-db";
 
 const DateRangeSchema = new Schema<IDateRange>({
   current_year: { type: Date },
@@ -32,8 +32,8 @@ export const dateSchema = new Schema<IDates>(
     additional_resources: {
       type: String,
       required: true,
-      minlength: POST_LIMITS_ENV_DB.short_char_limit.min,
-      maxlength: POST_LIMITS_ENV_DB.short_char_limit.max,
+      minlength: POST_LIMITS_DB.short_char_limit.min,
+      maxlength: POST_LIMITS_DB.short_char_limit.max,
     },
   },
   { timestamps: true }

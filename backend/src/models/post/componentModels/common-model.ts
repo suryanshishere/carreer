@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-import { POST_LIMITS_ENV_DB } from "../post-env-db";
+import { POST_LIMITS_DB } from "../post-env-db";
 
 const {
   short_char_limit,
@@ -7,14 +7,14 @@ const {
   age_num,
   non_negative_num,
   long_char_limit,
-} = POST_LIMITS_ENV_DB;
+} = POST_LIMITS_DB;
 
 const {
   job_type,
   stage_level,
   post_exam_mode,
   applicants_gender_that_can_apply,
-} = POST_LIMITS_ENV_DB.dropdown_data;
+} = POST_LIMITS_DB.dropdown_data;
 
 const ApplicantsSchema: Schema = new Schema<IApplicants>(
   {

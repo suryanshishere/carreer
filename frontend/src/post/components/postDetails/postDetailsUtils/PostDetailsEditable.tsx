@@ -1,4 +1,4 @@
-import { POST_LIMITS_ENV_DB } from "db/post-env-db";
+import { POST_LIMITS_DB } from "db/post-db";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "shared/store";
@@ -70,8 +70,8 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
           name={keyProp}
           defaultValue={value}
           data={
-            POST_LIMITS_ENV_DB.dropdown_data[
-              lastName as keyof typeof POST_LIMITS_ENV_DB.dropdown_data
+            POST_LIMITS_DB.dropdown_data[
+              lastName as keyof typeof POST_LIMITS_DB.dropdown_data
             ] ?? []
           }
           onChange={handleInputChange}

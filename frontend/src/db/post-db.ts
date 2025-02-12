@@ -73,7 +73,7 @@ interface IPostLimitsDb {
   };
 }
 
-export const POST_LIMITS_ENV_DB: IPostLimitsDb = {
+export const POST_LIMITS_DB: IPostLimitsDb = {
   lowercase_alpha_num_underscrore: /^[a-z0-9_]+$/,
   alpha_num_underscore_space: /^[A-Za-z0-9_\s]+$/,
   long_char_limit: { min: 100, max: 2500 },

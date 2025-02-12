@@ -1,3 +1,5 @@
+import SHARED_DB from "./shared-db";
+
 interface IAdminDb {
   status: string[];
   status_classname: {
@@ -7,12 +9,8 @@ interface IAdminDb {
 }
 
 const ADMIN_DB: IAdminDb = {
-  status: ["rejected", "pending", "approved"],
-  status_classname: {
-    pending: "text-custom-less-gray hover:bg-custom-less-gray",
-    rejected: "text-custom-red hover:bg-custom-red",
-    approved: "text-custom-green hover:bg-custom-green",
-  },
+  status: SHARED_DB.status,
+  status_classname: SHARED_DB.status_classname,
   role_applied: ["publisher", "approver", "admin"],
 };
 

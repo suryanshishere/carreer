@@ -1,4 +1,4 @@
- import  POST_DB  from "db/post-env-db";
+ import  POST_DB  from "db/post-db";
 import { IDates } from "models/postModels/overallInterfaces/IDates";
 import moment from "moment"; 
 

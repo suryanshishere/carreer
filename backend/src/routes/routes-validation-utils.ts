@@ -1,11 +1,11 @@
-import POST_ENV_DB, { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
+import POST_DB, { POST_LIMITS_DB } from "@models/post/post-env-db";
 import { param, body, ValidationChain } from "express-validator";
 import _ from "lodash";
 
 const { short_char_limit, lowercase_alpha_num_underscrore } =
-  POST_LIMITS_ENV_DB;
+  POST_LIMITS_DB;
 
-const { sections } = POST_ENV_DB;
+const { sections } = POST_DB;
 
 export const validatePostCode = (
   source: "param" | "body",

@@ -8,7 +8,7 @@ import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
 } from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
-import POST_ENV_DB from "@models/post/post-env-db";
+import POST_DB from "@models/post/post-env-db";
 import ContributionModel, {
   IContribution,
 } from "@models/user/contribution-model";
@@ -17,7 +17,7 @@ import handleValidationErrors from "@controllers/sharedControllers/validation-er
 import UserModal from "@models/user/user-model";
 import { timeStamp } from "console";
 
-const postSectionsArray = POST_ENV_DB.sections;
+const postSectionsArray = POST_DB.sections;
 
 export const savedPosts = async (
   req: Request,

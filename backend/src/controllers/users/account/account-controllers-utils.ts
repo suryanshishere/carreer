@@ -1,4 +1,4 @@
-import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
+import { POST_LIMITS_DB } from "@models/post/post-env-db";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request } from "express";
 
@@ -10,7 +10,7 @@ const {
   age_num,
   limit_keys_division,
   dropdown_data,
-} = POST_LIMITS_ENV_DB;
+} = POST_LIMITS_DB;
 
 type ValidationConfig =
   | { type: "dropdown"; data: string[] }

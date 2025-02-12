@@ -23,7 +23,7 @@ module.exports = {
         "custom-less-white": "rgba(255, 255, 255, 0.75)",
         "custom-black": "#000000",
         "custom-gray": "rgba(104, 109, 118)",
-        "custom-less-gray": "rgb(238, 238, 238)",
+        "custom-less-gray": "rgb(228, 224, 225)",
         // "custom-super-less-gray": "rgba(238, 238, 238, 0.25)",
         // "custom-backdrop": "#2C3333",
         "custom-green": "#7F9F80",

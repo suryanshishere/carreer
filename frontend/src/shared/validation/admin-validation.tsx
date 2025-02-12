@@ -1,7 +1,7 @@
 import * as Yup from "yup";
-import POST_DB, { POST_LIMITS_ENV_DB } from "db/post-env-db";
+import POST_DB, { POST_LIMITS_DB } from "db/post-db";
 
-const { short_char_limit, alpha_num_underscore_space } = POST_LIMITS_ENV_DB;
+const { short_char_limit, alpha_num_underscore_space } = POST_LIMITS_DB;
 
 //Publisher---------------------------------------------------------------------------
 export interface ICreateNewPostForm {

@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
-import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
+import { POST_LIMITS_DB } from "@models/post/post-env-db";
 
-const { long_char_limit, short_char_limit } = POST_LIMITS_ENV_DB;
+const { long_char_limit, short_char_limit } = POST_LIMITS_DB;
 
 const syllabusDataSchema = new Schema<ISyllabusData>(
   {

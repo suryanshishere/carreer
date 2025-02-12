@@ -1,4 +1,4 @@
-import { POST_LIMITS_ENV_DB } from "db/post-env-db";
+import { POST_LIMITS_DB } from "db/post-db";
 
 const {
   short_char_limit,
@@ -8,7 +8,7 @@ const {
   age_num,
   limit_keys_division,
   dropdown_data,
-} = POST_LIMITS_ENV_DB;
+} = POST_LIMITS_DB;
 
 type ValidationConfig =
   | { type: "dropdown"; data: string[] }

@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
-import { POST_LIMITS_ENV_DB } from "@models/post/post-env-db";
+import { POST_LIMITS_DB } from "@models/post/post-env-db";
 
-const { non_negative_num, short_char_limit, long_char_limit } = POST_LIMITS_ENV_DB;
+const { non_negative_num, short_char_limit, long_char_limit } = POST_LIMITS_DB;
 
 // Current year
 const resultCategorySchema = new Schema<IResultCategory>(

@@ -32,7 +32,7 @@ interface IPostLimits {
   };
 }
 
-export const POST_LIMITS_ENV_DB: IPostLimits = {
+export const POST_LIMITS_DB: IPostLimits = {
   lowercase_alpha_num_underscrore: /^[a-z0-9_]+$/,
   long_char_limit: { min: 100, max: 2500 },
   medium_char_limit: { min: 25, max: 700 },
@@ -132,7 +132,7 @@ interface IPostEnvData {
   overall: string[];
 }
 
-const POST_ENV_DB: IPostEnvData = {
+const POST_DB: IPostEnvData = {
   sections: [
     "result",
     "admit_card",
@@ -148,5 +148,5 @@ const POST_ENV_DB: IPostEnvData = {
 };
 
 // Populate OVERALL dynamically
-POST_ENV_DB.overall = [...POST_ENV_DB.sections, ...POST_ENV_DB.components];
-export default POST_ENV_DB;
+POST_DB.overall = [...POST_DB.sections, ...POST_DB.components];
+export default POST_DB;
