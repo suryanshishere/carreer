@@ -1,6 +1,7 @@
 import {
   bookmarkPost,
   contributeToPost,
+  deleteContribute,
   myContribution,
   savedPosts,
   unBookmarkPost,
@@ -21,6 +22,8 @@ router.post(
   [validateSection("body"), validatePostCode("body"), validateObject("data")],
   contributeToPost
 );
+
+router.patch("/delete-contribution", deleteContribute);
 
 router.get("/my-contribution", myContribution);
 

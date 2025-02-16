@@ -244,3 +244,9 @@ export const contributeToPost = async (
     return next(new HttpError("An error occurred while contributing", 500));
   }
 };
+
+export const deleteContribute = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {};

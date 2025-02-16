@@ -1,22 +1,18 @@
 import POST_DB, { POST_LIMITS_DB } from "@models/post/post-env-db";
-import { param, body, ValidationChain } from "express-validator";
+import { param, body, ValidationChain, check } from "express-validator";
 import _ from "lodash";
 
-const { short_char_limit, lowercase_alpha_num_underscrore } =
-  POST_LIMITS_DB;
+const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS_DB;
 
 const { sections } = POST_DB;
 
 export const validatePostCode = (
-  source: "param" | "body",
   name: string = "post_code",
   optional: boolean = false
 ) => {
-  const validator = source === "param" ? param(name) : body(name);
-
   const friendlyName = _.startCase(_.toLower(name));
 
-  let chain = validator;
+  let chain = check(name);
   if (optional) {
     chain = chain.optional({ nullable: true });
   }
@@ -39,13 +35,10 @@ export const validatePostCode = (
 };
 
 export const validatePostIdOrCode = (
-  source: "param" | "body",
   name: string = "postIdOrCode",
   optional: boolean = false
 ) => {
-  const validator = source === "param" ? param(name) : body(name);
-
-  let chain = validator;
+  let chain = check(name);
 
   // Apply optional logic
   if (optional) {
@@ -63,7 +56,7 @@ export const validatePostIdOrCode = (
       const isMongoId = /^[a-f\d]{24}$/i.test(value);
 
       // Check post code validity
-      const isValidPostCode = validatePostCode(source, name)
+      const isValidPostCode = validatePostCode(name)
         .run(req)
         .then((result) => result.isEmpty());
 
@@ -81,16 +74,14 @@ export const validatePostIdOrCode = (
     .withMessage("Invalid MongoDB ID or post code format.");
 };
 
-export const validateSection = (
-  source: "param" | "body",
+export const validateSection = ( 
   name: string = "section",
   optional: boolean = false
-) => {
-  const validator = source === "param" ? param(name) : body(name);
+) => { 
 
   const friendlyName = _.startCase(_.toLower(name));
 
-  let chain = validator.customSanitizer((value) => _.snakeCase(value));
+  let chain = check(name).customSanitizer((value) => _.snakeCase(value));
 
   if (optional) {
     chain = chain.optional({ nullable: true });
@@ -128,7 +119,6 @@ export const validateNameOfThePost = (
     );
 };
 
-
 export const validateObject = (fieldName: string): ValidationChain => {
   return body(fieldName)
     .isObject()
@@ -140,4 +130,3 @@ export const validateObject = (fieldName: string): ValidationChain => {
       return true;
     });
 };
-
