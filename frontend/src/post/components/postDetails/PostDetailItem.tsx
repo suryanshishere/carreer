@@ -3,6 +3,7 @@ import { startCase } from "lodash";
 import { excludedKeys } from "./postDetailsUtils/post-detail-render-define";
 import { IPostDetail } from "models/postModels/IPost";
 import renderData from "./postDetailsUtils/render-data";
+import { ParaSkeletonLoad, TableSkeletonLoad } from "shared/ui/SkeletonLoad";
 
 interface DetailItemProps {
   data: IPostDetail;
@@ -14,70 +15,15 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
   // Skeleton Rendering
   if (isEmpty) {
     return (
-      <div className="w-full flex flex-col gap-8 animate-pulse">
-        {/* Article Skeleton */}
+      <div className="w-full flex flex-col gap-3 animate-pulse">
         {[...Array(3)].map((_, index) => (
-          <div key={index} className="flex flex-col gap-1 w-full text-base">
-            <div className="flex items-end gap-2">
-              <div
-                style={{ width: `${Math.random() * 50 + 50}%` }}
-                className="h-5 bg-custom-less-gray"
-              ></div>
-              <div className="flex-1 h-1 bg-custom-less-gray"></div>
-            </div>
-            <div className="py-1 flex flex-col gap-3">
-              {[...Array(2)].map((_, idx) => (
-                <div
-                  key={idx}
-                  style={{ width: `${Math.random() * 50 + 50}%` }}
-                  className="h-4 bg-custom-less-gray"
-                ></div>
-              ))}
-            </div>
-          </div>
+          <ParaSkeletonLoad key={index} />
         ))}
 
-        {/* Table Skeleton */}
-        <div className="w-full flex flex-col gap-2">
-          <div
-            style={{ width: `${Math.random() * 50 + 50}%` }}
-            className="h-5 bg-custom-less-gray mb-2"
-          ></div>
-          <div className="w-full border border-custom-less-gray overflow-hidden">
-            {[...Array(4)].map((_, rowIndex) => (
-              <div
-                key={rowIndex}
-                className={`flex ${
-                  rowIndex === 0 ? "bg-custom-less-gray" : "bg-custom-white"
-                } p-2`}
-              >
-                {[...Array(3)].map((_, colIndex) => (
-                  <div key={colIndex} className="h-4 mx-1"></div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
+        <TableSkeletonLoad />
 
         {[...Array(3)].map((_, index) => (
-          <div key={index} className="flex flex-col gap-1 w-full text-base">
-            <div className="flex items-end gap-2">
-              <div
-                style={{ width: `${Math.random() * 50 + 50}%` }}
-                className="h-5 bg-custom-less-gray "
-              ></div>
-              <div className="flex-1 h-1 bg-custom-less-gray"></div>
-            </div>
-            <div className="py-1 flex flex-col gap-3">
-              {[...Array(2)].map((_, idx) => (
-                <div
-                  key={idx}
-                  style={{ width: `${Math.random() * 50 + 50}%` }}
-                  className="h-4 bg-custom-less-gray"
-                ></div>
-              ))}
-            </div>
-          </div>
+          <ParaSkeletonLoad key={index} />
         ))}
       </div>
     );

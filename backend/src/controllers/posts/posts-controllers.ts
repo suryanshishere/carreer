@@ -76,7 +76,6 @@ export const section = async (
   handleValidationErrors(req, next);
   try {
     const { section } = req.params;
-
     const userId = getUserIdFromRequest(req as JWTRequest);
     const user = await User.findById(userId);
     let savedIds: string[] = [];

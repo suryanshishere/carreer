@@ -75,7 +75,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
         </select>
         {helperText && (
           <p
-            className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto ${
+            className={`ml-2 mt-[2px] text-xs w-auto ${
               error ? "text-custom-red" : "text-grey"
             } ${errorClassProp}`}
           >

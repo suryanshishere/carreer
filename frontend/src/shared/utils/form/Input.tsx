@@ -98,7 +98,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </div>
         {helperText && (
           <p
-            className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
+            className={`ml-2 mt-[2px] text-xs w-auto whitespace-nowrap ${
               error ? "text-custom-red" : "hidden"
             } ${errorClassProp}`}
           >
@@ -160,7 +160,7 @@ export const TextArea = forwardRef<
         />
         {helperText && (
           <p
-            className={`ml-2 mt-[2px] bg-custom-white text-xs w-auto whitespace-nowrap ${
+            className={`ml-2 mt-[2px] text-xs w-auto whitespace-nowrap ${
               error ? "text-custom-red" : "hidden"
             } ${errorClassProp}`}
           >

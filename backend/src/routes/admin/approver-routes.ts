@@ -28,13 +28,13 @@ router.post(
 
 router.get(
   "/contri-post-codes/:section",
-  validateSection("param"),
+  validateSection("section"),
   getContriPostCodes
 );
 
 router.get(
   "/contri-post-codes/:section/:postCode",
-  [validateSection("param"), validatePostCode("param")],
+  [validateSection("section"), validatePostCode("param")],
   getContriPost
 );
 

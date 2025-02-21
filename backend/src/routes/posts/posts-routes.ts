@@ -4,7 +4,7 @@ import {
   postDetail,
   section,
 } from "@controllers/posts/posts-controllers";
-import { 
+import {
   validatePostIdOrCode,
   validateSection,
 } from "@routes/routes-validation-utils";
@@ -12,10 +12,10 @@ import {
 const router = express.Router();
 
 router.get(["/", "/home"], home);
-router.get("/sections/:section", validateSection("param"), section);
+router.get("/sections/:section", validateSection(), section);
 router.get(
   "/sections/:section/:postIdOrCode",
-  [validateSection("param"), validatePostIdOrCode("param")],
+  [validateSection(), validatePostIdOrCode()],
   postDetail
 );
 

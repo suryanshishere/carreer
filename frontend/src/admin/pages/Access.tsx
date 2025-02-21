@@ -107,7 +107,7 @@ const PublisherAccess = () => {
     <div className="w-full flex flex-col">
       <PageHeader
         header="access"
-        subHeader={<>List of the access of the website</>}
+        subHeader={<>List of the access</>}
       />
       <form
         onSubmit={handleFilterSubmit(handleFilter)}
