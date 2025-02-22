@@ -16,8 +16,8 @@ const router = express.Router();
 router.post(
   "/apply-contri",
   [
-    validateSection("body"),
-    validatePostCode("body"),
+    validateSection( ),
+    validatePostCode( ),
     validateObject("data"),
     body("contributor_id")
       .isMongoId()

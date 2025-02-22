@@ -23,6 +23,7 @@ const MyContributionComponent: React.FC<{ data: IContributionDetails }> = ({
   //sending postcode, section, user id through token and now make the update by deleting the data.
   const deleteContributeMutation = useMutation({
     mutationFn: async (data: { post_code: string; section: string }) => {
+      console.log(data);
       const response = await axiosInstance.patch("/user/account/post/delete-contribution", data);
       return response.data;
     },

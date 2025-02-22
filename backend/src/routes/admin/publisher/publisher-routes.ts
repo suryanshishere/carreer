@@ -9,7 +9,7 @@ import express from "express";
 const router = express.Router();
 router.post(
   "/create-new-post",
-  [validateSection("body"), validateNameOfThePost("body"), validatePostCode("body")],
+  [validateSection( ), validateNameOfThePost("body"), validatePostCode( )],
   createNewPost
 );
 

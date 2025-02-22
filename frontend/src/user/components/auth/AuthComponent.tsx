@@ -41,11 +41,10 @@ const AuthComponent: React.FC<AuthProps> = () => {
   });
 
   const submitMutation = useMutation({
-    mutationFn: async (data: IAuth) => {
+    mutationFn: async (data: IAuth) => { 
       const response = await axiosInstance.post(
         `/user/auth`,
-        JSON.stringify(data),
-        {}
+        JSON.stringify(data)
       );
       return response.data;
     },

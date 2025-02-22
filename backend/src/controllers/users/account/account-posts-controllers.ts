@@ -15,7 +15,6 @@ import ContributionModel, {
 import { validateContributionField } from "./account-controllers-utils";
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
 import UserModal from "@models/user/user-model";
-import { timeStamp } from "console";
 
 const postSectionsArray = POST_DB.sections;
 
@@ -249,4 +248,55 @@ export const deleteContribute = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  handleValidationErrors(req, next);
+  const { post_code, section } = req.body;
+  const userId = (req as JWTRequest).userData.userId;
+
+  try {
+    const user = await ContributionModel.findById(userId);
+    if (!user) {
+      return next(
+        new HttpError("User not found or has no contributions.", 404)
+      );
+    }
+
+    if (!user.contribution.has(post_code)) {
+      return next(new HttpError("No such contribution found!", 404));
+    }
+
+    const postData = user.contribution.get(post_code);
+    if (!postData) {
+      return next(new HttpError("No such contribution found!", 404));
+    }
+    const postObj = postData.toObject ? postData.toObject() : { ...postData };
+
+    if (!(section in postObj)) {
+      return next(new HttpError("No such contribution found!", 404));
+    }
+
+    // Delete the specified section
+    delete postObj[section];
+
+    // If the post object is now empty, remove the entire post_code key
+    if (Object.keys(postObj).length === 0) {
+      user.contribution.delete(post_code);
+      user.markModified("contribution");
+    } else {
+      user.contribution.set(post_code, postObj);
+      user.markModified(`contribution.${post_code}`);
+    }
+
+    await user.save();
+
+    return res.status(200).json({ message: "Contribution deleted!" });
+  } catch (error) {
+    console.error("Error deleting contribution:", error);
+    return next(
+      new HttpError(
+        "An internal server error occurred while deleting the contribution.",
+        500
+      )
+    );
+  }
+};
