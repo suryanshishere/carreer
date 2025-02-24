@@ -3,7 +3,7 @@ import RenderDate from "./render_date";
 import _ from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import PostEditable from "../../../post/post_shared/post_editable";
+import PostEditable from "../post_editable";
 
 const RenderField = ({
   stringValue,
