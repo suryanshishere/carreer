@@ -3,17 +3,12 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import Button from "shared/utils/form/Button";
 import EditSharpIcon from "@mui/icons-material/EditSharp";
-import { Link } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import axiosInstance from "shared/utils/api/axios-instance";
-import {
-  triggerErrorMsg,
-  triggerSuccessMsg,
-} from "shared/store/thunks/response-thunk";
+import { Link } from "react-router-dom"; 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { resetKeyValuePairs, setEditContribute } from "shared/store/post-slice";
 import { startCase } from "lodash";
+import useContributeMutation from "post/post_shared/contribution-hook";
 
 type SubContriHeaderProps = {
   section: string;
@@ -30,70 +25,8 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
   const { isEditContribute, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
 
-  //sending postcode, section, user id through token and now make the update by deleting the data.
-  const deleteContributeMutation = useMutation({
-    mutationFn: async (data: { post_code: string; section: string }) => {
-      console.log(data);
-      const response = await axiosInstance.patch(
-        "/user/account/post/delete-contribution",
-        data
-      );
-      return response.data;
-    },
-    onSuccess: ({ message }) => {
-      dispatch(triggerSuccessMsg(message || "Contribution deleted!"));
-    },
-    onError: (error: any) => {
-      dispatch(
-        triggerErrorMsg(
-          error.response?.data?.message || "Contribution deletion failed!"
-        )
-      );
-    },
-  });
-
-  const contributeMutation = useMutation({
-    mutationFn: async ({
-      keyValuePairs,
-      section,
-      postCode,
-    }: {
-      keyValuePairs: Record<string, any>;
-      section: string;
-      postCode: string;
-    }) => {
-      console.log({
-        data: keyValuePairs,
-        section,
-        post_code: postCode,
-      });
-      
-      const response = await axiosInstance.post(
-        "/user/account/post/contribute-to-post",
-        {
-          data: keyValuePairs,
-          section,
-          post_code: postCode,
-        }
-      );
-      return response.data;
-    },
-    onSuccess: ({ message }) => {
-      dispatch(
-        triggerSuccessMsg(message || "Contributed to post successfully!")
-      );
-      dispatch(resetKeyValuePairs());
-      dispatch(setEditContribute({ clicked: false, section: "", postCode: "" }));
-    },
-    onError: (error: any) => {
-      dispatch(
-        triggerErrorMsg(
-          error.response?.data?.message || "Failed to contribute!"
-        )
-      );
-    },
-  });
-
+  const { contributeMutation, deleteContributeMutation } = useContributeMutation();
+  
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-1 justify-center">
@@ -121,6 +54,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
                 })
               );
             }}
+            classProp="text-sm"
           >
             Undo
           </Button>

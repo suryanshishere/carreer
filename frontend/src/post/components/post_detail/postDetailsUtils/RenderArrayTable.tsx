@@ -1,7 +1,7 @@
 import React from "react";
 import { startCase } from "lodash";
 import RenderPostDetail from "./RenderPostDetail";
-import { excludedKeys } from "post/components/postDetails/postDetailsUtils/post-detail-render-define";
+import { excludedKeys } from "post/components/post_detail/postDetailsUtils/post-detail-render-define";
 
 // Background colors for table rows
 export const bgColors = [

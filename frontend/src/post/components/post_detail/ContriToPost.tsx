@@ -5,27 +5,17 @@ import {
   resetKeyValuePairs,
   setEditPostClicked,
 } from "shared/store/post-slice";
-// import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import axiosInstance from "shared/utils/api/axios-instance";
-import { useMutation } from "@tanstack/react-query";
-import {
-  triggerErrorMsg,
-  triggerSuccessMsg,
-} from "shared/store/thunks/response-thunk";
+import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import { closeSpecificDropdowns } from "shared/store/dropdown-slice";
 import RESPONSE_DB from "db/response-db";
+import useContributeMutation from "post/post_shared/contribution-hook";
 
-interface IContributeToPost {
+const ContriToPost: React.FC<{
   section: string;
   postCode: string;
-}
-
-const ContributeToPost: React.FC<IContributeToPost> = ({
-  section,
-  postCode,
-}) => {
+}> = ({ section, postCode }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isEditPostClicked, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
@@ -45,38 +35,7 @@ const ContributeToPost: React.FC<IContributeToPost> = ({
     }
   });
 
-  const mutation = useMutation({
-    mutationFn: async (keyValuePairs: Record<string, any>) => {
-      console.log({
-        data: keyValuePairs,
-        section,
-        post_code: postCode,
-      });
-      const response = await axiosInstance.post(
-        "/user/account/post/contribute-to-post",
-        {
-          data: keyValuePairs,
-          section,
-          post_code: postCode,
-        }
-      );
-      return response.data;
-    },
-    onSuccess: ({ message }) => {
-      dispatch(
-        triggerSuccessMsg(message || "Contributed to post successfully!")
-      );
-      dispatch(resetKeyValuePairs());
-      dispatch(closeSpecificDropdowns(["info"]));
-    },
-    onError: (error: any) => {
-      dispatch(
-        triggerErrorMsg(
-          error.response?.data?.message || "Failed to contribute!"
-        )
-      );
-    },
-  });
+  const { contributeMutation } = useContributeMutation();
 
   const contributePostHandler = () => {
     if (token) {
@@ -103,17 +62,17 @@ const ContributeToPost: React.FC<IContributeToPost> = ({
       {isAllKeyValuePairsStored && (
         <Button
           onClick={() => {
-            mutation.mutate(keyValuePairs);
+            contributeMutation.mutate({ keyValuePairs, section, postCode });
           }}
-          disabled={mutation.isPending}
+          disabled={contributeMutation.isPending}
           authButtonType
           classProp="whitespace-nowrap text-sm p-0 px-2 py-1"
         >
-          {mutation.isPending ? "Submitting..." : "Submit"}
+          {contributeMutation.isPending ? "Submitting..." : "Submit"}
         </Button>
       )}
     </div>
   );
 };
 
-export default ContributeToPost;
+export default ContriToPost;

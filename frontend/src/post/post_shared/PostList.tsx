@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Bookmark from "post/postShared/Bookmark";
-import RenderField from "post/postShared/RenderField";
+import Bookmark from "post/post_shared/Bookmark";
+import RenderField from "post/post_shared/RenderField";
 import _ from "lodash";
-import { excludedPostListKeys } from "post/postShared/post-list-render-define";
+import { excludedPostListKeys } from "post/post_shared/post-list-render-define";
 import { IPostList, IPostListData } from "models/postModels/IPost";
 import tag from "./tag";
 import { ParaSkeletonLoad } from "shared/ui/SkeletonLoad";

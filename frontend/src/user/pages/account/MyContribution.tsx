@@ -1,11 +1,10 @@
-import React from "react";
-import _ from "lodash";
+import React from "react"; 
 import { useQuery } from "@tanstack/react-query";
 import NoData from "shared/components/dataStates/NoData";
 import axiosInstance from "shared/utils/api/axios-instance";
 import moment from "moment";
 import PageHeader from "shared/ui/PageHeader";
-import MyContributionComponent from "user/components/account/contribute/MyContriComponent";
+import MyContributionComponent from "user/components/account/my_contribute";
 
 // Define the types for the API response
 export interface IContributionDetails {

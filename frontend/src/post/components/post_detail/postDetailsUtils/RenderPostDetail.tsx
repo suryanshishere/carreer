@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import RenderField from "post/postShared/RenderField";
+import RenderField from "post/post_shared/RenderField";
 import EditableField from "./PostDetailsEditable";
 
 interface RenderPostDetailProps {

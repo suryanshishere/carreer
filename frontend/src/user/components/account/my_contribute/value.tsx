@@ -1,8 +1,5 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "shared/store";
-import { resetKeyValuePairs, setEditContribute } from "shared/store/post-slice";
-import PostDetailsEditable from "post/components/postDetails/postDetailsUtils/PostDetailsEditable";
+import React from "react"; 
+import PostDetailsEditable from "post/components/post_detail/postDetailsUtils/PostDetailsEditable";
 
 interface SubContriValueProps {
   subValue: Record<string, any> | string | number | null;
@@ -25,7 +22,7 @@ const SubContriValue: React.FC<SubContriValueProps> = ({
           <React.Fragment key={`${detailKey}`}>
             <ul className="pl-1 grid grid-cols-[1rem,1fr]">
               <div className="w-2 h-2 mt-2 bg-custom-gray rounded-sm"></div>
-              <li className="flex flex-col mb-2">
+              <li className="flex flex-col gap-2 mb-2">
                 <span className="text-sm font-semibold text-custom-gray">
                   {detailKey.replace(/\./g, " / ")}:
                 </span>
