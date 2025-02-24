@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import renderObject from "shared/ui/render_post_data/render_object";
+import renderObject from "post/post_shared/render_post_data/render_object";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";

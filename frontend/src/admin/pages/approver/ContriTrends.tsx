@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"; 
 import { useParams } from "react-router-dom"; 
-import RenderTable from "shared/ui/render_post_data/render_table";
+import RenderTable from "post/post_shared/render_post_data/render_table";
 import axiosInstance from "shared/utils/api/axios-instance";
 
 const ContriTrends = () => {

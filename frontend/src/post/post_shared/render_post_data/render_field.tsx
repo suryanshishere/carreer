@@ -1,24 +1,35 @@
 import { Link } from "react-router-dom";
-import RenderDate from "../components/post_detail/postDetailsUtils/RenderDate";
+import RenderDate from "./render_date";
 import _ from "lodash";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
+import PostEditable from "../../../post/post_shared/post_editable";
 
 const RenderField = ({
   stringValue,
   uniqueKey,
   noLinkClassProp,
 }: {
-  stringValue: string;
+  stringValue: any;
   uniqueKey: string;
   noLinkClassProp?: boolean;
 }) => {
-  if (stringValue === stringValue.toUpperCase() && stringValue.includes("_")) {
-    return <Link to={stringValue}>{_.startCase(_.toLower(stringValue))}</Link>;
+  let strValue = _.toString(stringValue);
+
+  const { isEditPostClicked } = useSelector((state: RootState) => state.post);
+
+  if (isEditPostClicked) {
+    return <PostEditable valueProp={stringValue} keyProp={uniqueKey} />;
   }
 
-  if (stringValue.startsWith("https://")) {
+  if (strValue === strValue.toUpperCase() && strValue.includes("_")) {
+    return <Link to={strValue}>{_.startCase(_.toLower(strValue))}</Link>;
+  }
+
+  if (strValue.startsWith("https://")) {
     return (
       <a
-        href={stringValue}
+        href={strValue}
         target="_blank"
         rel="noopener noreferrer"
         className={
@@ -34,16 +45,16 @@ const RenderField = ({
 
   const linkRegex = /\[https?:\/\/[^\]]+\]\((https?:\/\/[^\)]+)\)/g;
 
-  if (linkRegex.test(stringValue)) {
+  if (linkRegex.test(strValue)) {
     // Regex to find markdown-style links
     const linkRegex = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
 
     const parts = [];
     let lastIndex = 0;
 
-    stringValue.replace(linkRegex, (match, linkText, url, offset) => {
+    strValue.replace(linkRegex, (match, linkText, url, offset) => {
       if (offset > lastIndex) {
-        parts.push(stringValue.slice(lastIndex, offset));
+        parts.push(strValue.slice(lastIndex, offset));
       }
 
       parts.push(
@@ -71,19 +82,19 @@ const RenderField = ({
   }
 
   if (
-    stringValue.includes("//") ||
-    stringValue.includes("\n") ||
-    stringValue.match(/(\.\s\d\.)/)
+    strValue.includes("//") ||
+    strValue.includes("\n") ||
+    strValue.match(/(\.\s\d\.)/)
   ) {
     return (
       <p>
-        {stringValue
+        {strValue
           .split(/\/\/|\n|(?=\d\.)/) // Split before digits followed by a period
           .filter((part) => part.trim() !== "") // Remove empty or whitespace-only parts
           .map((part, index) => (
             <span key={index}>
               {part.trim()} {/* Trim extra spaces */}
-              {index !== stringValue.split(/\/\/|\n|(?=\d\.)/).length - 1 && (
+              {index !== strValue.split(/\/\/|\n|(?=\d\.)/).length - 1 && (
                 <br />
               )}
             </span>
@@ -92,11 +103,20 @@ const RenderField = ({
     );
   }
 
-  if (stringValue.includes("_")) {
-    return <>{_.startCase(stringValue)}</>;
+  if (strValue.includes("_")) {
+    return <>{_.startCase(strValue)}</>;
   }
 
-  return <RenderDate stringValue={stringValue} uniqueKey={uniqueKey} />;
+  //date check
+  const partialDateRegex = /\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(.\d+)?Z)?/;
+  if (partialDateRegex.test(strValue)) {
+    const match = partialDateRegex.exec(strValue);
+    if (!match) return <>{strValue}</>;
+
+    return <RenderDate stringValue={strValue} uniqueKey={uniqueKey} />;
+  }
+
+  return <> {strValue}</>;
 };
 
 export default RenderField;

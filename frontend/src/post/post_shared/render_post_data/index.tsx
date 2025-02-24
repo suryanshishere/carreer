@@ -1,8 +1,7 @@
-import { tableRequired } from "../../../post/components/post_detail/postDetailsUtils/post-detail-render-define";
-import RenderPostDetail from "../../../post/components/post_detail/postDetailsUtils/RenderPostDetail";
-import renderObject from "./render_object";
+import { tableRequired } from "../../components/post_detail/postDetailsUtils/post-detail-render-define";
 import RenderTable from "./render_table";
 import RenderObject from "./render_object";
+import RenderField from "post/post_shared/render_post_data/render_field";
 
 const renderStrategies = {
   isNullOrUndefined: (value: any) => value === null || value === undefined,
@@ -23,13 +22,11 @@ const renderPostData = (key: string, value: any) => {
   if (renderStrategies.isPlainObject(value)) {
     if (value?.current_year || value?.previous_year) {
       const yearData = value.current_year || value.previous_year;
-      return <RenderPostDetail value={yearData} keyProp={key} />;
+      return <RenderField stringValue={yearData} uniqueKey={key} />;
     }
-
     return <RenderObject value={value} parentKey={key} />;
   }
-
-  return <RenderPostDetail value={value} keyProp={key} />;
+  return <RenderField stringValue={value} uniqueKey={key} />;
 };
 
 export default renderPostData;

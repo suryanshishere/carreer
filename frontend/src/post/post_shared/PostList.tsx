@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Bookmark from "post/post_shared/Bookmark";
-import RenderField from "post/post_shared/RenderField";
+import RenderField from "post/post_shared/render_post_data/render_field";
 import _ from "lodash";
 import { excludedPostListKeys } from "post/post_shared/post-list-render-define";
 import { IPostList, IPostListData } from "models/postModels/IPost";

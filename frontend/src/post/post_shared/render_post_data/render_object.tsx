@@ -4,7 +4,7 @@ import { ICommon } from "models/postModels/overallInterfaces/ICommon";
 import { IDates } from "models/postModels/overallInterfaces/IDates";
 import { IFees } from "models/postModels/overallInterfaces/IFees";
 import { ILinks } from "models/postModels/overallInterfaces/ILinks";
-import { excludedKeys } from "../../../post/components/post_detail/postDetailsUtils/post-detail-render-define"; 
+import { excludedKeys } from "../../components/post_detail/postDetailsUtils/post-detail-render-define"; 
 import renderData from ".";
 import { SquareUI } from "shared/ui";
 

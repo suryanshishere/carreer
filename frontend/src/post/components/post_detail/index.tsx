@@ -2,7 +2,7 @@ import React from "react";
 import { startCase } from "lodash";
 import { excludedKeys } from "./postDetailsUtils/post-detail-render-define";
 import { IPostDetail } from "models/postModels/IPost";
-import renderPostData from "../../../shared/ui/render_post_data";
+import renderPostData from "../../post_shared/render_post_data";
 import { ParaSkeletonLoad, TableSkeletonLoad } from "shared/ui/SkeletonLoad";
 
 const PostDetailComponent: React.FC<{
