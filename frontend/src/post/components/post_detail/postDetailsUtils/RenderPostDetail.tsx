@@ -3,7 +3,7 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import RenderField from "post/post_shared/RenderField";
-import EditableField from "./PostDetailsEditable";
+import EditableField from "../../../post_shared/post_editable";
 
 interface RenderPostDetailProps {
   value: Date | string | number;
@@ -17,7 +17,7 @@ const RenderPostDetail: React.FC<RenderPostDetailProps> = ({
   const { isEditPostClicked } = useSelector((state: RootState) => state.post);
 
   return isEditPostClicked ? (
-    <EditableField value={value} keyProp={keyProp} />
+    <EditableField valueProp={value} keyProp={keyProp} />
   ) : (
     <RenderField stringValue={_.toString(value)} uniqueKey={keyProp} />
   );

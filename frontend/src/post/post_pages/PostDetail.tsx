@@ -3,14 +3,14 @@ import axiosInstance from "shared/utils/api/axios-instance";
 import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Bookmark from "post/post_shared/Bookmark";
-import PostDetailItem from "post/components/post_detail/PostDetailItem";
+import PostDetailItem from "post/components/post_detail";
 import rearrangeObjectByPriority, {
   priorityMapping,
 } from "../components/post_detail/postDetailsUtils/post-priority-order";
 import { snakeCase } from "lodash";
 import { IPostDetail } from "models/postModels/IPost";
 import { postDetailPriorities } from "../components/post_detail/postDetailsUtils/post-priority-array";
-import Info from "post/post_shared/Info";
+import Info from "post/components/post_detail/info";
 import NoData from "shared/components/dataStates/NoData";
 
 const fetchPostDetail = async (

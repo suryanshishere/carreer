@@ -1,8 +1,8 @@
 import { RouteObject } from "react-router-dom";
 import ResetPassword from "user/pages/auth/ResetPassword";
-import Section from "post/pages/Section";
-import PostDetail from "post/pages/PostDetail";
-import Home from "post/pages/Home";
+import Section from "post/post_pages/Section";
+import PostDetail from "post/post_pages/PostDetail";
+import Home from "post/post_pages/Home";
 import userRoutes from "./user-routes";
 import adminRoutes from "./admin-routes";
 import { IRole } from "models/admin/IAdmin";

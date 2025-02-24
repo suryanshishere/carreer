@@ -6,20 +6,13 @@ import { removeKeyValuePair, setKeyValuePair } from "shared/store/post-slice";
 import Button from "shared/utils/form/Button";
 import Dropdown from "shared/utils/form/Dropdown";
 import { Input, TextArea } from "shared/utils/form/Input";
-import { getFieldValidation, validateFieldValue } from "./editable-validation";
+import { getFieldValidation, validateFieldValue } from "./post_editable_utils";
+import { IContribute } from "post/post_interfaces";
 
-interface IPostDetailsEditable {
-  value: Date | string | number;
-  keyProp: string;
-}
-
-const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
-  value,
-  keyProp,
-}) => {
+const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [inputValue, setInputValue] = useState<Date | string | number>(
-    value instanceof Date ? value.toISOString().slice(0, 10) : value
+    valueProp instanceof Date ? valueProp.toISOString().slice(0, 10) : valueProp
   );
   const [isChanged, setIsChanged] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -37,7 +30,7 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
     >
   ) => {
     const newValue =
-      typeof value === "number" ? +e.target.value : e.target.value;
+      typeof valueProp === "number" ? +e.target.value : e.target.value;
     setInputValue(newValue);
     setIsChanged(true);
     setIsSaved(false);
@@ -45,9 +38,9 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
 
   const handleSave = () => {
     const parsedValue =
-      typeof value === "number"
+      typeof valueProp === "number"
         ? +inputValue
-        : typeof value === "string"
+        : typeof valueProp === "string"
         ? inputValue.toString()
         : new Date(inputValue as string);
 
@@ -57,7 +50,9 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
   };
 
   const handleUndo = () => {
-    setInputValue(value instanceof Date ? value.toISOString() : value);
+    setInputValue(
+      valueProp instanceof Date ? valueProp.toISOString() : valueProp
+    );
     dispatch(removeKeyValuePair(keyProp));
     setIsChanged(false);
     setIsSaved(false);
@@ -68,7 +63,7 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
       return (
         <Dropdown
           name={keyProp}
-          defaultValue={value}
+          defaultValue={valueProp}
           data={
             POST_LIMITS_DB.dropdown_data[
               lastName as keyof typeof POST_LIMITS_DB.dropdown_data
@@ -79,9 +74,9 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
       );
     }
 
-    const isLongText = typeof value === "string" && value.length > 75;
+    const isLongText = typeof valueProp === "string" && valueProp.length > 75;
     const inputType =
-      typeof value === "number"
+      typeof valueProp === "number"
         ? "number"
         : validationConfig?.type === "date"
         ? "date"
@@ -145,4 +140,4 @@ const PostDetailsEditable: React.FC<IPostDetailsEditable> = ({
   );
 };
 
-export default PostDetailsEditable;
+export default PostEditable;

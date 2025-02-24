@@ -24,5 +24,8 @@ export const excludedKeys = [
     "eligibility",
     "applicants",
     "application_fee.category_wise",
-    "common.age_criteria"
+    "common.age_criteria",
+    "important_links.additional_resources",
+    "result.current_year",
+    "result.previous_year",
   ];

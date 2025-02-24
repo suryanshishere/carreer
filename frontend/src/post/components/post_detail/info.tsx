@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { toggleDropdownState } from "shared/store/dropdown-slice";
 import { useParams } from "react-router-dom";
-import ContriToPost from "post/components/post_detail/ContriToPost";
+import ContriToPost from "post/components/post_detail/contri_to_post";
 import Button from "shared/utils/form/Button";
 
 const Info = () => {
@@ -32,7 +32,7 @@ const Info = () => {
         {!dropdownStates["info"] ? (
           <InfoOutlinedIcon fontSize="small" />
         ) : (
-          <InfoSharpIcon fontSize="small" />
+          <InfoSharpIcon fontSize="small" className="text-custom-gray" />
         )}
       </Button>
     </div>

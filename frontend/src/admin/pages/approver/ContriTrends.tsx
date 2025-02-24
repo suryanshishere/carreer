@@ -1,7 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { useParams } from "react-router-dom";
-import RenderArrayTable from "post/components/post_detail/postDetailsUtils/RenderArrayTable";
+import { useQuery } from "@tanstack/react-query"; 
+import { useParams } from "react-router-dom"; 
+import RenderTable from "shared/ui/render_post_data/render_table";
 import axiosInstance from "shared/utils/api/axios-instance";
 
 const ContriTrends = () => {
@@ -24,7 +23,7 @@ const ContriTrends = () => {
 
   return (
     <div>
-      <RenderArrayTable value={data.data || []} arrTableKey="cool" />
+      <RenderTable value={data.data || []} tableKey="cool" />
     </div>
   );
 };

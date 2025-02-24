@@ -2,14 +2,12 @@ import React from "react";
 import { startCase } from "lodash";
 import { excludedKeys } from "./postDetailsUtils/post-detail-render-define";
 import { IPostDetail } from "models/postModels/IPost";
-import renderData from "./postDetailsUtils/render-data";
+import renderPostData from "../../../shared/ui/render_post_data";
 import { ParaSkeletonLoad, TableSkeletonLoad } from "shared/ui/SkeletonLoad";
 
-interface DetailItemProps {
+const PostDetailComponent: React.FC<{
   data: IPostDetail;
-}
-
-const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
+}> = ({ data }) => {
   const isEmpty = Object.keys(data).length === 0;
 
   // Skeleton Rendering
@@ -42,7 +40,7 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
             <h2 className="whitespace-nowrap text-custom-red">
               {startCase(displayKey)}
             </h2>
-            <div className="flex flex-col">{renderData(value, key)}</div>
+            <div className="flex flex-col">{renderPostData(key, value)}</div>
           </div>
         );
       })}
@@ -50,4 +48,4 @@ const PostDetailItem: React.FC<DetailItemProps> = ({ data }) => {
   );
 };
 
-export default PostDetailItem;
+export default PostDetailComponent;
