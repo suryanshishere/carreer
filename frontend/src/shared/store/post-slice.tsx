@@ -2,12 +2,22 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface PostState {
   isEditPostClicked: boolean;
+  isEditContribute: {
+    clicked: boolean;
+    section: string;
+    postCode: string;
+  };
   isAllKeyValuePairsStored: boolean;
-  keyValuePairs: Record<string, any>; 
+  keyValuePairs: Record<string, any>;
 }
 
 const initialState: PostState = {
   isEditPostClicked: false,
+  isEditContribute: {
+    clicked: false,
+    section: "",
+    postCode: "",
+  },
   isAllKeyValuePairsStored: false,
   keyValuePairs: {},
 };
@@ -16,6 +26,16 @@ const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
+    setEditContribute(
+      state,
+      action: PayloadAction<{
+        clicked: boolean;
+        section: string;
+        postCode: string;
+      }>
+    ) {
+      state.isEditContribute = action.payload;
+    },
     setEditPostClicked(state, action: PayloadAction<boolean>) {
       state.isEditPostClicked = action.payload;
     },
@@ -50,6 +70,7 @@ const postSlice = createSlice({
 
 export const {
   setEditPostClicked,
+  setEditContribute,
   setKeyValuePair,
   resetKeyValuePairs,
   removeKeyValuePair,

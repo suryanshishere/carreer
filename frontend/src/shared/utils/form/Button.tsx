@@ -13,6 +13,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   authButtonType?: boolean;
   warning?: boolean;
   contributeSaveButton?: boolean;
+  basicButton?: boolean;
   iconButton?: boolean; // New prop for icon button variant
 }
 
@@ -28,14 +29,26 @@ const Button: React.FC<ButtonProps> = ({
   warning,
   contributeSaveButton,
   iconButton,
+  basicButton,
   ...rest
 }) => {
   // Common props applied to every button
   const commonProps = { onClick, disabled, type, style, ...rest };
 
+  if (basicButton) {
+    return (
+      <button
+        {...commonProps}
+        className={`whitespace-nowrap hover:bg-custom-less-gray transform duration-100 ease-linear px-2 py-1 rounded ${classProp}`}
+      >
+        {children}
+      </button>
+    );
+  }
+
   // Contribute Save Button
   if (contributeSaveButton) {
-    const baseClass = `flex-1 py-[.5rem] px-[0.5rem] md:py-[.45rem] rounded transform ease-linear duration-200`;
+    const baseClass = `flex-1 py-[.5rem] px-[0.5rem] md:py-[.45rem] whitespace-nowrap rounded transform ease-linear duration-200`;
     const stateClass = !disabled
       ? "bg-custom-blue text-custom-white hover:bg-custom-dark-blue"
       : "bg-custom-less-gray text-custom-gray cursor-not-allowed";
@@ -85,7 +98,7 @@ const Button: React.FC<ButtonProps> = ({
 
   // Warning Button
   if (warning) {
-    const baseClass = `text-custom-red flex items-center justify-center rounded outline outline-custom-red p-button hover:text-custom-white hover:bg-custom-red min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden`;
+    const baseClass = `text-custom-red whitespace-nowrap flex items-center justify-center rounded outline outline-custom-red p-button hover:text-custom-white hover:bg-custom-red min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden`;
     const stateClass = disabled ? "cursor-not-allowed" : "cursor-pointer";
     return (
       <button
@@ -102,7 +115,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <button
         {...commonProps}
-        className={`p-1 rounded-full hover:bg-custom-pale-yellow flex items-center justify-center cursor-pointer text-custom-less-gray hover:text-custom-gray ${classProp} `}
+        className={`p-1 rounded-full whitespace-nowrap hover:bg-custom-pale-yellow flex items-center justify-center cursor-pointer text-custom-less-gray hover:text-custom-gray ${classProp} `}
       >
         {children}
       </button>
@@ -112,7 +125,7 @@ const Button: React.FC<ButtonProps> = ({
   // Default Button
   // Ensure "rounded" is present unless already provided in classProp
   const roundedClass = classProp.includes("rounded") ? "" : "rounded";
-  const baseClass = `flex items-center justify-center ${roundedClass} outline outline-custom-less-gray p-button hover:bg-custom-pale-yellow hover:outline-custom-gray ease-linear transform duration-100 w-full whitespace-nowrap py-[.5rem] px-[0.5rem] md:py-[.45rem] text-base overflow-hidden`;
+  const baseClass = `flex whitespace-nowrap items-center justify-center ${roundedClass} outline outline-custom-less-gray p-button hover:bg-custom-pale-yellow hover:outline-custom-gray ease-linear transform duration-100 w-full whitespace-nowrap py-[.5rem] px-[0.5rem] md:py-[.45rem] text-base overflow-hidden`;
   const stateClass = disabled
     ? "cursor-not-allowed text-custom-less-gray"
     : "cursor-pointer";

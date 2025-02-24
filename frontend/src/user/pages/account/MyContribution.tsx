@@ -5,7 +5,7 @@ import NoData from "shared/components/dataStates/NoData";
 import axiosInstance from "shared/utils/api/axios-instance";
 import moment from "moment";
 import PageHeader from "shared/ui/PageHeader";
-import MyContributionComponent from "user/components/account/MyContributionComponent";
+import MyContributionComponent from "user/components/account/contribute/MyContriComponent";
 
 // Define the types for the API response
 export interface IContributionDetails {

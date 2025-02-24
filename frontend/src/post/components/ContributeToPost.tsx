@@ -14,9 +14,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
-import {
-  closeSpecificDropdowns, 
-} from "shared/store/dropdown-slice";
+import { closeSpecificDropdowns } from "shared/store/dropdown-slice";
 import RESPONSE_DB from "db/response-db";
 
 interface IContributeToPost {
@@ -53,12 +51,15 @@ const ContributeToPost: React.FC<IContributeToPost> = ({
         data: keyValuePairs,
         section,
         post_code: postCode,
-      })
-      const response = await axiosInstance.post("/user/account/post/contribute-to-post", {
-        data: keyValuePairs,
-        section,
-        post_code: postCode,
       });
+      const response = await axiosInstance.post(
+        "/user/account/post/contribute-to-post",
+        {
+          data: keyValuePairs,
+          section,
+          post_code: postCode,
+        }
+      );
       return response.data;
     },
     onSuccess: ({ message }) => {
@@ -91,19 +92,13 @@ const ContributeToPost: React.FC<IContributeToPost> = ({
       className="text-sm absolute right-full mr-1 flex items-center gap-1"
     >
       {!isEditPostClicked ? (
-        <button
-          onClick={contributePostHandler}
-          className="whitespace-nowrap hover:bg-custom-less-gray transform duration-100 ease-linear px-2 py-1 rounded"
-        >
+        <Button basicButton onClick={contributePostHandler}>
           Contribute To This Post
-        </button>
+        </Button>
       ) : (
-        <button
-          onClick={() => dispatch(resetKeyValuePairs())}
-          className="whitespace-nowrap hover:bg-custom-less-gray transform duration-100 ease-linear px-2 py-1 rounded"
-        >
+        <Button basicButton onClick={() => dispatch(resetKeyValuePairs())}>
           Undo
-        </button>
+        </Button>
       )}
       {isAllKeyValuePairsStored && (
         <Button
@@ -112,7 +107,7 @@ const ContributeToPost: React.FC<IContributeToPost> = ({
           }}
           disabled={mutation.isPending}
           authButtonType
-          classProp="whitespace-nowrap text-sm p-0 px-2 py-1  "
+          classProp="whitespace-nowrap text-sm p-0 px-2 py-1"
         >
           {mutation.isPending ? "Submitting..." : "Submit"}
         </Button>
