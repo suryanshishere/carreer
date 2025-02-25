@@ -5,6 +5,7 @@ import dropdownReducer from "./dropdown-slice";
 import responseReducer from "./response-slice";
 import authReducer from "./auth-slice";
 import postReducer from "./post-slice";
+import modalReducer from "./modal-slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -20,6 +21,7 @@ const store = configureStore({
     response: responseReducer,
     auth: persistedAuthReducer,
     post: postReducer,
+    modal: modalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

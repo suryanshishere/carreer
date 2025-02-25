@@ -17,6 +17,10 @@
     @apply text-base p-0;
   }
 
+  mark{
+    @apply bg-custom-pale-yellow;
+  }
+
   @layer components {
     hr {
       @apply bg-custom-less-gray w-full; 

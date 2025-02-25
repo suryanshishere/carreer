@@ -3,12 +3,14 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import Button from "shared/utils/form/Button";
 import EditSharpIcon from "@mui/icons-material/EditSharp";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { resetKeyValuePairs, setEditContribute } from "shared/store/post-slice";
 import { startCase } from "lodash";
 import useContributeMutation from "post/post_shared/contribution-hook";
+import Modal from "shared/ui/Modal";
+import { closeModal, openModal } from "shared/store/modal-slice";
 
 type SubContriHeaderProps = {
   section: string;
@@ -25,8 +27,9 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
   const { isEditContribute, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
 
-  const { contributeMutation, deleteContributeMutation } = useContributeMutation();
-  
+  const { contributeMutation, deleteContributeMutation } =
+    useContributeMutation();
+
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-1 justify-center">
@@ -85,24 +88,48 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
             }}
             disabled={contributeMutation.isPending}
             authButtonType
-            classProp="text-sm p-0 px-2 py-1 "
+            classProp="text-sm p-0 px-2 py-1"
           >
             {contributeMutation.isPending ? "Submitting..." : "Submit"}
           </Button>
         )}
         <Button
           iconButton
-          onClick={() =>
-            deleteContributeMutation.mutate({
-              post_code: postCode,
-              section: section,
-            })
-          }
+          onClick={() => dispatch(openModal())}
           classProp="ml-4"
         >
           <DeleteOutlineIcon fontSize="small" />
         </Button>
       </div>
+
+      {/* Delete Confirmation Modal */}
+
+      <Modal
+        onClose
+        header="Confirm Deletion"
+        footer={
+          <div className="flex justify-end gap-2">
+            <Button onClick={() => dispatch(closeModal())}>Cancel</Button>
+            <Button
+              authButtonType
+              onClick={() => {
+                deleteContributeMutation.mutate({
+                  post_code: postCode,
+                  section: section,
+                });
+                !deleteContributeMutation.isPending && dispatch(closeModal());
+              }}
+            >
+              {deleteContributeMutation.isPending ? "Confirming..." : "Confirm"}
+            </Button>
+          </div>
+        }
+      >
+        <p>Are you sure you want to delete this contribution?</p>
+        <mark className="px-2">
+          {postCode} / {section}
+        </mark>
+      </Modal>
     </div>
   );
 };

@@ -84,8 +84,8 @@ const Navlinks: React.FC = () => {
                       className={({ isActive }) =>
                         `m-1 py-1 block rounded ${
                           isActive
-                            ? "bg-custom-less-white"
-                            : "hover:bg-custom-less-white"
+                            ? "bg-custom-white"
+                            : "hover:bg-custom-white"
                         }`
                       }
                       onClick={() => handleSelectLink(key)}

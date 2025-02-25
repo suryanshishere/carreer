@@ -40,8 +40,8 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
               ? logoutHandler
               : () => dispatch(toggleDropdownState({ id: key }))
           }
-          className={`py-1 px-2 w-full rounded hover:bg-custom-less-white ${
-            dropdownStates[key] ? "bg-custom-less-white" : ""
+          className={`py-1 px-2 w-full rounded hover:bg-custom-white ${
+            dropdownStates[key] ? "bg-custom-white" : ""
           }`}
         >
           {startCase(key)}
@@ -52,8 +52,8 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
         component = (
           <button
             onClick={() => dispatch(toggleDropdownState({ id: key }))}
-            className={`py-1 px-2 w-full rounded hover:bg-custom-less-white ${
-              dropdownStates[key] ? "bg-custom-less-white" : ""
+            className={`py-1 px-2 w-full rounded hover:bg-custom-white ${
+              dropdownStates[key] ? "bg-custom-white" : ""
             }`}
           >
             {startCase(key)}
@@ -74,8 +74,8 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
               className={({ isActive }) =>
                 `py-1 px-2 block rounded ${
                   isActive
-                    ? "bg-custom-less-white"
-                    : "hover:bg-custom-less-white"
+                    ? "bg-custom-white"
+                    : "hover:bg-custom-white"
                 }`
               }
               onClick={() => dispatch(closeAllDropdowns())}
