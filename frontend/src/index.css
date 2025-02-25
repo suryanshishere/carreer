@@ -18,7 +18,7 @@
   }
 
   mark{
-    @apply bg-custom-pale-yellow;
+    @apply bg-custom-pale-yellow rounded;
   }
 
   @layer components {

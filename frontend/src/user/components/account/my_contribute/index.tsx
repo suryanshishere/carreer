@@ -1,5 +1,5 @@
 import React from "react";
-import { IContributionDetails } from "user/pages/account/MyContribution";
+import { IContributionDetails } from "user/pages/account/my_contribution";
 import { startCase } from "lodash";
 import SubContriHeader from "./sub_contri_header";
 import SubContriValue from "./sub_contri_value";

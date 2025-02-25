@@ -138,18 +138,33 @@ export const myContribution = async (
 ) => {
   try {
     const userId = (req as JWTRequest).userData.userId;
-    const contribution: IContribution = await ContributionModel.findById(
+    const contributor: IContribution = await ContributionModel.findById(
       userId
-    ).select("contribution updatedAt");
+    ).select("contribution approved updatedAt");
 
-    if (!contribution) {
+    if (!contributor) {
       return next(new HttpError("Contribution not found!", 404));
     }
 
-    const { contribution: contributionData, updatedAt } = contribution;
+    const { contribution, approved, updatedAt } = contributor;
+
+    // Merge all approved data into a single object
+    const mergedApprovedData: Record<string, any> = {};
+    approved.forEach(({ data }) => {
+      data.forEach((value, key) => {
+        if (!mergedApprovedData[key]) {
+          mergedApprovedData[key] = value;
+        } else {
+          mergedApprovedData[key] = { ...mergedApprovedData[key], ...value };
+        }
+      });
+    });
 
     return res.status(200).json({
-      data: contributionData,
+      data: {
+        contribution,
+        approved: mergedApprovedData,
+      },
       metadata: {
         timeStamp: {
           updatedAt,

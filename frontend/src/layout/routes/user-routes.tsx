@@ -4,7 +4,7 @@ import ForgotPassword from "user/pages/auth/ForgotPassword";
 import DeactivateAccount from "user/pages/account/setting/DeactivateAccount";
 import ReqAccess from "user/pages/RequestAccess";
 import ResetPassword from "user/pages/auth/ResetPassword";
-import MyContribution from "user/pages/account/MyContribution";
+import MyContribution from "user/pages/account/my_contribution";
 
 const userRoutes = (token: string | null, role?: string) => {
   if (token) {
