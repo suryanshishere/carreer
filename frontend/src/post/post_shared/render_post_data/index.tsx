@@ -22,7 +22,7 @@ const renderPostData = (key: string, value: any) => {
   if (renderStrategies.isPlainObject(value)) {
     if (value?.current_year || value?.previous_year) {
       const yearData = value.current_year || value.previous_year;
-      return <RenderField stringValue={yearData} uniqueKey={key} />;
+      return <RenderField stringValue={yearData} uniqueKey={`${key}.current_year`} />;
     }
     return <RenderObject value={value} parentKey={key} />;
   }
