@@ -3,12 +3,7 @@ import { startCase } from "lodash";
 import { excludedKeys } from "post/components/post_detail/postDetailsUtils/post-detail-render-define";
 import renderPostData from "post/post_shared/render_post_data";
 
-// Background colors for table rows
-const bgColors = [
-  "bg-custom-pale-yellow",
-  "bg-custom-less-gray",
-  "bg-custom-less-white",
-];
+const bgColors = ["bg-custom-pale-yellow", "bg-custom-white"];
 
 interface RenderTableProps {
   value: any[] | Record<string, any>;
@@ -16,13 +11,16 @@ interface RenderTableProps {
 }
 
 const RenderTable: React.FC<RenderTableProps> = ({ value, tableKey }) => {
-  if (!value || typeof value !== "object" || excludedKeys.includes(tableKey)) return null;
+  if (!value || typeof value !== "object" || excludedKeys.includes(tableKey))
+    return null;
 
   const isArray = Array.isArray(value);
 
   // For arrays, generate headers and rows
   const headers = isArray
-    ? Object.keys(value[0] || {}).filter((header) => !excludedKeys.includes(header))
+    ? Object.keys(value[0] || {}).filter(
+        (header) => !excludedKeys.includes(header)
+      )
     : [];
 
   return (

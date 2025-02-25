@@ -20,7 +20,6 @@ module.exports = {
         "custom-red": "rgb(165, 42, 42)",
         "custom-less-red": "rgba(165, 42, 42, 0.85)",
         "custom-white": "rgba(255, 255, 255, 1)",
-        "custom-less-white": "rgba(255, 255, 255, 0.75)",
         "custom-black": "#000000",
         "custom-gray": "rgba(104, 109, 118)",
         "custom-less-gray": "rgb(228, 224, 225)",

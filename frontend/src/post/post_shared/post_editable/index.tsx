@@ -19,6 +19,7 @@ const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
 
   const lastName = keyProp.split(".").pop() || "";
   const validationConfig = getFieldValidation(lastName);
+  // Validation (updated to handle string dates)
   const { isValid, error } = validateFieldValue(
     inputValue instanceof Date ? inputValue.toISOString() : inputValue,
     validationConfig
@@ -108,7 +109,7 @@ const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-center gap-2">
+    <div className="w-full h-full my-1 flex flex-col justify-center gap-2">
       {renderInputField()}
 
       {isSaved && (
