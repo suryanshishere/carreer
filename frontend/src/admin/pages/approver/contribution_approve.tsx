@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import renderObject from "post/post_shared/render_post_data/render_object";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -11,7 +10,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import axiosInstance from "shared/utils/api/axios-instance";
 
-const Contri = () => {
+const ContributionApprove = () => {
   const { section, postCode } = useParams();
   const {
     data = { data: [], POST_DB: {} },
@@ -67,7 +66,7 @@ const Contri = () => {
   const applyHandler = (id: string, key: string, value: any) => {
     applyMutation.mutate({ id, key, value });
   };
-console.log(data.data)
+  console.log(data.data);
   return (
     <div className="flex gap-2">
       <div className="flex items-start flex-col gap-2">
@@ -97,4 +96,4 @@ console.log(data.data)
   );
 };
 
-export default Contri;
+export default ContributionApprove;

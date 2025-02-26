@@ -14,13 +14,12 @@ const RenderField = ({
   uniqueKey: string;
   noLinkClassProp?: boolean;
 }) => {
-  
-  const { isEditPostClicked } = useSelector((state: RootState) => state.post); 
+  const { isEditPostClicked } = useSelector((state: RootState) => state.post);
+  //if editpostclicked is true, then render editable post (other factor can be added to more precise)
   if (isEditPostClicked) {
     return <PostEditable valueProp={stringValue} keyProp={uniqueKey} />;
   }
 
-  
   let strValue = _.toString(stringValue);
   if (strValue === strValue.toUpperCase() && strValue.includes("_")) {
     return <Link to={strValue}>{_.startCase(_.toLower(strValue))}</Link>;
@@ -102,6 +101,11 @@ const RenderField = ({
       </p>
     );
   }
+
+  if (strValue === strValue.toLowerCase() && strValue.includes("_")) {
+    return <Link to={strValue} className="custom-link">{_.startCase(strValue)}</Link>;
+  }
+  
 
   if (strValue.includes("_")) {
     return <>{_.startCase(strValue)}</>;
