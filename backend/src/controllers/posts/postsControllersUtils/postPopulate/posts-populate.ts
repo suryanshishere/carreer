@@ -17,7 +17,7 @@ import {
   admissionPopulate,
 } from "./postListAndDetailPopulate";
 
-interface PopulateOption {
+export interface PopulateOption {
   path: string;
   select?: string;
 }

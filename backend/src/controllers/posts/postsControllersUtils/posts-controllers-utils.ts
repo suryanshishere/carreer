@@ -1,5 +1,6 @@
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
 import {
+  PopulateOption,
   sectionDetailPopulateModels,
   sectionListPopulate,
 } from "./postPopulate/posts-populate";
@@ -90,6 +91,18 @@ const getSortedDateIds = async (section: string) => {
   return sortedDateIds.map((date) => date._id); // Return an array of IDs
 };
 
+ 
+export const filterPopulateArray = (
+  populateArray: PopulateOption[],
+  max: boolean
+): PopulateOption[] => {
+  if (max) return populateArray; // Return full array if max is true
+
+  return populateArray.filter((item: PopulateOption): boolean =>
+    item.path === "important_dates" || item.path === "post"
+  );
+};
+
 export const fetchPostList = async (
   section: string,
   includePopulate: boolean = true,
@@ -97,9 +110,6 @@ export const fetchPostList = async (
 ) => {
   try {
     const model = SECTION_POST_MODAL_MAP[section];
-    if (!model) {
-      return null;
-    }
 
     const sectionSelect = sectionPostListSelect[section] || "";
     let selectFields: string[] = COMMON_SELECT_FIELDS.split(" ");
@@ -121,21 +131,11 @@ export const fetchPostList = async (
       })
       .select(selectFields);
 
-    if (includePopulate && sectionListPopulate[section]) {
-      query = query.populate(sectionListPopulate[section]);
-    } else {
-      //for home list with less populate
-      query = query.populate([
-        {
-          path: "important_dates",
-          select: "",
-        },
-        {
-          path: "post",
-          select: "post_code",
-        },
-      ]);
-    }
+    const filteredPopulate = filterPopulateArray(
+      sectionListPopulate[section],
+      includePopulate
+    );
+    query = query.populate(filteredPopulate);
 
     const posts = await query.exec();
 

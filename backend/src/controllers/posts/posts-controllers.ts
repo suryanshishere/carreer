@@ -85,7 +85,9 @@ export const section = async (
       }
     }
 
-    const response = await fetchPostList(section, true, next);
+    //if not max mode then not include populate of whole data
+    const includePopulate = user?.mode?.max || false;
+    const response = await fetchPostList(section, includePopulate, next);
     //todo: if null them better
     const postsWithSavedStatus = response?.map(({ _id, ...rest }) => ({
       _id,
