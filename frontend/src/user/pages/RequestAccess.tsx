@@ -96,7 +96,7 @@ const RequestAccess: React.FC = () => {
     <div className="w-full flex flex-col">
       <PageHeader
         header="Request for Access"
-        subHeader={<>Apply for certain degree of access</>}
+        subHeader="Apply for certain degree of access"
       />
       <p className="lg:w-4/5 w-full text-start mb-4">
         1. Once you have been granted publisher access, you will be able to

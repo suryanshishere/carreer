@@ -130,7 +130,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
     <div className="w-full flex flex-col">
       <PageHeader
         header="Forgot Password"
-        subHeader={<>Make your email handy for OTP</>}
+        subHeader="Make your email handy for OTP"
       />
 
       {formContent}

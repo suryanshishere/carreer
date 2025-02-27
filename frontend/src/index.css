@@ -4,12 +4,12 @@
 
 @layer base {
   h1 {
-    @apply self-start p-0 font-bold text-2xl whitespace-nowrap;
+    @apply self-start p-0 font-bold text-2xl;
   }
 
   /* h2 for all the header */
   h2 {
-    @apply text-lg font-bold p-0 whitespace-nowrap;
+    @apply text-lg font-bold p-0;
   }
 
   /* h3 for all the sub header  */
@@ -17,13 +17,13 @@
     @apply text-base p-0;
   }
 
-  mark{
+  mark {
     @apply bg-custom-pale-yellow rounded;
   }
 
   @layer components {
     hr {
-      @apply bg-custom-less-gray w-full; 
+      @apply bg-custom-less-gray w-full;
     }
   }
 

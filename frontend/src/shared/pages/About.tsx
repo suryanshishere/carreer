@@ -7,7 +7,7 @@ const About = () => {
     <div className="w-full flex flex-col">
       <PageHeader
         header="about"
-        subHeader={<>This section try to explain our purpose</>}
+        subHeader="This section try to explain our purpose"
       />
       <div className="flex flex-col gap-2 text-base lg:w-2/3 w-full">
         <p>

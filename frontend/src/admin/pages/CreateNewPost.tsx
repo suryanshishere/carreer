@@ -65,7 +65,7 @@ const CreateNewPost: React.FC = () => {
     <div className="w-full flex flex-col gap-4">
       <PageHeader
         header="Create New Post"
-        subHeader={<>Post created through generative AI</>}
+        subHeader="Post created through generative AI"
       />
       <form
         onSubmit={handleSubmit(submitHandler)}

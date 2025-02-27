@@ -1,6 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch } from "shared/store";
@@ -9,9 +8,15 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import axiosInstance from "shared/utils/api/axios-instance";
+import Button from "shared/utils/form/Button";
+import { startCase } from "lodash";
+import PageHeader from "shared/ui/PageHeader";
 
 const ContributionApprove = () => {
   const { section, postCode } = useParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const [applying, setApplying] = useState<{ [key: string]: boolean }>({});
+
   const {
     data = { data: [], POST_DB: {} },
     isLoading,
@@ -26,7 +31,6 @@ const ContributionApprove = () => {
     },
     retry: 3,
   });
-  const dispatch = useDispatch<AppDispatch>();
 
   const applyMutation = useMutation({
     mutationFn: async ({
@@ -38,6 +42,7 @@ const ContributionApprove = () => {
       key: string;
       value: any;
     }) => {
+      setApplying((prev) => ({ ...prev, [`${id}-${key}`]: true }));
       const response = await axiosInstance.post(
         "/admin/approver/apply-contri",
         JSON.stringify({
@@ -49,50 +54,73 @@ const ContributionApprove = () => {
       );
       return response.data;
     },
-    onSuccess: ({ message }) => {
+    onSuccess: ({ message }, { id, key }) => {
       dispatch(
         triggerSuccessMsg(message || "Applying contribution successful!")
       );
+      setApplying((prev) => ({ ...prev, [`${id}-${key}`]: false }));
     },
-    onError: (error: any) => {
+    onError: (error: any, { id, key }) => {
       dispatch(
         triggerErrorMsg(
           error.response?.data?.message || "Applying contribution failed!"
         )
       );
+      setApplying((prev) => ({ ...prev, [`${id}-${key}`]: false }));
     },
   });
 
-  const applyHandler = (id: string, key: string, value: any) => {
-    applyMutation.mutate({ id, key, value });
-  };
-  console.log(data.data);
   return (
-    <div className="flex gap-2">
-      <div className="flex items-start flex-col gap-2">
+    <main>
+      <PageHeader
+        header={`${startCase(postCode)}`}
+        subHeader={`${startCase(section)} (Contribution Approval)`}
+      />
+      <section
+        aria-label="Contribution Approvals"
+        className="flex flex-col gap-3"
+      >
+        {isLoading && <p>Loading contributions...</p>}
+        {error && <p>Error loading contributions.</p>}
+        {!isLoading && data.data.length === 0 && <p>No contributions found.</p>}
         {data.data.map((item: any, index: number) => (
-          <div key={index} className="flex flex-col">
-            <strong>ID:</strong> {item._id}
-            {Object.entries(item)
-              .filter(([key]) => key !== "_id") // Skip _id for rendering
-              .map(([key, value]) => (
-                <div key={key} className="flex gap-2">
-                  <strong>{key}:</strong>
-                  {value as React.ReactNode}
-                  <button
-                    onClick={() => applyHandler(item._id, key, value)}
-                    className="outline"
-                  >
-                    Apply
-                  </button>
-                </div>
-              ))}
-            <hr />
-          </div>
+          <React.Fragment key={item._id}>
+            <article>
+              <header className="mb-2">
+                <h2 className="font-bold">Contribution ID: {item._id}</h2>
+              </header>
+
+              <dl className="flex flex-col gap-3">
+                {Object.entries(item)
+                  .filter(([key]) => key !== "_id")
+                  .map(([key, value]) => {
+                    const isPending = applying[`${item._id}-${key}`];
+                    return (
+                      <div key={key} className="flex flex-col">
+                        <dt className="font-bold">
+                          {key.replace(/\./g, " / ")}
+                        </dt>
+                        <div className="flex flex-col sm:grid sm:grid-cols-[1fr_auto] sm:items-start gap-2">
+                          <p>{value as React.ReactNode}</p>
+                          <Button
+                            onClick={() =>
+                              applyMutation.mutate({ id: item._id, key, value })
+                            }
+                            disabled={isPending}
+                          >
+                            {isPending ? "Applying..." : "Apply"}
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </dl>
+            </article>
+            {data.data.length - 1 !== index && <hr />}
+          </React.Fragment>
         ))}
-      </div>
-      <div className=""></div>
-    </div>
+      </section>
+    </main>
   );
 };
 

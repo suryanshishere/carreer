@@ -77,7 +77,7 @@ const DeactivateAccount: React.FC = () => {
     <div className="w-full flex flex-col justify-center">
       <PageHeader
         header="Deactivate Account"
-        subHeader={<>Read the warming first, before any action</>}
+        subHeader="Read the warming first, before any action"
       />
       <p className="text-custom-red text-justify font-bold mb-4">
         If you deactivate your account, it may be permanently deleted after 30

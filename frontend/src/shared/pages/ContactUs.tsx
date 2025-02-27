@@ -89,7 +89,7 @@ const ContactUs: React.FC = () => {
     <div className="w-full flex flex-col justify-center">
       <PageHeader
         header="contact us"
-        subHeader={<>Try to define your reason clearly</>}
+        subHeader="Try to define your reason clearly"
       />
       <form
         onSubmit={handleSubmit(onSubmit)}

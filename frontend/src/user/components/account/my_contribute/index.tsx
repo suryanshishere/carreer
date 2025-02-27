@@ -8,8 +8,9 @@ import { RootState } from "shared/store";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
-const MyContriComponent: React.FC<{ data: IContributionDetails }> = ({
+const MyContriComponent: React.FC<{ data: IContributionDetails, noOther:boolean }> = ({
   data,
+  noOther=false
 }) => {
   const { isEditContribute } = useSelector((state: RootState) => state.post);
   const [expandedSections, setExpandedSections] = React.useState<

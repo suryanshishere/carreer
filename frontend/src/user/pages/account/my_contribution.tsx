@@ -71,14 +71,9 @@ const MyContribution: React.FC = () => {
     <div className="flex flex-col gap-2">
       <PageHeader
         header="My Contribution"
-        subHeader={
-          <>
-            <span>Last contributed on</span>
-            <span className="ml-1">
-              {moment(data.metadata.timeStamp.updatedAt).format("LL")}
-            </span>
-          </>
-        }
+        subHeader={`Last contributed on ${moment(
+          data.metadata.timeStamp.updatedAt
+        ).format("LL")}`}
       />
 
       {/* Toggle Switch */}
@@ -102,7 +97,7 @@ const MyContribution: React.FC = () => {
       </div>
 
       {/* Render based on selection */}
-      <MyContributionComponent data={data.data[selectedTab]} />
+      <MyContributionComponent data={data.data[selectedTab]} noOther={selectedTab === "approved"}/>
     </div>
   );
 };

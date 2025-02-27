@@ -16,8 +16,8 @@ const router = express.Router();
 router.post(
   "/apply-contri",
   [
-    validateSection( ),
-    validatePostCode( ),
+    validateSection(),
+    validatePostCode(),
     validateObject("data"),
     body("contributor_id")
       .isMongoId()
@@ -34,7 +34,7 @@ router.get(
 
 router.get(
   "/contri-post-codes/:section/:postCode",
-  [validateSection("section"), validatePostCode("param")],
+  [validateSection(), validatePostCode("postCode")],
   getContriPost
 );
 

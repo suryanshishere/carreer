@@ -94,7 +94,7 @@ const ChangePassword: React.FC = () => {
     <div className="w-full flex flex-col">
       <PageHeader
         header="Change Your Password"
-        subHeader={<>Strong password for the best protection</>}
+        subHeader="Strong password for the best protection"
       />
       {errors.old_password_not_match?.message && (
         <p className="text-custom-red">

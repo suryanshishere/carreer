@@ -204,6 +204,9 @@ export const applyContri = async (
       .status(200)
       .json({ message: "Post updated and configured successfully!" });
   } catch (error) {
+
+    console.log(error);
+
     // Rollback the transaction in case of any error
     await session.abortTransaction();
     session.endSession();
