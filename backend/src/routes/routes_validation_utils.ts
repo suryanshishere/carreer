@@ -1,5 +1,5 @@
 import POST_DB, { POST_LIMITS_DB } from "@models/post/post-env-db";
-import { param, body, ValidationChain, check } from "express-validator";
+import { ValidationChain, check } from "express-validator";
 import _ from "lodash";
 
 const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS_DB;
@@ -74,11 +74,10 @@ export const validatePostIdOrCode = (
     .withMessage("Invalid MongoDB ID or post code format.");
 };
 
-export const validateSection = ( 
+export const validateSection = (
   name: string = "section",
   optional: boolean = false
-) => { 
-
+) => {
   const friendlyName = _.startCase(_.toLower(name));
 
   let chain = check(name).customSanitizer((value) => _.snakeCase(value));
@@ -95,15 +94,12 @@ export const validateSection = (
 };
 
 export const validateNameOfThePost = (
-  source: "param" | "body",
   name: string = "name_of_the_post",
   optional: boolean = false
 ) => {
-  const validator = source === "param" ? param(name) : body(name);
-
   const friendlyName = _.startCase(_.toLower(name));
 
-  let chain = validator;
+  let chain = check(name);
   if (optional) {
     chain = chain.optional({ nullable: true });
   }
@@ -120,7 +116,7 @@ export const validateNameOfThePost = (
 };
 
 export const validateObject = (fieldName: string): ValidationChain => {
-  return body(fieldName)
+  return check(fieldName)
     .isObject()
     .withMessage(`${fieldName} must be an object.`)
     .custom((value) => {
@@ -129,4 +125,19 @@ export const validateObject = (fieldName: string): ValidationChain => {
       }
       return true;
     });
+};
+
+export const validateApiKey = (
+  name: string = "api_key_from_user",
+  optional: boolean = true
+) => {
+  let chain = check(name);
+  if (optional) {
+    chain = chain.optional({ nullable: true });
+  }
+  return chain
+    .isString()
+    .withMessage("API key must be a string.")
+    .isLength({ min: 1 })
+    .withMessage("API key must not be empty.");
 };

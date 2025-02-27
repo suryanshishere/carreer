@@ -16,7 +16,7 @@ import _ from "lodash";
 import {
   ICreateNewPostForm,
   validationSchema,
-} from "shared/validation/admin-validation";
+} from "admin/admin_shared/admin_form_validation";
 import POST_DB from "db/post-db";
 import PageHeader from "shared/ui/PageHeader";
 
@@ -87,12 +87,12 @@ const CreateNewPost: React.FC = () => {
             error={!!errors.post_code}
             helperText={errors.post_code?.message}
           />
-          {/* //TODO */}
           <Input
-             label="TODOoooooooooo"
-            {...register("api_key")}
-            error={!!errors.api_key}
-            helperText={errors.api_key?.message}
+            label="Your Gemini API Key"
+            placeholder="Optional if post generation not working!"
+            {...register("api_key_from_user")}
+            error={!!errors.api_key_from_user}
+            helperText={errors.api_key_from_user?.message}
           />
           <Dropdown
             data={POST_DB.sections}

@@ -1,15 +1,16 @@
 import { createNewPost } from "@controllers/admin/publisher/publisher-controllers";
 import {
+  validateApiKey,
   validateNameOfThePost,
   validatePostCode,
   validateSection,
-} from "@routes/routes-validation-utils";
+} from "@routes/routes_validation_utils";
 import express from "express";
 
 const router = express.Router();
 router.post(
   "/create-new-post",
-  [validateSection( ), validateNameOfThePost("body"), validatePostCode( )],
+  [validateSection(), validateNameOfThePost(), validatePostCode(), validateApiKey()],
   createNewPost
 );
 

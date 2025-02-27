@@ -25,13 +25,14 @@ export const createNewPost = async (
 ) => {
   handleValidationErrors(req, next);
 
-  const { section, name_of_the_post, post_code } = req.body;
+  const { section, name_of_the_post, post_code, api_key_from_user } = req.body;
   //since publisher id will be same as user id but just in the publisher model
   const publisherId = (req as JWTRequest).userData.userId;
 
   const session = await mongoose.startSession();
 
   try {
+    //authorization check
     const publisher: IAdmin | null = await AdminModel.findById(publisherId)
       .select("role")
       .exec();
@@ -54,8 +55,6 @@ export const createNewPost = async (
       );
     }
 
-    console.log(postId, "post id generated");
-
     // allow time out constraint to be removed (with transaction)
     const result = await session.withTransaction(async () => {
       //checking the section cuz it's validated already by express validator from the same section it's mapped
@@ -67,7 +66,7 @@ export const createNewPost = async (
         return next(new HttpError("Post already exists!", 400));
       }
 
-      await createComponentPost(postId, req, session);
+      await createComponentPost(postId, req, session, api_key_from_user);
 
       let schema = SECTION_POST_PROMPT_SCHEMA_MAP[section];
       schema = {

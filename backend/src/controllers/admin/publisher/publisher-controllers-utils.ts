@@ -14,12 +14,12 @@ import {
 } from "./post-prompt-schema-map";
 
 export const postGeneration = async (
-  apiKey: string,
+  api_key_from_user: string,
   nameOfThePost: string,
   schema: { [key: string]: any }
 ) => {
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
+    const genAI = new GoogleGenerativeAI(api_key_from_user);
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-pro",
       generationConfig: {
@@ -61,6 +61,7 @@ interface GeneratePostDataParams {
   name_of_the_post: string;
   schema: any;
   maxAttempts?: number;
+  api_key_from_user?: string;
 }
 
 export const generatePostData = async ({
@@ -68,8 +69,9 @@ export const generatePostData = async ({
   name_of_the_post,
   schema,
   maxAttempts = 2,
+  api_key_from_user,
 }: GeneratePostDataParams) => {
-  let apiKey = process.env.GEMINI_API_KEY;
+  let apiKeyDefault = process.env.GEMINI_API_KEY;
   let dataJson = null;
   let attemptCount = 0;
 
@@ -77,17 +79,18 @@ export const generatePostData = async ({
   while (attemptCount < maxAttempts) {
     // Use a different API key for "common" key or section on first attempt
     if (attemptCount === 0 && keyOrSection === "common") {
-      apiKey = process.env.GEMINI_API_KEY3;
+      console.warn("using api key from user: ", api_key_from_user);
+      apiKeyDefault = api_key_from_user || process.env.GEMINI_API_KEY3;
     }
 
     // Check if API key exists
-    if (!apiKey) {
+    if (!apiKeyDefault) {
       throw new HttpError("Missing GEMINI API Key", 500);
     }
 
     try {
       // Attempt to generate post data
-      dataJson = await postGeneration(apiKey, name_of_the_post, schema);
+      dataJson = await postGeneration(apiKeyDefault, name_of_the_post, schema);
 
       // If data is successfully returned, return it
       if (dataJson) {
@@ -111,7 +114,7 @@ export const generatePostData = async ({
 
     // Switch to backup API key for subsequent attempts
     if (attemptCount < maxAttempts) {
-      apiKey = process.env.GEMINI_BACKUP_API_KEY;
+      api_key_from_user = process.env.GEMINI_BACKUP_API_KEY;
     }
   }
 
@@ -130,7 +133,8 @@ export const generatePostData = async ({
 export const createComponentPost = async (
   postId: string,
   req: Request,
-  session: mongoose.ClientSession
+  session: mongoose.ClientSession,
+  api_key_from_user?: string
 ) => {
   try {
     const userId = (req as JWTRequest).userData.userId;
@@ -172,6 +176,7 @@ export const createComponentPost = async (
           keyOrSection: key,
           name_of_the_post,
           schema,
+          api_key_from_user,
         });
 
         console.log("component data generated:", postData);

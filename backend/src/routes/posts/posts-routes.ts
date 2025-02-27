@@ -7,7 +7,7 @@ import {
 import {
   validatePostIdOrCode,
   validateSection,
-} from "@routes/routes-validation-utils";
+} from "@routes/routes_validation_utils";
 
 const router = express.Router();
 
