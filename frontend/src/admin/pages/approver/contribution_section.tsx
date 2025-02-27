@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { startCase } from "lodash";
-import POST_DB from "db/post-db";
+import POST_DB from "post/post_db";
 import PageHeader from "shared/ui/PageHeader";
 import ContributionTrends from "./contribution_trends";
 import Button from "shared/utils/form/Button";

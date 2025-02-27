@@ -13,7 +13,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import axiosInstance from "shared/utils/api/axios-instance";
 import Dropdown from "shared/utils/form/Dropdown";
-import ADMIN_DB from "db/admin-db";
+import ADMIN_DB from "admin/admin_db";
 import PageHeader from "shared/ui/PageHeader";
 
 const MIN_REASON_LENGTH =

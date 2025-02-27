@@ -8,9 +8,9 @@ import {
 import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
-import { closeSpecificDropdowns } from "shared/store/dropdown-slice";
-import RESPONSE_DB from "db/response-db";
+import { closeSpecificDropdowns } from "shared/store/dropdown-slice"; 
 import useContributeMutation from "post/post_shared/contribution-hook";
+import { RESPONSE_DB } from "shared/shared_db";
 
 const ContriToPost: React.FC<{
   section: string;

@@ -1,5 +1,5 @@
 import { JWTRequest } from "@middleware/check-auth";
-import UserModal from "@models/user/user-model";
+import UserModal from "@models/user/user_model";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
 
@@ -12,7 +12,7 @@ export const modeAccountHandler = async (
     const { mode } = req.body;
     const { max } = mode;
 
-    console.log(max, "max")
+    console.log(max, "max");
 
     // Ensure 'mode' is an object and contains only valid keys from the model (e.g., 'max')
     if (typeof mode !== "object" || Object.keys(mode).length === 0) {
@@ -24,11 +24,6 @@ export const modeAccountHandler = async (
 
     if (!user) {
       return next(new HttpError("User not found!", 404));
-    }
-
-    // Initialize user.mode if it doesn't exist
-    if (!user.mode) {
-      user.mode = {}; // Set default if not present
     }
 
     user.mode.max = max;

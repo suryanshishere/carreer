@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { useMutation } from "@tanstack/react-query";
 import DoneIcon from "@mui/icons-material/Done";
-import ADMIN_DB from "db/admin-db";
+import ADMIN_DB from "admin/admin_db";
 import { startCase, upperCase } from "lodash";
 import moment from "moment";
 import PageHeader from "shared/ui/PageHeader";

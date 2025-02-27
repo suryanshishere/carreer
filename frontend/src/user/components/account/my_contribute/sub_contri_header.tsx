@@ -126,7 +126,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
         }
       >
         <p>Are you sure you want to delete this contribution?</p>
-        <mark className="px-2">
+        <mark  >
           {postCode} / {section}
         </mark>
       </Modal>

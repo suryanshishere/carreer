@@ -14,7 +14,7 @@ import {
 } from "./postsControllersUtils/posts-controllers-utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
-import User from "@models/user/user-model";
+import User from "@models/user/user_model";
 import { postIdGeneration } from "@controllers/admin/publisher/publisher-controllers-utils";
 import mongoose from "mongoose";
 

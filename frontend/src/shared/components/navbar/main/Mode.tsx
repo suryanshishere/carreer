@@ -8,7 +8,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { updateUserData } from "shared/store/auth-slice";
-import { IUserAccountMode } from "models/userModel/IUserData";
+import Modal from "shared/ui/Modal";
+import Button from "shared/utils/form/Button";
+import { openModal, closeModal } from "shared/store/modal-slice"; 
+import { USER_ACCOUNT_MODE_DB } from "user/user_db";
 
 const Mode = () => {
   const mode = useSelector((state: RootState) => state.auth.userData.mode);
@@ -23,7 +26,6 @@ const Mode = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      // On success, you now get the response data
       const { message } = data;
       dispatch(updateUserData({ mode: { max: isChecked } }));
       dispatch(triggerSuccessMsg(message || "Max mode updated!"));
@@ -31,19 +33,40 @@ const Mode = () => {
     onError: (error: any) => {
       dispatch(
         triggerErrorMsg(
-          `${error.response?.data?.message}` || "Mode not updated, try again!"
+          error.response?.data?.message || "Mode not updated, try again!"
         )
       );
-      // Revert the checkbox state in case of error
-      setIsChecked(!isChecked);
+      // Revert checkbox state on error
+      setIsChecked((prev) => !prev);
     },
   });
 
   const handleCheckboxChange = () => {
     const newState = !isChecked;
-    setIsChecked(newState);
-    mutation.mutate(newState); // Pass the updated state to the mutation
+    // When turning off max mode, show confirmation modal via dispatch
+    if (isChecked && !newState) {
+      dispatch(openModal());
+    } else {
+      // When turning on max mode, update directly
+      setIsChecked(newState);
+      mutation.mutate(newState);
+    }
   };
+
+  // Called when user confirms turning off max mode
+  const handleConfirm = () => {
+    setIsChecked(false);
+    mutation.mutate(false);
+    dispatch(closeModal());
+  };
+
+  // Called when user cancels the change
+  const handleCancel = () => {
+    dispatch(closeModal());
+  };
+
+  // Use Redux state to check if the modal is open
+  const isModalOpen = useSelector((state: RootState) => state.modal.isOpen);
 
   return (
     <div>
@@ -69,6 +92,23 @@ const Mode = () => {
           }`}
         ></div>
       </label>
+
+      {isModalOpen && (
+        <Modal
+          onClose
+          header="Mode Change Confirmation"
+          footer={
+            <div className="flex justify-end gap-2">
+              <Button onClick={handleCancel}>Cancel</Button>
+              <Button authButtonType onClick={handleConfirm}>
+                Confirm
+              </Button>
+            </div>
+          }
+        >
+          {USER_ACCOUNT_MODE_DB.max_mode_off_confirm}
+        </Modal>
+      )}
     </div>
   );
 };

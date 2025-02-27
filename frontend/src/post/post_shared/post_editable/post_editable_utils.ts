@@ -1,4 +1,4 @@
-import { POST_LIMITS_DB } from "db/post-db";
+import { POST_LIMITS_DB } from "post/post_db";
 
 const {
   short_char_limit,

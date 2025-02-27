@@ -1,5 +1,5 @@
-import { IUser } from "@models/user/user-model";
-import { sendVerificationOtp } from "./auth-controllers";
+import { IUser } from "@models/user/user_model";
+import { sendVerificationOtp } from "./auth_controllers";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { NextFunction, Response, Request } from "express";

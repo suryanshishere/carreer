@@ -1,6 +1,6 @@
 import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";
-import  User, {IUser} from "@models/user/user-model";
+import  User, {IUser} from "@models/user/user_model";
 import {
   excludedPaths,
   getUserIdFromRequest,

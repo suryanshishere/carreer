@@ -1,4 +1,4 @@
-import  POST_DB  from "db/post-db";
+import  POST_DB  from "post/post_db";
 import { IPostDetail } from "models/postModels/IPost";
 
 export const priorityMapping = (priorities: {

@@ -28,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({ header, children, footer, onClose }) => {
   if (!modalRoot || !isModalOpen) return null;
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
       <div
         ref={modalRef}
         className="bg-white rounded shadow-lg w-full max-w-lg p-2 m-2 relative flex flex-col gap-2"
@@ -51,7 +51,7 @@ const Modal: React.FC<ModalProps> = ({ header, children, footer, onClose }) => {
         <hr />
 
         {/* Content */}
-        <div className="h-20 flex flex-col justify-center items-start gap-1">
+        <div className="h-20 flex flex-col justify-center items-center gap-1">
           {children}
         </div>
 

@@ -41,7 +41,9 @@ export interface IUser extends Document {
   saved_posts?: SavedPosts;
 
   //status for personalised data rendering for the user
-  mode?: Record<string, boolean>;
+  mode: {
+    max: boolean;
+  };
 }
 
 const dynamicReferences: Record<string, any> = {};
@@ -97,7 +99,11 @@ const userSchema: Schema = new Schema<IUser>(
     saved_posts: { type: savedPostsSchema },
 
     mode: {
-      max: { type: Boolean, default: false },
+      type: {
+        max: { type: Boolean, required: true, default: true },
+      },
+      required: true,
+      default: { max: true },
     },
   },
   { timestamps: true }

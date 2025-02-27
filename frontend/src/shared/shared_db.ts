@@ -8,3 +8,13 @@ const SHARED_DB = {
 };
 
 export default SHARED_DB;
+
+// -----------------------------
+
+interface IResponseDb {
+  not_authenticated: string;
+}
+
+export const RESPONSE_DB: IResponseDb = {
+  not_authenticated: "Not authenticated, please login or signup to continue!",
+};

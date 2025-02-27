@@ -1,4 +1,4 @@
-import { POST_LIMITS_DB } from "db/post-db";
+import { POST_LIMITS_DB } from "post/post_db";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "shared/store";

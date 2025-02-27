@@ -1,4 +1,4 @@
-import User from "@models/user/user-model";
+import User from "@models/user/user_model";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";
 import bcrypt from "bcryptjs";

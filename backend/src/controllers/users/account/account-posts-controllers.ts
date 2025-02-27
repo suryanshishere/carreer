@@ -1,5 +1,5 @@
 import { Response, NextFunction, Request } from "express";
-import User from "@models/user/user-model";
+import User from "@models/user/user_model";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
@@ -14,7 +14,7 @@ import ContributionModel, {
 } from "@models/user/contribution-model";
 import { validateContributionField } from "./account-controllers-utils";
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
-import UserModal from "@models/user/user-model";
+import UserModal from "@models/user/user_model";
 
 const postSectionsArray = POST_DB.sections;
 

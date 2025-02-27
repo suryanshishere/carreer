@@ -8,9 +8,9 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import BookmarkBorderSharpIcon from "@mui/icons-material/BookmarkBorderSharp";
-import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
-import RESPONSE_DB from "db/response-db";
+import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp"; 
 import Button from "shared/utils/form/Button";
+import { RESPONSE_DB } from "shared/shared_db";
 
 interface IBookmark {
   section: string;

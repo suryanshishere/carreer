@@ -1,4 +1,4 @@
-import SHARED_DB from "./shared-db";
+import SHARED_DB from "../shared/shared_db";
 
 interface IAdminDb {
   status: string[];

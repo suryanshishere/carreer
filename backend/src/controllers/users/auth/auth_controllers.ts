@@ -2,17 +2,15 @@ import { Response, NextFunction, Request } from "express";
 import HttpError from "@utils/http-errors";
 import bcrypt from "bcryptjs";
 import sendEmail from "./send-email";
-import User, { IUser } from "@models/user/user-model";
+import User, { IUser } from "@models/user/user_model";
 import {
   checkRequestDelay,
   sendAuthenticatedResponse,
   sendVerificationResponse,
   updateUnverifiedUser,
-} from "./auth-utils";
-import validationError from "../../sharedControllers/validation-error";
+} from "./auth-utils"; 
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
-import { random } from "lodash";
-import { validationResult } from "express-validator";
+import { random } from "lodash"; 
 import { USER_ENV_DATA } from "@shared/env-data";
 import handleValidationErrors from "../../sharedControllers/validation-error";
 
