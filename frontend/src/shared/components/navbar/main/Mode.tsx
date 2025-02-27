@@ -9,11 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { updateUserData } from "shared/store/auth-slice";
 import Modal from "shared/ui/Modal";
+import Tooltip from "@mui/material/Tooltip";
 import Button from "shared/utils/form/Button";
-import { openModal, closeModal } from "shared/store/modal-slice"; 
+import { openModal, closeModal } from "shared/store/modal-slice";
 import { USER_ACCOUNT_MODE_DB } from "user/user_db";
 
-const Mode = () => {
+const Mode: React.FC = () => {
   const mode = useSelector((state: RootState) => state.auth.userData.mode);
   const [isChecked, setIsChecked] = useState(mode?.max || false);
   const dispatch = useDispatch<AppDispatch>();
@@ -70,29 +71,30 @@ const Mode = () => {
 
   return (
     <div>
-      <label className="relative w-14 flex cursor-pointer select-none items-center">
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-          className="sr-only"
-        />
-        <div
-          className={`h-6 w-full rounded-full transition text-xs font-bold flex items-center justify-center text-custom-black whitespace-nowrap ${
-            isChecked ? "bg-custom-less-blue" : "bg-custom-less-gray"
-          }`}
-        >
-          {!isChecked && <span className="ml-5 pr-1">MAX</span>}
-        </div>
-        <div
-          className={`dot absolute top-[4px] mx-1 h-4 w-4 rounded-full transition-transform ${
-            isChecked
-              ? "translate-x-8 bg-custom-blue"
-              : "translate-x-0 bg-custom-gray"
-          }`}
-        ></div>
-      </label>
-
+      <Tooltip title="Max Mode: Instant access to information" arrow>
+        <label className="relative w-14 flex cursor-pointer select-none items-center">
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+            className="sr-only"
+          />
+          <div
+            className={`h-6 w-full rounded-full transition text-xs font-bold flex items-center justify-center text-custom-black whitespace-nowrap ${
+              isChecked ? "bg-custom-less-blue" : "bg-custom-less-gray"
+            }`}
+          >
+            {!isChecked && <span className="ml-5 pr-1">MAX</span>}
+          </div>
+          <div
+            className={`dot absolute top-[4px] mx-1 h-4 w-4 rounded-full transition-transform ${
+              isChecked
+                ? "translate-x-8 bg-custom-blue"
+                : "translate-x-0 bg-custom-gray"
+            }`}
+          ></div>
+        </label>
+      </Tooltip>
       {isModalOpen && (
         <Modal
           onClose
