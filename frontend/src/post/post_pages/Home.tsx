@@ -34,7 +34,7 @@ const Home: React.FC = () => {
     return count;
   }, 0);
 
-  if (!isLoading && emptySectionsCount >= 4) {
+  if (!isLoading && emptySectionsCount >= 9) {
     return <NoData />;
   }
 
