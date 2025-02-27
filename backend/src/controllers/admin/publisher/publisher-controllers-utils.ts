@@ -4,10 +4,7 @@ import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
 import { Request } from "express";
-import {
-  COMPONENT_POST_MODAL_MAP,
-  SECTION_POST_MODAL_MAP,
-} from "@controllers/sharedControllers/post-model-map";
+import { COMPONENT_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
 import {
   COMPONENT_POST_PROMPT_SCHEMA_MAP,
   updateSchema,
@@ -206,7 +203,7 @@ export const createComponentPost = async (
 
         // Wrap the error in a meaningful HttpError for the client
         throw new HttpError(
-          `Component post creation failed for key: ${key}. Details: ${error.message}`,
+          `Component post creation failed for key: ${key}.`,
           500
         );
       }
@@ -215,9 +212,6 @@ export const createComponentPost = async (
     console.error("Error in createComponentPost:", error.message);
 
     // Throw a final HttpError for transaction rollback
-    throw new HttpError(
-      `Failed to create component posts. Details: ${error.message}`,
-      500
-    );
+    throw new HttpError(`Failed to create component posts.`, 500);
   }
 };
