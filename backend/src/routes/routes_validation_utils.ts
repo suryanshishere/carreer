@@ -135,9 +135,5 @@ export const validateApiKey = (
   if (optional) {
     chain = chain.optional({ nullable: true });
   }
-  return chain
-    .isString()
-    .withMessage("API key must be a string.")
-    .isLength({ min: 1 })
-    .withMessage("API key must not be empty.");
+  return chain.isString().withMessage("API key must be a string.");
 };

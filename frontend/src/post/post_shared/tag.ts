@@ -1,11 +1,11 @@
- import  POST_DB  from "post/post_db";
+import POST_DB from "post/post_db";
 import { IDates } from "models/postModels/overallInterfaces/IDates";
-import moment from "moment"; 
+import moment from "moment";
 
 interface TagProps {
   importantDates?: IDates;
   section: string;
-  classProp?: string;  
+  classProp?: string;
 }
 
 const calculateDateDifference = (importantDates: IDates, section: string) => {
@@ -52,6 +52,8 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
 };
 
 const tag = (section: string, importantDates?: IDates) => {
+  console.log("tag important dates", importantDates);
+
   if (!importantDates) return "";
   const days = calculateDateDifference(importantDates, section);
   if (days === null) return "";
