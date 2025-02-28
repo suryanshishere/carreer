@@ -13,7 +13,7 @@ import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
-import { logout } from "shared/store/auth-slice";
+import { logout } from "shared/store/user_slice";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PageHeader from "shared/ui/PageHeader";
 import IconButton from "@mui/material/IconButton";

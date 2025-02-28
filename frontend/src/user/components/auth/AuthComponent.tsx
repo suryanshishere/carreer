@@ -10,7 +10,7 @@ import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
-import { login } from "shared/store/auth-slice";
+import { login } from "shared/store/user_slice";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { Input } from "shared/utils/form/Input";
 import Button from "shared/utils/form/Button";

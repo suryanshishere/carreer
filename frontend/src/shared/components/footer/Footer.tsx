@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppDispatch, RootState } from "shared/store";
-import { updateUserData } from "shared/store/auth-slice";
+import { updateUserData } from "shared/store/user_slice";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
@@ -13,7 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 const LOGO = process.env.REACT_APP_LOGO || "SIRKARI";
 const Footer: React.FC = () => {
   const { role, token } = useSelector(
-    (state: RootState) => state.auth.userData
+    (state: RootState) => state.user.userData
   );
   const dispatch = useDispatch<AppDispatch>();
 

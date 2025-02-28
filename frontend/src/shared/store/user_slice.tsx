@@ -22,7 +22,7 @@ const initialState: IAuthSlice = {
   },
 };
 
-const authSlice = createSlice({
+const userSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
@@ -99,6 +99,6 @@ export const {
   logout,
   updateUserData,
   handleAccountDeactivatedAt,
-} = authSlice.actions;
+} = userSlice.actions;
 
-export default authSlice.reducer;
+export default userSlice.reducer;

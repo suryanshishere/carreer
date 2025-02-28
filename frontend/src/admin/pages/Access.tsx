@@ -45,7 +45,7 @@ interface IAccessUpdate extends IAccessFilter {
 }
 
 const PublisherAccess = () => {
-  const { token } = useSelector((state: RootState) => state.auth.userData);
+  const { token } = useSelector((state: RootState) => state.user.userData);
   const dispatch = useDispatch<AppDispatch>();
 
   const {

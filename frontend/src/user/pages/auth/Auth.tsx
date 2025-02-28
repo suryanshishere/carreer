@@ -4,7 +4,7 @@ import AuthComponent from "user/components/auth/AuthComponent";
 import EmailVerification from "user/components/auth/EmailVerification";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { handleAuthClick, logout } from "shared/store/auth-slice";
+import { handleAuthClick, logout } from "shared/store/user_slice";
 import { AppDispatch, RootState } from "shared/store";
 
 enum AuthState {
@@ -30,7 +30,7 @@ const Auth: React.FC<AuthProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [authState, setAuthState] = useState<AuthState>(AuthState.LOGIN);
   const { token, isEmailVerified } = useSelector(
-    (state: RootState) => state.auth.userData
+    (state: RootState) => state.user.userData
   );
 
   const handleStateChange = (newState: AuthState) => setAuthState(newState);

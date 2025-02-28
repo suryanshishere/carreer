@@ -12,7 +12,7 @@ import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
-import { handleAuthClick, updateUserData } from "shared/store/auth-slice";
+import { handleAuthClick, updateUserData } from "shared/store/user_slice";
 import axiosInstance from "shared/utils/api/axios-instance";
 
 const otpSchema = Yup.object().shape({
@@ -36,8 +36,8 @@ type OTPFormInputs = {
 };
 
 const EmailVerification = () => {
-  const { token } = useSelector((state: RootState) => state.auth.userData);
-  const isOtpSent = useSelector((state: RootState) => state.auth.isOtpSent);
+  const { token } = useSelector((state: RootState) => state.user.userData);
+  const isOtpSent = useSelector((state: RootState) => state.user.isOtpSent);
   const [isSendOnce, setIsSendOnce] = useState<boolean>(isOtpSent);
   const dispatch = useDispatch<AppDispatch>();
   const [resendTimer, setResendTimer] = useState<number>(0);

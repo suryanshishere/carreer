@@ -46,7 +46,7 @@ interface IChangePasswordForm {
 
 const ChangePassword: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { token } = useSelector((state: RootState) => state.auth.userData);
+  const { token } = useSelector((state: RootState) => state.user.userData);
   // Set up React Hook Form
   const {
     register,

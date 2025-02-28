@@ -28,7 +28,7 @@ interface IRequestAccess {
 
 const RequestAccess: React.FC = () => {
   const { token, role } = useSelector(
-    (state: RootState) => state.auth.userData
+    (state: RootState) => state.user.userData
   );
   const validationSchema = yup.object().shape({
     role_applied: yup

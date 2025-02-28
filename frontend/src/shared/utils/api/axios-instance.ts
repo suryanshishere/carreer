@@ -1,6 +1,6 @@
 import axios from "axios";
 import store from "shared/store";
-import { handleAccountDeactivatedAt } from "shared/store/auth-slice";
+import { handleAccountDeactivatedAt } from "shared/store/user_slice";
 
 const DEACTIVATED_ACCOUNT_DAYS =
   Number(process.env.REACT_APP_DEACTIVATED_ACCOUNT_DAYS) || 30;
@@ -36,7 +36,7 @@ axiosInstance.interceptors.request.use(
 
 //prevent any !get request before hand only
 axiosInstance.interceptors.request.use((config) => {
-  const deactivatedAt = store.getState().auth.userData.deactivatedAt;
+  const deactivatedAt = store.getState().user.userData.deactivatedAt;
   const authHeader =
     config.headers["Authorization"] || config.headers["authorization"];
   if (

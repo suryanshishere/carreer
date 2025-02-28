@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { logout } from "shared/store/auth-slice";
+import { logout } from "shared/store/user_slice";
 import {
   closeAllDropdowns,
   toggleDropdownState,
@@ -17,7 +17,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { role } = useSelector((state: RootState) => state.auth.userData);
+  const { role } = useSelector((state: RootState) => state.user.userData);
 
   const logoutHandler = () => {
     dispatch(logout());

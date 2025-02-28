@@ -20,7 +20,7 @@ const ContriToPost: React.FC<{
   const { isEditPostClicked, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
 
-  const token = useSelector((state: RootState) => state.auth.userData.token);
+  const token = useSelector((state: RootState) => state.user.userData.token);
 
   useEffect(() => {
     if (section && postCode) {

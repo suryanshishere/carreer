@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
-import { handleAuthClick } from "shared/store/auth-slice";
+import { handleAuthClick } from "shared/store/user_slice";
 import {
   closeAllDropdowns,
   closeSpecificDropdowns,
@@ -18,13 +18,13 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isNavAuthClicked = useSelector(
-    (state: RootState) => state.auth.isNavAuthClicked
+    (state: RootState) => state.user.isNavAuthClicked
   );
   const dropdownStates = useSelector(
     (state: RootState) => state.dropdown.dropdownStates
   );
   const { token, role } = useSelector(
-    (state: RootState) => state.auth.userData
+    (state: RootState) => state.user.userData
   );
 
   let LoginSignup = (

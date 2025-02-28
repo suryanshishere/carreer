@@ -5,7 +5,7 @@ import ActivateAccount from "user/pages/account/ActivateAccount";
 
 const PersistMain = () => {
   const { isNavAuthClicked, userData } = useSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.user
   );
   const { token, isEmailVerified, deactivatedAt } = userData;
   const persistClassProp = `relative page-padding h-fit py-2 bg-custom_yellow z-20 shadow `;

@@ -3,23 +3,23 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import dropdownReducer from "./dropdown-slice";
 import responseReducer from "./response-slice";
-import authReducer from "./auth-slice";
+import userReducer from "./user_slice";
 import postReducer from "./post-slice";
 import modalReducer from "./modal-slice";
 
-const authPersistConfig = {
+const userPersistConfig = {
   key: "auth",
   storage,
   whitelist: ["userData"],
 };
 
-const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
 
 const store = configureStore({
   reducer: {
     dropdown: dropdownReducer,
     response: responseReducer,
-    auth: persistedAuthReducer,
+    user: persistedUserReducer,
     post: postReducer,
     modal: modalReducer,
   },

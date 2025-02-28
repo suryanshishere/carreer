@@ -28,7 +28,7 @@ interface IForgotPassword {
 
 const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { token } = useSelector((state: RootState) => state.auth.userData);
+  const { token } = useSelector((state: RootState) => state.user.userData);
   const navigate = useNavigate();
 
   const {
