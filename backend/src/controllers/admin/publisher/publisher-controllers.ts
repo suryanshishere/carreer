@@ -13,7 +13,7 @@ import {
   generatePostData,
   postIdGeneration,
 } from "./publisher-controllers-utils";
-import AdminModel, { IAdmin } from "@models/admin/admin-model";
+import AdminModel, { IAdmin } from "@models/admin/admin_model";
 import { SchemaType } from "@google/generative-ai";
 import { SECTION_POST_PROMPT_SCHEMA_MAP } from "./post-prompt-schema-map";
 import { POST_LIMITS_DB } from "@models/post/post-env-db";

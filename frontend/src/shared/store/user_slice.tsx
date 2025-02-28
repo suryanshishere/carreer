@@ -1,8 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { merge } from "lodash";
 import { IRole } from "models/admin/IAdmin";
-import { IUserAccountMode, IUserData } from "models/userModel/IUserData";
+import {
+  IUserAccountMode,
+  IUserData,
+  RecursivePartial,
+} from "user/user_interfaces";
 
-interface IAuthSlice {
+interface IUserSlice {
   isNavAuthClicked: boolean;
   isOtpSent: boolean;
   userData: IUserData;
@@ -13,17 +18,28 @@ const AUTH_TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY || 15;
 //   process.env.REACT_APP_NAV_ACCOUNT_DEFAULT_DP ||
 //   "https://img.freepik.com/free-photo/background_53876-32170.jpg?t=st=1732070280~exp=1732073880~hmac=f3b7e7a5ee6cef8bc932b0f3595f7d90864f64a12871da125d205ef3559a0208&w=996";
 
-const initialState: IAuthSlice = {
+const initialState: IUserSlice = {
   isNavAuthClicked: false,
   isOtpSent: false,
   userData: {
     token: "",
     isEmailVerified: false,
+    role: "none",
+    mode: {
+      max: false,
+      tag: {
+        live: false,
+        upcoming: false,
+        released: false,
+        expiring: false,
+        visited: false,
+      },
+    },
   },
 };
 
 const userSlice = createSlice({
-  name: "auth",
+  name: "user",
   initialState,
   reducers: {
     handleAuthClick(state, action: PayloadAction<boolean>) {
@@ -36,8 +52,8 @@ const userSlice = createSlice({
         token: string;
         isEmailVerified: boolean;
         tokenExpiration?: string;
-        role?: IRole;
-        mode?: IUserAccountMode;
+        role: IRole;
+        mode: IUserAccountMode;
       }>
     ) {
       const { token, tokenExpiration, isEmailVerified, role, mode } =
@@ -72,16 +88,25 @@ const userSlice = createSlice({
         token: "",
         isEmailVerified: false,
         tokenExpiration: undefined,
-        role: undefined,
-        mode: undefined,
+        role: "none",
+        mode: {
+          max: false,
+          tag: {
+            live: false,
+            upcoming: false,
+            released: false,
+            expiring: false,
+            visited: false,
+          },
+        },
         deactivatedAt: undefined,
         sessionExpireMsg: undefined,
       };
       // window.location.reload();
     },
-    updateUserData(state, action: PayloadAction<Partial<IUserData>>) {
-      const updatedData = action.payload;
-      state.userData = { ...state.userData, ...updatedData };
+
+    updateUserData(state, action: PayloadAction<RecursivePartial<IUserData>>) {
+      state.userData = merge({}, state.userData, action.payload);
     },
 
     handleAccountDeactivatedAt(

@@ -1,4 +1,4 @@
-import AdminModel from "@models/admin/admin-model";
+import AdminModel from "@models/admin/admin_model";
 import HttpError from "@utils/http-errors";
 import { NextFunction } from "express";
 

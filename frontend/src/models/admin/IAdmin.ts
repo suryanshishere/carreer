@@ -1,1 +1,1 @@
-export type IRole = "approver" | "publisher" | "admin";
+export type IRole = "approver" | "publisher" | "admin" | "none";
