@@ -36,16 +36,14 @@ const Button: React.FC<ButtonProps> = ({
   const commonProps = { onClick, disabled, type, style, ...rest };
   // Ensure "rounded" is present unless already provided in classProp
   const roundedClass = classProp.includes("rounded") ? "" : "rounded";
-  const stateClass = disabled
-    ? "cursor-not-allowed text-custom_gray bg-custom_pale_yellow"
-    : "cursor-pointer hover:bg-custom_pale_yellow hover:outline-custom_gray";
+
 
   if (basicButton) {
     const baseClase = "w-full whitespace-nowrap hover:bg-custom_less_gray transform duration-100 ease-linear px-2 py-1 "
     return (
       <button
         {...commonProps}
-        className={`${baseClase} ${roundedClass} ${stateClass} ${classProp}`}
+        className={`${baseClase} ${roundedClass} ${classProp}`}
       >
         {children}
       </button>
@@ -130,7 +128,9 @@ const Button: React.FC<ButtonProps> = ({
 
   // Default Button
   const baseClass = `whitespace-nowrap focus:outline-custom_pale_yellow focus:ring-2 focus:ring-custom_pale_yellow text-center ${roundedClass} outline outline-custom_less_gray p-button ease-linear transform duration-100 w-full py-[.5rem] px-[0.5rem] md:py-[.45rem] text-base overflow-hidden`;
-
+  const stateClass = disabled
+    ? "cursor-not-allowed text-custom_gray bg-custom_pale_yellow"
+    : "cursor-pointer hover:bg-custom_pale_yellow hover:outline-custom_gray";
   return (
     <button
       {...commonProps}
