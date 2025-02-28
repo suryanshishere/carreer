@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { snakeCase, startCase } from "lodash";
 import Bookmark from "post/post_shared/Bookmark";
 import { IPostList } from "models/postModels/IPost";
-import tag from "post/post_shared/tag";
-import Divider from "shared/ui/DoubleDivider";
+import tag from "post/post_shared/tag"; 
 
 interface HomeListItemProps {
   ListItemData: IPostList;

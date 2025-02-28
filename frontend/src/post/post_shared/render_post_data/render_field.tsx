@@ -4,6 +4,7 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostEditable from "../post_editable";
+import { POST_LIMIT_DROPDOWN_DATA } from "post/post_db";
 
 const RenderField = ({
   stringValue,
@@ -21,8 +22,10 @@ const RenderField = ({
   }
 
   let strValue = _.toString(stringValue);
-  if (strValue === strValue.toUpperCase() && strValue.includes("_")) {
-    return <Link to={strValue}>{_.startCase(_.toLower(strValue))}</Link>;
+
+  // TODO: ADD more meta data for the str value key word here.
+  if (POST_LIMIT_DROPDOWN_DATA.has(strValue)) {
+    return <>{_.startCase(strValue.replace(/_/g, " "))}</>;
   }
 
   if (strValue.startsWith("https://")) {
@@ -103,9 +106,12 @@ const RenderField = ({
   }
 
   if (strValue === strValue.toLowerCase() && strValue.includes("_")) {
-    return <Link to={strValue} className="custom-link">{_.startCase(strValue)}</Link>;
+    return (
+      <Link to={strValue} className="custom-link">
+        {_.startCase(strValue)}
+      </Link>
+    );
   }
-  
 
   if (strValue.includes("_")) {
     return <>{_.startCase(strValue)}</>;

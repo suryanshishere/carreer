@@ -29,7 +29,7 @@ const POST_DB: IPostDb = {
     {
       color: "custom-red animate-pulse",
       label: "EXPIRING",
-      daysRange: [-3, 0],
+      daysRange: [2000,3000],
     },
     { color: "custom-black", label: "VISITED" },
   ],
@@ -165,3 +165,8 @@ export const POST_LIMITS_DB: IPostLimitsDb = {
     date_keys: ["current_year", "previous_year"],
   },
 };
+
+//flatten the dropdown data
+export const POST_LIMIT_DROPDOWN_DATA = new Set(
+  Object.values(POST_LIMITS_DB.dropdown_data).flat()
+);

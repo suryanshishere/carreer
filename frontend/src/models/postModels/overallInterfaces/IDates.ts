@@ -3,6 +3,8 @@ export interface IDateRange {
   previous_year: string;
 }
 
+export type IDatesOnly = Record<string, IDateRange>
+
 export interface IDates {
   createdAt: string;
   updatedAt: string;
@@ -21,5 +23,7 @@ export interface IDates {
   counseling_start_date?: IDateRange;
   counseling_end_date?: IDateRange;
   counseling_result_announcement_date?: IDateRange;
+  certificate_verification_date?: IDateRange;
+  important_date?: IDateRange;
   additional_resources?: string;
 }
