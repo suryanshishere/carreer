@@ -3,7 +3,7 @@ import { startCase } from "lodash";
 import { excludedKeys } from "post/components/post_detail/postDetailsUtils/post-detail-render-define";
 import renderPostData from "post/post_shared/render_post_data";
 
-const bgColors = ["bg-custom-pale-yellow", "bg-custom-white"];
+const bgColors = ["bg-custom_pale_yellow", "bg-custom_white"];
 
 interface RenderTableProps {
   value: any[] | Record<string, any>;
@@ -24,14 +24,14 @@ const RenderTable: React.FC<RenderTableProps> = ({ value, tableKey }) => {
     : [];
 
   return (
-    <table className="my-2 border-collapse border-2 border-custom-gray w-full">
+    <table className="my-2 border-collapse border-2 border-custom_gray w-full">
       {isArray && headers.length > 0 && (
         <thead>
           <tr>
             {headers.map((header) => (
               <th
                 key={header}
-                className="border-2 border-custom-gray px-2 py-1 md:whitespace-nowrap"
+                className="border-2 border-custom_gray px-2 py-1 md:whitespace-nowrap"
               >
                 {startCase(header)}
               </th>
@@ -50,7 +50,7 @@ const RenderTable: React.FC<RenderTableProps> = ({ value, tableKey }) => {
                     return (
                       <td
                         key={header}
-                        className={`border-2 border-custom-gray px-2 py-1 ${randomBgColor}`}
+                        className={`border-2 border-custom_gray px-2 py-1 ${randomBgColor}`}
                       >
                         {renderPostData(fullKey, item[header])}
                       </td>
@@ -65,11 +65,11 @@ const RenderTable: React.FC<RenderTableProps> = ({ value, tableKey }) => {
               const fullKey = `${tableKey}.${subKey}`;
               return (
                 <tr key={subKey}>
-                  <td className="border-2 border-custom-gray px-2 py-1 font-bold">
+                  <td className="border-2 border-custom_gray px-2 py-1 font-bold">
                     {startCase(subKey)}
                   </td>
                   <td
-                    className={`border-2 border-custom-gray px-2 py-1 max-w-2/5 ${randomBgColor}`}
+                    className={`border-2 border-custom_gray px-2 py-1 max-w-2/5 ${randomBgColor}`}
                   >
                     {renderPostData(fullKey, subValue)}
                   </td>

@@ -36,7 +36,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
         <h2 className="pl-0">{startCase(section)}</h2>
         <Link
           to={`/sections/${section}/${postCode.toLowerCase()}`}
-          className="text-custom-red hover:text-custom-blue flex items-center justify-center p-1"
+          className="text-custom_red hover:text-custom_blue flex items-center justify-center p-1"
           target="_blank"
           rel="noopener noreferrer"
         >

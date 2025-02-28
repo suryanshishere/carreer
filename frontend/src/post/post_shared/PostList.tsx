@@ -5,8 +5,8 @@ import RenderField from "post/post_shared/render_post_data/render_field";
 import _ from "lodash";
 import { excludedPostListKeys } from "post/post_shared/post-list-render-define";
 import { IPostList, IPostListData } from "models/postModels/IPost";
-import tag from "./tag";
 import { ParaSkeletonLoad } from "shared/ui/SkeletonLoad";
+import Tag from "./tag";
 
 interface ListProps {
   data: IPostList;
@@ -60,7 +60,11 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
           <span key={key} className="mr-1">
             <span className={`mr-1`}>{_.startCase(key)}:</span>
             <span className="mr-1">
-              <RenderField stringValue={_.toString(value)} uniqueKey={key} noLinkClassProp/>
+              <RenderField
+                stringValue={_.toString(value)}
+                uniqueKey={key}
+                noLinkClassProp
+              />
             </span>
           </span>
         );
@@ -70,13 +74,12 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
   return (
     <ul className="self-start w-full p-0 m-0 flex flex-col text-base">
       {data.map((item, index) => (
-        <React.Fragment key={item._id}>
-          <li
-            className={`group my-2 flex flex-col gap-1 justify-center ${tag(
-              section,
-              item.important_dates
-            )}`}
-          >
+        <li
+          key={item._id}
+          className="flex my-2"
+        >
+          <Tag section={section} importantDates={item.important_dates} />
+          <div className="group w-full flex flex-col gap-1 justify-center">
             <div className="flex justify-between items-center gap-1 min-h-7">
               <Link
                 to={`/sections/${section}/${
@@ -93,15 +96,16 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
                 section={section}
                 postId={item._id}
                 isSaved={item.is_saved || isSaved}
-                classProp={`block ${!item.is_saved ? "lg:hidden group-hover:block" : ""}`}
+                classProp={`block ${
+                  !item.is_saved ? "lg:hidden group-hover:block" : ""
+                }`}
               />
             </div>
-            <p className="text-sm text-custom-gray flex flex-col flex-wrap gap-[2px]">
+            <p className="text-sm text-custom_gray flex flex-col flex-wrap gap-[2px]">
               {renderObject(item)}
             </p>
-          </li>
-          {index !== data.length - 1 && <hr />}
-        </React.Fragment>
+          </div> 
+        </li>
       ))}
     </ul>
   );

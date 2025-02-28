@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { snakeCase, startCase } from "lodash";
 import Bookmark from "post/post_shared/Bookmark";
 import { IPostList } from "models/postModels/IPost";
-import tag from "post/post_shared/tag"; 
+import Tag from "post/post_shared/tag";
 
 interface HomeListItemProps {
   ListItemData: IPostList;
@@ -45,10 +45,10 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                 key={index}
                 className="group flex flex-col justify-between gap-1 min-h-5 animate-pulse"
               >
-                <div className="w-full h-7 bg-custom-less-gray rounded-sm"></div>
+                <div className="w-full h-7 bg-custom_less_gray rounded-sm"></div>
                 <div
                   style={{ width: `${Math.random() * 50 + 50}%` }}
-                  className="w-5/6 h-7 bg-custom-less-gray rounded-sm"
+                  className="w-5/6 h-7 bg-custom_less_gray rounded-sm"
                 ></div>
               </li>
             ))}
@@ -58,12 +58,11 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
             <ul className="flex flex-col">
               {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
                 <React.Fragment key={item._id}>
-                  <li
-                    className={`group inline-flex justify-between items-center min-h-7 my-2 ${tag(
-                      section,
-                      item.important_dates
-                    )}`}
-                  >
+                  <li className="group inline-flex justify-start items-center min-h-7 my-2">
+                    <Tag
+                      section={section}
+                      importantDates={item.important_dates}
+                    />
                     <Link
                       to={`/sections/${section}/${
                         item.post
@@ -83,13 +82,12 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                         !item.is_saved ? "lg:hidden group-hover:block" : ""
                       }`}
                     />
-                  </li>
-                  {index !== ListItemData.length - 1 && <hr />}
+                  </li> 
                 </React.Fragment>
               ))}
             </ul>
             <Link
-              className="text-custom-blue text-sm font-semibold pr-2 h-auto text-right self-end"
+              className="text-custom_blue text-sm font-semibold pr-2 h-auto text-right self-end"
               to={`/sections/${section}`}
             >
               Read More

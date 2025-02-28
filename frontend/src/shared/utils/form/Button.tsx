@@ -39,7 +39,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <button
         {...commonProps}
-        className={`whitespace-nowrap hover:bg-custom-less-gray transform duration-100 ease-linear px-2 py-1 rounded ${classProp}`}
+        className={`whitespace-nowrap hover:bg-custom_less_gray transform duration-100 ease-linear px-2 py-1 rounded ${classProp}`}
       >
         {children}
       </button>
@@ -50,8 +50,8 @@ const Button: React.FC<ButtonProps> = ({
   if (contributeSaveButton) {
     const baseClass = `flex-1 py-[.5rem] px-[0.5rem] md:py-[.45rem] whitespace-nowrap rounded transform ease-linear duration-200`;
     const stateClass = !disabled
-      ? "bg-custom-blue text-custom-white hover:bg-custom-dark-blue"
-      : "bg-custom-less-gray text-custom-gray cursor-not-allowed";
+      ? "bg-custom_blue text-custom_white hover:bg-custom_dark_blue"
+      : "bg-custom_less_gray text-custom_gray cursor-not-allowed";
     return (
       <button
         {...commonProps}
@@ -72,8 +72,8 @@ const Button: React.FC<ButtonProps> = ({
         } ${classProp}`}
       >
         <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
-        <span className="absolute inset-0 w-full h-full bg-custom-red border-2 border-black group-hover:bg-custom-red"></span>
-        <span className="relative text-custom-white group-hover:text-white">
+        <span className="absolute inset-0 w-full h-full bg-custom_red border-2 border-black group-hover:bg-custom_red"></span>
+        <span className="relative text-custom_white group-hover:text-white">
           {children}
         </span>
       </button>
@@ -82,10 +82,10 @@ const Button: React.FC<ButtonProps> = ({
 
   // Auth Button
   if (authButtonType) {
-    const baseClass = `flex items-center justify-center min-w-fit whitespace-nowrap text-base overflow-hidden px-3 py-2 rounded-full text-custom-white font-bold hover:bg-custom-black`;
+    const baseClass = `flex items-center justify-center min-w-fit whitespace-nowrap text-base overflow-hidden px-3 py-2 rounded-full text-custom_white font-bold hover:bg-custom_black`;
     const stateClass = disabled
-      ? "cursor-not-allowed bg-custom-black"
-      : "cursor-pointer bg-custom-gray";
+      ? "cursor-not-allowed bg-custom_black"
+      : "cursor-pointer bg-custom_gray";
     return (
       <button
         {...commonProps}
@@ -98,7 +98,7 @@ const Button: React.FC<ButtonProps> = ({
 
   // Warning Button
   if (warning) {
-    const baseClass = `text-custom-red whitespace-nowrap flex items-center justify-center rounded outline outline-custom-red p-button hover:text-custom-white hover:bg-custom-red min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden`;
+    const baseClass = `text-custom_red whitespace-nowrap flex items-center justify-center rounded outline outline-custom_red p-button hover:text-custom_white hover:bg-custom_red min-w-fit whitespace-nowrap px-button-x py-button-y text-base overflow-hidden`;
     const stateClass = disabled ? "cursor-not-allowed" : "cursor-pointer";
     return (
       <button
@@ -115,7 +115,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <button
         {...commonProps}
-        className={`p-1 rounded-full whitespace-nowrap hover:bg-custom-pale-yellow flex items-center justify-center cursor-pointer text-custom-less-gray hover:text-custom-gray ${classProp} `}
+        className={`p-1 rounded-full whitespace-nowrap hover:bg-custom_pale_yellow flex items-center justify-center cursor-pointer text-custom_less_gray hover:text-custom_gray ${classProp} `}
       >
         {children}
       </button>
@@ -125,10 +125,10 @@ const Button: React.FC<ButtonProps> = ({
   // Default Button
   // Ensure "rounded" is present unless already provided in classProp
   const roundedClass = classProp.includes("rounded") ? "" : "rounded";
-  const baseClass = `whitespace-nowrap focus:outline-custom-pale-yellow focus:ring-2 focus:ring-custom-pale-yellow text-center ${roundedClass} outline outline-custom-less-gray p-button ease-linear transform duration-100 w-full py-[.5rem] px-[0.5rem] md:py-[.45rem] text-base overflow-hidden`;
+  const baseClass = `whitespace-nowrap focus:outline-custom_pale_yellow focus:ring-2 focus:ring-custom_pale_yellow text-center ${roundedClass} outline outline-custom_less_gray p-button ease-linear transform duration-100 w-full py-[.5rem] px-[0.5rem] md:py-[.45rem] text-base overflow-hidden`;
   const stateClass = disabled
-    ? "cursor-not-allowed text-custom-gray bg-custom-pale-yellow"
-    : "cursor-pointer hover:bg-custom-pale-yellow hover:outline-custom-gray";
+    ? "cursor-not-allowed text-custom_gray bg-custom_pale_yellow"
+    : "cursor-pointer hover:bg-custom_pale_yellow hover:outline-custom_gray";
   return (
     <button
       {...commonProps}

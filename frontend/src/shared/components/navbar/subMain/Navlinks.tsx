@@ -50,7 +50,7 @@ const Navlinks: React.FC = () => {
               to={item.link}
               className={({ isActive }) =>
                 `no-underline min-w-fit whitespace-nowrap ${
-                  isActive ? "text-custom-red" : "hover:text-custom-red"
+                  isActive ? "text-custom_red" : "hover:text-custom_red"
                 }`
               }
             >
@@ -63,19 +63,19 @@ const Navlinks: React.FC = () => {
       {dropdownLinks.length > 0 && (
         <div ref={dropdownRef} className="relative flex-1 w-full">
           <button
-            className={`rounded-full outline outline-custom-gray w-full bg-custom-less-gray px-2 flex items-center justify-center gap-2 ${
+            className={`rounded-full outline outline-custom_gray w-full bg-custom_less_gray px-2 flex items-center justify-center gap-2 ${
               viewType === "tablet" || viewType === "mobile"? "py-1" : "py-[1px]"
-            } ${showDropdown && "shadow-md shadow-custom-black"}`}
+            } ${showDropdown && "shadow-md shadow-custom_black"}`}
             onClick={() => setShowDropdown(!showDropdown)}
           >
             {selectedSection ? startCase(selectedSection) : "More Section"}
             <ArrowDropDownIcon
               fontSize="small"
-              className="rounded-full bg-custom-gray text-custom-less-gray"
+              className="rounded-full bg-custom_gray text-custom_less_gray"
             />
           </button>
           {showDropdown && (
-            <ul className="rounded absolute top-full mt-1 w-full bg-custom-less-gray shadow-md shadow-custom-black">
+            <ul className="rounded absolute top-full mt-1 w-full bg-custom_less_gray shadow-md shadow-custom_black">
               {dropdownLinks.map(([key, item], index) => (
                 <React.Fragment key={key}>
                   <li className="text-center">
@@ -84,8 +84,8 @@ const Navlinks: React.FC = () => {
                       className={({ isActive }) =>
                         `m-1 py-1 block rounded ${
                           isActive
-                            ? "bg-custom-white"
-                            : "hover:bg-custom-white"
+                            ? "bg-custom_white"
+                            : "hover:bg-custom_white"
                         }`
                       }
                       onClick={() => handleSelectLink(key)}

@@ -1,9 +1,9 @@
 const SHARED_DB = {
   status: ["rejected", "pending", "approved"],
   status_classname: {
-    pending: "text-custom-less-gray hover:bg-custom-less-gray",
-    rejected: "text-custom-red hover:bg-custom-red",
-    approved: "text-custom-green hover:bg-custom-green",
+    pending: "text-custom_less_gray hover:bg-custom_less_gray",
+    rejected: "text-custom_red hover:bg-custom_red",
+    approved: "text-custom_green hover:bg-custom_green",
   },
 };
 

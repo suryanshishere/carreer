@@ -75,29 +75,25 @@ const MyContribution: React.FC = () => {
           data.metadata.timeStamp.updatedAt
         ).format("LL")}`}
       />
-
-      {/* Toggle Switch */}
-      <div className="flex justify-end gap-2 mb-4">
+      <div className="flex justify-start gap-2 mb-4">
         <Button
           onClick={() => setSelectedTab("contribution")}
-          classProp={`${
-            selectedTab === "contribution" ? "bg-custom-pale-yellow" : ""
+          classProp={`rounded-full max-w-fit px-20 text-sm ${
+            selectedTab === "contribution" ? "bg-custom_pale_yellow" : ""
           }`}
         >
           Contribution
         </Button>
         <Button
           onClick={() => setSelectedTab("approved")}
-          classProp={`${
-            selectedTab === "approved" ? "bg-custom-pale-yellow" : ""
+          classProp={`rounded-full max-w-fit px-4 text-sm ${
+            selectedTab === "approved" ? "bg-custom_pale_yellow" : ""
           }`}
         >
           Approved
         </Button>
       </div>
-
-      {/* Render based on selection */}
-      <MyContributionComponent data={data.data[selectedTab]} noOther={selectedTab === "approved"}/>
+      <MyContributionComponent data={data.data[selectedTab]} />
     </div>
   );
 };

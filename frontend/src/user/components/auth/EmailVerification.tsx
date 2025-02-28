@@ -141,7 +141,7 @@ const EmailVerification = () => {
         {isSendOnce
           ? "Enter your OTP for verification, which was sent to your email "
           : "Generate OTP for verification on your email "}
-        <span className="text-custom-red">
+        <span className="text-custom_red">
           {/* {email &&
             `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`} */}
         </span>
@@ -153,7 +153,7 @@ const EmailVerification = () => {
           onClick={handleOtpEmail}
           disabled={sendOtpMutation.isPending}
           classProp={`${
-            sendOtpMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
+            sendOtpMutation.isPending ? "bg-custom_black" : "bg-custom_gray"
           }`}
         >
           {sendOtpMutation.isPending ? "Generating..." : "Generate OTP"}
@@ -165,14 +165,14 @@ const EmailVerification = () => {
             error={!!errors.email_verification_otp}
             helperText={errors.email_verification_otp?.message}
             type="number"
-            classProp="py-2 text-md rounded placeholder:text-sm min-w-[6rem] flex-1 outline-custom-gray"
+            classProp="py-2 text-md rounded placeholder:text-sm min-w-[6rem] flex-1 outline-custom_gray"
             placeholder="Enter OTP"
             outerClassProp="flex-1"
           />
           <Button
             authButtonType
             classProp={`${
-              verifyOtpMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
+              verifyOtpMutation.isPending ? "bg-custom_black" : "bg-custom_gray"
             }`}
             type="submit"
             disabled={verifyOtpMutation.isPending}
@@ -186,10 +186,10 @@ const EmailVerification = () => {
         authButtonType
           classProp={`${
             sendOtpMutation.isPending
-              ? "bg-custom-black"
+              ? "bg-custom_black"
               : resendTimer > 0
-              ? "bg-custom-less-gray"
-              : "bg-custom-gray"
+              ? "bg-custom_less_gray"
+              : "bg-custom_gray"
           } ml-2`}
           onClick={handleOtpEmail}
           disabled={resendTimer > 0 || sendOtpMutation.isPending}

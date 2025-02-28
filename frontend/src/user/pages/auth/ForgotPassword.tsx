@@ -82,7 +82,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
 
   if (submitMutation.isSuccess) {
     return (
-      <p className="text-base text-center text-custom-green p-button font-bold">
+      <p className="text-base text-center text-custom_green p-button font-bold">
         Password reset link sent successfully!
       </p>
     );
@@ -104,7 +104,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
         error={!!errors.email}
         helperText={errors.email?.message}
         placeholder="Email"
-        classProp={`placeholder:text-sm ${!isForgotPasswordPage && "outline-custom-gray"}`}
+        classProp={`placeholder:text-sm ${!isForgotPasswordPage && "outline-custom_gray"}`}
         outerClassProp={`flex-1`}
       />
       <div className="flex-1 flex items-center gap-2">

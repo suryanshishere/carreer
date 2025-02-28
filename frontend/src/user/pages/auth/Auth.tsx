@@ -74,21 +74,21 @@ const Auth: React.FC<AuthProps> = () => {
       {buttonsConfig[authState]?.map(({ text, onClick }, index) => (
         <button
           key={index}
-          className={`hover:text-custom-less-red text-left ${
+          className={`hover:text-custom_less_red text-left ${
             (text === "Forgot Password?" || text === "Login / Signup") &&
-            "text-custom-red"
+            "text-custom_red"
           }`}
           onClick={onClick}
         >
           {text}
         </button>
       ))}
-      <Link to="/contact-us" className="hover:text-custom-less-red">
+      <Link to="/contact-us" className="hover:text-custom_less_red">
         Need help?
       </Link>
       <button
         onClick={() => dispatch(handleAuthClick(false))}
-        className="hover:text-custom-less-red"
+        className="hover:text-custom_less_red"
       >
         Close
       </button>

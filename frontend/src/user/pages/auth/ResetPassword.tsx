@@ -85,7 +85,7 @@ const ResetPassword: React.FC = () => {
     return (
       <div className="w-full flex flex-col gap-4 items-center">
         {!reached && (
-          <div className="text-center text-custom-red">
+          <div className="text-center text-custom_red">
             Not a valid reset password link. <br />
             <b>Try again</b> if problem persist.
           </div>

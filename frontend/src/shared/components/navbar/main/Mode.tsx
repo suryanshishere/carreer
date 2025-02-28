@@ -80,8 +80,8 @@ const Mode: React.FC = () => {
             className="sr-only"
           />
           <div
-            className={`h-6 w-full rounded-full transition text-xs font-bold flex items-center justify-center text-custom-black whitespace-nowrap ${
-              isChecked ? "bg-custom-less-blue" : "bg-custom-less-gray"
+            className={`h-6 w-full rounded-full transition text-xs font-bold flex items-center justify-center text-custom_black whitespace-nowrap ${
+              isChecked ? "bg-custom_less_blue" : "bg-custom_less_gray"
             }`}
           >
             {!isChecked && <span className="ml-5 pr-1">MAX</span>}
@@ -89,8 +89,8 @@ const Mode: React.FC = () => {
           <div
             className={`dot absolute top-[4px] mx-1 h-4 w-4 rounded-full transition-transform ${
               isChecked
-                ? "translate-x-8 bg-custom-blue"
-                : "translate-x-0 bg-custom-gray"
+                ? "translate-x-8 bg-custom_blue"
+                : "translate-x-0 bg-custom_gray"
             }`}
           ></div>
         </label>

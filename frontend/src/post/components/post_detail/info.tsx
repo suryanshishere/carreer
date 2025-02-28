@@ -32,7 +32,7 @@ const Info = () => {
         {!dropdownStates["info"] ? (
           <InfoOutlinedIcon fontSize="small" />
         ) : (
-          <InfoSharpIcon fontSize="small" className="text-custom-gray" />
+          <InfoSharpIcon fontSize="small" className="text-custom_gray" />
         )}
       </Button>
     </div>

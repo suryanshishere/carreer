@@ -25,7 +25,7 @@ const RenderObject: React.FC<RenderObjectProps> = ({ value, parentKey }) => {
 
         return (
           <div key={subKey} className="w-full flex flex-col justify-start">
-            <h2 className="self-start flex items-center justify-start gap-2 text-custom-gray">
+            <h2 className="self-start flex items-center justify-start gap-2 text-custom_gray">
               <SquareUI />
               {startCase(subKey)}
             </h2>

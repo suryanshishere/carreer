@@ -34,7 +34,7 @@ const ContributionSection = () => {
               key={item}
               onClick={() => handleSectionClick(item)}
               classProp={`min-w-fit ${
-                selectedSection === item ? "bg-custom-pale-yellow" : ""
+                selectedSection === item ? "bg-custom_pale_yellow" : ""
               }`}
             >
               {startCase(item)}

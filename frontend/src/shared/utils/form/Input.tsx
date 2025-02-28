@@ -51,7 +51,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         return (
           <button
             type="button"
-            className="p-0 hover:text-custom-red absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-custom-gray"
+            className="p-0 hover:text-custom_red absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-custom_gray"
             onClick={togglePasswordVisibility}
           >
             {showPassword ? "Hide" : "Show"}
@@ -84,9 +84,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder || startCase(name)}
             value={value}
             onChange={onChange}
-            className={`w-full pl-2 py-2 outline outline-2 focus:outline-custom-gray outline-custom-less-gray text-base rounded ${classProp} ${
-              error ? "outline-custom-red" : ""
-            } ${error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"}
+            className={`w-full pl-2 py-2 outline outline-2 focus:outline-custom_gray outline-custom_less_gray text-base rounded ${classProp} ${
+              error ? "outline-custom_red" : ""
+            } ${error ? "focus:ring-custom_red" : "focus:ring-custom_less_gray"}
             `}
             style={style}
           />
@@ -99,7 +99,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {helperText && (
           <p
             className={`ml-2 mt-[2px] text-xs w-auto whitespace-nowrap ${
-              error ? "text-custom-red" : "hidden"
+              error ? "text-custom_red" : "hidden"
             } ${errorClassProp}`}
           >
             {helperText.replace(/_/g, " ")}
@@ -154,14 +154,14 @@ export const TextArea = forwardRef<
           disabled={disabled}
           value={value}
           onChange={onChange} // Now specific to HTMLTextAreaElement
-          className={`w-full h-full pl-2 py-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
-            error ? "outline-custom-red" : ""
-          } ${error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"}`}
+          className={`w-full h-full pl-2 py-2 outline outline-2 outline-custom_less_gray text-base rounded ${classProp} ${
+            error ? "outline-custom_red" : ""
+          } ${error ? "focus:ring-custom_red" : "focus:ring-custom_less_gray"}`}
         />
         {helperText && (
           <p
             className={`ml-2 mt-[2px] text-xs w-auto whitespace-nowrap ${
-              error ? "text-custom-red" : "hidden"
+              error ? "text-custom_red" : "hidden"
             } ${errorClassProp}`}
           >
             {helperText.replace(/_/g, " ")}

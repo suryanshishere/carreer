@@ -1,6 +1,6 @@
 import React from "react";
 import Navlinks from "./Navlinks";
-import Tags from "./Tags";
+import Tags from "./nav_tags";
 import useHandleScroll from "shared/hooks/handle-scroll-hook";
 import useResponsiveView, { viewObject, ViewType } from "shared/hooks/responsive-view-hook";
 
@@ -11,8 +11,8 @@ const SubMain: React.FC = () => {
 
   return (
     <div
-      className={`z-20 page-padding bg-custom-pale-yellow text-base flex justify-center items-center gap-3 
-        transform transition-transform duration-300 ease-in-out ${viewType === "tablet" || viewType === "mobile" ? "h-sub-nav-sm" : "h-sub-nav"}
+      className={`z-20 page-padding bg-custom_pale_yellow text-base flex justify-center items-center gap-3 
+        transform transition-transform duration-300 ease-in-out ${viewType === "tablet" || viewType === "mobile" ? "h-sub_nav_sm" : "h-sub_nav"}
         ${showSubNav ? "translate-y-0" : "-translate-y-full"}`}
     >
       <Navlinks />

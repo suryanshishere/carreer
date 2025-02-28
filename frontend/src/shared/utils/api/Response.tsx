@@ -7,14 +7,14 @@ const Response = () => {
   const successMsg = useSelector(selectSuccessMsg);
 
   return (
-    <div className="fixed text-sm page-padding text-custom-white rounded font-bold flex justify-center bottom-2 w-full gap-2 z-50">
+    <div className="fixed text-sm page-padding text-custom_white rounded font-bold flex justify-center bottom-2 w-full gap-2 z-50">
       {successMsg && (
         <motion.p
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="px-2 py-1 bg-custom-green rounded m-1"
+          className="px-2 py-1 bg-custom_green rounded m-1"
         >
           {successMsg}
         </motion.p>
@@ -25,7 +25,7 @@ const Response = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="px-2 py-1 bg-custom-red rounded m-1"
+          className="px-2 py-1 bg-custom_red rounded m-1"
         >
           {errorMsg}
         </motion.p>

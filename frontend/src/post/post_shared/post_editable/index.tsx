@@ -129,7 +129,7 @@ console.log(lastName)
       {isSaved && (
         <Button
           onClick={handleUndo}
-          classProp="py-1 bg-custom-white transform ease-linear duration-200"
+          classProp="py-1 bg-custom_white transform ease-linear duration-200"
         >
           Undo
         </Button>
@@ -144,8 +144,8 @@ console.log(lastName)
           disabled={!isValid}
           className={`flex-1 px-2 py-1 rounded transform ease-linear duration-200 ${
             isValid
-              ? "bg-custom-blue text-custom-white hover:bg-custom-dark-blue"
-              : "bg-custom-less-gray text-custom-gray cursor-not-allowed"
+              ? "bg-custom_blue text-custom_white hover:bg-custom_dark_blue"
+              : "bg-custom_less_gray text-custom_gray cursor-not-allowed"
           }`}
         >
           Save

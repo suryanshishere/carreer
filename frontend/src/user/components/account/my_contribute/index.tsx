@@ -8,9 +8,8 @@ import { RootState } from "shared/store";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
-const MyContriComponent: React.FC<{ data: IContributionDetails, noOther:boolean }> = ({
+const MyContriComponent: React.FC<{ data: IContributionDetails }> = ({
   data,
-  noOther=false
 }) => {
   const { isEditContribute } = useSelector((state: RootState) => state.post);
   const [expandedSections, setExpandedSections] = React.useState<
@@ -21,49 +20,41 @@ const MyContriComponent: React.FC<{ data: IContributionDetails, noOther:boolean 
   };
   return (
     <div className="flex flex-col gap-2">
-      {Object.entries(data).map(([postCode, value], index) => (
-        <React.Fragment key={postCode}>
-          <div className="flex flex-col gap-2">
-            <h2
-              onClick={() => toggleExpand(postCode)}
-              className="py-1 cursor-pointer self-start"
-            >
-              {startCase(postCode)}
-              {expandedSections[postCode] ? (
-                <ArrowDropUpIcon />
-              ) : (
-                <ArrowDropDownIcon />
-              )}
-            </h2>
-            {expandedSections[postCode] && (
-              <div className="flex flex-col gap-2">
-                {Object.entries(value).map(([section, subValue]) => {
-                  const isEditing =
-                    isEditContribute.clicked &&
-                    isEditContribute.section === section &&
-                    isEditContribute.postCode === postCode;
-
-                  return (
-                    <div key={section} className="flex flex-col gap-2">
-                      <SubContriHeader
-                        section={section}
-                        postCode={postCode}
-                        isEditing={isEditing}
-                      />
-                      <SubContriValue
-                        subValue={subValue}
-                        isEditing={isEditing}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+      {Object.entries(data).map(([postCode, value]) => (
+        <div key={postCode} className="flex flex-col gap-2">
+          <h2
+            onClick={() => toggleExpand(postCode)}
+            className="py-1 cursor-pointer self-start"
+          >
+            {startCase(postCode)}
+            {expandedSections[postCode] ? (
+              <ArrowDropUpIcon />
+            ) : (
+              <ArrowDropDownIcon />
             )}
-          </div>
-          {Object.keys(data).length - 1 !== index && (
-            <hr className="col-span-full" />
+          </h2>
+          {expandedSections[postCode] && (
+            <div className="flex flex-col gap-2">
+              {Object.entries(value).map(([section, subValue]) => {
+                const isEditing =
+                  isEditContribute.clicked &&
+                  isEditContribute.section === section &&
+                  isEditContribute.postCode === postCode;
+
+                return (
+                  <div key={section} className="flex flex-col gap-2">
+                    <SubContriHeader
+                      section={section}
+                      postCode={postCode}
+                      isEditing={isEditing}
+                    />
+                    <SubContriValue subValue={subValue} isEditing={isEditing} />
+                  </div>
+                );
+              })}
+            </div>
           )}
-        </React.Fragment>
+        </div>
       ))}
     </div>
   );

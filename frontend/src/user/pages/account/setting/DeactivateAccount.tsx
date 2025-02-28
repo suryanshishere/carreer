@@ -79,7 +79,7 @@ const DeactivateAccount: React.FC = () => {
         header="Deactivate Account"
         subHeader="Read the warming first, before any action"
       />
-      <p className="text-custom-red text-justify font-bold mb-4">
+      <p className="text-custom_red text-justify font-bold mb-4">
         If you deactivate your account, it may be permanently deleted after 30
         days of inactivity. All saved posts will also be deleted, so ensure you
         back them up elsewhere.

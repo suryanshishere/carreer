@@ -85,11 +85,14 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
   return currentDate.diff(startMoment, "days");
 };
 
-const tag = (section: string, importantDates?: IDates) => {
-  if (!importantDates) return "";
+const Tag: React.FC<{ section: string; importantDates?: IDates }> = ({
+  section,
+  importantDates,
+}) => {
+  if (!importantDates) return null;
 
   const days = calculateDateDifference(importantDates, section);
-  if (days === null) return "";
+  if (days === null) return null;
 
   // Find the matching tag based on the number of days
   const matchingTag = POST_DB.tags.find(
@@ -97,8 +100,13 @@ const tag = (section: string, importantDates?: IDates) => {
       tag.daysRange && days >= tag.daysRange[0] && days <= tag.daysRange[1]
   );
 
-  // Return the styled tag if a label is assigned
-  return matchingTag ? `pl-2 border-l-2 border-${matchingTag?.color}` : "";
+  return (
+    <span
+      className={`min-h-full w-1 mr-2 flex-none ${
+        matchingTag ? `bg-${matchingTag?.color}` : ""
+      }`}
+    ></span>
+  );
 };
 
-export default tag;
+export default Tag;

@@ -53,9 +53,9 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
           required={required}
           multiple={multiple}
           defaultValue={defaultValue}
-          className={`w-full p-2 outline outline-2 outline-custom-less-gray text-base rounded ${classProp} ${
-            error ? "outline-custom-red" : ""
-          } ${error ? "focus:ring-custom-red" : "focus:ring-custom-less-gray"}`}
+          className={`w-full p-2 outline outline-2 outline-custom_less_gray text-base rounded ${classProp} ${
+            error ? "outline-custom_red" : ""
+          } ${error ? "focus:ring-custom_red" : "focus:ring-custom_less_gray"}`}
           style={style}
         >
           <option value="" disabled hidden>
@@ -76,7 +76,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
         {helperText && (
           <p
             className={`ml-2 mt-[2px] text-xs w-auto ${
-              error ? "text-custom-red" : "text-grey"
+              error ? "text-custom_red" : "text-grey"
             } ${errorClassProp}`}
           >
             {helperText.replace(/_/g, " ")}

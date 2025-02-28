@@ -23,15 +23,15 @@ const POST_DB: IPostDb = {
   components: ["date", "common", "link", "fee"],
   overall: [],
   tags: [
-    { color: "custom-green", label: "LIVE", daysRange: [-3, 2] },
-    { color: "custom-pale-orange", label: "UPCOMING", daysRange: [3, 80] },
-    { color: "custom-gray", label: "RELEASED", daysRange: [-80, -4] },
+    { color: "custom_green", label: "LIVE", daysRange: [-3, 2] },
+    { color: "custom_pale_orange", label: "UPCOMING", daysRange: [3, 80] },
+    { color: "custom_gray", label: "RELEASED", daysRange: [-80, -4] },
     {
-      color: "custom-red animate-pulse",
+      color: "custom_red animate-pulse",
       label: "EXPIRING",
       daysRange: [2000,3000],
     },
-    { color: "custom-black", label: "VISITED" },
+    { color: "custom_black", label: "VISITED" },
   ],
 };
 

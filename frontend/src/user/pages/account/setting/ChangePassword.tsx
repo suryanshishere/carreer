@@ -84,7 +84,7 @@ const ChangePassword: React.FC = () => {
 
   if (changePasswordMutation.isSuccess) {
     return (
-      <p className="text-base text-center text-custom-green p-button font-bold">
+      <p className="text-base text-center text-custom_green p-button font-bold">
         Password changed successfully!
       </p>
     );
@@ -97,7 +97,7 @@ const ChangePassword: React.FC = () => {
         subHeader="Strong password for the best protection"
       />
       {errors.old_password_not_match?.message && (
-        <p className="text-custom-red">
+        <p className="text-custom_red">
           {errors.old_password_not_match?.message}
         </p>
       )}
@@ -132,7 +132,7 @@ const ChangePassword: React.FC = () => {
           />
         </div>
         <div className="flex justify-between items-center gap-8">
-          <Link to="/user/account/setting/forgot-password" className="text-custom-red text-sm">
+          <Link to="/user/account/setting/forgot-password" className="text-custom_red text-sm">
             Forgot Password?
           </Link>
           <Button

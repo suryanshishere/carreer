@@ -40,8 +40,8 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
               ? logoutHandler
               : () => dispatch(toggleDropdownState({ id: key }))
           }
-          className={`py-1 px-2 w-full rounded hover:bg-custom-white ${
-            dropdownStates[key] ? "bg-custom-white" : ""
+          className={`py-1 px-2 w-full rounded hover:bg-custom_white ${
+            dropdownStates[key] ? "bg-custom_white" : ""
           }`}
         >
           {startCase(key)}
@@ -52,8 +52,8 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
         component = (
           <button
             onClick={() => dispatch(toggleDropdownState({ id: key }))}
-            className={`py-1 px-2 w-full rounded hover:bg-custom-white ${
-              dropdownStates[key] ? "bg-custom-white" : ""
+            className={`py-1 px-2 w-full rounded hover:bg-custom_white ${
+              dropdownStates[key] ? "bg-custom_white" : ""
             }`}
           >
             {startCase(key)}
@@ -74,8 +74,8 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
               className={({ isActive }) =>
                 `py-1 px-2 block rounded ${
                   isActive
-                    ? "bg-custom-white"
-                    : "hover:bg-custom-white"
+                    ? "bg-custom_white"
+                    : "hover:bg-custom_white"
                 }`
               }
               onClick={() => dispatch(closeAllDropdowns())}
@@ -98,7 +98,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
   });
 
   return (
-    <ul className="h-fit w-[5.95rem] rounded shadow-md shadow-custom-black text-sm flex flex-col items-center text-custom-black bg-custom-less-gray p-1">
+    <ul className="h-fit w-[5.95rem] rounded shadow-md shadow-custom_black text-sm flex flex-col items-center text-custom_black bg-custom_less_gray p-1">
       {navItems}
     </ul>
   );

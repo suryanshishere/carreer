@@ -40,12 +40,12 @@ const Footer: React.FC = () => {
   const footerLinkClassName = "hover:underline lg:text-start w-fit";
 
   return (
-    <footer className="lg:px-page px-page-small bottom-0 min-mt-screen bg-custom-pale-yellow py-4 flex flex-col-reverse lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
+    <footer className="lg:px-page px-page_small bottom-0 min-mt-screen bg-custom_pale_yellow py-4 flex flex-col-reverse lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
       <div className="select-none self-center">
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
       </div>
       <hr className="lg:hidden" />
-      <div className="grid grid-cols-2 gap-x-2 text-sm text-custom-red text-center">
+      <div className="grid grid-cols-2 gap-x-2 text-sm text-custom_red text-center">
         <Link to="/about" className={footerLinkClassName}>
           About
         </Link>

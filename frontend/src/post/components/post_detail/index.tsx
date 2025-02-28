@@ -37,7 +37,7 @@ const PostDetailComponent: React.FC<{
         const displayKey = key.includes(".") ? key.split(".")[1] : key;
         return (
           <div key={index} className="w-full flex flex-col gap-1">
-            <h2 className="whitespace-nowrap text-custom-red">
+            <h2 className="whitespace-nowrap text-custom_red">
               {startCase(displayKey)}
             </h2>
             <div className="flex flex-col">{renderPostData(key, value)}</div>

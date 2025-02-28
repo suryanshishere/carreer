@@ -5,13 +5,13 @@ export const ParaSkeletonLoad = () => {
     <li className="py-2 flex flex-col gap-2 animate-pulse">
       <div
         style={{ width: `${Math.random() * 25 + 75}%` }}
-        className="h-7 w-1/2 bg-custom-less-gray rounded-sm"
+        className="h-7 w-1/2 bg-custom_less_gray rounded-sm"
       ></div>
       <div className="flex flex-col gap-1">
-        <div className="h-4 w-full bg-custom-less-gray rounded-sm"></div>
+        <div className="h-4 w-full bg-custom_less_gray rounded-sm"></div>
         <div
           style={{ width: `${Math.random() * 25 + 76}%` }}
-          className="h-4 w-2/3 bg-custom-less-gray rounded-sm"
+          className="h-4 w-2/3 bg-custom_less_gray rounded-sm"
         ></div>
       </div>
     </li>
@@ -23,14 +23,14 @@ export const TableSkeletonLoad = () => {
     <div className="w-full flex flex-col">
       <div
         style={{ width: `${Math.random() * 25 + 75}%` }}
-        className="h-5 bg-custom-less-gray mb-2"
+        className="h-5 bg-custom_less_gray mb-2"
       ></div>
-      <div className="w-full border border-custom-less-gray overflow-hidden">
+      <div className="w-full border border-custom_less_gray overflow-hidden">
         {[...Array(4)].map((_, rowIndex) => (
           <div
             key={rowIndex}
             className={`flex ${
-              rowIndex === 0 ? "bg-custom-less-gray" : "bg-custom-white"
+              rowIndex === 0 ? "bg-custom_less_gray" : "bg-custom_white"
             } p-2`}
           >
             {[...Array(3)].map((_, colIndex) => (

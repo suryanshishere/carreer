@@ -161,10 +161,10 @@ const PublisherAccess = () => {
                   <div className="flex flex-col">
                     <h2 className="self-start pl-0">{publisher.user.email}</h2>
                     <div className="text-sm font-semibold flex gap-1 items-center">
-                      <span className="text-xs px-2 bg-custom-less-gray rounded-full">
+                      <span className="text-xs px-2 bg-custom_less_gray rounded-full">
                         {startCase(publisher.status)}
                       </span>
-                      <span className="text-xs px-2 bg-custom-less-gray rounded-full">
+                      <span className="text-xs px-2 bg-custom_less_gray rounded-full">
                         {startCase(publisher.role_applied)}
                       </span>
                       {moment(publisher.updatedAt).format("LL")}
@@ -183,7 +183,7 @@ const PublisherAccess = () => {
                                 status: item,
                               })
                             }
-                            className={`text-sm border rounded-full px-3 py-[2px] hover:text-custom-white ${status_classname[item]}`}
+                            className={`text-sm border rounded-full px-3 py-[2px] hover:text-custom_white ${status_classname[item]}`}
                           >
                             {startCase(item)}
                           </button>

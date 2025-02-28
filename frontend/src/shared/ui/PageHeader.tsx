@@ -12,7 +12,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ subHeader, header }) => {
     <div className="w-full flex flex-col mb-4">
       <h1>{startCase(header)}</h1>
       <DoubleDivider>
-        <h3 className="text-custom-gray">{subHeader}</h3>
+        <h3 className="text-custom_gray">{subHeader}</h3>
       </DoubleDivider>
     </div>
   );

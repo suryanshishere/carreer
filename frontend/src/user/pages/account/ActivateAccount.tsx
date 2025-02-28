@@ -60,7 +60,7 @@ const ActivateAccount = () => {
           onClick={() => activateMutation.mutate()}
           authButtonType
           classProp={`flex-1 ${
-            activateMutation.isPending ? "bg-custom-black" : "bg-custom-gray"
+            activateMutation.isPending ? "bg-custom_black" : "bg-custom_gray"
           }`}
         >
           {activateMutation.isPending
@@ -71,12 +71,12 @@ const ActivateAccount = () => {
       <div className="pl-8 flex flex-col gap-[3px] items-start">
         <Link
           to="/contact-us"
-          className="hover:text-custom-less-red p-0 m-0 text-xs"
+          className="hover:text-custom_less_red p-0 m-0 text-xs"
         >
           Need help?
         </Link>
         <button
-          className="hover:text-custom-less-red p-0 m-0 ml-auto text-xs"
+          className="hover:text-custom_less_red p-0 m-0 ml-auto text-xs"
           onClick={() => store.dispatch(logout())}
         >
           Logout

@@ -8,7 +8,7 @@ const PersistMain = () => {
     (state: RootState) => state.auth
   );
   const { token, isEmailVerified, deactivatedAt } = userData;
-  const persistClassProp = `relative page-padding h-fit py-2 bg-custom-yellow z-20 shadow `;
+  const persistClassProp = `relative page-padding h-fit py-2 bg-custom_yellow z-20 shadow `;
 
   return (
     <>

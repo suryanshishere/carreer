@@ -27,7 +27,7 @@ const About = () => {
         <span className="font-semibold">
           For job application, suggestion, and other related query:
           <Link
-            className="text-custom-red hover:underline pl-2"
+            className="text-custom_red hover:underline pl-2"
             to="/contact-us"
           >
             Contact Us

@@ -60,7 +60,7 @@ const NavAccount = () => {
       <NavLink
         to="/user/account/saved-posts"
         className={({ isActive }) =>
-          isActive ? "text-custom-pale-orange" : ""
+          isActive ? "text-custom_pale_orange" : ""
         }
       >
         Saved
@@ -69,7 +69,7 @@ const NavAccount = () => {
         onClick={dropdownHandler}
         className={`py-[2px] px-1 rounded-full flex items-center hover:cursor-pointer  ${
           dropdownStates["main_nav_account"]
-            ? "bg-custom-less-gray text-custom-gray shadow-md shadow-custom-black"
+            ? "bg-custom_less_gray text-custom_gray shadow-md shadow-custom_black"
             : ""
         }`}
       >

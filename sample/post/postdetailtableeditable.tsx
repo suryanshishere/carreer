@@ -48,18 +48,18 @@
   
 //     return (
 //       <div>
-//         <table className="border-collapse border-2 border-custom-gray w-full mt-3">
+//         <table className="border-collapse border-2 border-custom_gray w-full mt-3">
 //           <thead>
 //             <tr>
 //               {headers.map((header) => (
 //                 <th
 //                   key={header}
-//                   className="border border-custom-gray px-2 py-1 text-left"
+//                   className="border border-custom_gray px-2 py-1 text-left"
 //                 >
 //                   {header.replace(/_/g, " ")}
 //                 </th>
 //               ))}
-//               <th className="border border-custom-gray px-2 py-1 text-left">
+//               <th className="border border-custom_gray px-2 py-1 text-left">
 //                 Actions
 //               </th>
 //             </tr>
@@ -70,7 +70,7 @@
 //                 {headers.map((header) => (
 //                   <td
 //                     key={header}
-//                     className="border border-custom-gray px-2 py-1"
+//                     className="border border-custom_gray px-2 py-1"
 //                   >
 //                     <input
 //                       type={typeof row[header] === "number" ? "number" : "text"}
@@ -82,10 +82,10 @@
 //                     />
 //                   </td>
 //                 ))}
-//                 <td className="border border-custom-gray px-2 py-1 text-center">
+//                 <td className="border border-custom_gray px-2 py-1 text-center">
 //                   <button
 //                     onClick={() => handleRemoveRow(rowIndex)}
-//                     className="text-custom-red hover:underline"
+//                     className="text-custom_red hover:underline"
 //                   >
 //                     Remove
 //                   </button>
@@ -96,13 +96,13 @@
 //         </table>
 //         <button
 //           onClick={handleAddRow}
-//           className="mt-3 px-4 py-2 bg-custom-blue text-custom-white rounded hover:bg-custom-blue"
+//           className="mt-3 px-4 py-2 bg-custom_blue text-custom_white rounded hover:bg-custom_blue"
 //         >
 //           Add Row
 //         </button>
 //         <button
 //           onClick={handleSave}
-//           className="mt-3 px-4 py-2 bg-custom-green text-custom-white rounded hover:bg-green-600"
+//           className="mt-3 px-4 py-2 bg-custom_green text-custom_white rounded hover:bg-green-600"
 //         >
 //           Save
 //         </button>
