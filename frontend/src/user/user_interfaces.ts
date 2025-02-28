@@ -1,8 +1,9 @@
 import { IRole } from "models/admin/IAdmin";
 
+
 export interface IUserAccountMode {
   max: boolean;
-  tag: {
+  tags: {
     live: boolean;
     upcoming: boolean;
     released: boolean;
@@ -21,6 +22,7 @@ export interface IUserData {
   sessionExpireMsg?: string;
 }
 
+
 export type RecursivePartial<T> = {
-  [P in keyof T]?: RecursivePartial<T[P]>;
-};
+    [P in keyof T]?: RecursivePartial<T[P]>;
+  };

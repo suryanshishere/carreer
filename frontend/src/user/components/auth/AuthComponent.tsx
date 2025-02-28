@@ -57,7 +57,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
       message,
     }) => {
       dispatch(triggerSuccessMsg(message));
-      dispatch(login({ token, tokenExpiration, isEmailVerified, role, mode }));
+       dispatch(login({ token, tokenExpiration, isEmailVerified, role, mode }));
     },
     onError: (error: any) => {
       dispatch(triggerErrorMsg(`${error.response?.data?.message}`));

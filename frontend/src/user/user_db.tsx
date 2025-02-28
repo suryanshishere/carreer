@@ -1,11 +1,38 @@
 import SHARED_DB from "shared/shared_db";
 import { ReactNode } from "react";
 
-interface UserAccountModeDB {
+interface IUserAccountModeDB {
   max_mode_off_confirm: ReactNode;
+  tags: {
+    live: {
+      color: string;
+      label: string;
+      daysRange: [number, number];
+    };
+    upcoming: {
+      color: string;
+      label: string;
+      daysRange: [number, number];
+    };
+    released: {
+      color: string;
+      label: string;
+      daysRange: [number, number];
+    };
+    expiring: {
+      color: string;
+      label: string;
+      daysRange: [number, number];
+    };
+    visited: {
+      color: string;
+      label: string;
+      daysRange?: [number, number];
+    };
+  };
 }
 
-export const USER_ACCOUNT_MODE_DB: UserAccountModeDB = {
+export const USER_ACCOUNT_MODE_DB: IUserAccountModeDB = {
   max_mode_off_confirm: (
     <>
       <p>
@@ -15,6 +42,21 @@ export const USER_ACCOUNT_MODE_DB: UserAccountModeDB = {
       </p>
     </>
   ),
+  tags: {
+    live: { color: "custom_green", label: "LIVE", daysRange: [-3, 2] },
+    upcoming: {
+      color: "custom_pale_orange",
+      label: "UPCOMING",
+      daysRange: [3, 80],
+    },
+    released: { color: "custom_gray", label: "RELEASED", daysRange: [-80, -4] },
+    expiring: {
+      color: "custom_red animate-pulse",
+      label: "EXPIRING",
+      daysRange: [2000, 3000],
+    },
+    visited: { color: "custom_black", label: "VISITED" },
+  },
 };
 
 export const CONTRIBUTER_DB = {

@@ -2,11 +2,6 @@ interface IPostDb {
   sections: string[];
   components: string[];
   overall: string[];
-  tags: {
-    color: string;
-    label: string;
-    daysRange?: [number, number];
-  }[];
 }
 
 const POST_DB: IPostDb = {
@@ -21,18 +16,7 @@ const POST_DB: IPostDb = {
     "important",
   ],
   components: ["date", "common", "link", "fee"],
-  overall: [],
-  tags: [
-    { color: "custom_green", label: "LIVE", daysRange: [-3, 2] },
-    { color: "custom_pale_orange", label: "UPCOMING", daysRange: [3, 80] },
-    { color: "custom_gray", label: "RELEASED", daysRange: [-80, -4] },
-    {
-      color: "custom_red animate-pulse",
-      label: "EXPIRING",
-      daysRange: [2000,3000],
-    },
-    { color: "custom_black", label: "VISITED" },
-  ],
+  overall: [], 
 };
 
 // Populate OVERALL dynamically

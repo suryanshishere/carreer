@@ -43,7 +43,7 @@ export interface IUser extends Document {
   //status for personalised data rendering for the user
   mode: {
     max: boolean;
-    tag: {
+    tags: {
       live: boolean;
       upcoming: boolean;
       released: boolean;
@@ -108,7 +108,7 @@ const userSchema: Schema = new Schema<IUser>(
     mode: {
       type: {
         max: { type: Boolean, required: true, default: true },
-        tag: {
+        tags: {
           live: { type: Boolean, required: true, default: false },
           upcoming: { type: Boolean, required: true, default: false },
           released: { type: Boolean, required: true, default: false },
@@ -117,7 +117,16 @@ const userSchema: Schema = new Schema<IUser>(
         },
       },
       required: true,
-      default: { max: true },
+      default: {
+        max: true,
+        tags: {
+          live: false,
+          upcoming: false,
+          released: false,
+          expiring: false,
+          visited: false,
+        },
+      },
     },
   },
   { timestamps: true }

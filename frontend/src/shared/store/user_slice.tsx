@@ -27,7 +27,7 @@ const initialState: IUserSlice = {
     role: "none",
     mode: {
       max: false,
-      tag: {
+      tags: {
         live: false,
         upcoming: false,
         released: false,
@@ -68,13 +68,15 @@ const userSlice = createSlice({
           );
 
       state.isOtpSent = true;
-      state.userData = {
+
+      //this just update the required (same as updateUserData)
+      state.userData = merge({}, state.userData, {
         token,
         isEmailVerified,
         tokenExpiration: localTokenExpiration.toISOString(),
-        role,
+        role: role ?? state.userData.role,
         mode,
-      };
+      });
 
       if (isEmailVerified) {
         state.isNavAuthClicked = false;
@@ -91,7 +93,7 @@ const userSlice = createSlice({
         role: "none",
         mode: {
           max: false,
-          tag: {
+          tags: {
             live: false,
             upcoming: false,
             released: false,
@@ -105,6 +107,7 @@ const userSlice = createSlice({
       // window.location.reload();
     },
 
+    //this function is used to update the user data (like role, mode, etc.)
     updateUserData(state, action: PayloadAction<RecursivePartial<IUserData>>) {
       state.userData = merge({}, state.userData, action.payload);
     },

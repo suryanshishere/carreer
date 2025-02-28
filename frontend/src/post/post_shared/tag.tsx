@@ -1,7 +1,7 @@
-import POST_DB from "post/post_db";
 import { IDateRange, IDates } from "models/postModels/overallInterfaces/IDates";
 import moment from "moment";
 import { formatDate } from "./render_post_data/render_date";
+import { USER_ACCOUNT_MODE_DB } from "user/user_db";
 
 const calculateDateDifference = (importantDates: IDates, section: string) => {
   const tagSectionMap: Record<string, (keyof IDates)[]> = {
@@ -95,7 +95,7 @@ const Tag: React.FC<{ section: string; importantDates?: IDates }> = ({
   if (days === null) return null;
 
   // Find the matching tag based on the number of days
-  const matchingTag = POST_DB.tags.find(
+  const matchingTag = Object.values(USER_ACCOUNT_MODE_DB.tags).find(
     (tag) =>
       tag.daysRange && days >= tag.daysRange[0] && days <= tag.daysRange[1]
   );

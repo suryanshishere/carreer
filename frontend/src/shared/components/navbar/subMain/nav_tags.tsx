@@ -5,24 +5,75 @@ import useResponsiveView, {
   viewObject,
   ViewType,
 } from "shared/hooks/responsive-view-hook";
-import POST_DB from "post/post_db";
+import Button from "shared/utils/form/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
+import { updateUserData } from "shared/store/user_slice";
+import { USER_ACCOUNT_MODE_DB } from "user/user_db";
+import { IUserAccountMode } from "user/user_interfaces";
 
-const TAGS = POST_DB.tags;
+const TAGS = USER_ACCOUNT_MODE_DB.tags;
+
+interface TagButtonProps {
+  label: string;
+  color: string;
+  isActive: boolean;
+  className?: string;
+  onClick: () => void;
+}
+
+const TagButton: React.FC<TagButtonProps> = ({
+  label,
+  color,
+  isActive,
+  className,
+  onClick,
+}) => (
+  <Button
+    basicButton
+    onClick={onClick}
+    classProp={`flex items-center gap-1 text-xs font-medium hover:bg-custom_white ${
+      isActive ? "bg-custom_white" : ""
+    } ${className}`}
+  >
+    <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
+    <span>{label}</span>
+  </Button>
+);
 
 const NavTags: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
+
+  // Use useSelector to get the current tags state from Redux
+  const currentTags = useSelector(
+    (state: RootState) => state.user.userData.mode.tags
+  );
+
   const [showTagsDropdown, setShowTagsDropdown] = useState(false);
   useOutsideClick(dropdownRef, () => setShowTagsDropdown(false));
 
   const viewType: ViewType = useResponsiveView(viewObject);
+
+  const tagClickHandler = (tagsKey: keyof IUserAccountMode["tags"]) => {
+    dispatch(
+      updateUserData({
+        mode: {
+          tags: {
+            [tagsKey]: !currentTags[tagsKey],
+          },
+        },
+      })
+    );
+  };
 
   return (
     <div ref={dropdownRef} className="relative min-w-28 flex items-center">
       <button
         onClick={() => setShowTagsDropdown(!showTagsDropdown)}
         className={`rounded-full outline outline-custom_gray w-full h-full bg-custom_less_gray flex items-center justify-center gap-2 lg:hidden ${
-          viewType === "tablet" || viewType === "mobile" ? "py-1 " : "py-[1px]"
-        }  ${showTagsDropdown && "shadow-md shadow-custom_black"}`}
+          viewType === "tablet" || viewType === "mobile" ? "py-1" : "py-[1px]"
+        } ${showTagsDropdown && "shadow-md shadow-custom_black"}`}
       >
         Tags
         <ArrowDropDownIcon
@@ -32,28 +83,36 @@ const NavTags: React.FC = () => {
       </button>
 
       {showTagsDropdown && (
-        <div className="absolute rounded top-full mt-1 w-full bg-custom_less_gray z-10 shadow-md shadow-custom_black">
-          {TAGS.map((item, index) => (
-            <div key={item.label}>
-              <div className="flex items-center gap-2 py-1 px-2 text-xs font-medium hover:bg-custom_less_gray">
-                <span className={`h-3 w-3 bg-${item.color}`}></span>
-                <h6>{item.label}</h6>
-              </div>
-              {index < TAGS.length - 1 && <hr className="my-1" />}
-            </div>
+        <div className="absolute rounded top-full mt-1 w-full bg-custom_less_gray z-10 shadow-md shadow-custom_black p-1">
+          {Object.entries(TAGS).map(([tagsKey, item], index, array) => (
+            <React.Fragment key={item.label}>
+              <TagButton
+                label={item.label}
+                color={item.color}
+                isActive={currentTags[tagsKey as keyof IUserAccountMode["tags"]]}
+                className="justify-center"
+                onClick={() =>
+                  tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])
+                }
+              />
+              {index < array.length - 1 && <hr className="my-1" />}
+            </React.Fragment>
           ))}
         </div>
       )}
 
-      <div className="hidden lg:flex gap-2">
-        {TAGS.map((item) => (
-          <div
-            key={item.label}
-            className="flex items-center gap-1 text-xs font-medium"
-          >
-            <span className={`h-3 w-3 bg-${item.color}`}></span>
-            <h6>{item.label}</h6>
-          </div>
+      <div className="hidden lg:flex gap-1">
+        {Object.entries(TAGS).map(([tagsKey, item]) => (
+          <TagButton
+            key={tagsKey}
+            label={item.label}
+            color={item.color}
+            isActive={currentTags[tagsKey as keyof IUserAccountMode["tags"]]}
+            className="rounded-full"
+            onClick={() =>
+              tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])
+            }
+          />
         ))}
       </div>
     </div>
