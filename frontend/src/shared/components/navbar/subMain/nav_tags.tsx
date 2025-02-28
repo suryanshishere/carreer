@@ -28,18 +28,33 @@ const TagButton: React.FC<TagButtonProps> = ({
   isActive,
   className,
   onClick,
-}) => (
-  <Button
-    basicButton
-    onClick={onClick}
-    classProp={`flex items-center gap-1 text-xs font-medium hover:bg-custom_white ${
-      isActive ? "bg-custom_white" : ""
-    } ${className}`}
-  >
-    <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
-    <span>{label}</span>
-  </Button>
-);
+}) => {
+  // For visited tag - future perspective and feature in look pending
+  if (label === "VISITED") {
+    return (
+      <Button
+        basicButton
+        classProp={`flex items-center gap-1 text-xs font-medium select-none`}
+      >
+        <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
+        <span>{label}</span>
+      </Button>
+    );
+  }
+
+  return (
+    <Button
+      basicButton
+      onClick={onClick}
+      classProp={`flex items-center gap-1 text-xs font-medium hover:bg-custom_white ${
+        isActive ? "bg-custom_white" : ""
+      } ${className}`}
+    >
+      <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
+      <span>{label}</span>
+    </Button>
+  );
+};
 
 const NavTags: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -89,7 +104,9 @@ const NavTags: React.FC = () => {
               <TagButton
                 label={item.label}
                 color={item.color}
-                isActive={currentTags[tagsKey as keyof IUserAccountMode["tags"]]}
+                isActive={
+                  currentTags[tagsKey as keyof IUserAccountMode["tags"]]
+                }
                 className="justify-center"
                 onClick={() =>
                   tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])

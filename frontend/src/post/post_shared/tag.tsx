@@ -94,19 +94,60 @@ const Tag: React.FC<{ section: string; importantDates?: IDates }> = ({
   const days = calculateDateDifference(importantDates, section);
   if (days === null) return null;
 
-  // Find the matching tag based on the number of days
-  const matchingTag = Object.values(USER_ACCOUNT_MODE_DB.tags).find(
-    (tag) =>
+  // Find the matching entry that contains both key and tag
+  const matchingTagEntry = Object.entries(USER_ACCOUNT_MODE_DB.tags).find(
+    ([key, tag]) =>
       tag.daysRange && days >= tag.daysRange[0] && days <= tag.daysRange[1]
   );
+
+  console.log("matching tag entry", matchingTagEntry);
+
+  // Destructure the key and the tag if found
+  let tagKey, matchingTag;
+  if (matchingTagEntry) {
+    [tagKey, matchingTag] = matchingTagEntry;
+  }
 
   return (
     <span
       className={`min-h-full w-1 mr-2 flex-none ${
-        matchingTag ? `bg-${matchingTag?.color}` : ""
+        matchingTag ? `bg-${matchingTag.color}` : ""
       }`}
     ></span>
   );
 };
 
 export default Tag;
+
+
+//for tag filtering feature where matching with store mode boolean and return true or false if matches.
+export const shouldDisplayTag = (
+  importantDates: IDates,
+  section: string,
+  userTags: Record<string, boolean>
+): boolean => {
+  // Calculate the difference in days using the provided dates and section.
+  const days = calculateDateDifference(importantDates, section);
+  if (days === null) return false;
+
+  // Find the matching tag entry from the DB based on the days.
+  const matchingTagEntry = Object.entries(USER_ACCOUNT_MODE_DB.tags).find(
+    ([key, tag]) =>
+      tag.daysRange && days >= tag.daysRange[0] && days <= tag.daysRange[1]
+  );
+
+  // If no matching tag is found, do not display.
+  if (!matchingTagEntry) return false;
+
+  // Destructure to get the tag key.
+  const [tagKey] = matchingTagEntry;
+
+  // If all userTags are false (and the object is not empty), return true regardless.
+  const userTagsValues = Object.values(userTags);
+  if (userTagsValues.length > 0 && userTagsValues.every((value) => value === false)) {
+    return true;
+  }
+
+  // Otherwise, check if the specific tag is enabled in the user's tags.
+  return Boolean(tagKey && userTags[tagKey]);
+};

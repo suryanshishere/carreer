@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { snakeCase, startCase } from "lodash";
 import Bookmark from "post/post_shared/Bookmark";
 import { IPostList } from "models/postModels/IPost";
-import Tag from "post/post_shared/tag";
+import Tag, { shouldDisplayTag } from "post/post_shared/tag";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 
 interface HomeListItemProps {
   ListItemData: IPostList;
@@ -29,11 +31,15 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   section,
   height,
 }) => {
+   const userTags = useSelector(
+    (state: RootState) => state.user.userData.mode.tags
+  );
+
   const skeletonItemCount = getSkeletonItemCount(height);
 
   return (
     <div className="w-full text-base flex flex-col gap-1" style={{ height }}>
-      <div className=" flex flex-col justify-center items-center gap-2">
+      <div className="flex flex-col justify-center items-center gap-2">
         <h2 className="w-full text-center">{startCase(section)}</h2>
       </div>
       <hr />
@@ -54,20 +60,33 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
             ))}
           </ul>
         ) : (
-          <React.Fragment>
+          <>
             <ul className="flex flex-col">
-              {ListItemData?.slice(0, HOME_LIMIT).map((item, index) => (
-                <React.Fragment key={item._id}>
-                  <li className="group inline-flex justify-start items-center min-h-7 my-2">
+              {ListItemData.slice(0, HOME_LIMIT).map((item) => {
+                // Use the helper to check if the tag should be displayed for this item.
+                const displayTag =
+                  item.important_dates &&
+                  shouldDisplayTag(item.important_dates, section, userTags);
+
+                if (!displayTag) {
+                  return null;
+                }
+
+                return (
+                  <li
+                    key={item._id}
+                    className="group inline-flex justify-start items-center min-h-7 my-2"
+                  >
                     <Tag
                       section={section}
                       importantDates={item.important_dates}
                     />
+
                     <Link
                       to={`/sections/${section}/${
                         item.post
                           ? item.post.post_code
-                          : snakeCase(item.name_of_the_post) //TODO: remove name of the post completely
+                          : snakeCase(item.name_of_the_post)
                       }?is_saved=${item.is_saved}`}
                       state={{ postId: item._id }}
                       className="custom-link"
@@ -82,9 +101,9 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                         !item.is_saved ? "lg:hidden group-hover:block" : ""
                       }`}
                     />
-                  </li> 
-                </React.Fragment>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
             <Link
               className="text-custom_blue text-sm font-semibold pr-2 h-auto text-right self-end"
@@ -92,7 +111,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
             >
               Read More
             </Link>
-          </React.Fragment>
+          </>
         )}
       </div>
     </div>

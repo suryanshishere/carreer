@@ -6,7 +6,9 @@ import _ from "lodash";
 import { excludedPostListKeys } from "post/post_shared/post-list-render-define";
 import { IPostList, IPostListData } from "models/postModels/IPost";
 import { ParaSkeletonLoad } from "shared/ui/SkeletonLoad";
-import Tag from "./tag";
+import Tag, { shouldDisplayTag } from "./tag";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 
 interface ListProps {
   data: IPostList;
@@ -15,6 +17,11 @@ interface ListProps {
 }
 
 const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
+
+  const userTags = useSelector(
+    (state: RootState) => state.user.userData.mode.tags
+  );
+
   if (data.length === 0) {
     return (
       <ul className="self-start w-full p-0 m-0 flex flex-col gap-2">
@@ -73,42 +80,51 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
 
   return (
     <ul className="self-start w-full p-0 m-0 flex flex-col text-base">
-      {data.map((item, index) => (
-        <li
-          key={item._id}
-          className="flex my-2"
-        >
-          <Tag section={section} importantDates={item.important_dates} />
-          <div className="group w-full flex flex-col gap-1 justify-center">
-            <div className="flex justify-between items-center gap-1 min-h-7">
-              <Link
-                to={`/sections/${section}/${
-                  item.post
-                    ? item.post.post_code
-                    : _.snakeCase(item.name_of_the_post)
-                }?is_saved=${item.is_saved}`}
-                state={{ postId: item._id }}
-                className="custom-link"
-              >
-                {item.name_of_the_post}
-              </Link>
-              <Bookmark
-                section={section}
-                postId={item._id}
-                isSaved={item.is_saved || isSaved}
-                classProp={`block ${
-                  !item.is_saved ? "lg:hidden group-hover:block" : ""
-                }`}
-              />
+      {data.map((item) => {
+        // Use the helper to check if the tag should be displayed for this item.
+        const displayTag =
+          item.important_dates &&
+          shouldDisplayTag(item.important_dates, section, userTags);
+  
+        if (!displayTag) {
+          return null; // Skip rendering this item if the tag should not be displayed
+        }
+  
+        return (
+          <li key={item._id} className="flex my-2">
+            <Tag section={section} importantDates={item.important_dates} />
+            <div className="group w-full flex flex-col gap-1 justify-center">
+              <div className="flex justify-between items-center gap-1 min-h-7">
+                <Link
+                  to={`/sections/${section}/${
+                    item.post
+                      ? item.post.post_code
+                      : _.snakeCase(item.name_of_the_post)
+                  }?is_saved=${item.is_saved}`}
+                  state={{ postId: item._id }}
+                  className="custom-link"
+                >
+                  {item.name_of_the_post}
+                </Link>
+                <Bookmark
+                  section={section}
+                  postId={item._id}
+                  isSaved={item.is_saved || isSaved}
+                  classProp={`block ${
+                    !item.is_saved ? "lg:hidden group-hover:block" : ""
+                  }`}
+                />
+              </div>
+              <p className="text-sm text-custom_gray flex flex-col flex-wrap gap-[2px]">
+                {renderObject(item)}
+              </p>
             </div>
-            <p className="text-sm text-custom_gray flex flex-col flex-wrap gap-[2px]">
-              {renderObject(item)}
-            </p>
-          </div> 
-        </li>
-      ))}
+          </li>
+        );
+      })}
     </ul>
   );
+  
 };
 
 export default PostList;

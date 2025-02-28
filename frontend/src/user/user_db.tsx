@@ -1,29 +1,19 @@
 import SHARED_DB from "shared/shared_db";
 import { ReactNode } from "react";
 
+interface ITagItem {
+  color: string;
+  label: string;
+  daysRange: [number, number];
+}
+
 interface IUserAccountModeDB {
   max_mode_off_confirm: ReactNode;
   tags: {
-    live: {
-      color: string;
-      label: string;
-      daysRange: [number, number];
-    };
-    upcoming: {
-      color: string;
-      label: string;
-      daysRange: [number, number];
-    };
-    released: {
-      color: string;
-      label: string;
-      daysRange: [number, number];
-    };
-    expiring: {
-      color: string;
-      label: string;
-      daysRange: [number, number];
-    };
+    live: ITagItem;
+    upcoming: ITagItem;
+    released: ITagItem;
+    expiring: ITagItem;
     visited: {
       color: string;
       label: string;
