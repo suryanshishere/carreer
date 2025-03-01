@@ -32,13 +32,13 @@ const TagButton: React.FC<TagButtonProps> = ({
   // For visited tag - future perspective and feature in look pending
   if (label === "VISITED") {
     return (
-      <Button
-        basicButton
-        classProp={`flex items-center gap-1 text-xs font-medium select-none`}
+      <span
+        // basicButton
+        className="flex items-center gap-1 text-xs font-medium select-none hover:bg-custom_less_gray px-1"
       >
         <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
         <span>{label}</span>
-      </Button>
+      </span>
     );
   }
 
@@ -68,8 +68,6 @@ const NavTags: React.FC = () => {
   const [showTagsDropdown, setShowTagsDropdown] = useState(false);
   useOutsideClick(dropdownRef, () => setShowTagsDropdown(false));
 
-  const viewType: ViewType = useResponsiveView(viewObject);
-
   const tagClickHandler = (tagsKey: keyof IUserAccountMode["tags"]) => {
     dispatch(
       updateUserData({
@@ -82,20 +80,43 @@ const NavTags: React.FC = () => {
     );
   };
 
+  const viewType: ViewType = useResponsiveView(viewObject);
+  const tagButtonShow =
+    viewType === "tablet" ||
+    viewType === "large_mobile" ||
+    viewType === "mobile";
+
   return (
     <div ref={dropdownRef} className="relative min-w-28 flex items-center">
-      <button
-        onClick={() => setShowTagsDropdown(!showTagsDropdown)}
-        className={`rounded-full outline outline-custom_gray w-full h-full bg-custom_less_gray flex items-center justify-center gap-2 lg:hidden ${
-          viewType === "tablet" || viewType === "mobile" ? "py-1" : "py-[1px]"
-        } ${showTagsDropdown && "shadow-md shadow-custom_black"}`}
-      >
-        Tags
-        <ArrowDropDownIcon
-          fontSize="small"
-          className="rounded-full bg-custom_gray text-custom_less_gray"
-        />
-      </button>
+      {tagButtonShow ? (
+        <button
+          onClick={() => setShowTagsDropdown(!showTagsDropdown)}
+          className={`rounded-full outline outline-custom_gray w-full h-full bg-custom_less_gray flex items-center justify-center gap-2 ${
+            viewType === "mobile" || viewType === "tablet" ? "py-1" : "py-[1px]"
+          } ${showTagsDropdown && "shadow-md shadow-custom_black"}`}
+        >
+          Tags
+          <ArrowDropDownIcon
+            fontSize="small"
+            className="rounded-full bg-custom_gray text-custom_less_gray"
+          />
+        </button>
+      ) : (
+        <div className="flex items-center gap-1">
+          {Object.entries(TAGS).map(([tagsKey, item]) => (
+            <TagButton
+              key={tagsKey}
+              label={item.label}
+              color={item.color}
+              isActive={currentTags[tagsKey as keyof IUserAccountMode["tags"]]}
+              className="rounded-full"
+              onClick={() =>
+                tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])
+              }
+            />
+          ))}
+        </div>
+      )}
 
       {showTagsDropdown && (
         <div className="absolute rounded top-full mt-1 w-full bg-custom_less_gray z-10 shadow-md shadow-custom_black p-1">
@@ -117,21 +138,6 @@ const NavTags: React.FC = () => {
           ))}
         </div>
       )}
-
-      <div className="hidden lg:flex gap-1">
-        {Object.entries(TAGS).map(([tagsKey, item]) => (
-          <TagButton
-            key={tagsKey}
-            label={item.label}
-            color={item.color}
-            isActive={currentTags[tagsKey as keyof IUserAccountMode["tags"]]}
-            className="rounded-full"
-            onClick={() =>
-              tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])
-            }
-          />
-        ))}
-      </div>
     </div>
   );
 };

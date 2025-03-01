@@ -10,9 +10,11 @@ import useResponsiveView, {
 } from "shared/hooks/responsive-view-hook";
 
 const visibleLinksMap = {
-  mobile: 0,
-  tablet: 3,
+  mobile: 1,
+  large_mobile: 5,
+  tablet: 6,
   desktop: 4,
+  extra_large: 6
 } as const;
 
 type VisibleLinksKeys = keyof typeof visibleLinksMap;
