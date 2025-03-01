@@ -22,9 +22,9 @@ const CategoryFeesSchema: Schema = new Schema<ICategoryFees>({
 
 const FeeSchema: Schema = new Schema<IFee>(
   {
-    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    approved: { type: Boolean, default: false, required: true },
+    // created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    // contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    // approved: { type: Boolean, default: false, required: true },
     male: numberObject,
     female: numberObject,
     category_wise: CategoryFeesSchema,
@@ -53,9 +53,9 @@ interface ICategoryFees {
 }
 
 export interface IFee extends Document {
-  created_by: Types.ObjectId;
-  contributors?: Types.ObjectId[];
-  approved: boolean;
+  // created_by: Types.ObjectId;
+  // contributors?: Types.ObjectId[];
+  // approved: boolean;
   male?: number;
   female?: number;
   category_wise: ICategoryFees;

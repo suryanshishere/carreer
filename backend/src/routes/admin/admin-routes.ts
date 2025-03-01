@@ -7,8 +7,11 @@ import {
 import { check } from "express-validator";
 import { ADMIN_DATA } from "@shared/env-data";
 import approverRoutes from "./approver-routes";
+import publisherRoutes from "./publisher/publisher-routes";
 
 const router = express.Router();
+
+router.use("/publisher", publisherRoutes);
 
 const statusAndRoleCheck = [
   check("status")

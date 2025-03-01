@@ -15,7 +15,6 @@ import checkAuth from "@middleware/check-auth";
 import checkAccountStatus from "@middleware/check-account-status";
 import activateAccount from "@middleware/activate-account";
 import { deletePost } from "@controllers/admin/publisher/publisher-controllers";
-import publisherRoutes from "@routes/admin/publisher/publisher-routes";
 
 const MONGO_URL: string = process.env.MONGO_URL || "";
 const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
@@ -33,7 +32,6 @@ app.use(checkAccountStatus);
 app.use("/api/public", postsRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", usersRoutes);
-app.use("/api/publisher", publisherRoutes);
 app.use("/api/other", otherRoutes);
 
 //Error showing if none of the routes found!

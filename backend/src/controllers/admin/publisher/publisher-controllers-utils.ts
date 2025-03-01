@@ -9,6 +9,9 @@ import {
   COMPONENT_POST_PROMPT_SCHEMA_MAP,
   updateSchema,
 } from "./post-prompt-schema-map";
+import PostModel, { IPost } from "@models/post_models/post-model";
+import POST_DB from "@models/post_models/post_db";
+import { IBasePost } from "@models/post_models/post-interface";
 
 export const postGeneration = async (
   api_key_from_user: string,
@@ -128,31 +131,53 @@ export const generatePostData = async ({
 //remove schema checking rather make the system to work or roll back completly
 
 export const createComponentPost = async (
-  postId: string,
   req: Request,
   session: mongoose.ClientSession,
   api_key_from_user?: string
-) => {
+): Promise<{ postId: mongoose.Types.ObjectId; postDoc: IPost }> => {
   try {
     const userId = (req as JWTRequest).userData.userId;
-    const { section, name_of_the_post } = req.body;
+    const { section, name_of_the_post, post_code } = req.body;
+
+    // Step 1: Find a PostModel document by post_code.
+    let postDoc = await PostModel.findOne({ post_code }).session(session);
+
+    // If not found, create a new PostModel document (auto _id will be generated).
+    if (!postDoc) {
+      postDoc = new PostModel({ post_code });
+      // Optionally, initialize all section fields from POST_DB.overall.
+      for (const s of POST_DB.overall) {
+        postDoc.set(`${s}_approved`, false);
+        postDoc.set(`${s}_created_by`, userId);
+        postDoc.set(`${s}_ref`, null); // Will update later when the component is created.
+        postDoc.set(`${s}_contributors`, []);
+      }
+      await postDoc.save({ session });
+    }
+
+    const currentPostId = postDoc._id; // Use this auto-generated ID for components.
 
     let runCount = 0;
 
-    // Loop through the COMPONENT_POST_MODAL_MAP and execute each key in sequence
+    // Step 2: Loop through each component key in COMPONENT_POST_MODAL_MAP.
     for (const [key, model] of Object.entries(COMPONENT_POST_MODAL_MAP)) {
       try {
         runCount++;
 
+        // Get and update the schema for this component.
         let schema = COMPONENT_POST_PROMPT_SCHEMA_MAP[key];
         schema = updateSchema(schema, key, section);
 
-        //added to remove extra processing (much needed)
-        const existingComponent = await model.findById(postId).session(session);
+        // If a component document already exists, remove its fields from the schema.
+        const existingComponent = await model
+          .findById(currentPostId)
+          .session(session);
         if (existingComponent) {
           for (const field in existingComponent.toObject()) {
             if (schema.properties[field]) {
-              console.warn(`Removing field: ${field} from schema`);
+              console.warn(
+                `Removing field: ${field} from schema for key: ${key}`
+              );
               delete schema.properties[field];
             }
             if (schema.required && schema.required.includes(field)) {
@@ -164,11 +189,12 @@ export const createComponentPost = async (
         }
         if (Object.keys(schema.properties).length === 0) {
           console.warn(
-            `Skipping post creation for key: ${key} as schema properties are empty`
+            `Skipping component creation for key: ${key} as schema properties are empty`
           );
           continue;
         }
 
+        // Generate component-specific post data.
         const postData = await generatePostData({
           keyOrSection: key,
           name_of_the_post,
@@ -176,15 +202,13 @@ export const createComponentPost = async (
           api_key_from_user,
         });
 
-        console.log("component data generated:", postData);
+        console.log(`Component data generated for ${key}:`, postData);
 
-        // Create or update the document
+        // Step 3: Create or update the component document using the same _id as PostModel.
         await model.findByIdAndUpdate(
-          postId,
+          currentPostId,
           {
             $set: {
-              created_by: userId,
-              approved: true,
               ...postData,
             },
           },
@@ -195,23 +219,36 @@ export const createComponentPost = async (
             runValidators: true,
           }
         );
+
+        // Step 4: Update the PostModel document's reference for this component.
+        await PostModel.findByIdAndUpdate(
+          currentPostId,
+          {
+            $set: {
+              [`${key}_approved`]: false,
+              [`${key}_created_by`]: userId,
+              // Store the component document's _id (here we assume it's the same as currentPostId)
+              // If your component documents generate separate IDs, adjust accordingly.
+              [`${key}_ref`]: currentPostId,
+            },
+          },
+          { session, upsert: true }
+        );
       } catch (error: any) {
         console.error(
           `Error occurred while creating component post for key: ${key}.`,
           error.message
         );
-
-        // Wrap the error in a meaningful HttpError for the client
         throw new HttpError(
           `Component post creation failed for key: ${key}.`,
           500
         );
       }
     }
+
+    return { postId: currentPostId, postDoc };
   } catch (error: any) {
     console.error("Error in createComponentPost:", error.message);
-
-    // Throw a final HttpError for transaction rollback
     throw new HttpError(`Failed to create component posts.`, 500);
   }
 };

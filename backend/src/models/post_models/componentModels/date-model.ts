@@ -11,9 +11,9 @@ const dateObject = { type: DateRangeSchema, required: false }
 
 export const dateSchema = new Schema<IDates>(
   {
-    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    approved: { type: Boolean, default: false, required: true },
+    // created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    // contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    // approved: { type: Boolean, default: false, required: true },
     application_start_date: dateObject,
     application_end_date: dateObject,
     exam_fee_payment_end_date: dateObject,
@@ -51,9 +51,9 @@ interface IDateRange {
 
 export interface IDates extends Document {
   _id?: Types.ObjectId;
-  created_by: Types.ObjectId;
-  contributors?: Types.ObjectId[];
-  approved: boolean;
+  // created_by: Types.ObjectId;
+  // contributors?: Types.ObjectId[];
+  // approved: boolean;
   application_start_date?: IDateRange;
   application_end_date?: IDateRange;
   exam_fee_payment_end_date?: IDateRange;

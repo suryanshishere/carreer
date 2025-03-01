@@ -20,9 +20,9 @@ const AdditionalResourcesSchema = new Schema<IAdditionalResources>(
 
 export const LinksSchema = new Schema<ILinks>(
   {
-    created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    approved: { type: Boolean, default: false, required: true },
+    // created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    // contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    // approved: { type: Boolean, default: false, required: true },
     official_website: { ...linkObject, required: true },
     apply_online: linkObject,
     register_now: linkObject,
@@ -48,11 +48,11 @@ interface IAdditionalResources {
 }
 
 export interface ILinks extends Document {
-  created_by: Types.ObjectId;
+  // created_by: Types.ObjectId;
+  // approved: boolean;
+  // contributors?: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
-  approved: boolean;
-  contributors?: Types.ObjectId[];
   official_website: string;
   additional_resources: IAdditionalResources;
   apply_online?: string;

@@ -35,7 +35,7 @@ const CreateNewPost: React.FC = () => {
   const submitMutation = useMutation({
     mutationFn: async (data: ICreateNewPostForm) => {
       const response = await axiosInstance.post(
-        "/publisher/create-new-post",
+        "/admin/publisher/create-new-post",
         JSON.stringify(data)
       );
       return response.data;

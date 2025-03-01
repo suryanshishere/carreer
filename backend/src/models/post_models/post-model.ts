@@ -4,31 +4,32 @@ import _ from "lodash";
 
 const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS_DB;
 
-interface IPost extends Document {
+export interface IPost extends Document {
   post_code: string;
   [key: string]: any;
 }
 
-// Create the dynamic section fields using reduce.
 const overallPostFields = POST_DB.overall.reduce((fields, section) => {
   fields[`${section}_approved`] = {
     type: Boolean,
-    default: false,
-    required: true,
+    default: false
   };
   fields[`${section}_created_by`] = {
     type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    ref: "User"
   };
   fields[`${section}_ref`] = {
     type: Schema.Types.ObjectId,
-    ref: _.upperFirst(_.camelCase(section)),
-    required: true,
+    ref: _.upperFirst(_.camelCase(section))
   };
+  fields[`${section}_contributors`] = [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ];
   return fields;
 }, {} as Record<string, any>);
-
 
 const postSchema = new Schema<IPost>({
   post_code: {

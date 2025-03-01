@@ -126,22 +126,22 @@ const vacancySchema: Schema = new Schema<IVacancy>(
 
 export const commonSchema: Schema = new Schema<ICommon>(
   {
-    created_by: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    contributors: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    approved: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
+    // created_by: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "User",
+    //   required: true,
+    // },
+    // contributors: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: "User",
+    //   },
+    // ],
+    // approved: {
+    //   type: Boolean,
+    //   default: false,
+    //   required: true,
+    // },
     short_information: {
       type: String,
       minlength: long_char_limit.min,
@@ -280,9 +280,9 @@ interface IEligibility {
 }
 
 export interface ICommon extends Document {
-  created_by: Types.ObjectId;
-  contributors?: Types.ObjectId[];
-  approved: boolean;
+  // created_by: Types.ObjectId;
+  // contributors?: Types.ObjectId[];
+  // approved: boolean;
   short_information: string;
   highlighted_information: string;
   department: string;

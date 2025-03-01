@@ -48,25 +48,28 @@ export const createNewPost = async (
       );
     }
 
-    const postId = await postIdGeneration(post_code);
-    if (!postId) {
-      return next(
-        new HttpError("Post Id generation failed, please try again.", 400)
-      );
-    }
+    // const postId = await postIdGeneration(post_code);
+    // if (!postId) {
+    //   return next(
+    //     new HttpError("Post Id generation failed, please try again.", 400)
+    //   );
+    // }
 
     // allow time out constraint to be removed (with transaction)
     const result = await session.withTransaction(async () => {
       //checking the section cuz it's validated already by express validator from the same section it's mapped
       const model = SECTION_POST_MODAL_MAP[section];
 
-      const existingPost = await model.findById(postId).session(session);
+      const existingPost = await PostModel.findOne({
+        post_code, // assuming post_code is available
+        [`${section}_ref`]: { $exists: true },
+      }).session(session);
 
       if (existingPost) {
         return next(new HttpError("Post already exists!", 400));
       }
 
-      await createComponentPost(postId, req, session, api_key_from_user);
+      await createComponentPost(req, session, api_key_from_user);
 
       let schema = SECTION_POST_PROMPT_SCHEMA_MAP[section];
       schema = {
@@ -91,50 +94,37 @@ Each title should be contextually appropriate to its section, ensuring clarity, 
         schema,
       });
 
-      // Save the new post document
-      const newPost = new model({
-        _id: postId,
-        created_by: publisherId,
-        approved: true,
-        ...dataJson,
-      });
-      await newPost.save({ session });
+      console.log("data created for the section", dataJson)
 
-      //TODO TO REFACTOR
-      const postInPostModel = await PostModel.findById(postId).session(session);
+      // Upsert the post model document using post_code as the filter
+      const postModelDoc = await PostModel.findOneAndUpdate(
+        { post_code }, // Query filter: find the document by post_code
+        {
+          $setOnInsert: { post_code },
+          $set: {
+            [`${section}_approved`]: false,
+            [`${section}_created_by`]: publisherId,
+          },
+        },
+        { session, upsert: true, new: true }
+      );
 
-      if (postInPostModel) {
-        await PostModel.updateOne(
-          { _id: postId },
-          {
-            $set: {
-              [`sections.${section}`]: { exist: true, approved: false },
-              [`created_by.${section}`]: publisherId,
-            },
-          },
-          { session }
-        );
-      } else {
-        const newPostInPostModel = new PostModel({
-          _id: postId,
-          post_code,
-          sections: {
-            [section]: {
-              exist: true,
-              approved: false,
-            },
-          },
-          created_by: {
-            [section]: publisherId,
-          },
-        });
-        await newPostInPostModel.save({ session });
-      }
+      // Now update the document with its own _id as the reference
+      postModelDoc[`${section}_ref`] = postModelDoc._id;
+      await postModelDoc.save({ session });
 
-      return { postId, newPost };
+      const newPostDocs = await model.create(
+        [{
+          _id: postModelDoc._id,
+          ...dataJson,
+        }],
+        { session }
+      );
+      
+
+      return { newPostDocs };
     });
 
-    console.log("done successfully");
     return res
       .status(201)
       .json({ ...result, message: "Created new post successfully!" });
