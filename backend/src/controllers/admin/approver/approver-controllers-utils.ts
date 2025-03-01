@@ -1,8 +1,8 @@
-import { ICommon } from "@models/post/componentModels/common-model";
-import { IDates } from "@models/post/componentModels/date-model";
-import { IFee } from "@models/post/componentModels/fee-model";
-import { ILinks } from "@models/post/componentModels/link-model";
-import { ISection } from "@models/post/post-interface";
+import { ICommon } from "@models/post_models/componentModels/common-model";
+import { IDates } from "@models/post_models/componentModels/date-model";
+import { IFee } from "@models/post_models/componentModels/fee-model";
+import { ILinks } from "@models/post_models/componentModels/link-model";
+import { ISection } from "@models/post_models/post-interface";
 import { IContribution } from "@models/user/contribution-model";
 import HttpError from "@utils/http-errors";
 import { set } from "lodash";

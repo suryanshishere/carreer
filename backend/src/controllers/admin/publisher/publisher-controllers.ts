@@ -2,7 +2,7 @@ import handleValidationErrors from "@controllers/sharedControllers/validation-er
 import { NextFunction, Response, Request } from "express";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
-import PostModel from "@models/post/post-model";
+import PostModel from "@models/post_models/post-model";
 import { JWTRequest } from "@middleware/check-auth";
 import {
   MODAL_MAP,
@@ -16,7 +16,7 @@ import {
 import AdminModel, { IAdmin } from "@models/admin/admin_model";
 import { SchemaType } from "@google/generative-ai";
 import { SECTION_POST_PROMPT_SCHEMA_MAP } from "./post-prompt-schema-map";
-import { POST_LIMITS_DB } from "@models/post/post-env-db";
+import { POST_LIMITS_DB } from "@models/post_models/post_db";
 
 export const createNewPost = async (
   req: Request,

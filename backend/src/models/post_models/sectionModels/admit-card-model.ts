@@ -1,6 +1,6 @@
 import mongoose, { Types, Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
-import { POST_LIMITS_DB } from "@models/post/post-env-db";
+import { POST_LIMITS_DB } from "@models/post_models/post_db";
 import { ISyllabus } from "./syllabus-model";
 
 const admitCardSchema = new Schema<IAdmitCard>({

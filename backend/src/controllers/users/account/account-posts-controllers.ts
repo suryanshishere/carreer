@@ -8,7 +8,7 @@ import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
 } from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
-import POST_DB from "@models/post/post-env-db";
+import POST_DB from "@models/post_models/post_db";
 import ContributionModel, {
   IContribution,
 } from "@models/user/contribution-model";

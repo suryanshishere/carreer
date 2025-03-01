@@ -3,11 +3,11 @@ import HttpError from "@utils/http-errors";
 import { Request } from "express-jwt";
 import { snakeCase } from "lodash";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
-import CommonModel from "@models/post/componentModels/common-model";
-import FeeModel from "@models/post/componentModels/fee-model";
-import DateModel from "@models/post/componentModels/date-model";
-import LinkModel from "@models/post/componentModels/link-model";
-import PostModel from "@models/post/post-model";
+import CommonModel from "@models/post_models/componentModels/common-model";
+import FeeModel from "@models/post_models/componentModels/fee-model";
+import DateModel from "@models/post_models/componentModels/date-model";
+import LinkModel from "@models/post_models/componentModels/link-model";
+import PostModel from "@models/post_models/post-model";
 import {
   fetchPostList,
   getSectionPostDetails,

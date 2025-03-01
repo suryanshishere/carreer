@@ -1,7 +1,7 @@
 import mongoose, { Types, Schema } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
 import { ISyllabus } from "./syllabus-model";
-import { POST_LIMITS_DB } from "@models/post/post-env-db";
+import { POST_LIMITS_DB } from "@models/post_models/post_db";
 
 const answerKeySchema = new Schema<IAnswerKey>({
   how_to_download_answer_key: {

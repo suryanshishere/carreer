@@ -1,6 +1,6 @@
 import mongoose, { Schema, Types } from "mongoose";
 import commonDataSchema, { ICommonDetailData } from "./common-section-data";
-import { POST_LIMITS_DB } from "@models/post/post-env-db";
+import { POST_LIMITS_DB } from "@models/post_models/post_db";
 
 const certificateVerificationSchema = new Schema<ICertificateVerification>({
   how_to_fill_the_form: {

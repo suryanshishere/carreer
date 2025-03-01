@@ -8,7 +8,7 @@ import {
   COMMON_SELECT_FIELDS,
   sectionPostListSelect,
 } from "./postSelect/sectionPostListSelect";
-import DateModel from "@models/post/componentModels/date-model";
+import DateModel from "@models/post_models/componentModels/date-model";
 import postSortMap from "./post-sort-map";
 import HttpError from "@utils/http-errors";
 import { NextFunction } from "express";

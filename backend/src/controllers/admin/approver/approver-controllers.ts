@@ -22,7 +22,7 @@ import {
 import mongoose from "mongoose";
 import  handleValidationErrors  from "@controllers/sharedControllers/validation-error";
 import { getSectionPostDetails } from "@controllers/posts/postsControllersUtils/posts-controllers-utils";
-import { ISection } from "@models/post/post-interface";
+import { ISection } from "@models/post_models/post-interface";
 
 export const getContriPostCodes = async (
   req: Request,
