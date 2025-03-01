@@ -100,8 +100,6 @@ const Tag: React.FC<{ section: string; importantDates?: IDates }> = ({
       tag.daysRange && days >= tag.daysRange[0] && days <= tag.daysRange[1]
   );
 
-  console.log("matching tag entry", matchingTagEntry);
-
   // Destructure the key and the tag if found
   let tagKey, matchingTag;
   if (matchingTagEntry) {
@@ -126,7 +124,15 @@ export const shouldDisplayTag = (
   userTags: Record<string, boolean>
 ): boolean => {
   //by chance usertags not loaded
-  if (!userTags) return true;
+  // If all userTags are false (and the object is not empty), return true regardless.
+  const userTagsValues = Object.values(userTags);
+  if (
+    !userTags ||
+    (userTagsValues.length > 0 &&
+      userTagsValues.every((value) => value === false))
+  ) {
+    return true;
+  }
 
   // Calculate the difference in days using the provided dates and section.
   const days = calculateDateDifference(importantDates, section);
@@ -143,15 +149,6 @@ export const shouldDisplayTag = (
 
   // Destructure to get the tag key.
   const [tagKey] = matchingTagEntry;
-
-  // If all userTags are false (and the object is not empty), return true regardless.
-  const userTagsValues = Object.values(userTags);
-  if (
-    userTagsValues.length > 0 &&
-    userTagsValues.every((value) => value === false)
-  ) {
-    return true;
-  }
 
   // Otherwise, check if the specific tag is enabled in the user's tags.
   return Boolean(tagKey && userTags[tagKey]);
