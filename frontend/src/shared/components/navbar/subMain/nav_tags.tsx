@@ -62,7 +62,7 @@ const NavTags: React.FC = () => {
 
   // Use useSelector to get the current tags state from Redux
   const currentTags = useSelector(
-    (state: RootState) => state.user.userData.mode.tags
+    (state: RootState) => state.user.userData.mode.tags || {}
   );
 
   const [showTagsDropdown, setShowTagsDropdown] = useState(false);
@@ -73,6 +73,7 @@ const NavTags: React.FC = () => {
       updateUserData({
         mode: {
           tags: {
+            ...currentTags,
             [tagsKey]: !currentTags[tagsKey],
           },
         },
