@@ -28,15 +28,15 @@
   }
 
   .page-padding {
-    @apply lg:px-page px-page_small w-full;
+    @apply large_mobile:px-page px-page_small w-full;
   }
 
   .custom-link {
-    @apply underline decoration-1 text-custom_red  decoration-custom_red underline-offset-4 hover:text-custom_blue visited:decoration-custom_black visited:text-custom_black;
+    @apply underline decoration-1 text-custom_red underline-offset-4 hover:text-custom_dark_red visited:text-custom_black;
   }
 
   .custom-external-link {
-    @apply underline decoration-1 font-bold text-custom_red  decoration-custom_red underline-offset-2 hover:text-custom_blue;
+    @apply underline decoration-1 font-bold text-custom_red underline-offset-2 hover:text-custom_dark_red;
   }
 }
 

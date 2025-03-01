@@ -6,6 +6,8 @@ import { IPostList } from "models/postModels/IPost";
 import Tag, { shouldDisplayTag } from "post/post_shared/tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
+import { HomeSkeletonLoad } from "post/post_shared/skeleton_load";
+import PostLinkItem from "post/post_shared/post_link_item";
 
 interface HomeListItemProps {
   ListItemData: IPostList;
@@ -47,16 +49,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
         {ListItemData.length === 0 ? (
           <ul className="flex flex-col gap-3">
             {Array.from({ length: skeletonItemCount }).map((_, index) => (
-              <li
-                key={index}
-                className="group flex flex-col justify-between gap-1 min-h-5 animate-pulse"
-              >
-                <div className="w-full h-7 bg-custom_less_gray rounded-sm"></div>
-                <div
-                  style={{ width: `${Math.random() * 50 + 50}%` }}
-                  className="w-5/6 h-7 bg-custom_less_gray rounded-sm"
-                ></div>
-              </li>
+              <HomeSkeletonLoad key={index} />
             ))}
           </ul>
         ) : (
@@ -82,25 +75,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                       importantDates={item.important_dates}
                     />
 
-                    <Link
-                      to={`/sections/${section}/${
-                        item.post
-                          ? item.post.post_code
-                          : snakeCase(item.name_of_the_post)
-                      }?is_saved=${item.is_saved}`}
-                      state={{ postId: item._id }}
-                      className="custom-link"
-                    >
-                      {item.name_of_the_post}
-                    </Link>
-                    <Bookmark
-                      section={section}
-                      postId={item._id}
-                      isSaved={item.is_saved}
-                      classProp={`block ${
-                        !item.is_saved ? "lg:hidden group-hover:block" : ""
-                      }`}
-                    />
+                    <PostLinkItem section={section} item={item} />
                   </li>
                 );
               })}

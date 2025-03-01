@@ -1,4 +1,14 @@
-import React from "react";
+export const HomeSkeletonLoad = () => {
+  return (
+    <li className="group flex flex-col justify-between gap-1 min-h-5 animate-pulse">
+      <div className="w-full h-7 bg-custom_less_gray rounded-sm"></div>
+      <div
+        style={{ width: `${Math.random() * 25 + 75}%` }}
+        className="w-5/6 h-7 bg-custom_less_gray rounded-sm"
+      ></div>
+    </li>
+  );
+};
 
 export const ParaSkeletonLoad = () => {
   return (

@@ -2,8 +2,8 @@ import React from "react";
 import HomeComponent from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import NoData from "shared/components/dataStates/NoData"; 
-import  POST_DB  from "post/post_db";
+import NoData from "shared/components/dataStates/NoData";
+import POST_DB from "post/post_db";
 
 const heights: Record<string, string> = {
   result: "55rem",
@@ -39,8 +39,8 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="lg:grid lg:grid-cols-3 flex flex-col gap-y-6 lg:gap-y-8 lg:gap-x-2 ">
-    {POST_DB.sections.map((key) => {
+    <div className="mobile:grid mobile:grid-cols-3 flex flex-col gap-y-6 mobile:gap-y-8 mobile:gap-x-2">
+      {POST_DB.sections.map((key) => {
         return (
           <HomeComponent
             key={key}

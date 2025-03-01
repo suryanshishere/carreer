@@ -5,10 +5,11 @@ import RenderField from "post/post_shared/render_post_data/render_field";
 import _ from "lodash";
 import { excludedPostListKeys } from "post/post_shared/post-list-render-define";
 import { IPostList, IPostListData } from "models/postModels/IPost";
-import { ParaSkeletonLoad } from "shared/ui/SkeletonLoad";
+import { ParaSkeletonLoad } from "./skeleton_load";
 import Tag, { shouldDisplayTag } from "./tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
+import PostLinkItem from "./post_link_item";
 
 interface ListProps {
   data: IPostList;
@@ -17,10 +18,9 @@ interface ListProps {
 }
 
 const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
-
- const userTags = useSelector(
-     (state: RootState) => state.user.mode.tags || {}
-   );
+  const userTags = useSelector(
+    (state: RootState) => state.user.mode.tags || {}
+  );
 
   if (data.length === 0) {
     return (
@@ -85,36 +85,16 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
         const displayTag =
           item.important_dates &&
           shouldDisplayTag(item.important_dates, section, userTags);
-  
+
         if (!displayTag) {
           return null; // Skip rendering this item if the tag should not be displayed
         }
-  
+
         return (
           <li key={item._id} className="flex my-2">
             <Tag section={section} importantDates={item.important_dates} />
             <div className="group w-full flex flex-col gap-1 justify-center">
-              <div className="flex justify-between items-center gap-1 min-h-7">
-                <Link
-                  to={`/sections/${section}/${
-                    item.post
-                      ? item.post.post_code
-                      : _.snakeCase(item.name_of_the_post)
-                  }?is_saved=${item.is_saved}`}
-                  state={{ postId: item._id }}
-                  className="custom-link"
-                >
-                  {item.name_of_the_post}
-                </Link>
-                <Bookmark
-                  section={section}
-                  postId={item._id}
-                  isSaved={item.is_saved || isSaved}
-                  classProp={`block ${
-                    !item.is_saved ? "lg:hidden group-hover:block" : ""
-                  }`}
-                />
-              </div>
+              <PostLinkItem section={section} item={item} />
               <p className="text-sm text-custom_gray flex flex-col flex-wrap gap-[2px]">
                 {renderObject(item)}
               </p>
@@ -124,7 +104,6 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
       })}
     </ul>
   );
-  
 };
 
 export default PostList;

@@ -7,7 +7,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import useResponsiveView, {
   viewObject,
   ViewType,
-} from "shared/hooks/responsive-view-hook";
+} from "shared/hooks/responsive_view_hook";
 
 const visibleLinksMap = {
   mobile: 1,

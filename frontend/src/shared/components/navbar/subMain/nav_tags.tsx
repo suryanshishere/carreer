@@ -4,7 +4,7 @@ import useOutsideClick from "shared/hooks/outside-click-hook";
 import useResponsiveView, {
   viewObject,
   ViewType,
-} from "shared/hooks/responsive-view-hook";
+} from "shared/hooks/responsive_view_hook";
 import Button from "shared/utils/form/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
