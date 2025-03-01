@@ -119,13 +119,15 @@ const Tag: React.FC<{ section: string; importantDates?: IDates }> = ({
 
 export default Tag;
 
-
 //for tag filtering feature where matching with store mode boolean and return true or false if matches.
 export const shouldDisplayTag = (
   importantDates: IDates,
   section: string,
   userTags: Record<string, boolean>
 ): boolean => {
+  //by chance usertags not loaded
+  if (!userTags) return true;
+
   // Calculate the difference in days using the provided dates and section.
   const days = calculateDateDifference(importantDates, section);
   if (days === null) return false;
@@ -144,7 +146,10 @@ export const shouldDisplayTag = (
 
   // If all userTags are false (and the object is not empty), return true regardless.
   const userTagsValues = Object.values(userTags);
-  if (userTagsValues.length > 0 && userTagsValues.every((value) => value === false)) {
+  if (
+    userTagsValues.length > 0 &&
+    userTagsValues.every((value) => value === false)
+  ) {
     return true;
   }
 
