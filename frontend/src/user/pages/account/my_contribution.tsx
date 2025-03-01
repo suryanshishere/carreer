@@ -63,7 +63,7 @@ const MyContribution: React.FC = () => {
     return <div className="text-center text-gray-500">Loading...</div>;
   }
 
-  if (!isLoading && Object.keys(data.data).length === 0) {
+  if (!isLoading && Object.keys(data.data[selectedTab]).length === 0) {
     return <NoData />;
   }
 

@@ -57,7 +57,7 @@ const Footer: React.FC = () => {
             Request Access
           </Link>
         )}
-        {token && !role && (
+        {token && role==="none" && (
           <button
             onClick={() => activateAccess()}
             className={footerLinkClassName}
