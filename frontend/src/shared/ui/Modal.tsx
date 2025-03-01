@@ -51,7 +51,7 @@ const Modal: React.FC<ModalProps> = ({ header, children, footer, onClose }) => {
         <hr />
 
         {/* Content */}
-        <div className="h-20 flex flex-col justify-center items-center gap-1">
+        <div className="min-h-20 max-h-48 flex flex-col justify-center items-center gap-1">
           {children}
         </div>
 

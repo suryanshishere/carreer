@@ -34,7 +34,7 @@ const TagButton: React.FC<TagButtonProps> = ({
     return (
       <span
         // basicButton
-        className="flex items-center gap-1 text-xs font-medium select-none hover:bg-custom_less_gray px-1"
+        className="flex items-center justify-center gap-1 text-xs font-medium select-none hover:bg-custom_less_gray px-1"
       >
         <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
         <span>{label}</span>
