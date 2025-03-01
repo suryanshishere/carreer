@@ -8,7 +8,7 @@ import useResponsiveView, {
 import Button from "shared/utils/form/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
-import { updateUserData } from "shared/store/user_slice";
+import { updateMode, updateUserData } from "shared/store/user_slice";
 import { USER_ACCOUNT_MODE_DB } from "user/user_db";
 import { IUserAccountMode } from "user/user_interfaces";
 
@@ -18,7 +18,7 @@ interface TagButtonProps {
   label: string;
   color: string;
   isActive: boolean;
-  className?: string;
+  classProp?: string;
   onClick: () => void;
 }
 
@@ -26,7 +26,7 @@ const TagButton: React.FC<TagButtonProps> = ({
   label,
   color,
   isActive,
-  className,
+  classProp,
   onClick,
 }) => {
   // For visited tag - future perspective and feature in look pending
@@ -34,7 +34,7 @@ const TagButton: React.FC<TagButtonProps> = ({
     return (
       <span
         // basicButton
-        className="flex items-center justify-center gap-1 text-xs font-medium select-none hover:bg-custom_less_gray px-1"
+        className={`flex items-center justify-center gap-1 text-xs font-medium select-none hover:bg-none px-1 py-1 ${classProp}`}
       >
         <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
         <span>{label}</span>
@@ -48,7 +48,7 @@ const TagButton: React.FC<TagButtonProps> = ({
       onClick={onClick}
       classProp={`flex items-center gap-1 text-xs font-medium hover:bg-custom_white ${
         isActive ? "bg-custom_white" : ""
-      } ${className}`}
+      } ${classProp}`}
     >
       <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
       <span>{label}</span>
@@ -62,7 +62,7 @@ const NavTags: React.FC = () => {
 
   // Use useSelector to get the current tags state from Redux
   const currentTags = useSelector(
-    (state: RootState) => state.user.userData.mode.tags || {}
+    (state: RootState) => state.user.mode.tags || {}
   );
 
   const [showTagsDropdown, setShowTagsDropdown] = useState(false);
@@ -70,12 +70,9 @@ const NavTags: React.FC = () => {
 
   const tagClickHandler = (tagsKey: keyof IUserAccountMode["tags"]) => {
     dispatch(
-      updateUserData({
-        mode: {
-          tags: {
-            ...currentTags,
-            [tagsKey]: !currentTags[tagsKey],
-          },
+      updateMode({
+        tags: {
+          [tagsKey]: !currentTags[tagsKey],
         },
       })
     );
@@ -110,7 +107,7 @@ const NavTags: React.FC = () => {
               label={item.label}
               color={item.color}
               isActive={currentTags[tagsKey as keyof IUserAccountMode["tags"]]}
-              className="rounded-full"
+              classProp="rounded-full"
               onClick={() =>
                 tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])
               }
@@ -129,7 +126,7 @@ const NavTags: React.FC = () => {
                 isActive={
                   currentTags[tagsKey as keyof IUserAccountMode["tags"]]
                 }
-                className="justify-center"
+                classProp="justify-center py-2"
                 onClick={() =>
                   tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])
                 }

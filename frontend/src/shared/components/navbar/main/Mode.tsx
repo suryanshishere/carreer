@@ -7,7 +7,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
-import { updateUserData } from "shared/store/user_slice";
+import { updateMode, updateUserData } from "shared/store/user_slice";
 import Modal from "shared/ui/Modal";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "shared/utils/form/Button";
@@ -15,7 +15,7 @@ import { openModal, closeModal } from "shared/store/modal-slice";
 import { USER_ACCOUNT_MODE_DB } from "user/user_db";
 
 const Mode: React.FC = () => {
-  const mode = useSelector((state: RootState) => state.user.userData.mode);
+  const mode = useSelector((state: RootState) => state.user.mode);
   const [isChecked, setIsChecked] = useState(mode?.max || false);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -28,7 +28,7 @@ const Mode: React.FC = () => {
     },
     onSuccess: (data) => {
       const { message } = data;
-      dispatch(updateUserData({ mode: { max: isChecked } }));
+      dispatch(updateMode({ max: isChecked }));
       dispatch(triggerSuccessMsg(message || "Max mode updated!"));
     },
     onError: (error: any) => {

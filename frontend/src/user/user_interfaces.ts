@@ -1,6 +1,5 @@
 import { IRole } from "models/admin/IAdmin";
 
-
 export interface IUserAccountMode {
   max: boolean;
   tags: {
@@ -16,13 +15,11 @@ export interface IUserData {
   token: string;
   isEmailVerified: boolean;
   role: IRole;
-  mode: IUserAccountMode;
   deactivatedAt?: string;
   tokenExpiration?: string;
   sessionExpireMsg?: string;
 }
 
-
 export type RecursivePartial<T> = {
-    [P in keyof T]?: RecursivePartial<T[P]>;
-  };
+  [P in keyof T]?: RecursivePartial<T[P]>;
+};

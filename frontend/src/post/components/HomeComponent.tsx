@@ -32,7 +32,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   height,
 }) => {
   const userTags = useSelector(
-    (state: RootState) => state.user.userData.mode.tags || {}
+    (state: RootState) => state.user.mode.tags || {}
   );
 
   const skeletonItemCount = getSkeletonItemCount(height);

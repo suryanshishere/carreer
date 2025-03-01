@@ -19,7 +19,7 @@ interface ListProps {
 const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
 
  const userTags = useSelector(
-     (state: RootState) => state.user.userData.mode.tags || {}
+     (state: RootState) => state.user.mode.tags || {}
    );
 
   if (data.length === 0) {

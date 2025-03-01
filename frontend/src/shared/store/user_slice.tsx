@@ -11,6 +11,7 @@ interface IUserSlice {
   isNavAuthClicked: boolean;
   isOtpSent: boolean;
   userData: IUserData;
+  mode: IUserAccountMode;
 }
 
 const AUTH_TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY || 15;
@@ -21,20 +22,20 @@ const AUTH_TOKEN_EXPIRY = process.env.REACT_APP_AUTH_TOKEN_EXPIRY || 15;
 const initialState: IUserSlice = {
   isNavAuthClicked: false,
   isOtpSent: false,
+  mode: {
+    max: false,
+    tags: {
+      live: false,
+      upcoming: false,
+      released: false,
+      expiring: false,
+      visited: false,
+    },
+  },
   userData: {
     token: "",
     isEmailVerified: false,
     role: "none",
-    mode: {
-      max: false,
-      tags: {
-        live: false,
-        upcoming: false,
-        released: false,
-        expiring: false,
-        visited: false,
-      },
-    },
   },
 };
 
@@ -68,14 +69,13 @@ const userSlice = createSlice({
           );
 
       state.isOtpSent = true;
-
+      state.mode = merge({}, state.mode, mode);
       //this just update the required (same as updateUserData)
       state.userData = merge({}, state.userData, {
         token,
         isEmailVerified,
         tokenExpiration: localTokenExpiration.toISOString(),
         role: role ?? state.userData.role,
-        mode,
       });
 
       if (isEmailVerified) {
@@ -86,30 +86,36 @@ const userSlice = createSlice({
 
     logout(state) {
       state.isNavAuthClicked = false;
+      state.mode = {
+        max: false,
+        tags: {
+          live: false,
+          upcoming: false,
+          released: false,
+          expiring: false,
+          visited: false,
+        },
+      };
       state.userData = {
         token: "",
         isEmailVerified: false,
         tokenExpiration: undefined,
         role: "none",
-        mode: {
-          max: false,
-          tags: {
-            live: false,
-            upcoming: false,
-            released: false,
-            expiring: false,
-            visited: false,
-          },
-        },
         deactivatedAt: undefined,
         sessionExpireMsg: undefined,
       };
       // window.location.reload();
     },
 
-    //this function is used to update the user data (like role, mode, etc.)
     updateUserData(state, action: PayloadAction<RecursivePartial<IUserData>>) {
       state.userData = merge({}, state.userData, action.payload);
+    },
+
+    updateMode(
+      state,
+      action: PayloadAction<RecursivePartial<IUserAccountMode>>
+    ) {
+      state.mode = merge({}, state.mode, action.payload);
     },
 
     handleAccountDeactivatedAt(
@@ -126,6 +132,7 @@ export const {
   login,
   logout,
   updateUserData,
+  updateMode,
   handleAccountDeactivatedAt,
 } = userSlice.actions;
 
