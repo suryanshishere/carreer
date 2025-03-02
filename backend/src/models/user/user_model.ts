@@ -55,10 +55,7 @@ export interface IUser extends Document {
 
 const dynamicReferences: Record<string, any> = {};
 POST_DB.sections.forEach((key) => {
-  const camelCaseRef = _.camelCase(key);
-  dynamicReferences[key] = [
-    { type: Schema.Types.ObjectId, ref: _.upperFirst(camelCaseRef) },
-  ];
+  dynamicReferences[key] = [{ type: Schema.Types.ObjectId, ref: "Post" }];
 });
 
 const savedPostsSchema = new Schema(dynamicReferences, { _id: false });

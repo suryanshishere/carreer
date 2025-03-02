@@ -51,6 +51,7 @@ export const savedPosts = async (
 
     return res.status(200).json({ data: userSavedPost });
   } catch (error) {
+    console.log(error);
     return next(
       new HttpError("Fetching saved posts failed, please try again.", 500)
     );

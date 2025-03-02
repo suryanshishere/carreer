@@ -10,7 +10,7 @@ import PageHeader from "shared/ui/PageHeader";
 const fetchSavedPosts = async (): Promise<{
   data: { saved_posts: { [key: string]: IPostList } };
 }> => {
-  const response = await axiosInstance.get("user/account/post/saved-posts");
+  const response = await axiosInstance.get("/user/account/post/saved-posts");
   return response.data;
 };
 
