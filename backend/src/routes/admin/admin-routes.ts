@@ -7,7 +7,7 @@ import {
 import { check } from "express-validator";
 import { ADMIN_DATA } from "@shared/env-data";
 import approverRoutes from "./approver-routes";
-import publisherRoutes from "./publisher/publisher-routes";
+import publisherRoutes from "./publisher/publisher_routes";
 
 const router = express.Router();
 

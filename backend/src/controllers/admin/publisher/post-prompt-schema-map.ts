@@ -1,4 +1,4 @@
-import  POST_DB  from "@models/post_models/post_db";
+import POST_DB from "@models/post_models/post_db";
 import { camelCase } from "lodash";
 import resultPromptSchema from "./sectionPromptSchema/result-prompt-schema";
 import admitCardPromptSchema from "./sectionPromptSchema/admit-card-prompt-schema";
@@ -32,35 +32,20 @@ const OVERALL_PROMPT: ISectionPromptSchema = {
   commonPromptSchema,
 };
 
-// Dynamically map section prompts
-const SECTION_POST_PROMPT_SCHEMA_MAP: ISectionPromptSchema =
-  POST_DB.sections.reduce((acc, key) => {
-    const camelKey = camelCase(key);
-    const promptKey = `${camelKey}PromptSchema`;
+// Utility function to map section/component prompts dynamically
+const mapPromptSchema = (keys: string[]): ISectionPromptSchema =>
+  keys.reduce((acc, key) => {
+    const promptKey = `${camelCase(key)}PromptSchema`;
     if (OVERALL_PROMPT[promptKey]) {
       acc[key] = OVERALL_PROMPT[promptKey];
     } else {
-      console.warn(
-        `Prompt schema "${promptKey}" not found for section "${key}".`
-      );
+      console.warn(`Prompt schema "${promptKey}" not found for "${key}".`);
     }
     return acc;
   }, {} as ISectionPromptSchema);
 
-// Dynamically map component prompts
-const COMPONENT_POST_PROMPT_SCHEMA_MAP: ISectionPromptSchema =
-  POST_DB.components.reduce((acc, key) => {
-    const camelKey = camelCase(key);
-    const promptKey = `${camelKey}PromptSchema`;
-    if (OVERALL_PROMPT[promptKey]) {
-      acc[key] = OVERALL_PROMPT[promptKey];
-    } else {
-      console.warn(
-        `Prompt schema "${promptKey}" not found for component "${key}".`
-      );
-    }
-    return acc;
-  }, {} as ISectionPromptSchema);
+const SECTION_POST_PROMPT_SCHEMA_MAP = mapPromptSchema(POST_DB.sections);
+const COMPONENT_POST_PROMPT_SCHEMA_MAP = mapPromptSchema(POST_DB.components);
 
 export { SECTION_POST_PROMPT_SCHEMA_MAP, COMPONENT_POST_PROMPT_SCHEMA_MAP };
 

@@ -9,7 +9,7 @@ import {
   COMPONENT_POST_PROMPT_SCHEMA_MAP,
   updateSchema,
 } from "./post-prompt-schema-map";
-import PostModel, { IPost } from "@models/post_models/post-model";
+import PostModel, { IPost } from "@models/post_models/post_model";
 
 export const postGeneration = async (
   api_key_from_user: string,
@@ -140,13 +140,13 @@ export const createComponentPost = async (
 
     const queryFilter = { post_code, version: version ?? "main" };
     let postDoc = await PostModel.findOne(queryFilter).session(session);
-    
+
     // If not found, create a new PostModel document (auto _id will be generated)
     if (!postDoc) {
       postDoc = new PostModel(queryFilter);
       await postDoc.save({ session });
     }
-    
+
     const currentPostId = postDoc._id; // Use this auto-generated ID for components.
 
     let runCount = 0;
@@ -159,6 +159,11 @@ export const createComponentPost = async (
         // Get and update the schema for this component.
         let schema = COMPONENT_POST_PROMPT_SCHEMA_MAP[key];
         schema = updateSchema(schema, key, section);
+
+        //TODO: having some bug here 
+        if (Object.keys(schema.properties).length === 0) {
+          throw new HttpError(`Internal server error!`, 500);
+        }
 
         // If a component document already exists, remove its fields from the schema.
         const existingComponent = await model
@@ -217,7 +222,6 @@ export const createComponentPost = async (
           currentPostId,
           {
             $set: {
-              [`${key}_approved`]: false,
               [`${key}_created_by`]: userId,
               // Store the component document's _id (here we assume it's the same as currentPostId)
               // If your component documents generate separate IDs, adjust accordingly.

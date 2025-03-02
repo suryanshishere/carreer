@@ -2,7 +2,7 @@ import handleValidationErrors from "@controllers/sharedControllers/validation-er
 import { NextFunction, Response, Request } from "express";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
-import PostModel from "@models/post_models/post-model";
+import PostModel from "@models/post_models/post_model";
 import { JWTRequest } from "@middleware/check-auth";
 import {
   MODAL_MAP,
@@ -98,7 +98,6 @@ Each title should be contextually appropriate to its section, ensuring clarity, 
         {
           $setOnInsert: queryFilter,
           $set: {
-            [`${section}_approved`]: false,
             [`${section}_created_by`]: publisherId,
           },
         },

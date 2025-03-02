@@ -7,7 +7,7 @@ import CommonModel from "@models/post_models/componentModels/common-model";
 import FeeModel from "@models/post_models/componentModels/fee-model";
 import DateModel from "@models/post_models/componentModels/date-model";
 import LinkModel from "@models/post_models/componentModels/link-model";
-import PostModel from "@models/post_models/post-model";
+import PostModel from "@models/post_models/post_model";
 import {
   fetchPostList,
   getSectionPostDetails,

@@ -56,7 +56,17 @@ const CreateNewPost: React.FC = () => {
   const submitHandler: SubmitHandler<ICreateNewPostForm> = (data) => {
     // Preprocess post_code
     const formattedPostCode = _.lowerCase(data.post_code).replace(/\s+/g, "_");
-    const updatedData = { ...data, post_code: formattedPostCode };
+
+    // Preprocess version only if it exists
+    const formattedVersion = data.version
+      ? _.lowerCase(data.version).replace(/\s+/g, "_")
+      : undefined;
+
+    const updatedData = {
+      ...data,
+      post_code: formattedPostCode,
+      ...(formattedVersion && { version: formattedVersion }),
+    };
 
     submitMutation.mutate(updatedData);
   };
@@ -91,8 +101,8 @@ const CreateNewPost: React.FC = () => {
             label="Version"
             placeholder="Optional if post version needed!"
             {...register("version")}
-            error={!!errors.api_key_from_user}
-            helperText={errors.api_key_from_user?.message}
+            error={!!errors.version}
+            helperText={errors.version?.message}
           />
           <Input
             label="Your Gemini API Key"

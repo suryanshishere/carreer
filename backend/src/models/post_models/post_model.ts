@@ -14,7 +14,8 @@ export interface IPost extends Document {
 // Dynamically build overall post fields from POST_DB.overall
 const overallPostFields = POST_DB.overall.reduce((fields, section) => {
   fields[`${section}_approved`] = {
-    type: Boolean
+    type: Boolean,
+    default: false,
   };
   fields[`${section}_created_by`] = {
     type: Schema.Types.ObjectId,

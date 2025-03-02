@@ -38,7 +38,19 @@ export const validationSchema = Yup.object().shape({
     )
     .required("Post code is required"),
   api_key_from_user: Yup.string(),
-  version: Yup.string(),
+  version: Yup.string()
+    .min(
+      short_char_limit.min,
+      `Post code must be between ${short_char_limit.min}-${short_char_limit.max} characters.`
+    )
+    .max(
+      short_char_limit.max,
+      `Post code must be between ${short_char_limit.min}-${short_char_limit.max} characters.`
+    )
+    .matches(
+      alpha_num_underscore_space,
+      "Post code can only contain letters, numbers, and spaces."
+    ),
   section: Yup.string()
     .required("Please select an option.")
     .oneOf(

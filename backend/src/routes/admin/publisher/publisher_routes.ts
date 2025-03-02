@@ -19,7 +19,7 @@ router.post(
     validateNameOfThePost(),
     validatePostCode(),
     validateOptStr("api_key_from_user"),
-    validateOptStr("version"),
+    validatePostCode("version", true),
   ],
   createNewPost
 );
