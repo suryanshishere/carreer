@@ -82,9 +82,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
     <ul className="self-start w-full p-0 m-0 flex flex-col text-base">
       {data.map((item) => {
         // Use the helper to check if the tag should be displayed for this item.
-        const displayTag =
-          item.important_dates &&
-          shouldDisplayTag(item.important_dates, section, userTags);
+        const displayTag = shouldDisplayTag(item.date_ref, section, userTags);
 
         if (!displayTag) {
           return null; // Skip rendering this item if the tag should not be displayed
@@ -92,7 +90,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
 
         return (
           <li key={item._id} className="flex my-2">
-            <Tag section={section} importantDates={item.important_dates} />
+            <Tag section={section} importantDates={item.date_ref} />
             <div className="group w-full flex flex-col gap-1 justify-center">
               <PostLinkItem section={section} item={item} />
               <p className="text-sm text-custom_gray flex flex-col flex-wrap gap-[2px]">

@@ -30,7 +30,7 @@ const Section: React.FC = () => {
   if (!isLoading && data.data[section].length === 0) {
     return <NoData />;
   }
-
+console.log(data.data)
   return (
     <div className="flex flex-col gap-3">
       <PostList data={data.data[section] || []} section={section} />

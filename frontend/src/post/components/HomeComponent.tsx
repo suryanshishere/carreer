@@ -72,7 +72,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                   >
                     <Tag
                       section={section}
-                      importantDates={item.important_dates}
+                      importantDates={item.date_ref}
                     />
 
                     <PostLinkItem section={section} item={item} />

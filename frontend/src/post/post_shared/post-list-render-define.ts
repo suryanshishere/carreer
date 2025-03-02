@@ -6,5 +6,14 @@ export const excludedPostListKeys = [
   "approved",
   "contributors",
   "__v",
-  "post"
+  "post_code",
+  "admit_card_ref",
+  "result_ref",
+  "certificate_verification_ref",
+  "admission_ref",
+  "latest_job_ref",
+  "answer_key_ref",
+  "syllabus_ref",
+  "admission_ref",
+  "important_ref",
 ];
