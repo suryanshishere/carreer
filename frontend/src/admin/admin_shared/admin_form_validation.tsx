@@ -8,6 +8,7 @@ export interface ICreateNewPostForm {
   name_of_the_post: string;
   post_code: string;
   section: string;
+  version?: string;
   api_key_from_user?: string;
 }
 
@@ -37,6 +38,7 @@ export const validationSchema = Yup.object().shape({
     )
     .required("Post code is required"),
   api_key_from_user: Yup.string(),
+  version: Yup.string(),
   section: Yup.string()
     .required("Please select an option.")
     .oneOf(

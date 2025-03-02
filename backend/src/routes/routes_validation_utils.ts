@@ -1,6 +1,6 @@
 import POST_DB, { POST_LIMITS_DB } from "@models/post_models/post_db";
 import { ValidationChain, check } from "express-validator";
-import _ from "lodash";
+import _, { startCase } from "lodash";
 
 const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS_DB;
 
@@ -127,13 +127,14 @@ export const validateObject = (fieldName: string): ValidationChain => {
     });
 };
 
-export const validateApiKey = (
-  name: string = "api_key_from_user",
+export const validateOptStr = (
+  name: string,
   optional: boolean = true
 ) => {
   let chain = check(name);
   if (optional) {
     chain = chain.optional({ nullable: true });
   }
-  return chain.isString().withMessage("API key must be a string.");
+  return chain.isString().withMessage(`${startCase(name)} must be a string.`);
 };
+

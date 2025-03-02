@@ -1,16 +1,4 @@
-import ContributionModel from "@models/user/contribution-model";
-import { snakeCase } from "lodash";
-import {
-  MODAL_MAP,
-  SECTION_POST_MODAL_MAP,
-} from "@controllers/sharedControllers/post-model-map";
-import { postIdGeneration } from "../publisher/publisher-controllers-utils";
-import {
-  COMMON_POST_DETAIL_SELECT_FIELDS,
-  sectionPostDetailSelect,
-} from "@controllers/posts/postsControllersUtils/postSelect/sectionPostDetailSelect";
-import { sectionDetailPopulateModels } from "@controllers/posts/postsControllersUtils/postPopulate/posts-populate";
-import { NextFunction, Request, Response } from "express";
+import ContributionModel from "@models/user/contribution-model"; import { NextFunction, Request, Response } from "express";
 import HttpError from "@utils/http-errors";
 import { JWTRequest } from "@middleware/check-auth";
 import {
@@ -91,7 +79,8 @@ export const getContriPost = async (
   const { section, postCode } = req.params;
   try {
     handleValidationErrors(req, next);
-    const postId = await postIdGeneration(postCode);
+    const postId = postCode;
+    // const postId = await postIdGeneration(postCode);
 
     // Retrieve the post document
     const post = await getSectionPostDetails(section, postId);
@@ -154,7 +143,8 @@ export const applyContri = async (
 
   try {
     handleValidationErrors(req, next);
-    const postId = await postIdGeneration(post_code);
+    const postId = post_code;
+    // const postId = await postIdGeneration(post_code);
 
     let post = await getSectionPostDetails<ISection | null>(section, postId);
     if (!post) {

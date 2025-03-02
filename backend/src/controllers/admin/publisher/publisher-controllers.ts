@@ -11,7 +11,6 @@ import {
 import {
   createComponentPost,
   generatePostData,
-  postIdGeneration,
 } from "./publisher-controllers-utils";
 import AdminModel, { IAdmin } from "@models/admin/admin_model";
 import { SchemaType } from "@google/generative-ai";
@@ -25,7 +24,9 @@ export const createNewPost = async (
 ) => {
   handleValidationErrors(req, next);
 
-  const { section, name_of_the_post, post_code, api_key_from_user } = req.body;
+  const { section, name_of_the_post, post_code, version, api_key_from_user } =
+    req.body;
+
   //since publisher id will be same as user id but just in the publisher model
   const publisherId = (req as JWTRequest).userData.userId;
 
@@ -48,20 +49,15 @@ export const createNewPost = async (
       );
     }
 
-    // const postId = await postIdGeneration(post_code);
-    // if (!postId) {
-    //   return next(
-    //     new HttpError("Post Id generation failed, please try again.", 400)
-    //   );
-    // }
-
     // allow time out constraint to be removed (with transaction)
     const result = await session.withTransaction(async () => {
       //checking the section cuz it's validated already by express validator from the same section it's mapped
       const model = SECTION_POST_MODAL_MAP[section];
 
+      const queryFilter = { post_code, version: version ?? "main" };
+
       const existingPost = await PostModel.findOne({
-        post_code, // assuming post_code is available
+        ...queryFilter,
         [`${section}_ref`]: { $exists: true },
       }).session(session);
 
@@ -94,13 +90,13 @@ Each title should be contextually appropriate to its section, ensuring clarity, 
         schema,
       });
 
-      console.log("data created for the section", dataJson)
+      console.log("data created for the section", dataJson);
 
       // Upsert the post model document using post_code as the filter
       const postModelDoc = await PostModel.findOneAndUpdate(
-        { post_code }, // Query filter: find the document by post_code
+        queryFilter, // Query filter: find the document by post_code
         {
-          $setOnInsert: { post_code },
+          $setOnInsert: queryFilter,
           $set: {
             [`${section}_approved`]: false,
             [`${section}_created_by`]: publisherId,
@@ -114,13 +110,14 @@ Each title should be contextually appropriate to its section, ensuring clarity, 
       await postModelDoc.save({ session });
 
       const newPostDocs = await model.create(
-        [{
-          _id: postModelDoc._id,
-          ...dataJson,
-        }],
+        [
+          {
+            _id: postModelDoc._id,
+            ...dataJson,
+          },
+        ],
         { session }
       );
-      
 
       return { newPostDocs };
     });
@@ -147,13 +144,29 @@ export const deletePost = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { postId, section } = req.body;
-
-  if (!postId) {
-    return res.status(400).json({ error: "postId is required" });
-  }
+  handleValidationErrors(req, next);
+  const { post_id, section } = req.body;
+  const publisherId = (req as JWTRequest).userData.userId;
 
   try {
+    //authorization check
+    const publisher: IAdmin | null = await AdminModel.findById(publisherId)
+      .select("role")
+      .exec();
+    if (
+      !publisher ||
+      (publisher.role != "publisher" && publisher.role != "admin")
+    ) {
+      return next(
+        new HttpError(
+          "Not authorised, request for access or approval of req!",
+          403
+        )
+      );
+    }
+
+    await PostModel.deleteOne({ _id: post_id });
+
     if (section) {
       // Check if the section exists in MODAL_MAP
       const model = MODAL_MAP[section];
@@ -162,7 +175,7 @@ export const deletePost = async (
       }
 
       // Delete the post only from the specified section
-      const result = await model.deleteOne({ _id: postId });
+      const result = await model.deleteOne({ _id: post_id });
       if (result.deletedCount > 0) {
         console.log(`Post deleted from ${section} model`);
         return res
@@ -178,7 +191,7 @@ export const deletePost = async (
       // If no section is specified, delete the post from all models
       for (const [key, model] of Object.entries(MODAL_MAP)) {
         try {
-          const result = await model.deleteOne({ _id: postId });
+          const result = await model.deleteOne({ _id: post_id });
           if (result.deletedCount > 0) {
             console.log(`Post deleted from ${key} model`);
           } else {

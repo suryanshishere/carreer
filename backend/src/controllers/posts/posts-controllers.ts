@@ -14,8 +14,7 @@ import {
 } from "./postsControllersUtils/posts-controllers-utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
-import User from "@models/user/user_model";
-import { postIdGeneration } from "@controllers/admin/publisher/publisher-controllers-utils";
+import User from "@models/user/user_model"; 
 import mongoose from "mongoose";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
@@ -120,7 +119,7 @@ export const postDetail = async (
     if (mongoose.Types.ObjectId.isValid(postIdOrCode)) {
       postId = postIdOrCode;
     } else {
-      postId = await postIdGeneration(postIdOrCode);
+      // postId = await postIdGeneration(postIdOrCode);
     }
 
     if (!postId) {

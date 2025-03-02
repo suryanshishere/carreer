@@ -10,8 +10,6 @@ import {
   updateSchema,
 } from "./post-prompt-schema-map";
 import PostModel, { IPost } from "@models/post_models/post-model";
-import POST_DB from "@models/post_models/post_db";
-import { IBasePost } from "@models/post_models/post-interface";
 
 export const postGeneration = async (
   api_key_from_user: string,
@@ -21,7 +19,8 @@ export const postGeneration = async (
   try {
     const genAI = new GoogleGenerativeAI(api_key_from_user);
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-pro",
+      model: "gemini-1.5-flash",
+      // model: "gemini-1.5-pro",
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: schema,
@@ -49,12 +48,12 @@ const parseGeneratedContent = (content: string) => {
   }
 };
 
-export const postIdGeneration = async (postCode: string): Promise<string> => {
-  const hash = crypto.createHash("sha256");
-  hash.update(postCode);
-  const uniqueId = hash.digest("hex");
-  return uniqueId.slice(0, 24);
-};
+// export const postIdGeneration = async (postCode: string): Promise<string> => {
+//   const hash = crypto.createHash("sha256");
+//   hash.update(postCode);
+//   const uniqueId = hash.digest("hex");
+//   return uniqueId.slice(0, 24);
+// };
 
 interface GeneratePostDataParams {
   keyOrSection: string;
@@ -137,24 +136,17 @@ export const createComponentPost = async (
 ): Promise<{ postId: mongoose.Types.ObjectId; postDoc: IPost }> => {
   try {
     const userId = (req as JWTRequest).userData.userId;
-    const { section, name_of_the_post, post_code } = req.body;
+    const { section, name_of_the_post, post_code, version } = req.body;
 
-    // Step 1: Find a PostModel document by post_code.
-    let postDoc = await PostModel.findOne({ post_code }).session(session);
-
-    // If not found, create a new PostModel document (auto _id will be generated).
+    const queryFilter = { post_code, version: version ?? "main" };
+    let postDoc = await PostModel.findOne(queryFilter).session(session);
+    
+    // If not found, create a new PostModel document (auto _id will be generated)
     if (!postDoc) {
-      postDoc = new PostModel({ post_code });
-      // Optionally, initialize all section fields from POST_DB.overall.
-      for (const s of POST_DB.overall) {
-        postDoc.set(`${s}_approved`, false);
-        postDoc.set(`${s}_created_by`, userId);
-        postDoc.set(`${s}_ref`, null); // Will update later when the component is created.
-        postDoc.set(`${s}_contributors`, []);
-      }
+      postDoc = new PostModel(queryFilter);
       await postDoc.save({ session });
     }
-
+    
     const currentPostId = postDoc._id; // Use this auto-generated ID for components.
 
     let runCount = 0;

@@ -88,6 +88,13 @@ const CreateNewPost: React.FC = () => {
             helperText={errors.post_code?.message}
           />
           <Input
+            label="Version"
+            placeholder="Optional if post version needed!"
+            {...register("version")}
+            error={!!errors.api_key_from_user}
+            helperText={errors.api_key_from_user?.message}
+          />
+          <Input
             label="Your Gemini API Key"
             placeholder="Optional if post generation not working!"
             {...register("api_key_from_user")}
