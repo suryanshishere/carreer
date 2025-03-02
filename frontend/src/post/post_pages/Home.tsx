@@ -37,16 +37,15 @@ const Home: React.FC = () => {
   if (!isLoading && emptySectionsCount >= 9) {
     return <NoData />;
   }
-
   return (
     <div className="mobile:grid mobile:grid-cols-3 flex flex-col gap-y-6 mobile:gap-y-8 mobile:gap-x-2">
-      {POST_DB.sections.map((key) => {
+      {POST_DB.sections.map((section) => {
         return (
           <HomeComponent
-            key={key}
-            ListItemData={data.data[key] || []}
-            section={key}
-            height={heights[key] || heights.default}
+            key={section}
+            ListItemData={data.data[section] || []}
+            section={section}
+            height={heights[section] || heights.default}
           />
         );
       })}

@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { snakeCase, startCase } from "lodash";
-import Bookmark from "post/post_shared/Bookmark";
+import { startCase } from "lodash";
 import { IPostList } from "models/postModels/IPost";
 import Tag, { shouldDisplayTag } from "post/post_shared/tag";
 import { useSelector } from "react-redux";
@@ -36,7 +35,6 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   const userTags = useSelector(
     (state: RootState) => state.user.mode.tags || {}
   );
-
   const skeletonItemCount = getSkeletonItemCount(height);
 
   return (
@@ -57,9 +55,11 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
             <ul className="flex flex-col">
               {ListItemData.slice(0, HOME_LIMIT).map((item) => {
                 // Use the helper to check if the tag should be displayed for this item.
-                const displayTag =
-                  item.important_dates &&
-                  shouldDisplayTag(item.important_dates, section, userTags);
+                const displayTag = shouldDisplayTag(
+                  item.date_ref,
+                  section,
+                  userTags
+                );
 
                 if (!displayTag) {
                   return null;

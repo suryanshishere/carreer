@@ -52,11 +52,20 @@ export interface IAdmitCardList {
 
 // Common interface for list data with basic fields
 export interface ICommonListData {
-  name_of_the_post: string;
+  result_ref: { name_of_the_post: string };
+  admission_ref: { name_of_the_post: string };
+  answer_key_ref: { name_of_the_post: string };
+  certificate_verification_ref: { name_of_the_post: string };
+  syllabus_ref: { name_of_the_post: string };
+  admit_card_ref: { name_of_the_post: string };
+  important_ref: { name_of_the_post: string };
+  latest_job_ref: { name_of_the_post: string };
   updatedAt: string;
   _id: string;
   is_saved: boolean;
-  post: { post_code: string };
+  post_code: string;
+  link_ref?: ILinks;
+  date_ref: IDates;
 }
 
 // Interface for IAdmissionList

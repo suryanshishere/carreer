@@ -16,6 +16,7 @@ import {
   COMMON_POST_DETAIL_SELECT_FIELDS,
   sectionPostDetailSelect,
 } from "./postSelect/sectionPostDetailSelect";
+import PostModel from "@models/post_models/post_model";
 
 const getSortedDateIds = async (section: string) => {
   const currentDate = new Date();
@@ -91,15 +92,16 @@ const getSortedDateIds = async (section: string) => {
   return sortedDateIds.map((date) => date._id); // Return an array of IDs
 };
 
- 
+//check for components approve still left
+
 export const filterPopulateArray = (
   populateArray: PopulateOption[],
   max: boolean
 ): PopulateOption[] => {
   if (max) return populateArray; // Return full array if max is true
 
-  return populateArray.filter((item: PopulateOption): boolean =>
-    item.path === "important_dates" || item.path === "post"
+  return populateArray.filter(
+    (item: PopulateOption): boolean => item.path !== "link_ref"
   );
 };
 
@@ -109,8 +111,6 @@ export const fetchPostList = async (
   next: NextFunction
 ) => {
   try {
-    const model = SECTION_POST_MODAL_MAP[section];
-
     const sectionSelect = sectionPostListSelect[section] || "";
     let selectFields: string[] = COMMON_SELECT_FIELDS.split(" ");
 
@@ -120,31 +120,31 @@ export const fetchPostList = async (
       selectFields.push(...sectionSelect.split(" "));
     }
 
+    //ids can made efficient for ref exist (for section)
     const sortedPostIds = await getSortedDateIds(section);
-    // console.log(sortedPostIds);
-
-    // Step 1: Fetch posts using sorted IDs
-    let query = model
-      .find({
-        _id: { $in: sortedPostIds }, // Match posts with sorted IDs
-        approved: true,
-      })
-      .select(selectFields);
 
     const filteredPopulate = filterPopulateArray(
       sectionListPopulate[section],
       includePopulate
     );
-    query = query.populate(filteredPopulate);
 
-    const posts = await query.exec();
+    let posts = await PostModel.find({
+      _id: { $in: sortedPostIds },
+      [`${section}_approved`]: true,
+      [`${section}_ref`]: { $exists: true },
+    })
+      .select("post_code")
+      .populate(filteredPopulate)
+      .exec();
 
-    // Step 2: Reorder posts based on sortedPostIds
+    //for having ordered post list as per sorted ids by dates
     const orderedPosts = sortedPostIds.map((id) =>
       posts.find((post) => post._id.toString() === id.toString())
     );
 
-    return orderedPosts.filter(Boolean).map((post) => post._doc); // Ensure no undefined values
+    return orderedPosts
+      .filter((post): post is typeof post & { _doc: any } => Boolean(post))
+      .map((post) => post._doc);
   } catch (error) {
     console.error("Error fetching post list:", error);
     return next(

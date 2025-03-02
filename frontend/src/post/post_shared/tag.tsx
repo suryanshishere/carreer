@@ -89,6 +89,7 @@ const Tag: React.FC<{ section: string; importantDates?: IDates }> = ({
   section,
   importantDates,
 }) => {
+  console.log(importantDates)
   if (!importantDates) return null;
 
   const days = calculateDateDifference(importantDates, section);
