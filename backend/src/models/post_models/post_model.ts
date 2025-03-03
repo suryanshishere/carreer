@@ -73,5 +73,17 @@ const postSchema = new Schema<IPost>(
 // Create compound unique index for post_code and version
 postSchema.index({ post_code: 1, version: 1 }, { unique: true });
 
+//indexed this as well coz used commonly for searching
+POST_DB.sections.forEach((item) => {
+  postSchema.index({ [`${item}_approved`]: 1 });
+  postSchema.index({ [`${item}_ref`]: 1 });
+  postSchema.index({ [`${item}_ref`]: 1 }, { sparse: true });
+});
+
+//for efficient storage
+POST_DB.overall.forEach((item) => {
+  postSchema.index({ [`${item}_contributors`]: 1 }, { sparse: true });
+});
+
 const PostModel = mongoose.model<IPost>("Post", postSchema);
 export default PostModel;

@@ -19,7 +19,7 @@ export const optionalPaths: (string | RegExp)[] = [
   "/api/public",
   "/api/public/home",
   /^\/api\/public\/sections\/[^/]+$/,
-  /^\/api\/public\/sections\/[^/]+\/[^/]+$/,
+  /^\/api\/public\/sections\/[^/]+\/[^/]+(?:\/[^/?#]+)?(?:\?.*)?$/,
   "/api/user/auth/send-password-reset-link",
   "/api/user/auth/send-verification-otp",
 ];
@@ -62,7 +62,7 @@ export default checkAuth;
 export interface JWTRequest extends Request {
   userData: {
     userId: string;
-    email:string;
+    email: string;
     deactivated_at?: Date;
   };
 }

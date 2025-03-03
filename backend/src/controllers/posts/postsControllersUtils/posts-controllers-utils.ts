@@ -133,7 +133,7 @@ export const fetchPostList = async (
       [`${section}_approved`]: true,
       [`${section}_ref`]: { $exists: true },
     })
-      .select("post_code")
+      .select("post_code version")
       .populate(filteredPopulate)
       .exec();
 

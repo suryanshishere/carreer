@@ -16,4 +16,5 @@ export const excludedPostListKeys = [
   "syllabus_ref",
   "admission_ref",
   "important_ref",
+  "version"
 ];

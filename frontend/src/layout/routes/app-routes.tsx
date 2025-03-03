@@ -17,7 +17,7 @@ export const publicRoutes: RouteObject[] = [
     path: "sections/:section",
     children: [
       { index: true, element: <Section /> },
-      { path: ":postCode", element: <PostDetail /> },
+      { path: ":postCode/:version?", element: <PostDetail /> },
     ],
   },
 ];

@@ -8,14 +8,12 @@ import FeeModel from "@models/post_models/componentModels/fee-model";
 import DateModel from "@models/post_models/componentModels/date-model";
 import LinkModel from "@models/post_models/componentModels/link-model";
 import PostModel from "@models/post_models/post_model";
-import {
-  fetchPostList,
-  getSectionPostDetails,
-} from "./postsControllersUtils/posts-controllers-utils";
+import { fetchPostList } from "./postsControllersUtils/posts-controllers-utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
-import User from "@models/user/user_model"; 
+import User from "@models/user/user_model";
 import mongoose from "mongoose";
+import { sectionDetailPopulateModels } from "./postsControllersUtils/postPopulate/posts-populate";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
@@ -111,27 +109,26 @@ export const postDetail = async (
   next: NextFunction
 ) => {
   handleValidationErrors(req, next);
-  let { section, postIdOrCode } = req.params;
+  const { section, postIdOrCode, version = "main" } = req.params;
 
   try {
-    let postId: string | null = null;
+    const query = mongoose.Types.ObjectId.isValid(postIdOrCode)
+      ? {
+          _id: postIdOrCode,
+          [`${section}_approved`]: true,
+          [`${section}_ref`]: { $exists: true },
+        }
+      : {
+          post_code: postIdOrCode,
+          version,
+          [`${section}_approved`]: true,
+          [`${section}_ref`]: { $exists: true },
+        };
 
-    if (mongoose.Types.ObjectId.isValid(postIdOrCode)) {
-      postId = postIdOrCode;
-    } else {
-      // postId = await postIdGeneration(postIdOrCode);
-    }
-
-    if (!postId) {
-      return next(
-        new HttpError(
-          "Unable to resolve a valid post ID from the provided data.",
-          400
-        )
-      );
-    }
-
-    const response = await getSectionPostDetails(section, postId);
+    const response = await PostModel.findOne(query)
+      .select("post_code version")
+      .populate(sectionDetailPopulateModels[section])
+      .lean();
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));
@@ -144,7 +141,7 @@ export const postDetail = async (
 
     if (user && user?.saved_posts) {
       const savedPosts = user.saved_posts[section] || [];
-      const postIdObj = new Types.ObjectId(postId);
+      const postIdObj = new Types.ObjectId(response._id);
       isSaved = savedPosts.some((savedPost) => savedPost.equals(postIdObj));
     }
 

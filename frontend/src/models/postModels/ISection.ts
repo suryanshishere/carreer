@@ -64,6 +64,7 @@ export interface ICommonListData {
   _id: string;
   is_saved: boolean;
   post_code: string;
+  version: string;
   link_ref?: ILinks;
   date_ref: IDates;
 }
@@ -115,12 +116,24 @@ export interface ILatestJob {
 
 // Interface for ICommonDetailData
 export interface ICommonDetailData {
-  createdAt: string;
+  _id: string;
+  post_code: string;
+  version: string;
   updatedAt: string;
-  created_by: string;
-  contributors?: string[]; //todo: for better user presentation convert to populate
-  approved: boolean;
-  name_of_the_post: string;
+  createdAt: string;
+  is_saved: boolean;
+  common_ref?: ICommon;
+  result_ref?: IResult;
+  admission_ref?: IAdmission;
+  answer_key_ref?: IAnswerKey;
+  certificate_verification_ref?: ICertificateVerification;
+  syllabus_ref?: ISyllabus;
+  admit_card_ref?: IAdmitCard;
+  important_ref?: IImportant;
+  latest_job_ref?: ILatestJob;
+  date_ref: IDates;
+  link_ref?: ILinks;
+  fee_ref?: IFees;
 }
 
 // Interface for ICertificateVerification
