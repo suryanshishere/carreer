@@ -3,14 +3,14 @@ import User from "@models/user/user_model";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
-import POST_DB from "@models/post_models/posts_db";
+import POST_DB from "@models/post_models/post_db";
 import ContributionModel, {
   IContribution,
 } from "@models/user/contribution-model";
 import { validateContributionField } from "./account-controllers-utils";
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
 import UserModal from "@models/user/user_model";
-import POSTS_POPULATE from "@models/post_models/posts_db/posts_populate.json";
+import POSTS_POPULATE from "@models/post_models/post_db/post_populate";
 
 const postSectionsArray = POST_DB.sections;
 

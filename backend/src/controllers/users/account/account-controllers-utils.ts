@@ -1,4 +1,4 @@
-import { POST_LIMITS_DB } from "@models/post_models/posts_db";
+import { POST_LIMITS_DB } from "@models/post_models/post_db";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request } from "express";
 

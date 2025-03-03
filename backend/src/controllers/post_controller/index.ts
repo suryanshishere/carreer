@@ -7,13 +7,13 @@ import FeeModel from "@models/post_models/componentModels/fee-model";
 import DateModel from "@models/post_models/componentModels/date-model";
 import LinkModel from "@models/post_models/componentModels/link-model";
 import PostModel from "@models/post_models/post_model";
-import { fetchPostList } from "./postsControllersUtils/posts-controllers-utils";
+import { fetchPostDetail, fetchPostList } from "./utils";
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
 import User from "@models/user/user_model";
 import mongoose from "mongoose";
-import POSTS_POPULATE from "@models/post_models/posts_db/posts_populate.json";
-import { ISectionKey } from "@models/post_models/post-interface";
+import POSTS_POPULATE from "@models/post_models/post_db/post_populate";
+import { ISectionKey } from "@models/post_models/post_db";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
@@ -71,7 +71,7 @@ export const section = async (
 ) => {
   handleValidationErrors(req, next);
   try {
-    const { section } = req.params;
+    const section = req.params.section as ISectionKey;
     const userId = getUserIdFromRequest(req as JWTRequest);
     const user = await User.findById(userId);
     let savedIds: string[] = [];
@@ -83,11 +83,7 @@ export const section = async (
 
     //if not max mode then not include populate of whole data
     const includePopulate = user?.mode?.max || false;
-    const response = await fetchPostList(
-      section as ISectionKey,
-      includePopulate,
-      next
-    );
+    const response = await fetchPostList(section, includePopulate, next);
     //todo: if null them better
     const postsWithSavedStatus = response?.map(({ _id, ...rest }) => ({
       _id,
@@ -112,26 +108,18 @@ export const postDetail = async (
   next: NextFunction
 ) => {
   handleValidationErrors(req, next);
-  const { section, postIdOrCode, version = "main" } = req.params;
+  const {
+    section,
+    postIdOrCode,
+    version = "main",
+  } = req.params as {
+    section: ISectionKey;
+    postIdOrCode: string;
+    version?: string;
+  };
 
   try {
-    const query = mongoose.Types.ObjectId.isValid(postIdOrCode)
-      ? {
-          _id: postIdOrCode,
-          [`${section}_approved`]: true,
-          [`${section}_ref`]: { $exists: true },
-        }
-      : {
-          post_code: postIdOrCode,
-          version,
-          [`${section}_approved`]: true,
-          [`${section}_ref`]: { $exists: true },
-        };
-
-    const response = await PostModel.findOne(query)
-      .select("post_code version")
-      .populate(POSTS_POPULATE.section_detail_populate[section as ISectionKey])
-      .lean();
+    const response = await fetchPostDetail(section, postIdOrCode, version);
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));

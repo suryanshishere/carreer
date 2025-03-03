@@ -1,5 +1,5 @@
 import { Model } from "mongoose";
-import  POST_DB  from "@models/post_models/posts_db";
+import POST_DB, { ISectionKey } from "@models/post_models/post_db";
 import { camelCase, upperFirst } from "lodash";
 import CertificateVerificationModel from "@models/post_models/sectionModels/certificate-verification-model";
 import DateModel from "@models/post_models/componentModels/date-model";
@@ -13,7 +13,6 @@ import SyllabusModel from "@models/post_models/sectionModels/syllabus-model";
 import LatestJobModel from "@models/post_models/sectionModels/latest-job-model";
 import AdmitCardModel from "@models/post_models/sectionModels/admit-card-model";
 import ResultModel from "@models/post_models/sectionModels/result-model";
-import { ISectionKey } from "@models/post_models/post-interface";
 
 interface IOverallModels extends Model<any> {}
 const OVERALL_MODELS: Record<string, IOverallModels> = {
@@ -31,8 +30,8 @@ const OVERALL_MODELS: Record<string, IOverallModels> = {
   ResultModel,
 };
 
-export const MODAL_MAP: Record<string, IOverallModels> =
-  POST_DB.overall.reduce((acc, key) => {
+export const MODAL_MAP: Record<string, IOverallModels> = POST_DB.overall.reduce(
+  (acc, key) => {
     const modelName = `${upperFirst(camelCase(key))}Model`; // Convert key to PascalCase and append "Model"
     const model = OVERALL_MODELS[modelName]; // Lookup the model in availableModels
 
@@ -43,7 +42,9 @@ export const MODAL_MAP: Record<string, IOverallModels> =
     }
 
     return acc;
-  }, {} as Record<string, IOverallModels>);
+  },
+  {} as Record<string, IOverallModels>
+);
 
 // ---------------------------------------------------------
 

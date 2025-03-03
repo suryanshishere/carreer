@@ -1,4 +1,5 @@
-import ContributionModel from "@models/user/contribution-model"; import { NextFunction, Request, Response } from "express";
+import ContributionModel from "@models/user/contribution-model";
+import { NextFunction, Request, Response } from "express";
 import HttpError from "@utils/http-errors";
 import { JWTRequest } from "@middleware/check-auth";
 import {
@@ -8,9 +9,10 @@ import {
   updatePostData,
 } from "./approver-controllers-utils";
 import mongoose from "mongoose";
-import  handleValidationErrors  from "@controllers/sharedControllers/validation-error";
-import { getSectionPostDetails } from "@controllers/posts/postsControllersUtils/posts-controllers-utils";
-import { ISection, ISectionKey } from "@models/post_models/post-interface";
+import handleValidationErrors from "@controllers/sharedControllers/validation-error";
+import { ISection } from "@models/post_models/post-interface";
+import { ISectionKey } from "@models/post_models/post_db";
+import { fetchPostDetail } from "@controllers/post_controller/utils";
 
 export const getContriPostCodes = async (
   req: Request,
@@ -76,14 +78,20 @@ export const getContriPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { section, postCode } = req.params;
+  const {
+    section,
+    postCode,
+    version = "main",
+  } = req.params as {
+    section: ISectionKey;
+    postCode: string;
+    version?: string;
+  };
   try {
     handleValidationErrors(req, next);
-    const postId = postCode;
-    // const postId = await postIdGeneration(postCode);
 
     // Retrieve the post document
-    const post = await getSectionPostDetails(section as ISectionKey, postId);
+    const post = await fetchPostDetail(section, postCode, version);
     if (!post) {
       return next(new HttpError("Post not found!", 404));
     }
@@ -136,7 +144,13 @@ export const applyContri = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { post_code, data, section, contributor_id } = req.body;
+  const {
+    post_code,
+    data,
+    section,
+    version = "main",
+    contributor_id,
+  } = req.body;
   const approverId = (req as JWTRequest).userData.userId;
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -146,14 +160,14 @@ export const applyContri = async (
     const postId = post_code;
     // const postId = await postIdGeneration(post_code);
 
-    let post = await getSectionPostDetails<ISection | null>(section, postId);
+    let post = await fetchPostDetail(section, post_code, version);
     if (!post) {
       return next(new HttpError("Post not found or not approved.", 404));
     }
 
     // Update post data
     // This function is being updated, no session required here as it's just modifying the in-memory post object
-    await updatePostData(post, data, contributor_id);
+    // await updatePostData(post, data, contributor_id);
 
     const contributor = await ContributionModel.findById(contributor_id)
       .select(`contribution.${post_code}.${section} approved`)
@@ -194,7 +208,6 @@ export const applyContri = async (
       .status(200)
       .json({ message: "Post updated and configured successfully!" });
   } catch (error) {
-
     console.log(error);
 
     // Rollback the transaction in case of any error

@@ -1,7 +1,5 @@
 // ------------------------------------ POST DATA LIMITS
 
-import { ISectionKey } from "../post-interface";
-
 interface CharLimits {
   min: number;
   max: number;
@@ -128,10 +126,25 @@ export const POST_LIMITS_DB: IPostLimits = {
 
 // ------------------------------ POST DATA
 
+export type ISectionKey =
+  | "result"
+  | "admit_card"
+  | "latest_job"
+  | "syllabus"
+  | "answer_key"
+  | "certificate_verification"
+  | "important"
+  | "admission";
+
+export type IComponentKey = "date" | "common" | "link" | "fee";
+
+// The overall key includes both section and component keys.
+export type IOverallKey = ISectionKey | IComponentKey;
+
 interface IPostEnvData {
   sections: ISectionKey[];
-  components: string[];
-  overall: string[];
+  components: IComponentKey[];
+  overall: IOverallKey[];
 }
 
 const POST_DB: IPostEnvData = {

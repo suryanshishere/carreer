@@ -1,4 +1,4 @@
-import POST_DB from "@models/post_models/posts_db";
+import POST_DB from "@models/post_models/post_db";
 import { Schema, Document, model } from "mongoose";
 
 // Interface for a Contribution Document

@@ -15,8 +15,7 @@ import {
 import AdminModel, { IAdmin } from "@models/admin/admin_model";
 import { SchemaType } from "@google/generative-ai";
 import { SECTION_POST_PROMPT_SCHEMA_MAP } from "./post-prompt-schema-map";
-import { POST_LIMITS_DB } from "@models/post_models/posts_db";
-import { ISectionKey } from "@models/post_models/post-interface";
+import { ISectionKey, POST_LIMITS_DB } from "@models/post_models/post_db";
 
 export const createNewPost = async (
   req: Request,
@@ -25,8 +24,19 @@ export const createNewPost = async (
 ) => {
   handleValidationErrors(req, next);
 
-  const { section, name_of_the_post, post_code, version, api_key_from_user } =
-    req.body;
+  const {
+    section,
+    name_of_the_post,
+    post_code,
+    version,
+    api_key_from_user,
+  }: {
+    section: ISectionKey;
+    name_of_the_post: string;
+    post_code: string;
+    version?: string;
+    api_key_from_user?: string;
+  } = req.body;
 
   //since publisher id will be same as user id but just in the publisher model
   const publisherId = (req as JWTRequest).userData.userId;
@@ -53,7 +63,7 @@ export const createNewPost = async (
     // allow time out constraint to be removed (with transaction)
     const result = await session.withTransaction(async () => {
       //checking the section cuz it's validated already by express validator from the same section it's mapped
-      const model = SECTION_POST_MODAL_MAP[section as ISectionKey];
+      const model = SECTION_POST_MODAL_MAP[section];
 
       const queryFilter = { post_code, version: version ?? "main" };
 

@@ -3,7 +3,7 @@ import {
   home,
   postDetail,
   section,
-} from "@controllers/posts/posts-controllers";
+} from "@controllers/post_controller";
 import {
   validatePostCode,
   validatePostIdOrCode,
