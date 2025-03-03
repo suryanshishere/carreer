@@ -1,7 +1,6 @@
 import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
 import { Request } from "express-jwt";
-import { snakeCase } from "lodash";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import CommonModel from "@models/post_models/componentModels/common-model";
 import FeeModel from "@models/post_models/componentModels/fee-model";
@@ -13,12 +12,13 @@ import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-mode
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
 import User from "@models/user/user_model";
 import mongoose from "mongoose";
-import { sectionDetailPopulateModels } from "./postsControllersUtils/postPopulate/posts-populate";
+import POSTS_POPULATE from "@models/post_models/posts_db/posts_populate.json";
+import { ISectionKey } from "@models/post_models/post-interface";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
-const CATEGORY_LIMIT =
-  Number(process.env.NUMBER_OF_POST_SEND_CATEGORYLIST) || 25;
+// const CATEGORY_LIMIT =
+//   Number(process.env.NUMBER_OF_POST_SEND_CATEGORYLIST) || 25;
 
 // Example utility function (unused)
 export const helpless = () => {
@@ -37,14 +37,13 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
     const savedPost = user?.saved_posts || null;
 
     const dataPromises = Object.keys(SECTION_POST_MODAL_MAP).map(
-      async (key: string) => {
-        const snakeKey = snakeCase(key);
-        const savedIds = savedPost?.[snakeKey]?.map(String) || [];
-        const posts = await fetchPostList(snakeKey, false, next);
+      async (key) => {
+        const savedIds = savedPost?.[key]?.map(String) || [];
+        const posts = await fetchPostList(key as ISectionKey, false, next);
 
         //todo: improve error handling
         return {
-          [snakeKey]: posts?.map(({ _id, ...rest }) => ({
+          [key]: posts?.map(({ _id, ...rest }) => ({
             _id,
             is_saved: savedIds.includes(String(_id)),
             ...rest,
@@ -84,7 +83,11 @@ export const section = async (
 
     //if not max mode then not include populate of whole data
     const includePopulate = user?.mode?.max || false;
-    const response = await fetchPostList(section, includePopulate, next);
+    const response = await fetchPostList(
+      section as ISectionKey,
+      includePopulate,
+      next
+    );
     //todo: if null them better
     const postsWithSavedStatus = response?.map(({ _id, ...rest }) => ({
       _id,
@@ -127,7 +130,7 @@ export const postDetail = async (
 
     const response = await PostModel.findOne(query)
       .select("post_code version")
-      .populate(sectionDetailPopulateModels[section])
+      .populate(POSTS_POPULATE.section_detail_populate[section as ISectionKey])
       .lean();
 
     if (!response) {

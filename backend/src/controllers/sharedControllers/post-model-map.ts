@@ -1,5 +1,5 @@
 import { Model } from "mongoose";
-import  POST_DB  from "@models/post_models/post_db";
+import  POST_DB  from "@models/post_models/posts_db";
 import { camelCase, upperFirst } from "lodash";
 import CertificateVerificationModel from "@models/post_models/sectionModels/certificate-verification-model";
 import DateModel from "@models/post_models/componentModels/date-model";
@@ -13,6 +13,7 @@ import SyllabusModel from "@models/post_models/sectionModels/syllabus-model";
 import LatestJobModel from "@models/post_models/sectionModels/latest-job-model";
 import AdmitCardModel from "@models/post_models/sectionModels/admit-card-model";
 import ResultModel from "@models/post_models/sectionModels/result-model";
+import { ISectionKey } from "@models/post_models/post-interface";
 
 interface IOverallModels extends Model<any> {}
 const OVERALL_MODELS: Record<string, IOverallModels> = {
@@ -47,12 +48,12 @@ export const MODAL_MAP: Record<string, IOverallModels> =
 // ---------------------------------------------------------
 
 const SECTION_POST_MODAL_MAP: Record<
-  string,
+  ISectionKey,
   Model<any>
 > = POST_DB.sections.reduce((acc, key) => {
   acc[key] = MODAL_MAP[key];
   return acc;
-}, {} as Record<string, Model<any>>);
+}, {} as Record<ISectionKey, Model<any>>);
 
 export { SECTION_POST_MODAL_MAP };
 

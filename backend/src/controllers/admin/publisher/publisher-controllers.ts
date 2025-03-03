@@ -15,7 +15,8 @@ import {
 import AdminModel, { IAdmin } from "@models/admin/admin_model";
 import { SchemaType } from "@google/generative-ai";
 import { SECTION_POST_PROMPT_SCHEMA_MAP } from "./post-prompt-schema-map";
-import { POST_LIMITS_DB } from "@models/post_models/post_db";
+import { POST_LIMITS_DB } from "@models/post_models/posts_db";
+import { ISectionKey } from "@models/post_models/post-interface";
 
 export const createNewPost = async (
   req: Request,
@@ -52,7 +53,7 @@ export const createNewPost = async (
     // allow time out constraint to be removed (with transaction)
     const result = await session.withTransaction(async () => {
       //checking the section cuz it's validated already by express validator from the same section it's mapped
-      const model = SECTION_POST_MODAL_MAP[section];
+      const model = SECTION_POST_MODAL_MAP[section as ISectionKey];
 
       const queryFilter = { post_code, version: version ?? "main" };
 

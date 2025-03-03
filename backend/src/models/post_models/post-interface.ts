@@ -26,3 +26,18 @@ export type ISection = ISyllabus &
   IAnswerKey &
   IAdmitCard &
   IAdmission;
+
+export interface PopulateOption {
+  path: string;
+  select?: string;
+}
+
+export type ISectionKey =
+  | "result"
+  | "admit_card"
+  | "latest_job"
+  | "syllabus"
+  | "answer_key"
+  | "certificate_verification"
+  | "important"
+  | "admission";

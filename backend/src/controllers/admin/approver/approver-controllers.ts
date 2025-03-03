@@ -10,7 +10,7 @@ import {
 import mongoose from "mongoose";
 import  handleValidationErrors  from "@controllers/sharedControllers/validation-error";
 import { getSectionPostDetails } from "@controllers/posts/postsControllersUtils/posts-controllers-utils";
-import { ISection } from "@models/post_models/post-interface";
+import { ISection, ISectionKey } from "@models/post_models/post-interface";
 
 export const getContriPostCodes = async (
   req: Request,
@@ -83,7 +83,7 @@ export const getContriPost = async (
     // const postId = await postIdGeneration(postCode);
 
     // Retrieve the post document
-    const post = await getSectionPostDetails(section, postId);
+    const post = await getSectionPostDetails(section as ISectionKey, postId);
     if (!post) {
       return next(new HttpError("Post not found!", 404));
     }

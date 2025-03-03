@@ -1,5 +1,5 @@
 import { SchemaType } from "@google/generative-ai";
-import { POST_LIMITS_DB } from "@models/post_models/post_db";
+import { POST_LIMITS_DB } from "@models/post_models/posts_db";
 
 const certificateVerificationPromptSchema = {
   description: "Detailed post information for certificate verification process",

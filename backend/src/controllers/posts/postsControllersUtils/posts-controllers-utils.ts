@@ -1,22 +1,14 @@
 import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
-import {
-  PopulateOption,
-  sectionDetailPopulateModels,
-  sectionListPopulate,
-} from "./postPopulate/posts-populate";
-import {
-  COMMON_SELECT_FIELDS,
-  sectionPostListSelect,
-} from "./postSelect/sectionPostListSelect";
 import DateModel from "@models/post_models/componentModels/date-model";
 import postSortMap from "./post-sort-map";
 import HttpError from "@utils/http-errors";
-import { NextFunction } from "express";
-import {
-  COMMON_POST_DETAIL_SELECT_FIELDS,
-  sectionPostDetailSelect,
-} from "./postSelect/sectionPostDetailSelect";
+import { NextFunction } from "express"; 
 import PostModel from "@models/post_models/post_model";
+import {
+  ISectionKey,
+  PopulateOption,
+} from "@models/post_models/post-interface";
+import POST_POPULATE from "@models/post_models/posts_db/posts_populate.json";
 
 const getSortedDateIds = async (section: string) => {
   const currentDate = new Date();
@@ -106,27 +98,20 @@ export const filterPopulateArray = (
 };
 
 export const fetchPostList = async (
-  section: string,
+  section: ISectionKey,
   includePopulate: boolean = true,
   next: NextFunction
 ) => {
   try {
-    const sectionSelect = sectionPostListSelect[section] || "";
-    let selectFields: string[] = COMMON_SELECT_FIELDS.split(" ");
-
-    if (sectionSelect.startsWith("-")) {
-      selectFields = sectionSelect.split(" ");
-    } else if (sectionSelect) {
-      selectFields.push(...sectionSelect.split(" "));
-    }
-
     //ids can made efficient for ref exist (for section)
     const sortedPostIds = await getSortedDateIds(section);
+    let populateArray = POST_POPULATE.section_list_populate[section];
 
-    const filteredPopulate = filterPopulateArray(
-      sectionListPopulate[section],
-      includePopulate
-    );
+    if (!includePopulate) {
+      populateArray.filter(
+        (item: PopulateOption): boolean => item.path !== "link_ref"
+      );
+    }
 
     let posts = await PostModel.find({
       _id: { $in: sortedPostIds },
@@ -134,7 +119,7 @@ export const fetchPostList = async (
       [`${section}_ref`]: { $exists: true },
     })
       .select("post_code version")
-      .populate(filteredPopulate)
+      .populate(populateArray)
       .exec();
 
     //for having ordered post list as per sorted ids by dates
@@ -154,23 +139,23 @@ export const fetchPostList = async (
 };
 
 export async function getSectionPostDetails<T>(
-  section: string,
+  section: ISectionKey,
   postId: string
 ): Promise<T | null> {
   const model = SECTION_POST_MODAL_MAP[section];
-  const sectionSelect = sectionPostDetailSelect[section] || "";
-  let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
+  // const sectionSelect = sectionPostDetailSelect[section] || "";
+  // let selectFields: string[] = COMMON_POST_DETAIL_SELECT_FIELDS.split(" ");
 
-  if (sectionSelect.startsWith("-")) {
-    selectFields = sectionSelect.split(" ");
-  } else if (sectionSelect) {
-    selectFields.push(...sectionSelect.split(" "));
-  }
+  // if (sectionSelect.startsWith("-")) {
+  //   selectFields = sectionSelect.split(" ");
+  // } else if (sectionSelect) {
+  //   selectFields.push(...sectionSelect.split(" "));
+  // }
 
   const result = await model
     .findOne({ _id: postId, approved: true })
-    .select(selectFields)
-    .populate(sectionDetailPopulateModels[section]);
+    // .select(selectFields)
+    .populate(POST_POPULATE.section_detail_populate[section]);
 
   return result as T | null;
 }

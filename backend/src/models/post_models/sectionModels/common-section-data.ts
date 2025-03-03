@@ -1,4 +1,4 @@
-import { POST_LIMITS_DB } from "@models/post_models/post_db";
+import { POST_LIMITS_DB } from "@models/post_models/posts_db";
 import { Schema, Types, Document } from "mongoose";
 // import { ILinks } from "../componentModels/link-model";
 // import { IDates } from "../componentModels/date-model";

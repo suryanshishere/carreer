@@ -6,26 +6,33 @@ export const excludedKeys = [
     "contributors",
     "is_saved",
     "__v",
-    "post"
+    "post_code",
+    "version",
+    "admit_card_ref",
+    "certificate_verification_ref",
+    "result_ref",
+    "answer_key_ref",
+    "latest_job_ref",
+    "latest_job_ref",
   ];
   
   export const notDisplayKeys = [];
   
-  // "common"
+  // "common_ref"
   export const tableRequired = [
     "age_criteria",
-    "result",
+    "result_ref.result",
     "male",
     "female",
     "other",
-    "common.vacancy.category_wise",
-    "important_links",
-    "important_dates",
+    "common_ref.vacancy.category_wise",
+    "link_ref",
+    "date_ref",
     "eligibility",
     "applicants",
-    "application_fee.category_wise",
-    "common.age_criteria",
-    "important_links.additional_resources",
-    "result.current_year",
-    "result.previous_year",
+    "fee_ref.category_wise",
+    "common_ref.age_criteria",
+    "link_ref.additional_resources",
+    "result_ref.result.current_year",
+    "result_ref.result.previous_year",
   ];

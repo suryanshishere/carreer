@@ -3,18 +3,14 @@ import User from "@models/user/user_model";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
-import { sectionListPopulate } from "@controllers/posts/postsControllersUtils/postPopulate/posts-populate";
-import {
-  COMMON_SELECT_FIELDS,
-  sectionPostListSelect,
-} from "@controllers/posts/postsControllersUtils/postSelect/sectionPostListSelect";
-import POST_DB from "@models/post_models/post_db";
+import POST_DB from "@models/post_models/posts_db";
 import ContributionModel, {
   IContribution,
 } from "@models/user/contribution-model";
 import { validateContributionField } from "./account-controllers-utils";
 import handleValidationErrors from "@controllers/sharedControllers/validation-error";
 import UserModal from "@models/user/user_model";
+import POSTS_POPULATE from "@models/post_models/posts_db/posts_populate.json";
 
 const postSectionsArray = POST_DB.sections;
 
@@ -29,17 +25,10 @@ export const savedPosts = async (
     const query = User.findById(userId).select("saved_posts -_id");
 
     postSectionsArray.forEach((section) => {
-      const selectFields = [
-        COMMON_SELECT_FIELDS,
-        sectionPostListSelect[section] || "",
-      ]
-        .filter(Boolean)
-        .join(" ");
-
       query.populate({
         path: `saved_posts.${section}`,
-        select: selectFields,
-        populate: sectionListPopulate[section] || null,
+        select: "post_code version",
+        populate: POSTS_POPULATE.section_list_populate[section] || null,
       });
     });
 

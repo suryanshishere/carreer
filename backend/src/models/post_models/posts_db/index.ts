@@ -1,5 +1,7 @@
 // ------------------------------------ POST DATA LIMITS
 
+import { ISectionKey } from "../post-interface";
+
 interface CharLimits {
   min: number;
   max: number;
@@ -127,7 +129,7 @@ export const POST_LIMITS_DB: IPostLimits = {
 // ------------------------------ POST DATA
 
 interface IPostEnvData {
-  sections: string[];
+  sections: ISectionKey[];
   components: string[];
   overall: string[];
 }
