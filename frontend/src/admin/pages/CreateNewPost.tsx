@@ -17,7 +17,7 @@ import {
   ICreateNewPostForm,
   validationSchema,
 } from "admin/admin_shared/admin_form_validation";
-import POST_DB from "post/post_db";
+import POST_DB from "post/post-db";
 import PageHeader from "shared/ui/PageHeader";
 
 const CreateNewPost: React.FC = () => {

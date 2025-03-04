@@ -5,7 +5,7 @@ import {
   IUserAccountMode,
   IUserData,
   RecursivePartial,
-} from "user/user_interfaces";
+} from "user/user-interfaces";
 
 interface IUserSlice {
   isNavAuthClicked: boolean;

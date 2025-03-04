@@ -9,8 +9,8 @@ import Button from "shared/utils/form/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { updateMode, updateUserData } from "shared/store/user_slice";
-import { USER_ACCOUNT_MODE_DB } from "user/user_db";
-import { IUserAccountMode } from "user/user_interfaces";
+import { USER_ACCOUNT_MODE_DB } from "user/user-db";
+import { IUserAccountMode } from "user/user-interfaces";
 
 const TAGS = USER_ACCOUNT_MODE_DB.tags;
 
