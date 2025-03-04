@@ -15,7 +15,11 @@ import {
 import AdminModel, { IAdmin } from "@models/admin/admin_model";
 import { SchemaType } from "@google/generative-ai";
 import { SECTION_POST_PROMPT_SCHEMA_MAP } from "./post-prompt-schema-map";
-import { ISectionKey, POST_LIMITS_DB } from "@models/post_models/post_db";
+import {
+  IOverallKey,
+  ISectionKey,
+  POST_LIMITS_DB,
+} from "@models/post_models/post_db";
 
 export const createNewPost = async (
   req: Request,
@@ -155,7 +159,8 @@ export const deletePost = async (
   next: NextFunction
 ) => {
   handleValidationErrors(req, next);
-  const { post_id, section } = req.body;
+  const { post_id, section }: { post_id: string; section: IOverallKey } =
+    req.body;
   const publisherId = (req as JWTRequest).userData.userId;
 
   try {

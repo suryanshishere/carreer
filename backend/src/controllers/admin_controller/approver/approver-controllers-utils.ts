@@ -1,7 +1,3 @@
-import { ICommon } from "@models/post_models/componentModels/common_model";
-import { IDates } from "@models/post_models/componentModels/date_model";
-import { IFee } from "@models/post_models/componentModels/fee_model";
-import { ILinks } from "@models/post_models/componentModels/link_model";
 import { ISection } from "@models/post_models/post-interface";
 import { IContribution } from "@models/user/contribution-model";
 import HttpError from "@utils/http-errors";
@@ -38,7 +34,7 @@ export const updatePostData = async (
   });
 
   //TODO ACCORDING TO THE NEW POST MODAL THEMES
-  
+
   // if (!post.contributors) {
   //   post.contributors = [];
   // }
@@ -49,7 +45,7 @@ export const updatePostData = async (
 
   // if (post.common) await (post.common as ICommon).save();
   // if (post.important_dates) await (post.important_dates as IDates).save();
-  // if (post.important_links) await (post.important_links as ILinks).save();
+  // if (post.important_links) await (post.important_links as ILink).save();
   // if (post.application_fee) await (post.application_fee as IFee).save();
 };
 
