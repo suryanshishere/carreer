@@ -2,17 +2,17 @@ import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
 import { Request } from "express-jwt";
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
-import CommonModel from "@models/post_models/componentModels/common-model";
-import FeeModel from "@models/post_models/componentModels/fee-model";
-import DateModel from "@models/post_models/componentModels/date-model";
-import LinkModel from "@models/post_models/componentModels/link-model";
+import CommonModel from "@models/post_models/componentModels/common_model";
+import FeeModel from "@models/post_models/componentModels/fee_model";
+import DateModel from "@models/post_models/componentModels/date_model";
+import LinkModel from "@models/post_models/componentModels/link_model";
 import PostModel from "@models/post_models/post_model";
 import { fetchPostDetail, fetchPostList } from "./utils";
-import { SECTION_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
-import handleValidationErrors from "@controllers/sharedControllers/validation-error";
+import { SECTION_POST_MODEL_MAP } from "@models/post_models/post_db/post_map/post_model_map";
+import handleValidationErrors from "@controllers/shared_controller/validation-error";
 import User from "@models/user/user_model";
 import mongoose from "mongoose";
-import POSTS_POPULATE from "@models/post_models/post_db/post_populate";
+import POSTS_POPULATE from "@models/post_models/post_db/post_map/post_populate_map";
 import { ISectionKey } from "@models/post_models/post_db";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
@@ -36,7 +36,7 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findById(userId);
     const savedPost = user?.saved_posts || null;
 
-    const dataPromises = Object.keys(SECTION_POST_MODAL_MAP).map(
+    const dataPromises = Object.keys(SECTION_POST_MODEL_MAP).map(
       async (key) => {
         const savedIds = savedPost?.[key]?.map(String) || [];
         const posts = await fetchPostList(key as ISectionKey, false, next);

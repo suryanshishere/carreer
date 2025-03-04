@@ -1,9 +1,9 @@
-import POSTS_POPULATE from "@models/post_models/post_db/post_populate";
+import POSTS_POPULATE from "@models/post_models/post_db/post_map/post_populate_map";
 import HttpError from "@utils/http-errors";
 import { NextFunction } from "express";
 import PostModel from "@models/post_models/post_model";
 import { PopulateOption } from "@models/post_models/post-interface";
-import POST_POPULATE from "@models/post_models/post_db/post_populate";
+import POST_POPULATE from "@models/post_models/post_db/post_map/post_populate_map";
 import { ISectionKey } from "@models/post_models/post_db";
 import getSortedDateIds from "./get_sorted_date_ids";
 import mongoose from "mongoose";

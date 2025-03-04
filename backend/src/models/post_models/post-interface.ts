@@ -1,13 +1,13 @@
 import { Types } from "mongoose";
-import { ICommonDetailData } from "./sectionModels/common-section-data";
-import { ISyllabus } from "./sectionModels/syllabus-model";
-import { ILatestJob } from "./sectionModels/latest-job-model";
-import { IResult } from "./sectionModels/result-model";
-import { IImportant } from "./sectionModels/important-model";
-import { ICertificateVerification } from "./sectionModels/certificate-verification-model";
-import { IAnswerKey } from "./sectionModels/answer-key-model";
-import { IAdmitCard } from "./sectionModels/admit-card-model";
-import { IAdmission } from "./sectionModels/admission-model";
+import { ICommonDetailData } from "./sectionModels/common_section_data_model";
+import { ISyllabus } from "./sectionModels/syllabus_model";
+import { ILatestJob } from "./sectionModels/latest_job_model";
+import { IResult } from "./sectionModels/result_model";
+import { IImportant } from "./sectionModels/important_model";
+import { ICertificateVerification } from "./sectionModels/certificate_verification_model";
+import { IAnswerKey } from "./sectionModels/answer_key_model";
+import { IAdmitCard } from "./sectionModels/admit_card_model";
+import { IAdmission } from "./sectionModels/admission_model";
 
 export interface IBasePost {
   createdAt: Date;

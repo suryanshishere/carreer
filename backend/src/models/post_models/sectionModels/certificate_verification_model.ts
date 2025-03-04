@@ -1,5 +1,7 @@
-import mongoose, { Schema, Types } from "mongoose";
-import commonDataSchema, { ICommonDetailData } from "./common-section-data";
+import { Model, Schema, model } from "mongoose";
+import commonDataSchema, {
+  ICommonDetailData,
+} from "./common_section_data_model";
 import { POST_LIMITS_DB } from "@models/post_models/post_db";
 
 const certificateVerificationSchema = new Schema<ICertificateVerification>({
@@ -13,10 +15,11 @@ const certificateVerificationSchema = new Schema<ICertificateVerification>({
 
 certificateVerificationSchema.add(commonDataSchema);
 export { certificateVerificationSchema };
-const CertificateVerificationModel = mongoose.model(
-  "CertificateVerification",
-  certificateVerificationSchema
-);
+const CertificateVerificationModel: Model<ICertificateVerification> =
+  model<ICertificateVerification>(
+    "CertificateVerification",
+    certificateVerificationSchema
+  );
 export default CertificateVerificationModel;
 
 // ---------------------------------------------

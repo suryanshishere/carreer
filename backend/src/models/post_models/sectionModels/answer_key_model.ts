@@ -1,6 +1,8 @@
-import mongoose, { Types, Schema } from "mongoose";
-import commonDataSchema, { ICommonDetailData } from "./common-section-data";
-import { ISyllabus } from "./syllabus-model";
+import { Types, Schema, model, Model } from "mongoose";
+import commonDataSchema, {
+  ICommonDetailData,
+} from "./common_section_data_model";
+import { ISyllabus } from "./syllabus_model";
 import { POST_LIMITS_DB } from "@models/post_models/post_db";
 
 const answerKeySchema = new Schema<IAnswerKey>({
@@ -15,7 +17,10 @@ const answerKeySchema = new Schema<IAnswerKey>({
 
 answerKeySchema.add(commonDataSchema);
 export { answerKeySchema };
-const AnswerKeyModel = mongoose.model("AnswerKey", answerKeySchema);
+const AnswerKeyModel: Model<IAnswerKey> = model<IAnswerKey>(
+  "AnswerKey",
+  answerKeySchema
+);
 export default AnswerKeyModel;
 
 // ------------------------

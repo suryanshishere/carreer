@@ -1,28 +1,27 @@
-import mongoose, { Document, Schema, Types } from "mongoose";
+import { Document, Schema, model, Model } from "mongoose";
 import { POST_LIMITS_DB } from "../post_db";
 
-const DateRangeSchema = new Schema<IDateRange>({
-  current_year: { type: Date },
-  previous_year: { type: Date, required: true },
-},
-{ _id: false });
-
-const dateObject = { type: DateRangeSchema, required: false }
-
-export const dateSchema = new Schema<IDates>(
+const DateRangeSchema = new Schema<IDateRange>(
   {
-    // created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    // contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    // approved: { type: Boolean, default: false, required: true },
+    current_year: { type: Date },
+    previous_year: { type: Date, required: true },
+  },
+  { _id: false }
+);
+
+const dateObject = { type: DateRangeSchema, required: false };
+
+export const dateSchema = new Schema<IDate>(
+  {
     application_start_date: dateObject,
     application_end_date: dateObject,
     exam_fee_payment_end_date: dateObject,
     form_correction_start_date: dateObject,
     form_correction_end_date: dateObject,
-    exam_date:dateObject,
+    exam_date: dateObject,
     admit_card_release_date: dateObject,
     exam_city_details_release_date: dateObject,
-    answer_key_release_date:dateObject,
+    answer_key_release_date: dateObject,
     result_announcement_date: dateObject,
     counseling_start_date: dateObject,
     counseling_end_date: dateObject,
@@ -39,7 +38,7 @@ export const dateSchema = new Schema<IDates>(
   { timestamps: true }
 );
 
-const DateModel = mongoose.model("Date", dateSchema);
+const DateModel: Model<IDate> = model<IDate>("Date", dateSchema);
 export default DateModel;
 
 // ------------------------
@@ -49,11 +48,7 @@ interface IDateRange {
   previous_year: Date;
 }
 
-export interface IDates extends Document {
-  _id?: Types.ObjectId;
-  // created_by: Types.ObjectId;
-  // contributors?: Types.ObjectId[];
-  // approved: boolean;
+export interface IDate extends Document {
   application_start_date?: IDateRange;
   application_end_date?: IDateRange;
   exam_fee_payment_end_date?: IDateRange;
@@ -70,6 +65,4 @@ export interface IDates extends Document {
   counseling_end_date?: IDateRange;
   counseling_result_announcement_date?: IDateRange;
   additional_resources?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
 }

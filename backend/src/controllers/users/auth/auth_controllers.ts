@@ -12,7 +12,7 @@ import {
 import { getUserIdFromRequest, JWTRequest } from "@middleware/check-auth";
 import { random } from "lodash"; 
 import { USER_ENV_DATA } from "@shared/env-data";
-import handleValidationErrors from "../../sharedControllers/validation-error";
+import handleValidationErrors from "../../shared_controller/validation-error";
 
 const { EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY } =
   USER_ENV_DATA;

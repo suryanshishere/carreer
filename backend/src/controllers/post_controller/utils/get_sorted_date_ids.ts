@@ -1,6 +1,6 @@
 //date id sort upto 3 recent month, 5 previous year
 
-import DateModel from "@models/post_models/componentModels/date-model";
+import DateModel from "@models/post_models/componentModels/date_model";
 
 const postSortMap: Record<string, string> = {
   result: "result_announcement_date",

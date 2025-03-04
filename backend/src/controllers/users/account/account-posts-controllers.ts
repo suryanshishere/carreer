@@ -8,9 +8,9 @@ import ContributionModel, {
   IContribution,
 } from "@models/user/contribution-model";
 import { validateContributionField } from "./account-controllers-utils";
-import handleValidationErrors from "@controllers/sharedControllers/validation-error";
+import handleValidationErrors from "@controllers/shared_controller/validation-error";
 import UserModal from "@models/user/user_model";
-import POSTS_POPULATE from "@models/post_models/post_db/post_populate";
+import POSTS_POPULATE from "@models/post_models/post_db/post_map/post_populate_map";
 
 const postSectionsArray = POST_DB.sections;
 

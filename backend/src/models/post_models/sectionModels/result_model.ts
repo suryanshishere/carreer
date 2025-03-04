@@ -1,5 +1,7 @@
-import mongoose, { Schema } from "mongoose";
-import commonDataSchema, { ICommonDetailData } from "./common-section-data";
+import { Model, Schema, model } from "mongoose";
+import commonDataSchema, {
+  ICommonDetailData,
+} from "./common_section_data_model";
 import { POST_LIMITS_DB } from "@models/post_models/post_db";
 
 const { non_negative_num, short_char_limit, long_char_limit } = POST_LIMITS_DB;
@@ -76,7 +78,7 @@ const resultSchema = new Schema<IResult>({
 resultSchema.add(commonDataSchema);
 export { resultSchema };
 
-const ResultModel = mongoose.model("Result", resultSchema);
+const ResultModel: Model<IResult> = model<IResult>("Result", resultSchema);
 export default ResultModel;
 
 // -------------------------------
@@ -98,4 +100,3 @@ interface IResultCategory {
   ph_dviyang?: number;
   additional_resources: string;
 }
-

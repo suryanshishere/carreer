@@ -1,4 +1,4 @@
-import { ISectionKey } from ".";
+import { ISectionKey } from "..";
 
 export type ISectionRefKey =
   | "link_ref"

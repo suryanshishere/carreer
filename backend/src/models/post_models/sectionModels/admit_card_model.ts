@@ -1,7 +1,10 @@
-import mongoose, { Types, Schema } from "mongoose";
-import commonDataSchema, { ICommonDetailData } from "./common-section-data";
+import { Types, Schema, Model } from "mongoose";
+import commonDataSchema, {
+  ICommonDetailData,
+} from "./common_section_data_model";
 import { POST_LIMITS_DB } from "@models/post_models/post_db";
-import { ISyllabus } from "./syllabus-model";
+import { ISyllabus } from "./syllabus_model";
+import { model } from "mongoose";
 
 const admitCardSchema = new Schema<IAdmitCard>({
   how_to_download_admit_card: {
@@ -15,7 +18,10 @@ const admitCardSchema = new Schema<IAdmitCard>({
 
 admitCardSchema.add(commonDataSchema);
 export { admitCardSchema };
-const AdmitCardModel = mongoose.model("AdmitCard", admitCardSchema);
+const AdmitCardModel: Model<IAdmitCard> = model<IAdmitCard>(
+  "AdmitCard",
+  admitCardSchema
+);
 export default AdmitCardModel;
 
 // ------------------------

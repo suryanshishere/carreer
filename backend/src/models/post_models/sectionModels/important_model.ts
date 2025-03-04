@@ -1,5 +1,7 @@
-import mongoose, { Types, Schema } from "mongoose";
-import commonDataSchema, { ICommonDetailData } from "./common-section-data";
+import { model, Schema, Model } from "mongoose";
+import commonDataSchema, {
+  ICommonDetailData,
+} from "./common_section_data_model";
 import { POST_LIMITS_DB } from "@models/post_models/post_db";
 
 const importantSchema = new Schema<IImportant>({
@@ -14,7 +16,10 @@ const importantSchema = new Schema<IImportant>({
 importantSchema.add(commonDataSchema);
 export { importantSchema };
 
-const ImportantModel = mongoose.model("Important", importantSchema);
+const ImportantModel: Model<IImportant> = model<IImportant>(
+  "Important",
+  importantSchema
+);
 export default ImportantModel;
 
 // -------------------------------
@@ -22,4 +27,3 @@ export default ImportantModel;
 export interface IImportant extends ICommonDetailData {
   how_to_fill_the_form: string;
 }
-

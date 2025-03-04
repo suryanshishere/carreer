@@ -1,13 +1,13 @@
-import handleValidationErrors from "@controllers/sharedControllers/validation-error";
+import handleValidationErrors from "@controllers/shared_controller/validation-error";
 import { NextFunction, Response, Request } from "express";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import PostModel from "@models/post_models/post_model";
 import { JWTRequest } from "@middleware/check-auth";
 import {
-  MODAL_MAP,
-  SECTION_POST_MODAL_MAP,
-} from "@controllers/sharedControllers/post-model-map";
+  MODEL_MAP,
+  SECTION_POST_MODEL_MAP,
+} from "@models/post_models/post_db/post_map/post_model_map";
 import {
   createComponentPost,
   generatePostData,
@@ -63,7 +63,7 @@ export const createNewPost = async (
     // allow time out constraint to be removed (with transaction)
     const result = await session.withTransaction(async () => {
       //checking the section cuz it's validated already by express validator from the same section it's mapped
-      const model = SECTION_POST_MODAL_MAP[section];
+      const model = SECTION_POST_MODEL_MAP[section];
 
       const queryFilter = { post_code, version: version ?? "main" };
 
@@ -178,8 +178,8 @@ export const deletePost = async (
     await PostModel.deleteOne({ _id: post_id });
 
     if (section) {
-      // Check if the section exists in MODAL_MAP
-      const model = MODAL_MAP[section];
+      // Check if the section exists in MODEL_MAP
+      const model = MODEL_MAP[section];
       if (!model) {
         return res.status(400).json({ error: `Invalid section: ${section}` });
       }
@@ -199,7 +199,7 @@ export const deletePost = async (
       }
     } else {
       // If no section is specified, delete the post from all models
-      for (const [key, model] of Object.entries(MODAL_MAP)) {
+      for (const [key, model] of Object.entries(MODEL_MAP)) {
         try {
           const result = await model.deleteOne({ _id: post_id });
           if (result.deletedCount > 0) {

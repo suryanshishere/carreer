@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from "mongoose";
+import { Schema, model, Document, Model } from "mongoose";
 import { POST_LIMITS_DB } from "../post_db";
 
 const { short_char_limit } = POST_LIMITS_DB;
@@ -18,11 +18,8 @@ const AdditionalResourcesSchema = new Schema<IAdditionalResources>(
   { _id: false }
 );
 
-export const LinksSchema = new Schema<ILinks>(
+export const LinksSchema = new Schema<ILink>(
   {
-    // created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    // contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    // approved: { type: Boolean, default: false, required: true },
     official_website: { ...linkObject, required: true },
     apply_online: linkObject,
     register_now: linkObject,
@@ -37,7 +34,7 @@ export const LinksSchema = new Schema<ILinks>(
   { timestamps: true }
 );
 
-const LinkModel = model("Link", LinksSchema);
+const LinkModel: Model<ILink> = model<ILink>("Link", LinksSchema);
 export default LinkModel;
 
 // ------------------------------
@@ -47,12 +44,7 @@ interface IAdditionalResources {
   contact_us?: string;
 }
 
-export interface ILinks extends Document {
-  // created_by: Types.ObjectId;
-  // approved: boolean;
-  // contributors?: Types.ObjectId[];
-  createdAt: Date;
-  updatedAt: Date;
+export interface ILink extends Document {
   official_website: string;
   additional_resources: IAdditionalResources;
   apply_online?: string;

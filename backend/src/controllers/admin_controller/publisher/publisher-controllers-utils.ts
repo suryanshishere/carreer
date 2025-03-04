@@ -4,7 +4,7 @@ import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { JWTRequest } from "@middleware/check-auth";
 import { Request } from "express";
-import { COMPONENT_POST_MODAL_MAP } from "@controllers/sharedControllers/post-model-map";
+import { COMPONENT_POST_MODEL_MAP } from "@models/post_models/post_db/post_map/post_model_map";
 import {
   COMPONENT_POST_PROMPT_SCHEMA_MAP,
   updateSchema,
@@ -151,8 +151,8 @@ export const createComponentPost = async (
 
     let runCount = 0;
 
-    // Step 2: Loop through each component key in COMPONENT_POST_MODAL_MAP.
-    for (const [key, model] of Object.entries(COMPONENT_POST_MODAL_MAP)) {
+    // Step 2: Loop through each component key in COMPONENT_POST_MODEL_MAP.
+    for (const [key, model] of Object.entries(COMPONENT_POST_MODEL_MAP)) {
       try {
         runCount++;
 

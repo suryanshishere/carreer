@@ -9,7 +9,7 @@ import {
   updatePostData,
 } from "./approver-controllers-utils";
 import mongoose from "mongoose";
-import handleValidationErrors from "@controllers/sharedControllers/validation-error";
+import handleValidationErrors from "@controllers/shared_controller/validation-error";
 import { ISection } from "@models/post_models/post-interface";
 import { ISectionKey } from "@models/post_models/post_db";
 import { fetchPostDetail } from "@controllers/post_controller/utils";

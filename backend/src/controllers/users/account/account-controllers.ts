@@ -1,4 +1,4 @@
-import handleValidationErrors from "@controllers/sharedControllers/validation-error";
+import handleValidationErrors from "@controllers/shared_controller/validation-error";
 import { JWTRequest } from "@middleware/check-auth";
 import AdminModel from "@models/admin/admin_model";
 import RequestModal from "@models/admin/request-model";

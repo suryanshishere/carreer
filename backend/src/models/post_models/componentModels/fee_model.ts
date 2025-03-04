@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from "mongoose";
+import { Model, Schema, model } from "mongoose";
 import { Document } from "mongoose";
 import { POST_LIMITS_DB } from "../post_db";
 
@@ -22,9 +22,6 @@ const CategoryFeesSchema: Schema = new Schema<ICategoryFees>({
 
 const FeeSchema: Schema = new Schema<IFee>(
   {
-    // created_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    // contributors: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    // approved: { type: Boolean, default: false, required: true },
     male: numberObject,
     female: numberObject,
     category_wise: CategoryFeesSchema,
@@ -38,7 +35,7 @@ const FeeSchema: Schema = new Schema<IFee>(
   { timestamps: true }
 );
 
-const FeeModel = mongoose.model<IFee>("Fee", FeeSchema);
+const FeeModel: Model<IFee> = model<IFee>("Fee", FeeSchema);
 export default FeeModel;
 
 // -------------------
@@ -53,13 +50,8 @@ interface ICategoryFees {
 }
 
 export interface IFee extends Document {
-  // created_by: Types.ObjectId;
-  // contributors?: Types.ObjectId[];
-  // approved: boolean;
   male?: number;
   female?: number;
   category_wise: ICategoryFees;
   additional_resources: string;
-  createdAt?: Date;
-  updatedAt?: Date;
 }

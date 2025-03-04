@@ -124,7 +124,7 @@ export const POST_LIMITS_DB: IPostLimits = {
   },
 };
 
-// ------------------------------ POST DATA
+//POST DB
 
 export type ISectionKey =
   | "result"
@@ -138,7 +138,6 @@ export type ISectionKey =
 
 export type IComponentKey = "date" | "common" | "link" | "fee";
 
-// The overall key includes both section and component keys.
 export type IOverallKey = ISectionKey | IComponentKey;
 
 interface IPostEnvData {
@@ -162,6 +161,8 @@ const POST_DB: IPostEnvData = {
   overall: [],
 };
 
-// Populate OVERALL dynamically
 POST_DB.overall = [...POST_DB.sections, ...POST_DB.components];
 export default POST_DB;
+
+// POST MODEL
+

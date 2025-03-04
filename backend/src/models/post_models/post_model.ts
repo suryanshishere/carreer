@@ -12,27 +12,30 @@ export interface IPost extends Document {
 }
 
 // Dynamically build overall post fields from POST_DB.overall
-const overallPostFields = POST_DB.overall.reduce((fields, item) => {
-  fields[`${item}_approved`] = {
-    type: Boolean,
-    default: false,
-  };
-  fields[`${item}_created_by`] = {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  };
-  fields[`${item}_ref`] = {
-    type: Schema.Types.ObjectId,
-    ref: _.upperFirst(_.camelCase(item)),
-  };
-  fields[`${item}_contributors`] = [
-    {
+const overallPostFields: Record<string, any> = POST_DB.overall.reduce(
+  (fields, item) => {
+    fields[`${item}_approved`] = {
+      type: Boolean,
+      default: false,
+    };
+    fields[`${item}_created_by`] = {
       type: Schema.Types.ObjectId,
       ref: "User",
-    },
-  ];
-  return fields;
-}, {} as Record<string, any>);
+    };
+    fields[`${item}_ref`] = {
+      type: Schema.Types.ObjectId,
+      ref: _.upperFirst(_.camelCase(item)),
+    };
+    fields[`${item}_contributors`] = [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ];
+    return fields;
+  },
+  {} as Record<string, any>
+);
 
 const postSchema = new Schema<IPost>(
   {

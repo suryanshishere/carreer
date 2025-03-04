@@ -1,6 +1,9 @@
-import mongoose, { Schema } from "mongoose";
-import commonDataSchema, { ICommonDetailData } from "./common-section-data";
+import { Model, Schema } from "mongoose";
+import commonDataSchema, {
+  ICommonDetailData,
+} from "./common_section_data_model";
 import { POST_LIMITS_DB } from "@models/post_models/post_db";
+import { model } from "mongoose";
 
 const { long_char_limit, short_char_limit } = POST_LIMITS_DB;
 
@@ -35,7 +38,10 @@ const syllabusSchema = new Schema<ISyllabus>({
 syllabusSchema.add(commonDataSchema);
 export { syllabusSchema };
 
-const SyllabusModel = mongoose.model("Syllabus", syllabusSchema);
+const SyllabusModel: Model<ISyllabus> = model<ISyllabus>(
+  "Syllabus",
+  syllabusSchema
+);
 export default SyllabusModel;
 
 // ---------------------------------------------
@@ -49,4 +55,3 @@ export interface ISyllabus extends ICommonDetailData {
   sources_and_its_step_to_download_syllabus: string;
   syllabus: ISyllabusData[];
 }
-
