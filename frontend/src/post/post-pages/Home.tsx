@@ -37,6 +37,8 @@ const Home: React.FC = () => {
   if (!isLoading && emptySectionsCount >= 9) {
     return <NoData />;
   }
+
+  console.log(data)
   return (
     <div className="mobile:grid mobile:grid-cols-3 flex flex-col gap-y-6 mobile:gap-y-8 mobile:gap-x-2">
       {POST_DB.sections.map((section) => {

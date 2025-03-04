@@ -170,3 +170,17 @@ export interface PopulateOption {
   path: string;
   select?: string;
 }
+
+export type IOverPostRefKey =
+  | "link_ref"
+  | "common_ref"
+  | "date_ref"
+  | "result_ref"
+  | "syllabus_ref"
+  | "answer_key_ref"
+  | "admit_card_ref"
+  | "certificate_verification_ref"
+  | "important_ref"
+  | "admission_ref"
+  | "fee_ref"
+  | "latest_job_ref";

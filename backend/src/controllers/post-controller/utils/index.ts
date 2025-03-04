@@ -18,11 +18,11 @@ export const fetchPostList = async (
     const sortedPostIds = await getSortedDateIds(section);
 
     // Prepare populate array only if needed
-    const populateArray = includePopulate
+    const populateArray = !includePopulate
       ? POST_POPULATE.section_list_populate[section].filter(
           (item: PopulateOption) => item.path !== "link_ref"
         )
-      : [];
+      : POST_POPULATE.section_list_populate[section];
 
     // Fetch posts from DB
     const posts = await PostModel.find({
