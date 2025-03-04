@@ -1,7 +1,7 @@
 import {
   createNewPost,
   deletePost,
-} from "@controllers/admin_controller/publisher/publisher-controllers";
+} from "@controllers/admin-controller/publisher/publisher-controllers";
 import {
   validateOptStr,
   validateNameOfThePost,

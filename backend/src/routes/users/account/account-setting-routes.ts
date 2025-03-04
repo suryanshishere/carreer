@@ -3,7 +3,7 @@ import { check } from "express-validator";
 import {
   changePassword,
   deactivateAccount,
-} from "@controllers/users/account/account-setting-controllers";
+} from "@controllers/user-controller/account/account-setting-controllers";
 
 const router = express.Router();
 const PWD_LENGTH = Number(process.env.PWD_LENGTH) || 6;

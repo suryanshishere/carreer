@@ -2,7 +2,7 @@ import {
   applyContri,
   getContriPost,
   getContriPostCodes,
-} from "@controllers/admin_controller/approver/approver-controllers";
+} from "@controllers/admin-controller/approver/approver-controllers";
 import express from "express";
 import { body } from "express-validator";
 import {

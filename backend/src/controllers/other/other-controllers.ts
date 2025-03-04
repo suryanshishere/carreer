@@ -1,7 +1,7 @@
-import { JWTRequest } from "@middleware/check-auth";
+import { JWTRequest } from "@middlewares/check-auth";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
-import ContactUs from "@models/other/contact-us-model";
+import ContactUs from "@models/other-model/contact-us-model";
 
 export const contactUs = async (
   req: Request,

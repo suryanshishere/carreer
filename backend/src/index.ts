@@ -10,10 +10,9 @@ import adminRoutes from "@routes/admin/admin-routes";
 import otherRoutes from "@routes/other/other-routes";
 import usersRoutes from "@routes/users/user-routes";
 import HttpError from "@utils/http-errors";
-import userCleanupTask from "@middleware/cronJobs/user-cleanup-task";
-import checkAuth from "@middleware/check-auth";
-import checkAccountStatus from "@middleware/check-account-status";
-import activateAccount from "@middleware/activate-account"; 
+import checkAuth from "@middlewares/check-auth";
+import checkAccountStatus from "@middlewares/check-account-status";
+import activateAccount from "@middlewares/activate-account";
 
 const MONGO_URL: string = process.env.MONGO_URL || "";
 const LOCAL_HOST = process.env.LOCAL_HOST || 5050;
@@ -22,7 +21,6 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-
 
 app.use(checkAuth);
 app.post("/api/user/account/activate-account", activateAccount);
@@ -50,9 +48,6 @@ app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
 
   res.status(statusCode).json(response);
 });
-
-//todo
-userCleanupTask();
 
 mongoose
   .connect(MONGO_URL)

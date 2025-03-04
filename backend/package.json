@@ -55,7 +55,7 @@
     "@controllers": "src/controllers",
     "@routes": "src/routes",
     "@utils": "src/utils",
-    "@middleware": "src/middleware",
+    "@middlewares": "src/middlewares",
     "@shared": "src/shared"
   }
 }

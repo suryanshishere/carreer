@@ -16,7 +16,7 @@
       "@controllers/*": ["controllers/*"],
       "@routes/*": ["routes/*"],
       "@utils/*": ["utils/*"],
-      "@middleware/*": ["middleware/*"],
+      "@middlewares/*": ["middlewares/*"],
       "@shared/*": ["shared/*"]
     }
   },

@@ -5,7 +5,7 @@ import {
   myContribution,
   savedPosts,
   unBookmarkPost,
-} from "@controllers/users/account/account-posts-controllers";
+} from "@controllers/user-controller/account/account-posts-controllers";
 import express from "express";
 import _ from "lodash";
 import {
