@@ -1,7 +1,7 @@
 import React from "react";
 import RenderField from "post/post-shared/render-post-data/RenderField";
 import _ from "lodash";
-import { excludedPostListKeys } from "post/post-shared/post-list-render-define";
+import { excludedPostListKeys } from "post/post-db";
 import { ParaSkeletonLoad } from "./SkeletonLoad";
 import Tag, { shouldDisplayTag } from "./Tag";
 import { useSelector } from "react-redux";

@@ -1,6 +1,6 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "../../post-components/post-detail/post-detail-utils/post-detail-render-define";
+import { excludedKeys } from "post/post-db";
 import renderData from ".";
 import { SquareUI } from "shared/ui";
 

@@ -1,4 +1,4 @@
-import { tableRequired } from "../../post-components/post-detail/post-detail-utils/post-detail-render-define";
+import { tableRequired } from "post/post-db";
 import RenderTable from "./RenderTable";
 import RenderObject from "./RenderObject";
 import RenderField from "post/post-shared/render-post-data/RenderField";

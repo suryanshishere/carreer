@@ -1,6 +1,6 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "./post-detail-utils/post-detail-render-define"; 
+import { excludedKeys } from "post/post-db"; 
 import renderPostData from "../../post-shared/render-post-data";
 import { ParaSkeletonLoad, TableSkeletonLoad } from "post/post-shared/SkeletonLoad";
 

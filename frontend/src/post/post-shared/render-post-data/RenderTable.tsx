@@ -1,6 +1,6 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "post/post-components/post-detail/post-detail-utils/post-detail-render-define";
+import { excludedKeys } from "post/post-db";
 import renderPostData from "post/post-shared/render-post-data";
 
 const bgColors = ["bg-custom_pale_yellow", "bg-custom_white"];

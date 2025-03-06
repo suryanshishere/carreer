@@ -10,6 +10,7 @@ module.exports = {
       border-custom_gray
       border-custom_red
       border-custom_black 
+      outline
       outline-custom_gray
       bg-custom_pale_orange
       bg-custom_gray

@@ -4,13 +4,10 @@ import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Bookmark from "post/post-shared/Bookmark";
 import PostDetailItem from "post/post-components/post-detail";
-import rearrangeObjectByPriority, {
-  priorityMapping,
-} from "../post-components/post-detail/post-detail-utils/post-priority-order";
-import { snakeCase } from "lodash"; 
-import { postDetailPriorities } from "../post-components/post-detail/post-detail-utils/post-priority-array"; 
 import NoData from "shared/components/dataStates/NoData";
-import Info from "post/post-components/post-detail/info";
+import Info from "post/post-components/post-detail/Info";
+import postDetailByPriority from "../post-shared/post-detail-by-priority";
+import { POST_DETAILS_PRIORITY } from "post/post-db";
 
 const fetchPostDetail = async (
   section: string,
@@ -37,34 +34,31 @@ const PostDetail: React.FC = () => {
   const location = useLocation();
   const postId = location.state?.postId;
 
-  const params = useMemo(
-    () => new URLSearchParams(location.search),
-    [location.search]
-  );
-
   const postIdOrCode = postId || postCode;
   const versionParam = version || "main";
 
-  const { data = { data: {}, is_saved: false }, isLoading } = useQuery<
-    { data: any; is_saved: boolean },
-    Error
-  >({
+  const {
+    data = { data: {}, is_saved: false },
+    isLoading,
+    isFetching,
+  } = useQuery<{ data: any; is_saved: boolean }, Error>({
     queryKey: ["detailPost", section, postIdOrCode, versionParam],
     queryFn: () => fetchPostDetail(section, postIdOrCode, versionParam),
   });
 
-  const orderedData = useMemo(
-    () =>
-      rearrangeObjectByPriority(
-        data.data,
-        priorityMapping(postDetailPriorities)[snakeCase(section)]
-      ),
-    [data.data, section]
-  );
+  const orderedData = useMemo(() => {
+    if (!data || !data.data) return null;
+    return postDetailByPriority(
+      data.data,
+      POST_DETAILS_PRIORITY[section] || []
+    );
+  }, [data, section]);
 
-  const isSaved = params.get("is_saved") === "true" || data.is_saved;
+  if (isLoading || isFetching) {
+    return <div>is loading</div>;
+  }
 
-  if (!isLoading && Object.keys(orderedData).length === 0) {
+  if (!orderedData || Object.keys(orderedData).length === 0) {
     return <NoData />;
   }
 
@@ -72,7 +66,11 @@ const PostDetail: React.FC = () => {
     <div className="flex flex-col gap-3 items-center relative min-h-screen">
       <div className="self-end flex gap-2 items-center justify-center z-10">
         <Info />
-        <Bookmark section={section} postId={postIdOrCode} isSaved={isSaved} />
+        <Bookmark
+          section={section}
+          postId={postIdOrCode}
+          isSaved={data.is_saved}
+        />
       </div>
       <PostDetailItem data={orderedData} />
     </div>

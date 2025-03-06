@@ -22,7 +22,7 @@ interface IBookmark {
 const Bookmark: React.FC<IBookmark> = ({
   section,
   postId,
-  isSaved,
+  isSaved = false,
   classProp,
 }) => {
   const { token } = useSelector((state: RootState) => state.user.userData);
