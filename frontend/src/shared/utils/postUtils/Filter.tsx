@@ -1,12 +1,11 @@
-import React, { ReactNode, useEffect, useState } from "react";
-import { IPostList } from "post/post-interfaces/postModels/IPost";
+import React, { ReactNode  } from "react";
 import { Skeleton } from "@mui/material";
 import "./Filter.css";
 
 interface BannerProps {
   className?: string;
   children?: ReactNode;
-  data: number | IPostList;
+  data: number ;
   noAnimation?: boolean;
 }
 

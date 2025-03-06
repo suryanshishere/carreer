@@ -1,15 +1,11 @@
 import React from "react";
 import { startCase } from "lodash";
-import { ICommon } from "post/post-interfaces/postModels/overallInterfaces/ICommon";
-import { IDates } from "post/post-interfaces/postModels/overallInterfaces/IDates";
-import { IFees } from "post/post-interfaces/postModels/overallInterfaces/IFees";
-import { ILinks } from "post/post-interfaces/postModels/overallInterfaces/ILinks";
-import { excludedKeys } from "../../post-components/post-detail/post-detail-utils/post-detail-render-define"; 
+import { excludedKeys } from "../../post-components/post-detail/post-detail-utils/post-detail-render-define";
 import renderData from ".";
 import { SquareUI } from "shared/ui";
 
 interface RenderObjectProps {
-  value: IDates | ILinks | IFees | ICommon | any;
+  value: any;
   parentKey: string;
 }
 

@@ -1,12 +1,11 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "./post-detail-utils/post-detail-render-define";
-import { IPostDetail } from "post/post-interfaces/postModels/IPost";
+import { excludedKeys } from "./post-detail-utils/post-detail-render-define"; 
 import renderPostData from "../../post-shared/render-post-data";
 import { ParaSkeletonLoad, TableSkeletonLoad } from "post/post-shared/SkeletonLoad";
 
 const PostDetailComponent: React.FC<{
-  data: IPostDetail;
+  data: any;
 }> = ({ data }) => {
   const isEmpty = Object.keys(data).length === 0;
 

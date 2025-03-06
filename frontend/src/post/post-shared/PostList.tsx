@@ -1,23 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Bookmark from "post/post-shared/Bookmark";
 import RenderField from "post/post-shared/render-post-data/RenderField";
 import _ from "lodash";
 import { excludedPostListKeys } from "post/post-shared/post-list-render-define";
-import { IPostList, IPostListData } from "post/post-interfaces/postModels/IPost";
 import { ParaSkeletonLoad } from "./SkeletonLoad";
 import Tag, { shouldDisplayTag } from "./Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostLinkItem from "./PostLinkItem";
+import { ICommonListData } from "post/post-db";
 
 interface ListProps {
-  data: IPostList;
+  data: ICommonListData[];
   section: string;
-  isSaved?: boolean;
 }
 
-const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
+const PostList: React.FC<ListProps> = ({ data, section }) => {
   const userTags = useSelector(
     (state: RootState) => state.user.mode.tags || {}
   );
@@ -32,7 +29,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
     );
   }
 
-  const renderObject = (obj: IPostListData) => {
+  const renderObject = (obj: ICommonListData) => {
     return Object.entries(obj)
       .filter(([key]) => !excludedPostListKeys.includes(key))
       .map(([key, value]: [string, any]) => {
@@ -85,7 +82,7 @@ const PostList: React.FC<ListProps> = ({ data, section, isSaved = false }) => {
         const displayTag = shouldDisplayTag(item.date_ref, section, userTags);
 
         if (!displayTag) {
-          return null; // Skip rendering this item if the tag should not be displayed
+          return null;
         }
 
         return (

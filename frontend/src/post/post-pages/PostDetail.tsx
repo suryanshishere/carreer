@@ -7,17 +7,16 @@ import PostDetailItem from "post/post-components/post-detail";
 import rearrangeObjectByPriority, {
   priorityMapping,
 } from "../post-components/post-detail/post-detail-utils/post-priority-order";
-import { snakeCase } from "lodash";
-import { IPostDetail } from "post/post-interfaces/postModels/IPost";
-import { postDetailPriorities } from "../post-components/post-detail/post-detail-utils/post-priority-array";
-import Info from "post/post-components/post-detail/Info";
+import { snakeCase } from "lodash"; 
+import { postDetailPriorities } from "../post-components/post-detail/post-detail-utils/post-priority-array"; 
 import NoData from "shared/components/dataStates/NoData";
+import Info from "post/post-components/post-detail/info";
 
 const fetchPostDetail = async (
   section: string,
   postIdOrCode: string,
   version: string
-): Promise<{ data: IPostDetail; is_saved: boolean }> => {
+): Promise<{ data: any; is_saved: boolean }> => {
   const { data } = await axiosInstance.get(
     `/public/sections/${section}/${postIdOrCode}/${version}`
   );
@@ -47,7 +46,7 @@ const PostDetail: React.FC = () => {
   const versionParam = version || "main";
 
   const { data = { data: {}, is_saved: false }, isLoading } = useQuery<
-    { data: IPostDetail; is_saved: boolean },
+    { data: any; is_saved: boolean },
     Error
   >({
     queryKey: ["detailPost", section, postIdOrCode, versionParam],

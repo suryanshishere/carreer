@@ -1,5 +1,4 @@
-import  POST_DB  from "post/post-db";
-import { IPostDetail } from "post/post-interfaces/postModels/IPost";
+import  POST_DB  from "post/post-db"; 
 
 export const priorityMapping = (priorities: {
   [key: string]: string[];
@@ -19,7 +18,7 @@ export const priorityMapping = (priorities: {
 };
 
 const rearrangeObjectByPriority = (
-  data: IPostDetail,
+  data: any,
   priorityKeys: string[]
 ) => {
   let result: { [key: string]: any } = {};

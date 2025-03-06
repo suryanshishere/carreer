@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { startCase } from "lodash";
-import { IPostList } from "post/post-interfaces/postModels/IPost";
 import Tag, { shouldDisplayTag } from "post/post-shared/Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import { HomeSkeletonLoad } from "post/post-shared/SkeletonLoad";
 import PostLinkItem from "post/post-shared/PostLinkItem";
+import { ICommonListData } from "post/post-db";
 
 interface HomeListItemProps {
-  ListItemData: IPostList;
+  ListItemData: ICommonListData[];
   section: string;
   height?: string;
 }
@@ -21,10 +21,10 @@ const getSkeletonItemCount = (height: string | undefined) => {
   if (height) {
     const numericHeight = parseInt(height, 10);
     if (numericHeight > 50) {
-      return 10; // Provide more skeletons for larger height
+      return 10;  
     }
   }
-  return 6; // Default skeletons for smaller height
+  return 6;  
 };
 
 const HomeComponent: React.FC<HomeListItemProps> = ({

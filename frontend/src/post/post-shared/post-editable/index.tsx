@@ -7,7 +7,7 @@ import Button from "shared/utils/form/Button";
 import Dropdown from "shared/utils/form/Dropdown";
 import { Input, TextArea } from "shared/utils/form/Input";
 import { getFieldValidation, validateFieldValue } from "./post-editable-utils";
-import { IContribute } from "post/post-interfaces";
+import { IContribute } from "post/post-db";
 
 // Helper to convert a value to an ISO date string
 const formatDateValue = (value: any): string => {

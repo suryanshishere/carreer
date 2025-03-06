@@ -1,6 +1,6 @@
 import React from "react";
 import PostDetailsEditable from "post/post-shared/post-editable";
-import { IContribute } from "post/post-interfaces";
+import { IContribute } from "post/post-db";
 import { SquareUI } from "shared/ui";
 
 interface SubContriValueProps {
