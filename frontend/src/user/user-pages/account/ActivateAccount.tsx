@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import store, { AppDispatch, RootState } from "shared/store";
-import { logout, handleAccountDeactivatedAt } from "shared/store/user_slice";
+import { logout, handleAccountDeactivatedAt } from "shared/store/userSlice";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,

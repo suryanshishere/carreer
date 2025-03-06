@@ -8,9 +8,9 @@ import rearrangeObjectByPriority, {
   priorityMapping,
 } from "../post-components/post-detail/post-detail-utils/post-priority-order";
 import { snakeCase } from "lodash";
-import { IPostDetail } from "models/postModels/IPost";
+import { IPostDetail } from "post/post-interfaces/postModels/IPost";
 import { postDetailPriorities } from "../post-components/post-detail/post-detail-utils/post-priority-array";
-import Info from "post/post-components/post-detail/info";
+import Info from "post/post-components/post-detail/Info";
 import NoData from "shared/components/dataStates/NoData";
 
 const fetchPostDetail = async (

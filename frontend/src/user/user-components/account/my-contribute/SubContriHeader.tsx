@@ -6,11 +6,11 @@ import EditSharpIcon from "@mui/icons-material/EditSharp";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
-import { resetKeyValuePairs, setEditContribute } from "shared/store/post-slice";
+import { resetKeyValuePairs, setEditContribute } from "shared/store/postSlice";
 import { startCase } from "lodash";
 import useContributeMutation from "post/post-shared/useContributionMutation";
 import Modal from "shared/ui/Modal";
-import { closeModal, openModal } from "shared/store/modal-slice";
+import { closeModal, openModal } from "shared/store/modalSlice";
 
 type SubContriHeaderProps = {
   section: string;

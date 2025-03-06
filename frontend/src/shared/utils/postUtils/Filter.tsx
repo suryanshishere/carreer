@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { IPostList } from "models/postModels/IPost";
+import { IPostList } from "post/post-interfaces/postModels/IPost";
 import { Skeleton } from "@mui/material";
 import "./Filter.css";
 

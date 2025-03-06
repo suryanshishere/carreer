@@ -2,7 +2,7 @@ import { POST_LIMITS_DB } from "post/post-db";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "shared/store";
-import { removeKeyValuePair, setKeyValuePair } from "shared/store/post-slice";
+import { removeKeyValuePair, setKeyValuePair } from "shared/store/postSlice";
 import Button from "shared/utils/form/Button";
 import Dropdown from "shared/utils/form/Dropdown";
 import { Input, TextArea } from "shared/utils/form/Input";

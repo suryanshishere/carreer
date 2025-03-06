@@ -1,6 +1,6 @@
 import axios from "axios";
 import store from "shared/store";
-import { handleAccountDeactivatedAt } from "shared/store/user_slice";
+import { handleAccountDeactivatedAt } from "shared/store/userSlice";
 
 const DEACTIVATED_ACCOUNT_DAYS =
   Number(process.env.REACT_APP_DEACTIVATED_ACCOUNT_DAYS) || 30;

@@ -18,3 +18,22 @@ interface IResponseDb {
 export const RESPONSE_DB: IResponseDb = {
   not_authenticated: "Not authenticated, please login or signup to continue!",
 };
+
+export interface NavItem {
+  role?: string[];
+  link: string;
+}
+
+export interface NestedNavItems {
+  [key: string]: NavItem;
+}
+
+export interface INavAccData {
+  [key: string]: NavItem | NestedNavItems | null;
+}
+
+//common type of mapping interface
+export interface ICommonMap {
+  header: string;
+  link?: string;
+}

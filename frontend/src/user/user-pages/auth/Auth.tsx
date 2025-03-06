@@ -4,7 +4,7 @@ import AuthComponent from "user/user-components/auth/AuthComponent";
 import EmailVerification from "user/user-components/auth/EmailVerification";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { handleAuthClick, logout } from "shared/store/user_slice";
+import { handleAuthClick, logout } from "shared/store/userSlice";
 import { AppDispatch, RootState } from "shared/store";
 
 enum AuthState {

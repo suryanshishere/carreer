@@ -4,13 +4,13 @@ import { AppDispatch, RootState } from "shared/store";
 import {
   resetKeyValuePairs,
   setEditPostClicked,
-} from "shared/store/post-slice";
+} from "shared/store/postSlice";
 import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
-import { closeSpecificDropdowns } from "shared/store/dropdown-slice"; 
+import { closeSpecificDropdowns } from "shared/store/dropdownSlice"; 
 import useContributeMutation from "post/post-shared/useContributionMutation";
-import { RESPONSE_DB } from "shared/shared_db";
+import { RESPONSE_DB } from "shared/shared-db";
 
 const ContriToPost: React.FC<{
   section: string;

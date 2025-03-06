@@ -1,6 +1,6 @@
 // Importing shared dependencies
-import { IDates } from "models/postModels/overallInterfaces/IDates";
-import { ILinks } from "models/postModels/overallInterfaces/ILinks";
+import { IDates } from "post/post-interfaces/postModels/overallInterfaces/IDates";
+import { ILinks } from "post/post-interfaces/postModels/overallInterfaces/ILinks";
 import { ICommon } from "./overallInterfaces/ICommon";
 import { IFees } from "./overallInterfaces/IFees";
 

@@ -2,12 +2,12 @@ import { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
-import { handleAuthClick } from "shared/store/user_slice";
+import { handleAuthClick } from "shared/store/userSlice";
 import {
   closeAllDropdowns,
   closeSpecificDropdowns,
   toggleDropdownState,
-} from "shared/store/dropdown-slice";
+} from "shared/store/dropdownSlice";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";

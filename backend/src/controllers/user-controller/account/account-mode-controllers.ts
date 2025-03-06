@@ -12,8 +12,6 @@ export const modeAccountHandler = async (
     const { mode } = req.body;
     const { max } = mode;
 
-    console.log(max, "max");
-
     // Ensure 'mode' is an object and contains only valid keys from the model (e.g., 'max')
     if (typeof mode !== "object" || Object.keys(mode).length === 0) {
       return next(new HttpError("Invalid mode data provided", 400));

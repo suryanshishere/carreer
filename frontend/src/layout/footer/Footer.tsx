@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppDispatch, RootState } from "shared/store";
-import { updateUserData } from "shared/store/user_slice";
+import { updateUserData } from "shared/store/userSlice";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,

@@ -1,11 +1,10 @@
-import React from "react";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import InfoSharpIcon from "@mui/icons-material/InfoSharp";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
-import { toggleDropdownState } from "shared/store/dropdown-slice";
+import { toggleDropdownState } from "shared/store/dropdownSlice";
 import { useParams } from "react-router-dom";
-import ContriToPost from "post/post-components/post-detail/contri_to_post";
+import ContriToPost from "post/post-components/post-detail/ContriToPost";
 import Button from "shared/utils/form/Button";
 
 const Info = () => {

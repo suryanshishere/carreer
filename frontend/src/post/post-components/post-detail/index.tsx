@@ -1,7 +1,7 @@
 import React from "react";
 import { startCase } from "lodash";
 import { excludedKeys } from "./post-detail-utils/post-detail-render-define";
-import { IPostDetail } from "models/postModels/IPost";
+import { IPostDetail } from "post/post-interfaces/postModels/IPost";
 import renderPostData from "../../post-shared/render-post-data";
 import { ParaSkeletonLoad, TableSkeletonLoad } from "post/post-shared/SkeletonLoad";
 

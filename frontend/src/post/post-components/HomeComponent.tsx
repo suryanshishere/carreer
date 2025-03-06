@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { startCase } from "lodash";
-import { IPostList } from "models/postModels/IPost";
+import { IPostList } from "post/post-interfaces/postModels/IPost";
 import Tag, { shouldDisplayTag } from "post/post-shared/Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";

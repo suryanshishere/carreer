@@ -1,5 +1,5 @@
 import  POST_DB  from "post/post-db";
-import { IPostDetail } from "models/postModels/IPost";
+import { IPostDetail } from "post/post-interfaces/postModels/IPost";
 
 export const priorityMapping = (priorities: {
   [key: string]: string[];

@@ -1,5 +1,5 @@
 import { AppDispatch } from "..";
-import { setErrorMsg, clearErrorMsg, setSuccessMsg, clearSuccessMsg } from "../response-slice";
+import { setErrorMsg, clearErrorMsg, setSuccessMsg, clearSuccessMsg } from "../responseSlice";
 
 export const triggerErrorMsg = (msg: string, timeoutInSeconds: number = 3) => 
   (dispatch: AppDispatch) => {

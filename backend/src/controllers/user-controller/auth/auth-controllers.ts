@@ -8,7 +8,7 @@ import {
   sendAuthenticatedResponse,
   sendVerificationResponse,
   updateUnverifiedUser,
-} from "./auth-utils"; 
+} from "./auth-controllers-utils"; 
 import { getUserIdFromRequest, JWTRequest } from "@middlewares/check-auth";
 import { random } from "lodash"; 
 import { USER_ENV_DATA } from "@shared/env-data";

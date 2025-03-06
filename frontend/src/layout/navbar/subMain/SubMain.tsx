@@ -1,8 +1,8 @@
 import React from "react";
 import Navlinks from "./Navlinks";
-import Tags from "./nav_tags";
+import Tags from "./NavTags";
 import useHandleScroll from "shared/hooks/handle-scroll-hook";
-import useResponsiveView, { viewObject, ViewType } from "shared/hooks/responsive_view_hook";
+import useResponsiveView, { viewObject, ViewType } from "shared/hooks/useResponsiveView";
 
 const SubMain: React.FC = () => {
   const showSubNav = useHandleScroll();

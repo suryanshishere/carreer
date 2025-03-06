@@ -1,16 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import dropdownReducer from "./dropdown-slice";
-import responseReducer from "./response-slice";
-import userReducer from "./user_slice";
-import postReducer from "./post-slice";
-import modalReducer from "./modal-slice";
+import dropdownReducer from "./dropdownSlice";
+import responseReducer from "./responseSlice";
+import userReducer from "./userSlice";
+import postReducer from "./postSlice";
+import modalReducer from "./modalSlice";
 
 const userPersistConfig = {
   key: "auth",
   storage,
-  whitelist: ["userData"],
+  whitelist: ["userData", "mode"],
 };
 
 const persistedUserReducer = persistReducer(userPersistConfig, userReducer);

@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { logout } from "shared/store/user_slice";
+import { logout } from "shared/store/userSlice";
 import {
   closeAllDropdowns,
   toggleDropdownState,
-} from "shared/store/dropdown-slice";
+} from "shared/store/dropdownSlice";
 import { startCase } from "lodash";
 import { RootState } from "shared/store";
-import { INavAccData, NavItem } from "models/shared/INavAccList";
+import { INavAccData, NavItem } from "shared/shared-db";
 
 interface NavAccountListProps {
   data: INavAccData;

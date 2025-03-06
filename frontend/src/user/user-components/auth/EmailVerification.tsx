@@ -12,7 +12,7 @@ import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
-import { handleAuthClick, updateUserData } from "shared/store/user_slice";
+import { handleAuthClick, updateUserData } from "shared/store/userSlice";
 import axiosInstance from "shared/utils/api/axios-instance";
 
 const otpSchema = Yup.object().shape({

@@ -4,7 +4,7 @@ import Bookmark from "post/post-shared/Bookmark";
 import RenderField from "post/post-shared/render-post-data/RenderField";
 import _ from "lodash";
 import { excludedPostListKeys } from "post/post-shared/post-list-render-define";
-import { IPostList, IPostListData } from "models/postModels/IPost";
+import { IPostList, IPostListData } from "post/post-interfaces/postModels/IPost";
 import { ParaSkeletonLoad } from "./SkeletonLoad";
 import Tag, { shouldDisplayTag } from "./Tag";
 import { useSelector } from "react-redux";

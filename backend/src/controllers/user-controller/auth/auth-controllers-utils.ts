@@ -1,5 +1,5 @@
 import { IUser } from "@models/user-model/User";
-import { sendVerificationOtp } from "./auth_controllers";
+import { sendVerificationOtp } from "./auth-controllers";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { NextFunction, Response, Request } from "express";
@@ -95,7 +95,6 @@ export const sendAuthenticatedResponse = (
   const tokenExpiration = new Date(
     Date.now() + Number(JWT_KEY_EXPIRY) * 60000
   ).toISOString();
-
   return res.status(200).json({
     mode: user.mode,
     token,

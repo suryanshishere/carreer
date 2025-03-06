@@ -1,5 +1,6 @@
-import SHARED_DB from "shared/shared_db";
+import SHARED_DB from "shared/shared-db";
 import { ReactNode } from "react";
+import { IRole } from "admin/admin-db";
 
 interface ITagItem {
   color: string;
@@ -52,4 +53,28 @@ export const USER_ACCOUNT_MODE_DB: IUserAccountModeDB = {
 export const CONTRIBUTER_DB = {
   status: SHARED_DB.status,
   status_classname: SHARED_DB.status_classname,
+};
+
+export interface IUserAccountMode {
+  max: boolean;
+  tags: {
+    live: boolean;
+    upcoming: boolean;
+    released: boolean;
+    expiring: boolean;
+    visited: boolean;
+  };
+}
+
+export interface IUserData {
+  token: string;
+  isEmailVerified: boolean;
+  role: IRole;
+  deactivatedAt?: string;
+  tokenExpiration?: string;
+  sessionExpireMsg?: string;
+}
+
+export type RecursivePartial<T> = {
+  [P in keyof T]?: RecursivePartial<T[P]>;
 };

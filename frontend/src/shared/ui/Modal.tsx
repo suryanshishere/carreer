@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import useOutsideClick from "shared/hooks/outside-click-hook";
-import { closeModal } from "shared/store/modal-slice";
+import { closeModal } from "shared/store/modalSlice";
 
 interface ModalProps {
   header: string;

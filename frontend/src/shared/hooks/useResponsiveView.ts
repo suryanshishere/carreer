@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export type ViewType =
   | "mobile"
+  | "medium_mobile"
   | "large_mobile"
   | "desktop"
   | "tablet"
@@ -9,14 +10,21 @@ export type ViewType =
   | "other";
 
 export const viewObject = {
-  mobile: 710,
+  mobile: 610,
+  medium_mobile: 710,
   large_mobile: 1050,
   tablet: 1200,
   desktop: 1440,
 };
 
 const useResponsiveView = (
-  breakpoints = { mobile: 768, large_mobile: 1050, tablet: 1024, desktop: 1440 } //default
+  breakpoints = {
+    mobile: 610,
+    medium_mobile: 710,
+    large_mobile: 1050,
+    tablet: 1024,
+    desktop: 1440,
+  } //default
 ) => {
   const [viewType, setViewType] = useState<ViewType>("other");
 
@@ -26,6 +34,8 @@ const useResponsiveView = (
 
       if (width < breakpoints.mobile) {
         setViewType("mobile");
+      } else if (width < breakpoints.medium_mobile) {
+        setViewType("medium_mobile");
       } else if (width < breakpoints.large_mobile) {
         setViewType("large_mobile");
       } else if (width < breakpoints.tablet) {
@@ -37,13 +47,8 @@ const useResponsiveView = (
       }
     };
 
-    // Initial check
     updateView();
-
-    // Add resize event listener
     window.addEventListener("resize", updateView);
-
-    // Cleanup listener on unmount
     return () => window.removeEventListener("resize", updateView);
   }, [breakpoints]);
 

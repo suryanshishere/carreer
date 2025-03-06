@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Bookmark from "./Bookmark";
 import { snakeCase } from "lodash";
-import { ICommonListData } from "models/postModels/ISection";
+import { ICommonListData } from "post/post-interfaces/postModels/ISection";
 
 interface PostItemProps {
   section: string;

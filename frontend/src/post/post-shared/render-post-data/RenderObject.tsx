@@ -1,9 +1,9 @@
 import React from "react";
 import { startCase } from "lodash";
-import { ICommon } from "models/postModels/overallInterfaces/ICommon";
-import { IDates } from "models/postModels/overallInterfaces/IDates";
-import { IFees } from "models/postModels/overallInterfaces/IFees";
-import { ILinks } from "models/postModels/overallInterfaces/ILinks";
+import { ICommon } from "post/post-interfaces/postModels/overallInterfaces/ICommon";
+import { IDates } from "post/post-interfaces/postModels/overallInterfaces/IDates";
+import { IFees } from "post/post-interfaces/postModels/overallInterfaces/IFees";
+import { ILinks } from "post/post-interfaces/postModels/overallInterfaces/ILinks";
 import { excludedKeys } from "../../post-components/post-detail/post-detail-utils/post-detail-render-define"; 
 import renderData from ".";
 import { SquareUI } from "shared/ui";

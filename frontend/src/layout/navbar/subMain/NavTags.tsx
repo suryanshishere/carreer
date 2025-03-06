@@ -4,13 +4,13 @@ import useOutsideClick from "shared/hooks/outside-click-hook";
 import useResponsiveView, {
   viewObject,
   ViewType,
-} from "shared/hooks/responsive_view_hook";
+} from "shared/hooks/useResponsiveView";
 import Button from "shared/utils/form/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
-import { updateMode, updateUserData } from "shared/store/user_slice";
+import { updateMode } from "shared/store/userSlice";
 import { USER_ACCOUNT_MODE_DB } from "user/user-db";
-import { IUserAccountMode } from "user/user-interfaces";
+import { IUserAccountMode } from "user/user-db";
 
 const TAGS = USER_ACCOUNT_MODE_DB.tags;
 
@@ -81,7 +81,8 @@ const NavTags: React.FC = () => {
   const viewType: ViewType = useResponsiveView(viewObject);
   const tagButtonShow =
     viewType === "tablet" ||
-    viewType === "large_mobile" ||
+    viewType === "large_mobile"||
+    viewType === "medium_mobile" ||
     viewType === "mobile";
 
   return (
@@ -90,7 +91,7 @@ const NavTags: React.FC = () => {
         <button
           onClick={() => setShowTagsDropdown(!showTagsDropdown)}
           className={`rounded-full outline outline-custom_gray w-full h-full bg-custom_less_gray flex items-center justify-center gap-2 ${
-            viewType === "mobile" || viewType === "tablet" ? "py-1" : "py-[1px]"
+            viewType === "mobile"   ? "py-1" : "py-[1px]"
           } ${showTagsDropdown && "shadow-md shadow-custom_black"}`}
         >
           Tags

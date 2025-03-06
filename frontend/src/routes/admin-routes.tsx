@@ -1,6 +1,6 @@
 import Access from "admin/pages/Access";
 import CreateNewPost from "admin/pages/CreateNewPost";
-import { IRole } from "models/admin/IAdmin";
+import { IRole } from "admin/admin-db";
 import ContriSec from "admin/pages/approver/contribution_section";  
 import ContributionApprove from "admin/pages/approver/contribution_approve";
 

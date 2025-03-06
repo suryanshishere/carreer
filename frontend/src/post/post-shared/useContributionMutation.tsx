@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "shared/store";
-import { resetKeyValuePairs, setEditContribute } from "shared/store/post-slice";
+import { resetKeyValuePairs, setEditContribute } from "shared/store/postSlice";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,

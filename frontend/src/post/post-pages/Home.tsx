@@ -38,9 +38,8 @@ const Home: React.FC = () => {
     return <NoData />;
   }
 
-  console.log(data)
   return (
-    <div className="mobile:grid mobile:grid-cols-3 flex flex-col gap-y-6 mobile:gap-y-8 mobile:gap-x-2">
+    <div className="mobile:grid medium_mobile:grid-cols-3 mobile:grid-cols-2 flex flex-col gap-y-6 mobile:gap-y-8 mobile:gap-x-2">
       {POST_DB.sections.map((section) => {
         return (
           <HomeComponent

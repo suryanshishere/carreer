@@ -5,7 +5,7 @@ import ContactUs from "shared/pages/ContactUs";
 import NotFound from "./shared/pages/NotFound";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import { authRoutes, publicRoutes } from "layout/routes/app-routes";
+import { authRoutes, publicRoutes } from "routes/app-routes";
 import About from "shared/pages/About";
 
 const App: React.FC = () => {

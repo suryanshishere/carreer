@@ -1,4 +1,4 @@
-import SHARED_DB from "../shared/shared_db";
+import SHARED_DB from "../shared/shared-db";
 
 interface IAdminDb {
   status: string[];
@@ -15,3 +15,10 @@ const ADMIN_DB: IAdminDb = {
 };
 
 export default ADMIN_DB;
+
+export type IRole = "approver" | "publisher" | "admin" | "none";
+
+export interface IPostAdminData {
+  _id: string;
+  name_of_the_post: string;
+}

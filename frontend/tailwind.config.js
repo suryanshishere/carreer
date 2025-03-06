@@ -23,7 +23,8 @@ module.exports = {
     extend: {
       //response view hook check co related
       screens: {
-        mobile: "710px",
+        mobile: "610px",
+        medium_mobile: "710px",
         large_mobile: "1050px",
         tablet: "1200px",
         desktop: "1440px",
