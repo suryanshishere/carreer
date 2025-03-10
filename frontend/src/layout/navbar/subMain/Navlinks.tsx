@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import NAVLINKS from "db/shared/nav/navlinks.json";
 import { startCase } from "lodash";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -8,6 +7,7 @@ import useResponsiveView, {
   viewObject,
   ViewType,
 } from "shared/hooks/useResponsiveView";
+import POST_DB from "post/db";
 
 const visibleLinksMap = {
   mobile: 1,
@@ -19,6 +19,16 @@ const visibleLinksMap = {
 } as const;
 
 type VisibleLinksKeys = keyof typeof visibleLinksMap;
+
+const NAVLINKS = {
+  home: { link: "/" },
+  ...Object.fromEntries(
+    POST_DB.sections.map((section) => [
+      section,
+      { link: `/sections/${section}` },
+    ])
+  ),
+};
 
 const Navlinks: React.FC = () => {
   const { section = "" } = useParams<{ section: string }>();

@@ -11,9 +11,9 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";
-import NAV_ACCOUNT_LIST from "db/shared/nav/navAccountList.json";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import { NAV_ACCOUNT_LIST } from "user/user-db";
 
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();

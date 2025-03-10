@@ -78,3 +78,40 @@ export interface IUserData {
 export type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
+
+export interface INavAccountListItem {
+  role?: string[] | string;
+  link: string;
+}
+
+export interface INavAccountSetting {
+  change_password: INavAccountListItem;
+  forgot_password: INavAccountListItem;
+  deactivate_account: INavAccountListItem;
+}
+
+export interface INavAccountList {
+  create_new_post: INavAccountListItem;
+  my_contribution: INavAccountListItem;
+  setting: INavAccountSetting;
+  logout: null;
+}
+
+// This type represents either the full account list or a nested section (like "setting").
+export type INavAccountData = INavAccountList | INavAccountSetting;
+
+export const NAV_ACCOUNT_LIST: INavAccountList = {
+  create_new_post: {
+    role: ["publisher", "admin"],
+    link: "/publisher/create-new-post",
+  },
+  my_contribution: {
+    link: "/user/account/my-contribution",
+  },
+  setting: {
+    change_password: { link: "/user/account/setting/change-password" },
+    forgot_password: { link: "/user/account/setting/forgot-password" },
+    deactivate_account: { link: "/user/account/setting/deactivate-account" },
+  },
+  logout: null,
+};

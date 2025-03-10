@@ -7,13 +7,9 @@ import {
 } from "shared/store/dropdownSlice";
 import { startCase } from "lodash";
 import { RootState } from "shared/store";
-import { INavAccData, NavItem } from "shared/shared-db";
+import { INavAccountData } from "user/user-db";
 
-interface NavAccountListProps {
-  data: INavAccData;
-}
-
-const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
+const NavAccountList: React.FC<{ data: INavAccountData }> = ({ data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -60,7 +56,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
           </button>
         );
       } else if ("link" in value) {
-        const { role: getRole, link } = value as NavItem;
+        const { role: getRole, link } = value;
 
         if (
           link &&
@@ -73,9 +69,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ data }) => {
               to={link}
               className={({ isActive }) =>
                 `py-1 px-2 block rounded ${
-                  isActive
-                    ? "bg-custom_white"
-                    : "hover:bg-custom_white"
+                  isActive ? "bg-custom_white" : "hover:bg-custom_white"
                 }`
               }
               onClick={() => dispatch(closeAllDropdowns())}

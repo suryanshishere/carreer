@@ -28,9 +28,6 @@ export interface NestedNavItems {
   [key: string]: NavItem;
 }
 
-export interface INavAccData {
-  [key: string]: NavItem | NestedNavItems | null;
-}
 
 //common type of mapping interface
 export interface ICommonMap {
