@@ -1,6 +1,6 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "post/post-db";
+import { excludedKeys } from "post/db/renders";
 import renderData from ".";
 import { SquareUI } from "shared/ui";
 

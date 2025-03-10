@@ -1,8 +1,8 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "post/post-db"; 
-import renderPostData from "../../post-shared/render-post-data";
-import { ParaSkeletonLoad, TableSkeletonLoad } from "post/post-shared/SkeletonLoad";
+import { excludedKeys } from "post/db/renders"; 
+import renderPostData from "../../shared/render-post-data";
+import { ParaSkeletonLoad, TableSkeletonLoad } from "post/shared/SkeletonLoad";
 
 const PostDetailComponent: React.FC<{
   data: any;

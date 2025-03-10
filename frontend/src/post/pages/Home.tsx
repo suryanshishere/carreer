@@ -1,9 +1,9 @@
 import React from "react";
-import HomeComponent from "post/post-components/HomeComponent";
+import HomeComponent from "post/components/HomeComponent";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
 import NoData from "shared/components/dataStates/NoData";
-import POST_DB from "post/post-db";
+import POST_DB from "post/db";
 
 const heights: Record<string, string> = {
   result: "55rem",

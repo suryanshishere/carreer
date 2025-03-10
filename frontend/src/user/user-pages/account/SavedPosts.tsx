@@ -1,11 +1,11 @@
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import PostList from "post/post-shared/PostList";
+import PostList from "post/shared/PostList";
 import { Fragment } from "react/jsx-runtime";
 import { startCase } from "lodash";
 import NoData from "shared/components/dataStates/NoData";
 import PageHeader from "shared/ui/PageHeader";
-import { ICommonListData } from "post/post-db";
+import { ICommonListData } from "post/db/interfaces";
 
 const fetchSavedPosts = async (): Promise<{
   data: { saved_posts: { [key: string]: ICommonListData[] } };

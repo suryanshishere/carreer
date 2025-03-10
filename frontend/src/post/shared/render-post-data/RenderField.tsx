@@ -4,7 +4,7 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostEditable from "../post-editable";
-import { POST_LIMIT_DROPDOWN_DATA } from "post/post-db";
+import { POST_LIMIT_DROPDOWN_DATA } from "post/db";
 
 const RenderField = ({
   stringValue,

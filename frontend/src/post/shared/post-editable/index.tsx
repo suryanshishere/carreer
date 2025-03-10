@@ -1,4 +1,4 @@
-import { POST_LIMITS_DB } from "post/post-db";
+import { POST_LIMITS_DB } from "post/db";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "shared/store";
@@ -7,7 +7,7 @@ import Button from "shared/utils/form/Button";
 import Dropdown from "shared/utils/form/Dropdown";
 import { Input, TextArea } from "shared/utils/form/Input";
 import { getFieldValidation, validateFieldValue } from "./post-editable-utils";
-import { IContribute } from "post/post-db";
+import { IContribute } from "post/db/interfaces";
 
 // Helper to convert a value to an ISO date string
 const formatDateValue = (value: any): string => {

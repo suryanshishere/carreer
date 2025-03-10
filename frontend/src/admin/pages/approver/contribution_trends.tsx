@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import RenderTable from "post/post-shared/render-post-data/RenderTable";
+import RenderTable from "post/shared/render-post-data/RenderTable";
 import axiosInstance from "shared/utils/api/axios-instance";
 import NoData from "shared/components/dataStates/NoData";
-import renderPostData from "post/post-shared/render-post-data";
+import renderPostData from "post/shared/render-post-data";
 
 const ContributionTrends: React.FC<{ section: string }> = ({ section }) => {
   const {

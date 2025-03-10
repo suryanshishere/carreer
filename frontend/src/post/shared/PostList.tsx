@@ -1,13 +1,13 @@
 import React from "react";
-import RenderField from "post/post-shared/render-post-data/RenderField";
+import RenderField from "post/shared/render-post-data/RenderField";
 import _ from "lodash";
-import { excludedPostListKeys } from "post/post-db";
+import { excludedPostListKeys } from "post/db/renders";
 import { ParaSkeletonLoad } from "./SkeletonLoad";
 import Tag, { shouldDisplayTag } from "./Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostLinkItem from "./PostLinkItem";
-import { ICommonListData } from "post/post-db";
+import { ICommonListData } from "post/db/interfaces";
 
 interface ListProps {
   data: ICommonListData[];

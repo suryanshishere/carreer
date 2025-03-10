@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { toggleDropdownState } from "shared/store/dropdownSlice";
 import { useParams } from "react-router-dom";
-import ContriToPost from "post/post-components/post-detail/ContriToPost";
+import ContriToPost from "post/components/post-detail/ContriToPost";
 import Button from "shared/utils/form/Button";
 
 const Info = () => {

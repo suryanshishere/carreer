@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { startCase } from "lodash";
-import Tag, { shouldDisplayTag } from "post/post-shared/Tag";
+import Tag, { shouldDisplayTag } from "post/shared/Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import { HomeSkeletonLoad } from "post/post-shared/SkeletonLoad";
-import PostLinkItem from "post/post-shared/PostLinkItem";
-import { ICommonListData } from "post/post-db";
+import { HomeSkeletonLoad } from "post/shared/SkeletonLoad";
+import PostLinkItem from "post/shared/PostLinkItem";
+import { ICommonListData } from "post/db/interfaces";
 
 interface HomeListItemProps {
   ListItemData: ICommonListData[];

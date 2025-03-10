@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { resetKeyValuePairs, setEditContribute } from "shared/store/postSlice";
 import { startCase } from "lodash";
-import useContributeMutation from "post/post-shared/useContributionMutation";
+import useContributeMutation from "post/shared/useContributionMutation";
 import Modal from "shared/ui/Modal";
 import { closeModal, openModal } from "shared/store/modalSlice";
 

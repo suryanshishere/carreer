@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Bookmark from "./Bookmark";
-import { ICommonListData } from "post/post-db";
+import { ICommonListData } from "post/db/interfaces";
 
 interface PostItemProps {
   section: string;

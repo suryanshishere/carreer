@@ -9,7 +9,7 @@ import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import { closeSpecificDropdowns } from "shared/store/dropdownSlice"; 
-import useContributeMutation from "post/post-shared/useContributionMutation";
+import useContributeMutation from "post/shared/useContributionMutation";
 import { RESPONSE_DB } from "shared/shared-db";
 
 const ContriToPost: React.FC<{

@@ -2,12 +2,12 @@ import React, { useMemo } from "react";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import Bookmark from "post/post-shared/Bookmark";
-import PostDetailItem from "post/post-components/post-detail";
+import Bookmark from "post/shared/Bookmark";
+import PostDetailItem from "post/components/post-detail";
 import NoData from "shared/components/dataStates/NoData";
-import Info from "post/post-components/post-detail/Info";
-import postDetailByPriority from "../post-shared/post-detail-by-priority";
-import { POST_DETAILS_PRIORITY } from "post/post-db";
+import Info from "post/components/post-detail/Info";
+import postDetailByPriority from "../shared/post-detail-by-priority";
+import { POST_DETAILS_PRIORITY } from "post/db/renders";
 
 const fetchPostDetail = async (
   section: string,

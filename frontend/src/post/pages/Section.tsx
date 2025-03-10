@@ -1,5 +1,5 @@
 import React from "react";
-import PostList from "post/post-shared/PostList";
+import PostList from "post/shared/PostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";

@@ -1,7 +1,7 @@
-import { tableRequired } from "post/post-db";
+import { tableRequired } from "post/db/renders";
 import RenderTable from "./RenderTable";
 import RenderObject from "./RenderObject";
-import RenderField from "post/post-shared/render-post-data/RenderField";
+import RenderField from "post/shared/render-post-data/RenderField";
 
 const renderStrategies = {
   isNullOrUndefined: (value: any) => value === null || value === undefined,

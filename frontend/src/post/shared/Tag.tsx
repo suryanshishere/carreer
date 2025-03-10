@@ -1,4 +1,4 @@
-import { IDateRange, IDates } from "post/post-db";
+import { IDateRange, IDates } from "post/db/interfaces";
 import moment from "moment";
 import { formatDate } from "./render-post-data/RenderDate";
 import { USER_ACCOUNT_MODE_DB } from "user/user-db";
