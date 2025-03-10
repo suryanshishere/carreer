@@ -3,17 +3,13 @@ import PostList from "post/shared/PostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import NoData from "shared/components/dataStates/NoData";
+import DataStateWrapper from "shared/components/DataStateWrapper";
 
 const Section: React.FC = () => {
   const { section = "" } = useParams<{ section: string }>();
 
   const {
-    data = {
-      data: {
-        [section]: [],
-      },
-    },
+    data = { data: { [section]: [] } },
     isLoading,
     error,
   } = useQuery({
@@ -27,14 +23,20 @@ const Section: React.FC = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  if (!isLoading && data.data[section].length === 0) {
-    return <NoData />;
-  }
-console.log(data.data)
   return (
-    <div className="flex flex-col gap-3">
-      <PostList data={data.data[section] || []} section={section} />
-    </div>
+    <DataStateWrapper
+      isLoading={isLoading}
+      error={error}
+      data={data.data[section]}
+      emptyCondition={(data) => data.length === 0}
+      skipLoadingUI={true}
+    >
+      {(validData) => (
+        <div className="flex flex-col gap-3">
+          <PostList data={validData || []} section={section} />
+        </div>
+      )}
+    </DataStateWrapper>
   );
 };
 

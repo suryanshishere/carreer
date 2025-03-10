@@ -1,8 +1,8 @@
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import RenderTable from "post/shared/render-post-data/RenderTable";
 import axiosInstance from "shared/utils/api/axios-instance";
-import NoData from "shared/components/dataStates/NoData";
 import renderPostData from "post/shared/render-post-data";
+import DataStateWrapper from "shared/components/DataStateWrapper";
 
 const ContributionTrends: React.FC<{ section: string }> = ({ section }) => {
   const {
@@ -20,18 +20,21 @@ const ContributionTrends: React.FC<{ section: string }> = ({ section }) => {
     retry: 3,
   });
 
-  if(isLoading){
-    return <div>Loading...</div>
-  }
-
-  if (!isLoading && data.data.length === 0) {
-    return <NoData />;
-  }
-
   return (
-    <div className="w-full h-full flex items-start">
-      {renderPostData("contributionTrends", data.data)}
-    </div>
+    <DataStateWrapper
+      isLoading={isLoading}
+      error={error}
+      data={data.data}
+      emptyCondition={(data) => data.length === 0}
+      loadingComponent={<div className="text-center">Loading...</div>}
+      skipLoadingUI={false}
+    >
+      {(validData) => (
+        <div className="w-full h-full flex items-start">
+          {renderPostData("contributionTrends", validData)}
+        </div>
+      )}
+    </DataStateWrapper>
   );
 };
 

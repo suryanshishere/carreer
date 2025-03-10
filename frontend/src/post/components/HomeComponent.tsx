@@ -9,7 +9,7 @@ import PostLinkItem from "post/shared/PostLinkItem";
 import { ICommonListData } from "post/db/interfaces";
 
 interface HomeListItemProps {
-  ListItemData: ICommonListData[];
+  data: ICommonListData[];
   section: string;
   height?: string;
 }
@@ -28,7 +28,7 @@ const getSkeletonItemCount = (height: string | undefined) => {
 };
 
 const HomeComponent: React.FC<HomeListItemProps> = ({
-  ListItemData,
+  data,
   section,
   height,
 }) => {
@@ -44,7 +44,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
       </div>
       <hr />
       <div className="flex flex-col justify-between h-full">
-        {ListItemData.length === 0 ? (
+        {data.length === 0 ? (
           <ul className="flex flex-col gap-3">
             {Array.from({ length: skeletonItemCount }).map((_, index) => (
               <HomeSkeletonLoad key={index} />
@@ -53,7 +53,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
         ) : (
           <>
             <ul className="flex flex-col">
-              {ListItemData.slice(0, HOME_LIMIT).map((item) => {
+              {data.slice(0, HOME_LIMIT).map((item) => {
                 // Use the helper to check if the tag should be displayed for this item.
                 const displayTag = shouldDisplayTag(
                   item.date_ref,

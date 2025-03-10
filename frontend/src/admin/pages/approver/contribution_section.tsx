@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { startCase } from "lodash";
 import POST_DB from "post/db";
 import PageHeader from "shared/ui/PageHeader";
-import ContributionTrends from "./contribution_trends";
+import ContributionTrends from "./ContributionTrends";
 import Button from "shared/utils/form/Button";
 
 const ContributionSection = () => {
