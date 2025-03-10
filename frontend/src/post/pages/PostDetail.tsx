@@ -3,7 +3,7 @@ import axiosInstance from "shared/utils/api/axios-instance";
 import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Bookmark from "post/shared/Bookmark";
-import PostDetailItem from "post/components/post-detail"; 
+import PostDetailItem from "post/components/post-detail";
 import Info from "post/components/post-detail/Info";
 import postDetailByPriority from "../shared/post-detail-by-priority";
 import { POST_DETAILS_PRIORITY } from "post/db/renders";
@@ -21,12 +21,15 @@ const fetchPostDetail = async (
 };
 
 const PostDetail: React.FC = () => {
-  const { section = "", postCode = "", version = "" } =
-    useParams<{
-      section: string;
-      postCode: string;
-      version: string;
-    }>();
+  const {
+    section = "",
+    postCode = "",
+    version = "",
+  } = useParams<{
+    section: string;
+    postCode: string;
+    version: string;
+  }>();
 
   const location = useLocation();
   const postId = location.state?.postId;
@@ -43,32 +46,31 @@ const PostDetail: React.FC = () => {
     queryFn: () => fetchPostDetail(section, postIdOrCode, versionParam),
   });
 
-  const orderedData = useMemo(() => {
-    if (!data || !data.data) return null;
-    return postDetailByPriority(
-      data.data,
-      POST_DETAILS_PRIORITY[section] || []
-    );
-  }, [data, section]);
+  const orderedData = postDetailByPriority(
+    data.data,
+    POST_DETAILS_PRIORITY[section] || []
+  );
 
   return (
-    <DataStateWrapper
-      isLoading={isLoading || isFetching}
-      error={error}
-      data={orderedData} 
-      emptyCondition={(data) => !data || Object.keys(data).length === 0}
-      skipLoadingUI={true}
-    >
-      {(validData) => (
-        <div className="flex flex-col gap-3 items-center relative min-h-screen">
-          <div className="self-end flex gap-2 items-center justify-center z-10">
-            <Info />
-            <Bookmark section={section} postId={postIdOrCode} isSaved={data.is_saved} />
-          </div>
-          <PostDetailItem data={validData} />
-        </div>
-      )}
-    </DataStateWrapper>
+    <div className="flex flex-col gap-3 items-center relative min-h-screen">
+      <div className="self-end flex gap-2 items-center justify-center z-10">
+        <Info />
+        <Bookmark
+          section={section}
+          postId={postIdOrCode}
+          isSaved={data.is_saved}
+        />
+      </div>
+      <DataStateWrapper
+        isLoading={isLoading || isFetching || !orderedData}
+        error={error}
+        data={orderedData}
+        emptyCondition={(data) => !data || Object.keys(data).length === 0}
+        skipLoadingUI={true}
+      >
+        {(validData: any) => <PostDetailItem data={validData} />}
+      </DataStateWrapper>
+    </div>
   );
 };
 

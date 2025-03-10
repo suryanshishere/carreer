@@ -32,8 +32,15 @@ export const POST_DETAILS_PRIORITY: { [key: string]: string[] } = {
     "common_ref.applicants",
     "admit_card_ref.how_to_download_admit_card",
     "date_ref",
+    "common_ref.post_exam_mode",
+    "common_ref.applicants_gender_that_can_apply",
+    "common_ref.post_importance",
     "syllabus_ref.syllabus",
     "link_ref",
+    "common_ref.job_type",
+    "common_ref.post_exam_duration",
+    "common_ref.post_exam_toughness_ranking",
+    "common_ref.vacancy.detail"
   ],
   answer_key: [
     "answer_key_ref.name_of_the_post",

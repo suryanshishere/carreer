@@ -12,7 +12,6 @@ const PostLinkItem: React.FC<PostItemProps> = ({ section, item }) => {
   const refKey = `${section}_ref` as keyof ICommonListData;
   // Cast the value to the expected type
   const refData = item[refKey] as { name_of_the_post: string } | undefined;
-
   return (
     <div className="w-full min-h-7">
       <Bookmark
@@ -24,9 +23,7 @@ const PostLinkItem: React.FC<PostItemProps> = ({ section, item }) => {
         }`}
       />
       <Link
-        to={`/sections/${section}/${item.post_code}/${
-          item.version ?? "main"
-        }`}
+        to={`/sections/${section}/${item.post_code}/${item.version ?? "main"}`}
         state={{ postId: item._id }}
         className="custom-link"
       >

@@ -134,12 +134,10 @@ export const postDetail = async (
       isSaved = savedPosts.some((savedPost) => savedPost.equals(postIdObj));
     }
 
-    const responseWithSavedStatus = {
+    return res.status(200).json({
       data: response,
       is_saved: isSaved,
-    };
-
-    return res.status(200).json(responseWithSavedStatus);
+    });
   } catch (err) {
     console.error(err);
     return next(

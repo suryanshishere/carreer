@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import LoadingDocIcon from "shared/assets/loadingDocIcon.gif";
+import LoadingDocIcon from "shared/assets/loading-doc-icon.gif";
 
 interface DataStateWrapperProps<T> {
   isLoading: boolean;

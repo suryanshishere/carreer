@@ -8,7 +8,7 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import BookmarkBorderSharpIcon from "@mui/icons-material/BookmarkBorderSharp";
-import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp"; 
+import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
 import Button from "shared/utils/form/Button";
 import { RESPONSE_DB } from "shared/shared-db";
 
@@ -33,6 +33,11 @@ const Bookmark: React.FC<IBookmark> = ({
     url: string;
     bookmarkState: boolean;
   }
+
+  // Sync local state with prop changes
+  React.useEffect(() => {
+    setIsBookmarked(isSaved);
+  }, [isSaved]);
 
   const mutation = useMutation({
     mutationFn: async ({ url, bookmarkState }: MutationVariables) => {
