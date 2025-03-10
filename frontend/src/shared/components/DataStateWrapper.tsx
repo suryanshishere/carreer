@@ -1,65 +1,80 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { SquareUI } from "shared/ui";
+import LoadingDocIcon from "shared/assets/loadingDocIcon.gif";
 
 interface DataStateWrapperProps<T> {
   isLoading: boolean;
   error: Error | null;
   data: T | null;
-  // Function to determine if data is "empty" (e.g., based on object keys, array length, etc.)
   emptyCondition: (data: T) => boolean;
-  // Optional components to override defaults
   loadingComponent?: React.ReactNode;
   errorComponent?: React.ReactNode;
   emptyComponent?: React.ReactNode;
-  // Render prop to render the actual UI when data is available
   children: (data: T | null) => React.ReactNode;
-  // If true, bypass the default loading UI and render children directly when loading,
-  // but once loading is finished, the empty condition will still be checked.
   skipLoadingUI?: boolean;
 }
+
+const DefaultLoadingComponent = () => (
+  <div className="w-full flex flex-col gap-1 items-center my-12 justify-center">
+    <img
+      src={LoadingDocIcon}
+      alt="Loading Doc Icon"
+      className="w-22 h-20 object-cover"
+    />
+    <span className="pl-1 text-xs text-custom_less_gray font-bold">
+      LOADING...
+    </span>
+  </div>
+);
+
+const DefaultErrorComponent = () => (
+  <ul className="text-custom_red font-semibold">
+    <li className="flex gap-2 items-center">
+      <SquareUI /> No Data / Nothing to show.
+    </li>
+    <li className="flex gap-2 items-center">
+      <SquareUI /> Or something went wrong, please try again later.
+    </li>
+  </ul>
+);
 
 const DataStateWrapper = <T,>({
   isLoading,
   error,
   data,
   emptyCondition,
-  loadingComponent = (
-    <div className="text-center text-gray-500">Loading...</div>
-  ),
-  errorComponent = (
-    <ul className="text-custom_red font-semibold">
-      <li className="flex gap-2 items-center">
-        <SquareUI /> No Data / Nothing to show.
-      </li>
-      <li className="flex gap-2 items-center">
-        <SquareUI /> Or something went wrong, please try again later.
-      </li>
-    </ul>
-  ),
-  emptyComponent = (
-    <ul className="text-custom_red font-semibold">
-      <li className="flex gap-2 items-center">
-        <SquareUI /> No Data / Nothing to show.
-      </li>
-      <li className="flex gap-2 items-center">
-        <SquareUI /> Or something went wrong, please try again later.
-      </li>
-    </ul>
-  ),
+  loadingComponent = <DefaultLoadingComponent />,
+  errorComponent = <DefaultErrorComponent />,
+  emptyComponent = <DefaultErrorComponent />,
   children,
   skipLoadingUI = false,
 }: DataStateWrapperProps<T>) => {
+  const [showLoading, setShowLoading] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (isLoading) {
+      timer = setTimeout(() => setShowLoading(true), 2000);
+    } else {
+      setShowLoading(false);
+      if (timer) clearTimeout(timer);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [isLoading]);
+
   if (error) return <>{errorComponent}</>;
 
   if (isLoading) {
     if (skipLoadingUI) {
-      // While loading, render children (skeleton or placeholder managed internally)
       return <>{children(data)}</>;
     }
-    return <>{loadingComponent}</>;
+    return showLoading ? <>{loadingComponent}</> : null;
   }
 
-  // Once loading is complete, check if data is empty.
   if (!data || emptyCondition(data)) return <>{emptyComponent}</>;
 
   return <>{children(data)}</>;

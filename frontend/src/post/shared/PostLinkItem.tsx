@@ -18,7 +18,7 @@ const PostLinkItem: React.FC<PostItemProps> = ({ section, item }) => {
       <Bookmark
         section={section}
         postId={item._id!}
-        isSaved={item.is_saved!}
+        isSaved={item.is_saved}
         classProp={`block float-right ${
           !item.is_saved ? "mobile:hidden group-hover:block" : ""
         }`}

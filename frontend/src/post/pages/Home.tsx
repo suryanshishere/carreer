@@ -37,14 +37,6 @@ const Home: React.FC = () => {
           return !sectionData || sectionData.length === 0 || !sectionData[0];
         })
       }
-      loadingComponent={
-        <div className="text-center text-gray-500">Loading...</div>
-      }
-      errorComponent={
-        <div className="text-center text-red-500">
-          Failed to load posts. Please try again later.
-        </div>
-      }
       skipLoadingUI={true}
     >
       {(validData) => (

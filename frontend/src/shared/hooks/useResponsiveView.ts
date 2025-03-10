@@ -24,30 +24,24 @@ const useResponsiveView = (
     large_mobile: 1050,
     tablet: 1024,
     desktop: 1440,
-  } //default
+  }
 ) => {
-  const [viewType, setViewType] = useState<ViewType>("other");
+  const getViewType = (): ViewType => {
+    const width = window.innerWidth;
+
+    if (width < breakpoints.mobile) return "mobile";
+    if (width < breakpoints.medium_mobile) return "medium_mobile";
+    if (width < breakpoints.large_mobile) return "large_mobile";
+    if (width < breakpoints.tablet) return "tablet";
+    if (width < breakpoints.desktop) return "desktop";
+    return "extra_large";
+  };
+
+  const [viewType, setViewType] = useState<ViewType>(getViewType);
 
   useEffect(() => {
-    const updateView = () => {
-      const width = window.innerWidth;
+    const updateView = () => setViewType(getViewType());
 
-      if (width < breakpoints.mobile) {
-        setViewType("mobile");
-      } else if (width < breakpoints.medium_mobile) {
-        setViewType("medium_mobile");
-      } else if (width < breakpoints.large_mobile) {
-        setViewType("large_mobile");
-      } else if (width < breakpoints.tablet) {
-        setViewType("tablet");
-      } else if (width < breakpoints.desktop) {
-        setViewType("desktop");
-      } else {
-        setViewType("extra_large");
-      }
-    };
-
-    updateView();
     window.addEventListener("resize", updateView);
     return () => window.removeEventListener("resize", updateView);
   }, [breakpoints]);
