@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { SquareUI } from "shared/ui";
 import LoadingDocIcon from "shared/assets/loadingDocIcon.gif";
 
 interface DataStateWrapperProps<T> {
@@ -12,6 +11,7 @@ interface DataStateWrapperProps<T> {
   emptyComponent?: React.ReactNode;
   children: (data: T | null) => React.ReactNode;
   skipLoadingUI?: boolean;
+  nodelay?: boolean;
 }
 
 const DefaultLoadingComponent = () => (
@@ -28,13 +28,9 @@ const DefaultLoadingComponent = () => (
 );
 
 const DefaultErrorComponent = () => (
-  <ul className="text-custom_red font-semibold">
-    <li className="flex gap-2 items-center">
-      <SquareUI /> No Data / Nothing to show.
-    </li>
-    <li className="flex gap-2 items-center">
-      <SquareUI /> Or something went wrong, please try again later.
-    </li>
+  <ul className="custom_ul text-custom_red font-semibold">
+    <li>No Data / Nothing to show.</li>
+    <li>Or something went wrong, please try again later.</li>
   </ul>
 );
 
@@ -48,6 +44,7 @@ const DataStateWrapper = <T,>({
   emptyComponent = <DefaultErrorComponent />,
   children,
   skipLoadingUI = false,
+  nodelay = false, // Default is false; loading UI delayed by 2000ms
 }: DataStateWrapperProps<T>) => {
   const [showLoading, setShowLoading] = useState(false);
 
@@ -55,7 +52,11 @@ const DataStateWrapper = <T,>({
     let timer: NodeJS.Timeout | null = null;
 
     if (isLoading) {
-      timer = setTimeout(() => setShowLoading(true), 2000);
+      if (nodelay) {
+        setShowLoading(true);
+      } else {
+        timer = setTimeout(() => setShowLoading(true), 2000);
+      }
     } else {
       setShowLoading(false);
       if (timer) clearTimeout(timer);
@@ -64,7 +65,7 @@ const DataStateWrapper = <T,>({
     return () => {
       if (timer) clearTimeout(timer);
     };
-  }, [isLoading]);
+  }, [isLoading, nodelay]);
 
   if (error) return <>{errorComponent}</>;
 

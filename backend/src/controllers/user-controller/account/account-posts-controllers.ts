@@ -38,7 +38,25 @@ export const savedPosts = async (
       return next(new HttpError("No user saved post found!", 404));
     }
 
-    return res.status(200).json({ data: userSavedPost });
+    // Iterate over each section and add is_saved: true to each post item
+    const userSavedPostObj = userSavedPost.toObject();
+    if (userSavedPostObj.saved_posts) {
+      Object.keys(userSavedPostObj.saved_posts).forEach((section) => {
+        if (
+          userSavedPostObj.saved_posts &&
+          Array.isArray(userSavedPostObj.saved_posts[section])
+        ) {
+          userSavedPostObj.saved_posts[section] = userSavedPostObj.saved_posts[
+            section
+          ].map((post: any) => ({
+            ...post,
+            is_saved: true,
+          }));
+        }
+      });
+    }
+
+    return res.status(200).json({ data: userSavedPostObj });
   } catch (error) {
     console.log(error);
     return next(

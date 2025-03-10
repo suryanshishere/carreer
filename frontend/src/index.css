@@ -25,6 +25,21 @@
     hr {
       @apply bg-custom_less_gray w-full;
     }
+
+    .custom_ul li::before {
+      content: "";
+      display: inline-block;
+      @apply w-2 h-2 bg-custom_gray rounded-sm mt-[10px] mr-2;
+      vertical-align: top;
+    }
+    
+    .custom_ul {
+      @apply list-none pl-0;
+    }
+    
+    .custom_ul li {
+      @apply flex items-start;
+    }
   }
 
   .page-padding {

@@ -8,16 +8,24 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { IContributionDetails } from "user/user-pages/account/MyContribution";
 
-const MyContriComponent: React.FC<{ data: IContributionDetails }> = ({
-  data,
-}) => {
+const MyContriComponent: React.FC<{ data: IContributionDetails }> = ({ data }) => {
   const { isEditContribute } = useSelector((state: RootState) => state.post);
-  const [expandedSections, setExpandedSections] = React.useState<
-    Record<string, boolean>
-  >({});
+
+  // Create initial expanded state with the first item expanded by default.
+  const postCodes = Object.keys(data);
+  const initialExpandedState = postCodes.reduce((acc, code, index) => {
+    acc[code] = index === 0; // first item expanded; others collapsed
+    return acc;
+  }, {} as Record<string, boolean>);
+
+  const [expandedSections, setExpandedSections] = React.useState<Record<string, boolean>>(
+    initialExpandedState
+  );
+
   const toggleExpand = (postCode: string) => {
     setExpandedSections((prev) => ({ ...prev, [postCode]: !prev[postCode] }));
   };
+
   return (
     <div className="flex flex-col gap-2">
       {Object.entries(data).map(([postCode, value]) => (
