@@ -19,13 +19,17 @@ const router = express.Router();
 
 router.post(
   "/contribute-to-post",
-  [validateSection(), validatePostCode(), validateObject("data")],
+  [
+    validateSection(),
+    validatePostCode("post_code_version", false, true),
+    validateObject("data"),
+  ],
   contributeToPost
 );
 
 router.patch(
   "/delete-contribution",
-  [validatePostCode(), validateSection()],
+  [validatePostCode("post_code_version", false, true), validateSection()],
   deleteContribute
 );
 

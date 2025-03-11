@@ -7,6 +7,7 @@ import {
   triggerErrorMsg,
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
+import { ISectionKey } from "post/db";
 
 const useContributeMutation = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,17 +17,19 @@ const useContributeMutation = () => {
       keyValuePairs,
       section,
       postCode,
+      version = "main",
     }: {
       keyValuePairs: Record<string, any>;
-      section: string;
+      section: ISectionKey;
       postCode: string;
+      version: string;
     }) => {
       const response = await axiosInstance.post(
         "/user/account/post/contribute-to-post",
         {
           data: keyValuePairs,
           section,
-          post_code: postCode,
+          post_code_version: postCode + "_1_" + version,
         }
       );
       return response.data;
@@ -51,7 +54,7 @@ const useContributeMutation = () => {
 
   //sending postcode, section, user id through token and now make the update by deleting the data.
   const deleteContributeMutation = useMutation({
-    mutationFn: async (data: { post_code: string; section: string }) => {
+    mutationFn: async (data: { post_code_version: string; section: ISectionKey }) => {
       const response = await axiosInstance.patch(
         "/user/account/post/delete-contribution",
         data

@@ -1,8 +1,8 @@
 import Access from "admin/pages/Access";
 import CreateNewPost from "admin/pages/CreateNewPost";
 import { IRole } from "admin/admin-db";
-import ContriSec from "admin/pages/approver/contribution_section";  
-import ContributionApprove from "admin/pages/approver/contribution_approve";
+import ContriSec from "admin/pages/approver/ContributionSection";  
+import ContributionApprove from "admin/pages/approver/ContributionApprove";
 
 const adminRoutes = (token: string | null, role?: IRole) => {
   if (!token) return [];

@@ -11,17 +11,20 @@ import { startCase } from "lodash";
 import useContributeMutation from "post/shared/useContributionMutation";
 import Modal from "shared/ui/Modal";
 import { closeModal, openModal } from "shared/store/modalSlice";
+import { ISectionKey } from "post/db";
 
 type SubContriHeaderProps = {
-  section: string;
+  section: ISectionKey;
   postCode: string;
   isEditing: boolean;
+  version: string;
 };
 
 const SubContriHeader: React.FC<SubContriHeaderProps> = ({
   section,
   postCode,
   isEditing,
+  version="main"
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isEditContribute, isAllKeyValuePairsStored, keyValuePairs } =
@@ -35,7 +38,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
       <div className="flex items-center gap-1 justify-center">
         <h2 className="pl-0">{startCase(section)}</h2>
         <Link
-          to={`/sections/${section}/${postCode.toLowerCase()}`}
+          to={`/sections/${section}/${postCode}/${version}`}
           className="text-custom_red hover:text-custom_blue flex items-center justify-center p-1"
           target="_blank"
           rel="noopener noreferrer"
@@ -84,6 +87,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
                 keyValuePairs,
                 section,
                 postCode,
+                version,
               });
             }}
             disabled={contributeMutation.isPending}
@@ -114,8 +118,8 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
               authButtonType
               onClick={() => {
                 deleteContributeMutation.mutate({
-                  post_code: postCode,
-                  section: section,
+                  post_code_version: postCode + "_1_" + version,
+                  section,
                 });
                 !deleteContributeMutation.isPending && dispatch(closeModal());
               }}

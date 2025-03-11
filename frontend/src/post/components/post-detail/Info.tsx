@@ -4,13 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { toggleDropdownState } from "shared/store/dropdownSlice";
 import { useParams } from "react-router-dom";
-import ContriToPost from "post/components/post-detail/ContriToPost";
+import ContributeToPost from "post/components/post-detail/ContributeToPost";
 import Button from "shared/utils/form/Button";
+import { ISectionKey } from "post/db";
 
 const Info = () => {
-  const { section = "", postCode = "" } = useParams<{
-    section: string;
+  const {
+    section,
+    postCode = "",
+    version = "main",
+  } = useParams<{
+    section: ISectionKey;
     postCode: string;
+    version: string;
   }>();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -25,7 +31,7 @@ const Info = () => {
   return (
     <div className="relative flex justify-center items-center gap-1">
       {dropdownStates["info"] && (
-        <ContriToPost section={section} postCode={postCode} />
+        <ContributeToPost section={section as ISectionKey} postCode={postCode} version={version} />
       )}
       <Button iconButton onClick={infoButtonHandler}>
         {!dropdownStates["info"] ? (

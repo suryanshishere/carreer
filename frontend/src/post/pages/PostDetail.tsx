@@ -21,7 +21,11 @@ const fetchPostDetail = async (
 };
 
 const PostDetail: React.FC = () => {
-  const { section, postCode = "", version = "main" } = useParams<{
+  const {
+    section,
+    postCode = "",
+    version = "main",
+  } = useParams<{
     section: ISectionKey;
     postCode: string;
     version: string;
@@ -39,19 +43,23 @@ const PostDetail: React.FC = () => {
   } = useQuery<{ data: any; is_saved: boolean }, Error>({
     queryKey: ["detailPost", section, postIdOrCode, version],
     queryFn: () =>
-      section ? fetchPostDetail(section, postIdOrCode, version) : Promise.reject(new Error("Invalid section")),
+      section
+        ? fetchPostDetail(section, postIdOrCode, version)
+        : Promise.reject(new Error("Invalid section")),
     enabled: !!section, // Prevents query execution if section is undefined
   });
 
   const orderedData = section ? postDetailByPriority(data.data, section) : null;
 
   return (
-    <div className="flex flex-col gap-3 items-center relative min-h-screen">
+    <div className="flex flex-col gap-3 relative min-h-screen">
       <div className="self-end flex gap-2 items-center justify-center z-10">
         <Info />
-        {section && (
-          <Bookmark section={section} postId={postIdOrCode} isSaved={data.is_saved} />
-        )}
+        <Bookmark
+          section={section as ISectionKey}
+          postId={postIdOrCode}
+          isSaved={data.is_saved}
+        />
       </div>
       <DataStateWrapper
         isLoading={isLoading || isFetching || !orderedData}

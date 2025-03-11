@@ -8,7 +8,8 @@ const { sections } = POST_DB;
 
 export const validatePostCode = (
   name: string = "post_code",
-  optional: boolean = false
+  optional: boolean = false,
+  extra: boolean = false
 ) => {
   const friendlyName = _.startCase(_.toLower(name));
 
@@ -23,7 +24,7 @@ export const validatePostCode = (
     })
     .isLength({
       min: short_char_limit.min,
-      max: short_char_limit.max,
+      max: (extra ? 2 : 1) * short_char_limit.max, //extra when version also included.
     })
     .withMessage(
       `${friendlyName} must be between ${short_char_limit.min} and ${short_char_limit.max} characters.`
@@ -127,14 +128,10 @@ export const validateObject = (fieldName: string): ValidationChain => {
     });
 };
 
-export const validateOptStr = (
-  name: string,
-  optional: boolean = true
-) => {
+export const validateOptStr = (name: string, optional: boolean = true) => {
   let chain = check(name);
   if (optional) {
     chain = chain.optional({ nullable: true });
   }
   return chain.isString().withMessage(`${startCase(name)} must be a string.`);
 };
-

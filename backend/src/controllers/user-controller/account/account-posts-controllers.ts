@@ -194,7 +194,7 @@ export const contributeToPost = async (
   next: NextFunction
 ) => {
   handleValidationErrors(req, next);
-  let { data, section, post_code } = req.body;
+  let { data, section, post_code_version } = req.body;
   validateContributionField(req, next);
 
   const userId = (req as JWTRequest).userData.userId;
@@ -228,21 +228,20 @@ export const contributeToPost = async (
       contribution.contribution = new Map(); // Initialize it as a Map if not already
     }
 
-    // Ensure the Map for the specific postCode exists
-    const postContribution = contribution.contribution.get(post_code) || {};
+    //post code + __ + version
+    const postContribution = contribution.contribution.get(post_code_version) || {};
 
-    // If section is already present, merge data, else create a new entry
     if (postContribution[section]) {
       postContribution[section] = {
-        ...postContribution[section], // Keep existing data
-        ...data, // Add/Update new data
+        ...postContribution[section], 
+        ...data,  
       };
     } else {
-      postContribution[section] = data; // Create new section if not present
+      postContribution[section] = data;  
     }
 
     // Set the updated contribution back to the Map
-    contribution.contribution.set(post_code, postContribution);
+    contribution.contribution.set(post_code_version, postContribution);
 
     // Save the contribution document
     await contribution.save({ session }); // Use the session in the save query
@@ -273,7 +272,7 @@ export const deleteContribute = async (
   next: NextFunction
 ) => {
   handleValidationErrors(req, next);
-  const { post_code, section } = req.body;
+  const { post_code_version, section } = req.body;
   const userId = (req as JWTRequest).userData.userId;
 
   try {
@@ -284,11 +283,11 @@ export const deleteContribute = async (
       );
     }
 
-    if (!user.contribution.has(post_code)) {
+    if (!user.contribution.has(post_code_version)) {
       return next(new HttpError("No such contribution found!", 404));
     }
 
-    const postData = user.contribution.get(post_code);
+    const postData = user.contribution.get(post_code_version);
     if (!postData) {
       return next(new HttpError("No such contribution found!", 404));
     }
@@ -303,11 +302,11 @@ export const deleteContribute = async (
 
     // If the post object is now empty, remove the entire post_code key
     if (Object.keys(postObj).length === 0) {
-      user.contribution.delete(post_code);
+      user.contribution.delete(post_code_version);
       user.markModified("contribution");
     } else {
-      user.contribution.set(post_code, postObj);
-      user.markModified(`contribution.${post_code}`);
+      user.contribution.set(post_code_version, postObj);
+      user.markModified(`contribution.${post_code_version}`);
     }
 
     await user.save();

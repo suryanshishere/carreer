@@ -1,21 +1,20 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
-import {
-  resetKeyValuePairs,
-  setEditPostClicked,
-} from "shared/store/postSlice";
+import { resetKeyValuePairs, setEditPostClicked } from "shared/store/postSlice";
 import { triggerErrorMsg } from "shared/store/thunks/response-thunk";
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
-import { closeSpecificDropdowns } from "shared/store/dropdownSlice"; 
+import { closeSpecificDropdowns } from "shared/store/dropdownSlice";
 import useContributeMutation from "post/shared/useContributionMutation";
 import { RESPONSE_DB } from "shared/shared-db";
+import { ISectionKey } from "post/db";
 
-const ContriToPost: React.FC<{
-  section: string;
+const ContributeToPost: React.FC<{
+  section: ISectionKey;
   postCode: string;
-}> = ({ section, postCode }) => {
+  version: string;
+}> = ({ section, postCode, version = "main" }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isEditPostClicked, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
@@ -62,7 +61,12 @@ const ContriToPost: React.FC<{
       {isAllKeyValuePairsStored && (
         <Button
           onClick={() => {
-            contributeMutation.mutate({ keyValuePairs, section, postCode });
+            contributeMutation.mutate({
+              keyValuePairs,
+              section,
+              postCode,
+              version,
+            });
           }}
           disabled={contributeMutation.isPending}
           authButtonType
@@ -75,4 +79,4 @@ const ContriToPost: React.FC<{
   );
 };
 
-export default ContriToPost;
+export default ContributeToPost;
