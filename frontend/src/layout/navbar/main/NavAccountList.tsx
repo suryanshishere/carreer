@@ -92,7 +92,7 @@ const NavAccountList: React.FC<{ data: INavAccountData }> = ({ data }) => {
   });
 
   return (
-    <ul className="h-fit w-[5.95rem] rounded shadow-md shadow-custom_black text-sm flex flex-col items-center text-custom_black bg-custom_less_gray p-1">
+    <ul className="h-fit w-[7rem] rounded shadow-md shadow-custom_black text-sm flex flex-col items-center text-custom_black bg-custom_less_gray p-1">
       {navItems}
     </ul>
   );

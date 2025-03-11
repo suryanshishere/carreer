@@ -18,13 +18,10 @@ const MyContriComponent: React.FC<{ data: IContributionDetails }> = ({
   const postCodes = Object.keys(data);
 
   // Set the first item expanded by default, others collapsed.
-  const initialExpandedState = postCodes.reduce(
-    (acc, code, index) => {
-      acc[code] = index === 0;
-      return acc;
-    },
-    {} as Record<string, boolean>
-  );
+  const initialExpandedState = postCodes.reduce((acc, code, index) => {
+    acc[code] = index === 0;
+    return acc;
+  }, {} as Record<string, boolean>);
 
   const [expandedSections, setExpandedSections] =
     React.useState<Record<string, boolean>>(initialExpandedState);
@@ -39,7 +36,7 @@ const MyContriComponent: React.FC<{ data: IContributionDetails }> = ({
   return (
     <div className="flex flex-col gap-2">
       {Object.entries(data).map(([postCodeVersion, value]) => {
-const [postCode, version = "main"] = postCodeVersion.split("_1_");
+        const [postCode, version = "main"] = postCodeVersion.split("_1_");
 
         return (
           <div key={postCodeVersion} className="flex flex-col gap-2">
@@ -47,9 +44,10 @@ const [postCode, version = "main"] = postCodeVersion.split("_1_");
               onClick={() => handleToggle(postCodeVersion)}
               className="py-1 cursor-pointer self-start text-custom_red"
             >
-              { startCase(postCode)} / { startCase(version)}
+              {startCase(postCode)} / {startCase(version)}
               {expandedSections[postCodeVersion] ? (
-                <ArrowDropUpIcon />              ) : (
+                <ArrowDropUpIcon />
+              ) : (
                 <ArrowDropDownIcon />
               )}
             </h2>
@@ -73,7 +71,10 @@ const [postCode, version = "main"] = postCodeVersion.split("_1_");
                         version={version}
                         isEditing={isEditing}
                       />
-                      <SubContriValue subValue={subValue} isEditing={isEditing} />
+                      <SubContriValue
+                        subValue={subValue}
+                        isEditing={isEditing}
+                      />
                     </div>
                   );
                 })}

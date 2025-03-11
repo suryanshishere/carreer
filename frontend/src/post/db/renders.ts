@@ -180,3 +180,7 @@ export const excludedPostListKeys = [
   "important_ref",
   "version",
 ];
+
+export const collapsible = [
+  "result_ref.result.previous_year"
+]

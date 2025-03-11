@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Bookmark from "post/shared/Bookmark";
 import PostDetailItem from "post/components/post-detail";
 import Info from "post/components/post-detail/Info";
-import postDetailByPriority from "../shared/post-detail-by-priority";
+import postDetailByPriority from "../components/post-detail/post-detail-by-priority";
 import DataStateWrapper from "shared/components/DataStateWrapper";
 import { ISectionKey } from "post/db";
 

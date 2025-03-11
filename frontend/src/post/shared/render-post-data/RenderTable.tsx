@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { startCase } from "lodash";
 import { excludedKeys } from "post/db/renders";
 import renderPostData from "post/shared/render-post-data";
+import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const bgColors = ["bg-custom_pale_yellow", "bg-custom_white"];
 
 interface RenderTableProps {
   value: any[] | Record<string, any>;
   tableKey: string;
+  isCollapsible?: boolean;
 }
 
-const RenderTable: React.FC<RenderTableProps> = ({ value, tableKey }) => {
+const RenderTable: React.FC<RenderTableProps> = ({
+  value,
+  tableKey,
+  isCollapsible = false,
+}) => {
   if (!value || typeof value !== "object" || excludedKeys.includes(tableKey))
     return null;
 
@@ -23,7 +30,7 @@ const RenderTable: React.FC<RenderTableProps> = ({ value, tableKey }) => {
       )
     : [];
 
-  return (
+  const tableContent = (
     <table className="my-2 border-collapse border-2 border-custom_gray w-full">
       {isArray && headers.length > 0 && (
         <thead>
@@ -78,6 +85,17 @@ const RenderTable: React.FC<RenderTableProps> = ({ value, tableKey }) => {
             })}
       </tbody>
     </table>
+  );
+
+  return isCollapsible ? (
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <span className="font-semibold">Show more information</span>
+      </AccordionSummary>
+      <AccordionDetails>{tableContent}</AccordionDetails>
+    </Accordion>
+  ) : (
+    tableContent
   );
 };
 
