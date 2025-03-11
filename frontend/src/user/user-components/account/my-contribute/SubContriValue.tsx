@@ -17,7 +17,7 @@ const SubContriValue: React.FC<SubContriValueProps> = ({
     <ul className="custom_ul">
       {Object.entries(subValue).map(([completeKey, detailValue]) => (
         <li>
-          <div className="flex flex-col gap-2 mb-2">
+          <div className="w-full flex flex-col gap-2 mb-2">
             <span className="text-sm font-semibold text-custom_gray">
               {completeKey.replace(/\./g, " / ")}:
             </span>

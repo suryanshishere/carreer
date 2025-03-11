@@ -7,10 +7,11 @@ import { RootState } from "shared/store";
 import { HomeSkeletonLoad } from "post/shared/SkeletonLoad";
 import PostLinkItem from "post/shared/PostLinkItem";
 import { ICommonListData } from "post/db/interfaces";
+import { ISectionKey } from "post/db";
 
 interface HomeListItemProps {
   data: ICommonListData[];
-  section: string;
+  section: ISectionKey;
   height?: string;
 }
 

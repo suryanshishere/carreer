@@ -8,10 +8,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostLinkItem from "./PostLinkItem";
 import { ICommonListData } from "post/db/interfaces";
+import { ISectionKey } from "post/db";
 
 interface ListProps {
   data: ICommonListData[];
-  section: string;
+  section: ISectionKey;
 }
 
 const PostList: React.FC<ListProps> = ({ data, section }) => {

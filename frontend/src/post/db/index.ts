@@ -1,10 +1,24 @@
-interface IPostDb {
-  sections: string[];
-  components: string[];
-  overall: string[];
+export type ISectionKey =
+  | "result"
+  | "admit_card"
+  | "latest_job"
+  | "syllabus"
+  | "answer_key"
+  | "certificate_verification"
+  | "important"
+  | "admission";
+
+export type IComponentKey = "date" | "common" | "link" | "fee";
+
+export type IOverallKey = ISectionKey | IComponentKey;
+
+interface IPostDB {
+  sections: ISectionKey[];
+  components: IComponentKey[];
+  overall: IOverallKey[];
 }
 
-const POST_DB: IPostDb = {
+const POST_DB: IPostDB = {
   sections: [
     "result",
     "admit_card",

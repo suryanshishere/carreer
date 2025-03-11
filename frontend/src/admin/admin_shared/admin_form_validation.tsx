@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import POST_DB, { POST_LIMITS_DB } from "post/db";
+import POST_DB, { ISectionKey, POST_LIMITS_DB } from "post/db";
 
 const { short_char_limit, alpha_num_underscore_space } = POST_LIMITS_DB;
 
@@ -7,7 +7,7 @@ const { short_char_limit, alpha_num_underscore_space } = POST_LIMITS_DB;
 export interface ICreateNewPostForm {
   name_of_the_post: string;
   post_code: string;
-  section: string;
+  section: ISectionKey;
   version?: string;
   api_key_from_user?: string;
 }

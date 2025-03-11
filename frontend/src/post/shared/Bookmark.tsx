@@ -11,9 +11,10 @@ import BookmarkBorderSharpIcon from "@mui/icons-material/BookmarkBorderSharp";
 import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
 import Button from "shared/utils/form/Button";
 import { RESPONSE_DB } from "shared/shared-db";
+import { ISectionKey } from "post/db";
 
 interface IBookmark {
-  section: string;
+  section: ISectionKey;
   postId: string;
   isSaved: boolean;
   classProp?: string;

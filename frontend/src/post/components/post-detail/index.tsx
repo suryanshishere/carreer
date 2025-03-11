@@ -1,6 +1,6 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "post/db/renders"; 
+import { excludedKeys } from "post/db/renders";
 import renderPostData from "../../shared/render-post-data";
 import { ParaSkeletonLoad, TableSkeletonLoad } from "post/shared/SkeletonLoad";
 
@@ -26,13 +26,30 @@ const PostDetailComponent: React.FC<{
     );
   }
 
-  // Normal Rendering
   return (
     <div className="w-full flex flex-col gap-4">
       {Object.entries(data).map(([key, value], index) => {
-        if (excludedKeys.includes(key)) {
+
+        //filtering the logic at the top level
+        if (
+          excludedKeys.includes(key) ||
+          value === null ||
+          value === undefined ||
+          (typeof value === "object" && Object.keys(value).length === 0) ||
+          (typeof value === "object" &&
+            Object.keys(value).length === 1 &&
+            "_id" in value) ||
+          (typeof value === "object" &&
+            Object.keys(value).length === 4 &&
+            "_id" in value &&
+            "createdAt" in value &&
+            "updatedAt" in value &&
+            "__v" in value)
+        ) {
           return null;
         }
+
+        console.log(value, key);
         const displayKey = key.includes(".") ? key.split(".")[1] : key;
         return (
           <div key={index} className="w-full flex flex-col gap-1">
