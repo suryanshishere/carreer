@@ -1,4 +1,4 @@
-import { modeAccountHandler } from "@controllers/user-controller/account/account-mode-controllers";
+import { modeAccountHandler } from "@controllers/users/account-controller/account-mode-controllers";
 import express from "express";
 import { body } from "express-validator";
 

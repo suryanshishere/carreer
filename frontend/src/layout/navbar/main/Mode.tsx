@@ -12,7 +12,7 @@ import Modal from "shared/ui/Modal";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "shared/utils/form/Button";
 import { openModal, closeModal } from "shared/store/modalSlice";
-import { USER_ACCOUNT_MODE_DB } from "user/user-db";
+import { USER_ACCOUNT_MODE_DB } from "users/db";
 
 const Mode: React.FC = () => {
   const mode = useSelector((state: RootState) => state.user.mode);

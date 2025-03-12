@@ -3,12 +3,12 @@ import {
   home,
   postDetail,
   section,
-} from "@controllers/post-controller";
+} from "@controllers/posts";
 import {
   validatePostCodeOrVersion,
   validatePostIdOrCode,
   validateSection,
-} from "@routes/routes-validation-utils";
+} from "@routes/utils";
 
 const router = express.Router();
 

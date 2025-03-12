@@ -13,7 +13,7 @@ import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
-import { NAV_ACCOUNT_LIST } from "user/user-db";
+import { NAV_ACCOUNT_LIST } from "users/db";
 
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();

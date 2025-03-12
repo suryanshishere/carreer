@@ -1,5 +1,5 @@
 import React, { CSSProperties, forwardRef } from "react";
-import { IPostAdminData } from "admin/admin-db";
+import { IPostAdminData } from "admin/db";
 import { startCase } from "lodash";
 
 interface IDropdown {

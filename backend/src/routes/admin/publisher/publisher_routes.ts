@@ -1,14 +1,14 @@
 import {
   createNewPost,
   deletePost,
-} from "@controllers/admin-controller/publisher/publisher-controllers";
+} from "@controllers/admin/publisher/publisher-controllers";
 import {
   validateOptStr,
   validateNameOfThePost,
   validatePostCodeOrVersion,
   validateSection,
   validatePostIdOrCode,
-} from "@routes/routes-validation-utils";
+} from "@routes/utils";
 import express from "express";
 
 const router = express.Router();

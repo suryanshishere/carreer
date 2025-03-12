@@ -7,7 +7,7 @@ import {
 } from "shared/store/dropdownSlice";
 import { startCase } from "lodash";
 import { RootState } from "shared/store";
-import { INavAccountData } from "user/user-db";
+import { INavAccountData } from "users/db";
 
 const NavAccountList: React.FC<{ data: INavAccountData }> = ({ data }) => {
   const dispatch = useDispatch();

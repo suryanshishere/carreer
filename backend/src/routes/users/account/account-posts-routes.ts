@@ -5,14 +5,14 @@ import {
   myContribution,
   savedPosts,
   unBookmarkPost,
-} from "@controllers/user-controller/account/account-posts-controllers";
+} from "@controllers/users/account-controller/account-posts-controllers";
 import express from "express";
 import _ from "lodash";
 import {
   validateObject,
   validatePostCodeOrVersion,
   validateSection,
-} from "@routes/routes-validation-utils";
+} from "@routes/utils";
 import { body } from "express-validator";
 
 const router = express.Router();

@@ -1,4 +1,4 @@
-import  User, {IUser} from "@models/user-model/User";
+import  User, {IUser} from "@models/users/User";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";
 import { JWTRequest } from "./check-auth";

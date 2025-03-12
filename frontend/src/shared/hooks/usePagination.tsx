@@ -1,4 +1,4 @@
-import { ICommonListData } from "post/post-db/interfaces";
+import { ICommonListData } from "posts/db/interfaces";
 import { useEffect, useState } from "react";
 
 const usePagination = (data: ICommonListData[]) => {

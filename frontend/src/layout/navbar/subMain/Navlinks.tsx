@@ -7,7 +7,7 @@ import useResponsiveView, {
   viewObject,
   ViewType,
 } from "shared/hooks/useResponsiveView";
-import POST_DB from "post/post-db";
+import POST_DB from "posts/db";
 
 const visibleLinksMap = {
   mobile: 1,

@@ -1,7 +1,7 @@
-import Auth from "user/user-pages/auth/Auth";
+import Auth from "users/pages/auth/Auth";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import ActivateAccount from "user/user-pages/account/ActivateAccount";
+import ActivateAccount from "users/pages/account/ActivateAccount";
 
 const PersistMain = () => {
   const { isNavAuthClicked, userData } = useSelector(

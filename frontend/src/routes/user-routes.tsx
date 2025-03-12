@@ -1,10 +1,10 @@
-import SavedPosts from "user/user-pages/account/SavedPosts";
-import ChangePassword from "user/user-pages/account/setting/ChangePassword";
-import ForgotPassword from "user/user-pages/auth/ForgotPassword";
-import DeactivateAccount from "user/user-pages/account/setting/DeactivateAccount";
-import ReqAccess from "user/user-pages/RequestAccess";
-import ResetPassword from "user/user-pages/auth/ResetPassword";
-import MyContribution from "user/user-pages/account/MyContribution";
+import SavedPosts from "users/pages/account/SavedPosts";
+import ChangePassword from "users/pages/account/setting/ChangePassword";
+import ForgotPassword from "users/pages/auth/ForgotPassword";
+import DeactivateAccount from "users/pages/account/setting/DeactivateAccount";
+import ReqAccess from "users/pages/RequestAccess";
+import ResetPassword from "users/pages/auth/ResetPassword";
+import MyContribution from "users/pages/account/MyContribution";
 
 const userRoutes = (token: string | null, role?: string) => {
   if (token) {

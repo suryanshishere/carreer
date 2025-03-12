@@ -2,14 +2,14 @@ import {
   applyContri,
   getContriPost,
   getContriPostCodes,
-} from "@controllers/admin-controller/approver/approver-controllers";
+} from "@controllers/admin/approver/approver-controllers";
 import express from "express";
 import { body } from "express-validator";
 import {
   validateObject,
   validatePostCodeOrVersion,
   validateSection,
-} from "@routes/routes-validation-utils";
+} from "@routes/utils";
 
 const router = express.Router();
 

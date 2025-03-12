@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
-import { IRole } from "admin/admin-db";
-import { IUserAccountMode, IUserData, RecursivePartial } from "user/user-db";
+import { IRole } from "admin/db";
+import { IUserAccountMode, IUserData, RecursivePartial } from "users/db";
 
 interface IUserSlice {
   isNavAuthClicked: boolean;

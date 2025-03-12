@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import postsRoutes from "@routes/posts/posts-routes";
 import adminRoutes from "@routes/admin/admin-routes";
-import otherRoutes from "@routes/other/other-routes";
+import otherRoutes from "@routes/others/other-routes";
 import usersRoutes from "@routes/users/user-routes";
 import HttpError from "@utils/http-errors";
 import checkAuth from "@middlewares/check-auth";

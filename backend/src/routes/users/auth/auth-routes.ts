@@ -6,7 +6,7 @@ import {
   verifyEmail,
   resetPassword,
   sendPasswordResetLink,
-} from "@controllers/user-controller/auth/auth-controllers";
+} from "@controllers/users/auth/auth-controllers";
 import { USER_ENV_DATA } from "@shared/env-data";
 
 const router = express.Router();

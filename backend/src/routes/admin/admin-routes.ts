@@ -3,7 +3,7 @@ import {
   accessUpdate,
   getReqAccess,
   getRole,
-} from "@controllers/admin-controller/admin-controllers";
+} from "@controllers/admin";
 import { check } from "express-validator";
 import { ADMIN_DATA } from "@shared/env-data";
 import approverRoutes from "./approver-routes";

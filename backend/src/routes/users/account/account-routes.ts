@@ -2,7 +2,7 @@ import express from "express";
 import postRoutes from "./account-posts-routes";
 import settingRoutes from "./account-setting-routes";
 import modeRoutes from "./account-mode-routes";
-import { reqAccess } from "@controllers/user-controller/account/account-controllers"; 
+import { reqAccess } from "@controllers/users/account-controller/account-controllers"; 
 import { ADMIN_DATA, CONTACT_US_ENV_DATA } from "@shared/env-data"; 
 import { body } from "express-validator";
 
