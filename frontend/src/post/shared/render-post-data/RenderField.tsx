@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import RenderDate from "./RenderDate";
-import _ from "lodash";
+import _, { startCase } from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostEditable from "../post-editable";
@@ -34,7 +34,7 @@ const RenderField = ({
       return <>{keyValues[strValue]}</>;
     }
 
-    return <>{_.startCase(strValue)}</>;
+    return <>{startCase(strValue)}</>;
   }
 
   if (strValue.startsWith("https://")) {
@@ -116,15 +116,16 @@ const RenderField = ({
   }
 
   if (strValue === strValue.toLowerCase() && strValue.includes("_")) {
+    const [postCode, version = "main"] = strValue.split("_1_");
     return (
-      <Link to={strValue} className="custom_link">
-        {_.startCase(strValue)}
+      <Link to={`${postCode}/${version}`} className="custom_link">
+        {startCase(postCode) + " (" + startCase(version) + ")"}
       </Link>
     );
   }
 
   if (strValue.includes("_")) {
-    return <>{_.startCase(strValue)}</>;
+    return <>{startCase(strValue)}</>;
   }
 
   //date check

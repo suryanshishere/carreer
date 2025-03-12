@@ -13,7 +13,7 @@ import { startCase } from "lodash";
 import PageHeader from "shared/ui/PageHeader";
 
 const ContributionApprove = () => {
-  const { section, postCode } = useParams();
+  const { section, postCode, version } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const [applying, setApplying] = useState<{ [key: string]: boolean }>({});
 
@@ -25,7 +25,9 @@ const ContributionApprove = () => {
     queryKey: ["contri"],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/admin/approver/contri-post-codes/${section}/${postCode}`
+        `/admin/approver/contri-post-codes/${section}/${
+          postCode + "_1_" + version
+        }`
       );
       return response.data;
     },
@@ -49,6 +51,7 @@ const ContributionApprove = () => {
           contributor_id: id,
           data: { [key]: value },
           post_code: postCode,
+          version,
           section,
         })
       );
@@ -73,7 +76,7 @@ const ContributionApprove = () => {
   return (
     <main>
       <PageHeader
-        header={`${startCase(postCode)}`}
+        header={`${postCode} / ${version}`}
         subHeader={`${startCase(section)} (Contribution Approval)`}
       />
       <section
@@ -100,7 +103,7 @@ const ContributionApprove = () => {
                         <dt className="font-bold">
                           {key.replace(/\./g, " / ")}
                         </dt>
-                        <div className="flex flex-col sm:grid sm:grid-cols-[1fr_auto] sm:items-start gap-2">
+                        <div className="flex flex-col sm:grid sm:grid-cols-[1fr_auto] sm:items-start gap-3">
                           <p>{value as React.ReactNode}</p>
                           <Button
                             onClick={() =>

@@ -18,6 +18,7 @@ router.post(
   [
     validateSection(),
     validatePostCode(),
+    validatePostCode("version", true),
     validateObject("data"),
     body("contributor_id")
       .isMongoId()
@@ -33,8 +34,8 @@ router.get(
 );
 
 router.get(
-  "/contri-post-codes/:section/:postCode",
-  [validateSection(), validatePostCode("postCode")],
+  "/contri-post-codes/:section/:postCodeVersion",
+  [validateSection(), validatePostCode("postCodeVersion", false, true)],
   getContriPost
 );
 

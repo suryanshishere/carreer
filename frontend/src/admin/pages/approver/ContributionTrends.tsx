@@ -26,8 +26,8 @@ const ContributionTrends: React.FC<{ section: string }> = ({ section }) => {
       error={error}
       data={data.data}
       emptyCondition={(data) => data.length === 0}
-      loadingComponent={<div className="text-center">Loading...</div>}
       skipLoadingUI={false}
+      nodelay
     >
       {(validData) => (
         <div className="w-full h-full flex items-start">

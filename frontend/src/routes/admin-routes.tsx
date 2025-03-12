@@ -20,7 +20,7 @@ const adminRoutes = (token: string | null, role?: IRole) => {
           path: "contributions-section/:section?",
           children: [
             { index: true, element: <ContriSec /> },
-            { path: ":section/:postCode", element: <ContributionApprove /> },
+            { path: ":section/:postCode/:version", element: <ContributionApprove /> },
             // { path: ":section", element: <ContriTrends /> },
           ],
         },

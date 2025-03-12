@@ -135,8 +135,7 @@ export const excludedKeys = [
   "certificate_verification_ref",
   "result_ref",
   "answer_key_ref",
-  "latest_job_ref",
-  "latest_job_ref",
+  "latest_job_ref", 
 ];
 
 export const notDisplayKeys = [];
@@ -235,7 +234,7 @@ export const renamingValues: IRenamingValues = {
     internship:
       "Internship - Learning-based job experience for students or freshers, usually for a limited period.",
   },
-  post_exam_toughness_ranking: "rank",
+  post_exam_toughness_ranking: "ranked",
   post_exam_duration: "minutes",
   minimum_age: "year old",
   maximum_age: "year old",

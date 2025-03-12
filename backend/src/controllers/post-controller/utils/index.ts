@@ -53,7 +53,8 @@ export const fetchPostList = async (
 export const fetchPostDetail = async (
   section: ISectionKey,
   postIdOrCode: string,
-  version: string = "main"
+  version: string = "main",
+  useLean: boolean = true  
 ) => {
   const query = mongoose.Types.ObjectId.isValid(postIdOrCode)
     ? {
@@ -68,10 +69,13 @@ export const fetchPostDetail = async (
         [`${section}_ref`]: { $exists: true },
       };
 
-  const response = await PostModel.findOne(query)
+  let queryBuilder = PostModel.findOne(query)
     .select("post_code version")
-    .populate(POSTS_POPULATE.section_detail_populate[section])
-    .lean();
+    .populate(POSTS_POPULATE.section_detail_populate[section]);
 
-  return response;
+  if (useLean) {
+    queryBuilder = queryBuilder.lean();
+  }
+
+  return await queryBuilder;
 };

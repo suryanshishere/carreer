@@ -4,14 +4,15 @@ import HttpError from "@utils/http-errors";
 import { JWTRequest } from "@middlewares/check-auth";
 import {
   flattenContributionData,
+  savePostReferences,
   updateContributorApproval,
   updateContributorContribution,
-  // updatePostData,
 } from "./approver-controllers-utils";
 import mongoose from "mongoose";
-import handleValidationErrors from "@controllers/shared-controller/validation-error"; 
+import handleValidationErrors from "@controllers/shared-controller/validation-error";
 import { ISectionKey } from "@models/post-model/db";
 import { fetchPostDetail } from "@controllers/post-controller/utils";
+import _ from "lodash";
 
 export const getContriPostCodes = async (
   req: Request,
@@ -77,35 +78,32 @@ export const getContriPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  const {
-    section,
-    postCode,
-    version = "main",
-  } = req.params as {
+  const { section, postCodeVersion } = req.params as {
     section: ISectionKey;
-    postCode: string;
+    postCodeVersion: string;
     version?: string;
   };
   try {
     handleValidationErrors(req, next);
 
     // Retrieve the post document
-    const post = await fetchPostDetail(section, postCode, version);
-    if (!post) {
-      return next(new HttpError("Post not found!", 404));
-    }
+    // const post = await fetchPostDetail(section, postCode, version);
+    // if (!post) {
+    //   return next(new HttpError("Post not found!", 404));
+    // }
 
     // Find the contribution posts for the specified section and postCode
     const contributionPosts = await ContributionModel.find({
-      [`contribution.${postCode}.${section}`]: { $exists: true },
+      [`contribution.${postCodeVersion}.${section}`]: { $exists: true },
     })
-      .select(`contribution.${postCode}.${section}`)
-      .limit(5)
+      .select(`contribution.${postCodeVersion}.${section}`)
+      .limit(10) //less item since it would have some correct data
       .exec();
 
     // Flatten each contribution entry and add it to the response
     const flattenedPosts = contributionPosts.map((contri) => {
-      const contributionData = contri.contribution.get(postCode)?.[section]; /// Safe access
+      const contributionData =
+        contri.contribution.get(postCodeVersion)?.[section]; /// Safe access
 
       // Check if contributionData exists before flattening
       if (contributionData) {
@@ -120,14 +118,14 @@ export const getContriPost = async (
       // Return the contribution without flattening if contributionData doesn't exist
       return {
         _id: contri._id,
-        message: "No contribution data found for the specified section",
+        message: "No contribution data found for the specified section.",
       };
     });
 
     // Return the response with the cleaned-up flattened data
     return res.status(200).json({
       data: flattenedPosts,
-      POST_DB: post,
+      // POST_DB: post,
       message: "Contributed post fetched successfully!",
     });
   } catch (error) {
@@ -151,65 +149,69 @@ export const applyContri = async (
     contributor_id,
   } = req.body;
   const approverId = (req as JWTRequest).userData.userId;
+  const postCodeVersion = `${post_code}_1_${version}`;
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
     handleValidationErrors(req, next);
-    const postId = post_code;
-    // const postId = await postIdGeneration(post_code);
 
-    let post = await fetchPostDetail(section, post_code, version);
+    let post = await fetchPostDetail(section, post_code, version, false);
     if (!post) {
-      return next(new HttpError("Post not found or not approved.", 404));
+      return next(new HttpError("Post not found or not approved yet!", 404));
     }
 
-    // Update post data
-    // This function is being updated, no session required here as it's just modifying the in-memory post object
-    // await updatePostData(post, data, contributor_id);
+    // Update post data (in-memory modification, no session needed)
+    Object.keys(data).forEach((key) => _.set(post, key, data[key]));
 
+    // Update contributors list
+    const contributorsField = `${section}_contributors`;
+    if (!Array.isArray(post[contributorsField])) post[contributorsField] = [];
+    if (!post[contributorsField].includes(contributor_id)) {
+      post[contributorsField].push(contributor_id);
+    }
+
+    // Fetch contributor details
     const contributor = await ContributionModel.findById(contributor_id)
-      .select(`contribution.${post_code}.${section} approved`)
+      .select(`contribution.${postCodeVersion}.${section} approved`)
       .session(session);
 
     if (!contributor) return next(new HttpError("Contributor not found!", 400));
 
-    // Update contributor contribution
+    // Update contributor contribution and approval
     await updateContributorContribution(
       contributor,
-      post_code,
+      postCodeVersion,
       section,
       data,
       session
     );
-
-    // Update contributor approval
     await updateContributorApproval(
       contributor,
       approverId,
-      post_code,
+      postCodeVersion,
       section,
       data,
       session
     );
 
-    // Save post and contributor data inside the transaction
-    await contributor.save({ session });
-    await post.save({ session });
+    // Save all referenced fields efficiently
+    await savePostReferences(post);
 
-    // Commit the transaction if all steps are successful
+    // Save contributor and post within the transaction
+    await Promise.all([contributor.save({ session }), post.save({ session })]);
+
+    // Commit transaction
     await session.commitTransaction();
-
-    // End the session
     session.endSession();
 
     return res
       .status(200)
       .json({ message: "Post updated and configured successfully!" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
-    // Rollback the transaction in case of any error
+    // Rollback transaction
     await session.abortTransaction();
     session.endSession();
 

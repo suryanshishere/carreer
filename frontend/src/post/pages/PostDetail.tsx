@@ -50,7 +50,6 @@ const PostDetail: React.FC = () => {
   });
 
   const orderedData = section ? postDetailByPriority(data.data, section) : null;
-
   return (
     <div className="flex flex-col gap-3 relative min-h-screen">
       <div className="self-end flex gap-2 items-center justify-center z-10">

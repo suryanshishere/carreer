@@ -26,7 +26,7 @@ const RenderTable: React.FC<RenderTableProps> = ({
   // For arrays, generate headers and rows
   const headers = isArray
     ? Object.keys(value[0] || {}).filter(
-        (header) => !excludedKeys.includes(header)
+        (header) => !["_id"].includes(header)
       )
     : [];
 
