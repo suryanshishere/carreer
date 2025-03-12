@@ -8,10 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { resetKeyValuePairs, setEditContribute } from "shared/store/postSlice";
 import { startCase } from "lodash";
-import useContributeMutation from "post/shared/useContributionMutation";
+import useContributeMutation from "post/post-shared/useContributionMutation";
 import Modal from "shared/ui/Modal";
 import { closeModal, openModal } from "shared/store/modalSlice";
-import { ISectionKey } from "post/db";
+import { ISectionKey } from "post/post-db";
 
 type SubContriHeaderProps = {
   section: ISectionKey;
@@ -24,7 +24,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
   section,
   postCode,
   isEditing,
-  version="main"
+  version = "main",
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isEditContribute, isAllKeyValuePairsStored, keyValuePairs } =
@@ -118,7 +118,8 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
               authButtonType
               onClick={() => {
                 deleteContributeMutation.mutate({
-                  post_code_version: postCode + "_1_" + version,
+                  post_code: postCode,
+                  version,
                   section,
                 });
                 !deleteContributeMutation.isPending && dispatch(closeModal());
@@ -130,7 +131,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
         }
       >
         <p>Are you sure you want to delete this contribution?</p>
-        <mark  >
+        <mark>
           {postCode} / {section}
         </mark>
       </Modal>

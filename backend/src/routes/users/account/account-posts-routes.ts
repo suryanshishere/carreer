@@ -10,9 +10,9 @@ import express from "express";
 import _ from "lodash";
 import {
   validateObject,
-  validatePostCode,
+  validatePostCodeOrVersion,
   validateSection,
-} from "@routes/routes_validation_utils";
+} from "@routes/routes-validation-utils";
 import { body } from "express-validator";
 
 const router = express.Router();
@@ -21,7 +21,8 @@ router.post(
   "/contribute-to-post",
   [
     validateSection(),
-    validatePostCode("post_code_version", false, true),
+    validatePostCodeOrVersion(),
+    validatePostCodeOrVersion("version", true),
     validateObject("data"),
   ],
   contributeToPost
@@ -29,7 +30,11 @@ router.post(
 
 router.patch(
   "/delete-contribution",
-  [validatePostCode("post_code_version", false, true), validateSection()],
+  [
+    validatePostCodeOrVersion(),
+    validatePostCodeOrVersion("version"),
+    validateSection(),
+  ],
   deleteContribute
 );
 

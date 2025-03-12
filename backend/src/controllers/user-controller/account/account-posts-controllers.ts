@@ -8,9 +8,10 @@ import ContributionModel, {
   IContribution,
 } from "@models/user-model/Contribution";
 import { validateContributionField } from "./account-controllers-utils";
-import handleValidationErrors from "@controllers/shared-controller/validation-error";
+import handleValidationErrors from "@controllers/shared-controller-utils/validation-error";
 import UserModal from "@models/user-model/User";
 import POSTS_POPULATE from "@models/post-model/db/post-map/post-populate-map";
+import { generatePostCodeVersion } from "@controllers/shared-controller-utils/contribute-utils";
 
 const postSectionsArray = POST_DB.sections;
 
@@ -194,7 +195,8 @@ export const contributeToPost = async (
   next: NextFunction
 ) => {
   handleValidationErrors(req, next);
-  let { data, section, post_code_version } = req.body;
+  let { data, section, post_code, version } = req.body;
+  const postCodeVersion = generatePostCodeVersion(post_code,version);
   validateContributionField(req, next);
 
   const userId = (req as JWTRequest).userData.userId;
@@ -229,19 +231,20 @@ export const contributeToPost = async (
     }
 
     //post code + __ + version
-    const postContribution = contribution.contribution.get(post_code_version) || {};
+    const postContribution =
+      contribution.contribution.get(postCodeVersion) || {};
 
     if (postContribution[section]) {
       postContribution[section] = {
-        ...postContribution[section], 
-        ...data,  
+        ...postContribution[section],
+        ...data,
       };
     } else {
-      postContribution[section] = data;  
+      postContribution[section] = data;
     }
 
     // Set the updated contribution back to the Map
-    contribution.contribution.set(post_code_version, postContribution);
+    contribution.contribution.set(postCodeVersion, postContribution);
 
     // Save the contribution document
     await contribution.save({ session }); // Use the session in the save query
@@ -272,7 +275,8 @@ export const deleteContribute = async (
   next: NextFunction
 ) => {
   handleValidationErrors(req, next);
-  const { post_code_version, section } = req.body;
+  const { post_code,version, section } = req.body;
+  const postCodeVersion = generatePostCodeVersion(post_code,version);
   const userId = (req as JWTRequest).userData.userId;
 
   try {
@@ -283,11 +287,11 @@ export const deleteContribute = async (
       );
     }
 
-    if (!user.contribution.has(post_code_version)) {
+    if (!user.contribution.has(postCodeVersion)) {
       return next(new HttpError("No such contribution found!", 404));
     }
 
-    const postData = user.contribution.get(post_code_version);
+    const postData = user.contribution.get(postCodeVersion);
     if (!postData) {
       return next(new HttpError("No such contribution found!", 404));
     }
@@ -302,11 +306,11 @@ export const deleteContribute = async (
 
     // If the post object is now empty, remove the entire post_code key
     if (Object.keys(postObj).length === 0) {
-      user.contribution.delete(post_code_version);
+      user.contribution.delete(postCodeVersion);
       user.markModified("contribution");
     } else {
-      user.contribution.set(post_code_version, postObj);
-      user.markModified(`contribution.${post_code_version}`);
+      user.contribution.set(postCodeVersion, postObj);
+      user.markModified(`contribution.${postCodeVersion}`);
     }
 
     await user.save();

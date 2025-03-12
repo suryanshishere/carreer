@@ -3,7 +3,7 @@ import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";
 import bcrypt from "bcryptjs";
 import { getUserIdFromRequest, JWTRequest } from "@middlewares/check-auth";
-import handleValidationErrors from "@controllers/shared-controller/validation-error";
+import handleValidationErrors from "@controllers/shared-controller-utils/validation-error";
 
 export const changePassword = async (
   req: Request,

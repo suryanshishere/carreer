@@ -5,10 +5,10 @@ import {
 import {
   validateOptStr,
   validateNameOfThePost,
-  validatePostCode,
+  validatePostCodeOrVersion,
   validateSection,
   validatePostIdOrCode,
-} from "@routes/routes_validation_utils";
+} from "@routes/routes-validation-utils";
 import express from "express";
 
 const router = express.Router();
@@ -17,9 +17,9 @@ router.post(
   [
     validateSection(),
     validateNameOfThePost(),
-    validatePostCode(),
+    validatePostCodeOrVersion(),
     validateOptStr("api_key_from_user"),
-    validatePostCode("version", true),
+    validatePostCodeOrVersion("version", true),
   ],
   createNewPost
 );

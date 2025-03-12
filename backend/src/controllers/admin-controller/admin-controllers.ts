@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { JWTRequest } from "@middlewares/check-auth";
 import HttpError from "@utils/http-errors";
-import  handleValidationErrors  from "@controllers/shared-controller/validation-error";
+import  handleValidationErrors  from "@controllers/shared-controller-utils/validation-error";
 import AdminModel from "@models/admin-model/Admin";
 import RequestModal, { IRequest } from "@models/admin-model/Request";
 import { authorisedAdmin } from "./admin-controllers-utils";

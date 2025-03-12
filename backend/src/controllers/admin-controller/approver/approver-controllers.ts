@@ -9,10 +9,11 @@ import {
   updateContributorContribution,
 } from "./approver-controllers-utils";
 import mongoose from "mongoose";
-import handleValidationErrors from "@controllers/shared-controller/validation-error";
+import handleValidationErrors from "@controllers/shared-controller-utils/validation-error";
 import { ISectionKey } from "@models/post-model/db";
 import { fetchPostDetail } from "@controllers/post-controller/utils";
 import _ from "lodash";
+import { generatePostCodeVersion } from "@controllers/shared-controller-utils/contribute-utils";
 
 export const getContriPostCodes = async (
   req: Request,
@@ -78,11 +79,13 @@ export const getContriPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { section, postCodeVersion } = req.params as {
+  const { section, postCode, version } = req.params as {
     section: ISectionKey;
-    postCodeVersion: string;
+    postCode: string;
     version?: string;
   };
+  const postCodeVersion = generatePostCodeVersion(postCode, version);
+  
   try {
     handleValidationErrors(req, next);
 

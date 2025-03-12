@@ -1,13 +1,13 @@
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useQuery } from "@tanstack/react-query";
-import PostList from "post/shared/PostList";
+import PostList from "post/post-shared/PostList";
 import { Fragment } from "react/jsx-runtime";
 import { startCase } from "lodash";
 import PageHeader from "shared/ui/PageHeader";
-import { ICommonListData } from "post/db/interfaces";
-import DataStateWrapper from "shared/components/DataStateWrapper";
+import { ICommonListData } from "post/post-db/interfaces";
+import DataStateWrapper from "shared/utils/DataStateWrapper";
 import { useParams } from "react-router-dom";
-import { ISectionKey } from "post/db";
+import { ISectionKey } from "post/post-db";
 
 const fetchSavedPosts = async (): Promise<{
   data: { saved_posts: Partial<Record<ISectionKey, ICommonListData[]>> };

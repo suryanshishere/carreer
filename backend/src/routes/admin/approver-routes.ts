@@ -7,9 +7,9 @@ import express from "express";
 import { body } from "express-validator";
 import {
   validateObject,
-  validatePostCode,
+  validatePostCodeOrVersion,
   validateSection,
-} from "@routes/routes_validation_utils";
+} from "@routes/routes-validation-utils";
 
 const router = express.Router();
 
@@ -17,8 +17,8 @@ router.post(
   "/apply-contri",
   [
     validateSection(),
-    validatePostCode(),
-    validatePostCode("version", true),
+    validatePostCodeOrVersion(),
+    validatePostCodeOrVersion("version"),
     validateObject("data"),
     body("contributor_id")
       .isMongoId()
@@ -34,8 +34,12 @@ router.get(
 );
 
 router.get(
-  "/contri-post-codes/:section/:postCodeVersion",
-  [validateSection(), validatePostCode("postCodeVersion", false, true)],
+  "/contri-post-codes/:section/:postCode/:version?",
+  [
+    validateSection(),
+    validatePostCodeOrVersion("postCode"),
+    validatePostCodeOrVersion("version"),
+  ],
   getContriPost
 );
 

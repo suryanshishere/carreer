@@ -9,7 +9,7 @@ import LinkModel from "@models/post-model/components/Link";
 import PostModel from "@models/post-model/Post";
 import { fetchPostDetail, fetchPostList } from "./utils";
 import { SECTION_POST_MODEL_MAP } from "@models/post-model/db/post-map/post-model-map";
-import handleValidationErrors from "@controllers/shared-controller/validation-error";
+import handleValidationErrors from "@controllers/shared-controller-utils/validation-error";
 import User from "@models/user-model/User";
 import { ISectionKey } from "@models/post-model/db";
 

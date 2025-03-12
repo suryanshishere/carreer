@@ -1,4 +1,4 @@
-import handleValidationErrors from "@controllers/shared-controller/validation-error";
+import handleValidationErrors from "@controllers/shared-controller-utils/validation-error";
 import { NextFunction, Response, Request } from "express";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";

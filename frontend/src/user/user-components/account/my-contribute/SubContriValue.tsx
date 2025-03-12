@@ -1,6 +1,6 @@
 import React from "react";
-import PostDetailsEditable from "post/shared/post-editable";
-import { IContribute } from "post/db/interfaces"; 
+import PostDetailsEditable from "post/post-shared/post-editable";
+import { IContribute } from "post/post-db/interfaces"; 
 
 interface SubContriValueProps {
   subValue: IContribute;

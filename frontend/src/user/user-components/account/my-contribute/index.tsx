@@ -8,7 +8,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import Collapse from "@mui/material/Collapse";
 import { IContributionDetails } from "user/user-pages/account/MyContribution";
-import { ISectionKey } from "post/db";
+import { ISectionKey } from "post/post-db";
 
 const MyContriComponent: React.FC<{ data: IContributionDetails }> = ({
   data,

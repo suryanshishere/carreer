@@ -5,10 +5,10 @@ import {
   section,
 } from "@controllers/post-controller";
 import {
-  validatePostCode,
+  validatePostCodeOrVersion,
   validatePostIdOrCode,
   validateSection,
-} from "@routes/routes_validation_utils";
+} from "@routes/routes-validation-utils";
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get(
   [
     validateSection(),
     validatePostIdOrCode(),
-    validatePostCode("version", true),
+    validatePostCodeOrVersion("version", true),
   ],
   postDetail
 );

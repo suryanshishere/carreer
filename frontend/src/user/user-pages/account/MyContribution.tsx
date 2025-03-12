@@ -5,7 +5,7 @@ import moment from "moment";
 import PageHeader from "shared/ui/PageHeader";
 import MyContributionComponent from "user/user-components/account/my-contribute";
 import Button from "shared/utils/form/Button";
-import DataStateWrapper from "shared/components/DataStateWrapper";
+import DataStateWrapper from "shared/utils/DataStateWrapper";
 
 // Define the types for the API response
 export interface IContributionDetails {
