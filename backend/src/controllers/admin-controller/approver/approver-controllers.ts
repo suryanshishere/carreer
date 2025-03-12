@@ -10,7 +10,7 @@ import {
 } from "./approver-controllers-utils";
 import mongoose from "mongoose";
 import handleValidationErrors from "@controllers/shared-controller/validation-error"; 
-import { ISectionKey } from "@models/post-model/post-db";
+import { ISectionKey } from "@models/post-model/db";
 import { fetchPostDetail } from "@controllers/post-controller/utils";
 
 export const getContriPostCodes = async (

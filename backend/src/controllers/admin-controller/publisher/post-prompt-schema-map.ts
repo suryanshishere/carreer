@@ -1,4 +1,4 @@
-import POST_DB from "@models/post-model/post-db";
+import POST_DB from "@models/post-model/db";
 import { camelCase } from "lodash";
 import resultPromptSchema from "./section-prompt-schema/result-prompt-schema";
 import admitCardPromptSchema from "./section-prompt-schema/admit-card-prompt-schema";

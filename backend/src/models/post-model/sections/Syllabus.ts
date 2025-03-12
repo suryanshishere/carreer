@@ -2,7 +2,7 @@ import { Model, Schema } from "mongoose";
 import commonDataSchema, {
   ICommonDetailData,
 } from "./post-model-section-utils";
-import { POST_LIMITS_DB } from "@models/post-model/post-db";
+import { POST_LIMITS_DB } from "@models/post-model/db";
 import { model } from "mongoose";
 
 const { long_char_limit, short_char_limit } = POST_LIMITS_DB;

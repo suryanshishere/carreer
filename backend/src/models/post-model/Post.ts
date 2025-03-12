@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import POST_DB, { POST_LIMITS_DB } from "./post-db";
+import POST_DB, { POST_LIMITS_DB } from "./db";
 import _ from "lodash";
 
 const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS_DB;

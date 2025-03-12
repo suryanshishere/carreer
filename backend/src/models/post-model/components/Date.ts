@@ -1,5 +1,5 @@
 import { Document, Schema, model, Model } from "mongoose";
-import { POST_LIMITS_DB } from "../post-db";
+import { POST_LIMITS_DB } from "../db";
 
 const DateRangeSchema = new Schema<IDateRange>(
   {

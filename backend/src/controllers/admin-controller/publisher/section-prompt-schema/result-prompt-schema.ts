@@ -1,5 +1,5 @@
 import { SchemaType } from "@google/generative-ai";
-import { POST_LIMITS_DB } from "@models/post-model/post-db";
+import { POST_LIMITS_DB } from "@models/post-model/db";
 
 const { long_char_limit, short_char_limit, non_negative_num } = POST_LIMITS_DB;
 

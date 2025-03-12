@@ -7,7 +7,7 @@ import { JWTRequest } from "@middlewares/check-auth";
 import {
   MODEL_MAP,
   SECTION_POST_MODEL_MAP,
-} from "@models/post-model/post-db/post-map/post-model-map";
+} from "@models/post-model/db/post-map/post-model-map";
 import {
   createComponentPost,
   generatePostData,
@@ -19,7 +19,7 @@ import {
   IOverallKey,
   ISectionKey,
   POST_LIMITS_DB,
-} from "@models/post-model/post-db";
+} from "@models/post-model/db";
 
 export const createNewPost = async (
   req: Request,

@@ -2,7 +2,7 @@ import { model, Schema, Model } from "mongoose";
 import commonDataSchema, {
   ICommonDetailData,
 } from "./post-model-section-utils";
-import { POST_LIMITS_DB } from "@models/post-model/post-db";
+import { POST_LIMITS_DB } from "@models/post-model/db";
 
 const importantSchema = new Schema<IImportant>({
   how_to_fill_the_form: {

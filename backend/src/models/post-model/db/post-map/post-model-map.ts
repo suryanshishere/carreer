@@ -3,41 +3,41 @@ import POST_DB, {
   ISectionKey,
   IComponentKey,
   IOverallKey,
-} from "@models/post-model/post-db";
+} from "@models/post-model/db";
 import CertificateVerificationModel, {
   ICertificateVerification,
-} from "@models/post-model/post-section-model/CertificateVerfication";
+} from "@models/post-model/sections/CertificateVerfication";
 import DateModel, {
   IDate,
-} from "@models/post-model/post-component-model/Date";
+} from "@models/post-model/components/Date";
 import LinkModel, {
   ILink,
-} from "@models/post-model/post-component-model/Link";
+} from "@models/post-model/components/Link";
 import CommonModel, {
   ICommon,
-} from "@models/post-model/post-component-model/Common";
-import FeeModel, { IFee } from "@models/post-model/post-component-model/Fee";
+} from "@models/post-model/components/Common";
+import FeeModel, { IFee } from "@models/post-model/components/Fee";
 import AdmissionModel, {
   IAdmission,
-} from "@models/post-model/post-section-model/Admission";
+} from "@models/post-model/sections/Admission";
 import ImportantModel, {
   IImportant,
-} from "@models/post-model/post-section-model/Important";
+} from "@models/post-model/sections/Important";
 import AnswerKeyModel, {
   IAnswerKey,
-} from "@models/post-model/post-section-model/AnswerKey";
+} from "@models/post-model/sections/AnswerKey";
 import SyllabusModel, {
   ISyllabus,
-} from "@models/post-model/post-section-model/Syllabus";
+} from "@models/post-model/sections/Syllabus";
 import LatestJobModel, {
   ILatestJob,
-} from "@models/post-model/post-section-model/LatestJob";
+} from "@models/post-model/sections/LatestJob";
 import AdmitCardModel, {
   IAdmitCard,
-} from "@models/post-model/post-section-model/AdmitCard";
+} from "@models/post-model/sections/AdmitCard";
 import ResultModel, {
   IResult,
-} from "@models/post-model/post-section-model/Result";
+} from "@models/post-model/sections/Result";
 
 // Explicitly type the models
 const OVERALL_MODELS: Record<IOverallKey, Model<any> | undefined> = {

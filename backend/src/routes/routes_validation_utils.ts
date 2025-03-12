@@ -1,4 +1,4 @@
-import POST_DB, { POST_LIMITS_DB } from "@models/post-model/post-db";
+import POST_DB, { POST_LIMITS_DB } from "@models/post-model/db";
 import { ValidationChain, check } from "express-validator";
 import _, { startCase } from "lodash";
 

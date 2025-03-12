@@ -1,4 +1,4 @@
-import { POST_LIMITS_DB } from "@models/post-model/post-db";
+import { POST_LIMITS_DB } from "@models/post-model/db";
 import { Schema, Document } from "mongoose";
 
 const { medium_char_limit } = POST_LIMITS_DB;

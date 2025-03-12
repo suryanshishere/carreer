@@ -2,16 +2,16 @@ import { Response, NextFunction } from "express";
 import HttpError from "@utils/http-errors";
 import { Request } from "express-jwt";
 import { getUserIdFromRequest, JWTRequest } from "@middlewares/check-auth";
-import CommonModel from "@models/post-model/post-component-model/Common";
-import FeeModel from "@models/post-model/post-component-model/Fee";
-import DateModel from "@models/post-model/post-component-model/Date";
-import LinkModel from "@models/post-model/post-component-model/Link";
+import CommonModel from "@models/post-model/components/Common";
+import FeeModel from "@models/post-model/components/Fee";
+import DateModel from "@models/post-model/components/Date";
+import LinkModel from "@models/post-model/components/Link";
 import PostModel from "@models/post-model/Post";
 import { fetchPostDetail, fetchPostList } from "./utils";
-import { SECTION_POST_MODEL_MAP } from "@models/post-model/post-db/post-map/post-model-map";
+import { SECTION_POST_MODEL_MAP } from "@models/post-model/db/post-map/post-model-map";
 import handleValidationErrors from "@controllers/shared-controller/validation-error";
 import User from "@models/user-model/User";
-import { ISectionKey } from "@models/post-model/post-db";
+import { ISectionKey } from "@models/post-model/db";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo

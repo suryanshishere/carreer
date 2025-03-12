@@ -1,10 +1,10 @@
-import POSTS_POPULATE from "@models/post-model/post-db/post-map/post-populate-map";
+import POSTS_POPULATE from "@models/post-model/db/post-map/post-populate-map";
 import HttpError from "@utils/http-errors";
 import { NextFunction } from "express";
 import PostModel from "@models/post-model/Post";
-import { PopulateOption } from "@models/post-model/post-db";
-import POST_POPULATE from "@models/post-model/post-db/post-map/post-populate-map";
-import { ISectionKey } from "@models/post-model/post-db";
+import { PopulateOption } from "@models/post-model/db";
+import POST_POPULATE from "@models/post-model/db/post-map/post-populate-map";
+import { ISectionKey } from "@models/post-model/db";
 import getSortedDateIds from "./get-sorted-date-ids";
 import mongoose from "mongoose";
 

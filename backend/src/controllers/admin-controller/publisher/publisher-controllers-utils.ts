@@ -4,7 +4,7 @@ import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { JWTRequest } from "@middlewares/check-auth";
 import { Request } from "express";
-import { COMPONENT_POST_MODEL_MAP } from "@models/post-model/post-db/post-map/post-model-map";
+import { COMPONENT_POST_MODEL_MAP } from "@models/post-model/db/post-map/post-model-map";
 import {
   COMPONENT_POST_PROMPT_SCHEMA_MAP,
   updateSchema,

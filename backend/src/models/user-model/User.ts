@@ -1,5 +1,5 @@
 import { USER_ENV_DATA } from "@shared/env-data";
-import POST_DB from "@models/post-model/post-db";
+import POST_DB from "@models/post-model/db";
 import _ from "lodash";
 import mongoose, { Schema, Types, Document } from "mongoose";
 

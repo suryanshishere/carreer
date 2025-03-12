@@ -1,6 +1,6 @@
 import { Model, Schema, model } from "mongoose";
 import { Document } from "mongoose";
-import { POST_LIMITS_DB } from "../post-db";
+import { POST_LIMITS_DB } from "../db";
 
 const { non_negative_num, short_char_limit } = POST_LIMITS_DB;
 

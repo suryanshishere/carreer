@@ -1,5 +1,5 @@
 import { Schema, model, Document, Model } from "mongoose";
-import { POST_LIMITS_DB } from "../post-db";
+import { POST_LIMITS_DB } from "../db";
 
 const { short_char_limit } = POST_LIMITS_DB;
 
