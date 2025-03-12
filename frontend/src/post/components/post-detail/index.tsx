@@ -1,6 +1,6 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "post/db/renders";
+import { excludedKeys, renamingKeys } from "post/db/renders";
 import renderPostData from "../../shared/render-post-data";
 import { ParaSkeletonLoad, TableSkeletonLoad } from "post/shared/SkeletonLoad";
 
@@ -28,8 +28,7 @@ const PostDetailComponent: React.FC<{
 
   return (
     <div className="w-full flex flex-col gap-4">
-      {Object.entries(data).map(([key, value], index) => {
-
+      {Object.entries(data).map(([key, value]: [string, any], index) => {
         //filtering the logic at the top level
         if (
           excludedKeys.includes(key) ||
@@ -49,12 +48,12 @@ const PostDetailComponent: React.FC<{
           return null;
         }
 
-        console.log(value, key);
         const displayKey = key.includes(".") ? key.split(".")[1] : key;
+
         return (
           <div key={index} className="w-full flex flex-col gap-1">
             <h2 className="whitespace-nowrap text-custom_red">
-              {startCase(displayKey)}
+              {renamingKeys[key] ?? startCase(displayKey)}
             </h2>
             <div className="flex flex-col">{renderPostData(key, value)}</div>
           </div>

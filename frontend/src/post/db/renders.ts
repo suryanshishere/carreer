@@ -47,7 +47,6 @@ export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
     "common_ref.applicants",
     "admit_card_ref.how_to_download_admit_card",
     "common_ref.applicants_gender_that_can_apply",
-    "common_ref.post_importance",
     "syllabus_ref.syllabus",
     "common_ref.job_type",
     "common_ref.post_exam_mode",
@@ -181,6 +180,18 @@ export const excludedPostListKeys = [
   "version",
 ];
 
-export const collapsible = [
-  "result_ref.result.previous_year"
-]
+export const collapsible = ["result_ref.result.previous_year"];
+
+interface IRenaming {
+  [key: string]: string;
+}
+
+export const renamingKeys: IRenaming = {
+  date_ref: "Important Dates",
+  link_ref: "Important Links",
+  common_ref: "Common Information",
+};
+
+export const renamingValues: IRenaming = {
+  
+};
