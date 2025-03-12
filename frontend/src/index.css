@@ -46,7 +46,7 @@
     @apply large_mobile:px-page px-page_small w-full;
   }
 
-  .custom-link {
+  .custom_link {
     @apply underline decoration-1 text-custom_red underline-offset-4 hover:text-custom_dark_red visited:text-custom_black;
   }
 

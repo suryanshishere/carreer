@@ -4,7 +4,8 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostEditable from "../post-editable";
-import { POST_LIMIT_DROPDOWN_DATA } from "post/db";
+import { POST_LIMIT_DROPDOWN_DATA, POST_LIMITS_DB } from "post/db";
+import { IRenamingValues, renamingValues } from "post/db/renders";
 
 const RenderField = ({
   stringValue,
@@ -21,11 +22,19 @@ const RenderField = ({
     return <PostEditable valueProp={stringValue} keyProp={uniqueKey} />;
   }
 
-  let strValue = _.toString(stringValue);
+  let strValue: string = _.toString(stringValue);
+  const lastKey = uniqueKey.split(".").pop() as keyof IRenamingValues;
 
-  // TODO: ADD more meta data for the str value key word here.
   if (POST_LIMIT_DROPDOWN_DATA.has(strValue)) {
-    return <>{_.startCase(strValue.replace(/_/g, " "))}</>;
+    const keyValues = renamingValues[
+      lastKey as keyof IRenamingValues
+    ] as IRenamingValues;
+
+    if (keyValues && strValue in keyValues && keyValues[strValue]) {
+      return <>{keyValues[strValue]}</>;
+    }
+
+    return <>{_.startCase(strValue)}</>;
   }
 
   if (strValue.startsWith("https://")) {
@@ -45,8 +54,8 @@ const RenderField = ({
     );
   }
 
+  //links formating
   const linkRegex = /\[https?:\/\/[^\]]+\]\((https?:\/\/[^\)]+)\)/g;
-
   if (linkRegex.test(strValue)) {
     // Regex to find markdown-style links
     const linkRegex = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
@@ -83,6 +92,7 @@ const RenderField = ({
     return <>{parts}</>;
   }
 
+  //into points formating the paragraph
   if (
     strValue.includes("//") ||
     strValue.includes("\n") ||
@@ -107,7 +117,7 @@ const RenderField = ({
 
   if (strValue === strValue.toLowerCase() && strValue.includes("_")) {
     return (
-      <Link to={strValue} className="custom-link">
+      <Link to={strValue} className="custom_link">
         {_.startCase(strValue)}
       </Link>
     );
@@ -124,6 +134,12 @@ const RenderField = ({
     if (!match) return <>{strValue}</>;
 
     return <RenderDate stringValue={strValue} uniqueKey={uniqueKey} />;
+  }
+
+  //adding extra renders to it.
+  const value = renamingValues[lastKey as keyof IRenamingValues];
+  if (typeof value === "string") {
+    return <>{strValue + " " + value}</>;
   }
 
   return <> {strValue}</>;

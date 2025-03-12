@@ -182,16 +182,61 @@ export const excludedPostListKeys = [
 
 export const collapsible = ["result_ref.result.previous_year"];
 
-interface IRenaming {
+export const renamingKeys: {
   [key: string]: string;
-}
-
-export const renamingKeys: IRenaming = {
+} = {
   date_ref: "Important Dates",
   link_ref: "Important Links",
   common_ref: "Common Information",
 };
 
-export const renamingValues: IRenaming = {
-  
+export interface IRenamingValues {
+  [key: string]: string | IRenamingValues;
+}
+
+export const renamingValues: IRenamingValues = {
+  stage_level: {
+    national:
+      "National Level - Open to participants across the entire country, fostering large-scale competition.",
+    state:
+      "State Level - Limited to a particular state, ensuring more localized participation.",
+    district:
+      "District Level - Open only within a specific district, often for more focused recruitment.",
+    regional:
+      "Regional Level - Covers multiple districts but stays within a specific geographic region.",
+    local:
+      "Local Level - Restricted to a city, town, or specific locality for niche opportunities.",
+    international:
+      "International Level - Open globally, inviting competition beyond national borders.",
+  },
+  applicants_gender_that_can_apply: {
+    male: "Male - This position is open exclusively for male applicants.",
+    female: "Female - Only female candidates are eligible for this post.",
+    other:
+      "Other - Open to applicants identifying as non-binary or other genders.",
+    all: "All - Inclusive opportunity for everyone, regardless of gender.",
+  },
+  post_exam_mode: {
+    online:
+      "Online - The exam will be conducted over the internet, accessible remotely.",
+    offline_paper_based:
+      "Offline (Paper-Based) - Candidates must attend a physical test center to take a written paper exam.",
+    offline_computer_based:
+      "Offline (Computer-Based) - Conducted at a designated center where candidates take the test on computers.",
+  },
+  job_type: {
+    permanent:
+      "Permanent - A full-time job with long-term employment benefits and stability.",
+    temporary:
+      "Temporary - Short-term employment for a fixed duration, often project-based.",
+    contractual:
+      "Contractual - Fixed-period employment based on a contractual agreement.",
+    part_time: "Part-Time - Work with reduced hours, offering flexibility.",
+    internship:
+      "Internship - Learning-based job experience for students or freshers, usually for a limited period.",
+  },
+  post_exam_toughness_ranking: "rank",
+  post_exam_duration: "minutes",
+  minimum_age: "year old",
+  maximum_age: "year old",
 };

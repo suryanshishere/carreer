@@ -26,7 +26,7 @@ const PostLinkItem: React.FC<PostItemProps> = ({ section, item }) => {
       <Link
         to={`/sections/${section}/${item.post_code}/${item.version ?? "main"}`}
         state={{ postId: item._id }}
-        className="custom-link"
+        className="custom_link"
       >
         {refData?.name_of_the_post ?? "Unnamed Post"}
       </Link>
