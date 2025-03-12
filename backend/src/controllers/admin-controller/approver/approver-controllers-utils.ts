@@ -32,21 +32,29 @@ export const updateContributorContribution = async (
   let contributionMap = contributor.contribution.get(post_code);
   if (!contributionMap) throw new HttpError("Post code data not found.", 404);
 
-  const contributedData = contributionMap[section];
-  if (!contributedData)
+  const postObj = contributionMap.toObject ? contributionMap.toObject() : { ...contributionMap };
+
+  if (!(section in postObj)) {
     throw new HttpError("Contributed section data not found.", 404);
+  }
 
-  // Remove the updated keys from contributor's data
-  Object.keys(data).forEach((key) => delete contributedData[key]);
+  // Remove the specified keys from the section
+  Object.keys(data).forEach((key) => delete postObj[section][key]);
 
-  // Clean up empty objects
-  if (Object.keys(contributedData).length === 0)
-    delete contributionMap[section];
-  if (Object.keys(contributionMap).length === 0)
+  // If section is now empty, remove it
+  if (Object.keys(postObj[section]).length === 0) {
+    delete postObj[section];
+  }
+
+  // If postObj is empty after removing the section, delete post_code entry completely
+  if (Object.keys(postObj).length === 0) {
     contributor.contribution.delete(post_code);
-  else contributor.contribution.set(post_code, contributionMap);
+    contributor.markModified("contribution");
+  } else {
+    contributor.contribution.set(post_code, postObj);
+    contributor.markModified(`contribution.${post_code}`);
+  }
 
-  contributor.markModified("contribution");
   await contributor.save({ session });
   return contributor;
 };
