@@ -5,6 +5,7 @@ import POST_DB from "posts/db";
 import PageHeader from "shared/ui/PageHeader";
 import ContributionTrends from "./ContributeTrends";
 import Button from "shared/utils/form/Button";
+import Para from "shared/ui/Para";
 
 const ContributionSection = () => {
   const navigate = useNavigate();
@@ -46,10 +47,10 @@ const ContributionSection = () => {
           {selectedSection ? (
             <ContributionTrends section={selectedSection} />
           ) : (
-            <p className="min-h-40 w-full flex flex-col items-center justify-center text-center">
-              <span className="text-xl font-semibold">Select the section </span> 
-              <span>(under which you want to fetch the contributed post)</span>
-            </p>
+            <Para
+              header="Select the section"
+              subHeader="under which you want to fetch the contributed posts"
+            />
           )}
         </div>
       </div>

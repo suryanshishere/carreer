@@ -55,7 +55,7 @@ const MyContribution: React.FC = () => {
           data?.metadata?.timeStamp?.updatedAt || ""
         ).format("LL")}`}
       />
-      <div className="flex justify-end gap-2 mb-3 -mt-3">
+      <div className="flex mobile:justify-end gap-2 mb-3 -mt-3">
         <Button
           onClick={() => setSelectedTab("contribution")}
           classProp={`rounded-full max-w-fit px-4 py-1 text-sm ${

@@ -16,6 +16,7 @@ interface IDropdown {
   classProp?: string;
   style?: CSSProperties;
   defaultValue?: string | number | Date;
+  showDefaultText?: boolean; // NEW PROP: Show placeholder text if no default value
 }
 
 const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
@@ -34,6 +35,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
       multiple,
       register,
       defaultValue,
+      showDefaultText = true,
     },
     ref
   ) => {
@@ -52,15 +54,17 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
           {...register?.(name)}
           required={required}
           multiple={multiple}
-          defaultValue={defaultValue}
+          defaultValue={defaultValue ?? ""} // Explicitly setting an empty default
           className={`w-full p-2 outline outline-2 outline-custom_less_gray text-base rounded ${classProp} ${
             error ? "outline-custom_red" : ""
           } ${error ? "focus:ring-custom_red" : "focus:ring-custom_less_gray"}`}
           style={style}
         >
-          <option value="" disabled hidden>
-            Select an option
-          </option>
+          {showDefaultText && (
+            <option value="" disabled hidden>
+              Select an option
+            </option>
+          )}
           {data.map((item) =>
             typeof item === "string" ? (
               <option key={item} value={item}>
