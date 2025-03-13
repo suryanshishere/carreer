@@ -114,6 +114,7 @@ export interface INavAccountList {
   create_new_post: INavAccountListItem;
   my_contribution: INavAccountListItem;
   contributions: INavAccountListItem;
+  non_approved_posts: INavAccountListItem;
   access: INavAccountListItem;
   setting: INavAccountSetting;
   revoke_access: null;
@@ -146,6 +147,10 @@ export function useNavAccountList<T extends keyof INavAccountList>(
     contributions: {
       role: ["admin", "approver"],
       link: "/approver/contributions-section",
+    },
+    non_approved_posts: {
+      role: ["admin", "approver"],
+      link: "/approver/non-approved-posts",
     },
     access: {
       role: ["admin"],

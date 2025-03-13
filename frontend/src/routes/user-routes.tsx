@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 import SavedPosts from "users/pages/account/SavedPosts";
 import ChangePassword from "users/pages/account/setting/ChangePassword";
 import ForgotPassword from "users/pages/auth/ForgotPassword";
@@ -6,7 +8,8 @@ import ReqAccess from "users/pages/RequestAccess";
 import ResetPassword from "users/pages/auth/ResetPassword";
 import MyContribution from "users/pages/account/MyContribution";
 
-const userRoutes = (token: string | null, role?: string) => {
+export const useUserRoutes = () => {
+  const token = useSelector((state: RootState) => state.user.userData.token);
   if (token) {
     return [
       {
@@ -21,26 +24,13 @@ const userRoutes = (token: string | null, role?: string) => {
             path: "account",
             children: [
               { path: "saved-posts", element: <SavedPosts /> },
-              { path: "my-contribution" , element: <MyContribution/>},
+              { path: "my-contribution", element: <MyContribution /> },
               {
                 path: "setting",
                 children: [
-                  // {
-                  //   index: true,
-                  //   element: <Setting />,
-                  // },
-                  {
-                    path: "change-password",
-                    element: <ChangePassword />,
-                  },
-                  {
-                    path: "forgot-password",
-                    element: <ForgotPassword />,
-                  },
-                  {
-                    path: "deactivate-account",
-                    element: <DeactivateAccount />,
-                  },
+                  { path: "change-password", element: <ChangePassword /> },
+                  { path: "forgot-password", element: <ForgotPassword /> },
+                  { path: "deactivate-account", element: <DeactivateAccount /> },
                 ],
               },
             ],
@@ -49,8 +39,5 @@ const userRoutes = (token: string | null, role?: string) => {
       },
     ];
   }
-
   return [];
 };
-
-export default userRoutes;

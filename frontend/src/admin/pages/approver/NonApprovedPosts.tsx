@@ -41,7 +41,7 @@ interface IAccessUpdate extends IAccessFilter {
   req_id: string;
 }
 
-const Access: React.FC = () => {
+const NonApprovedPosts: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.user.userData);
   const dispatch = useDispatch<AppDispatch>();
   const [filters, setFilters] = useState<IAccessFilter | null>(null);
@@ -93,7 +93,7 @@ const Access: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col">
-      <PageHeader header="Access" subHeader="List of the access" />
+      <PageHeader header="NonApprovedPosts" subHeader="List of the access" />
 
       <form
         onSubmit={handleSubmit((data) => setFilters(data))}
@@ -150,4 +150,4 @@ const Access: React.FC = () => {
   );
 };
 
-export default Access;
+export default NonApprovedPosts;
