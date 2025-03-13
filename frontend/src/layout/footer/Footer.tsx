@@ -35,8 +35,6 @@ const Footer: React.FC = () => {
     },
   });
 
-  
-
   const footerLinkClassName = "hover:underline lg:text-start w-fit";
 
   return (
@@ -57,34 +55,13 @@ const Footer: React.FC = () => {
             Request Access
           </Link>
         )}
-        {token && role==="none" && (
+        {token && role === "none" && (
           <button
             onClick={() => activateAccess()}
             className={footerLinkClassName}
           >
             Activate access
           </button>
-        )}
-        {token && (
-          <button
-            // onClick={() => activateAccess()}
-            className={footerLinkClassName}
-          >
-            Revoke access (TODO)
-          </button>
-        )}
-        {(role === "admin" || role === "approver") && (
-          <Link
-            to="/approver/contributions-section"
-            className={footerLinkClassName}
-          >
-            Contributions
-          </Link>
-        )}
-        {role === "admin" && (
-          <Link to="/admin/access"  className={footerLinkClassName}>
-            Access
-          </Link>
         )}
       </div>
     </footer>

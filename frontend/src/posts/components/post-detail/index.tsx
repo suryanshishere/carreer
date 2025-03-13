@@ -27,7 +27,7 @@ const PostDetailComponent: React.FC<{
   }
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-[1.75rem]">
       {Object.entries(data).map(([key, value]: [string, any], index) => {
         //filtering the logic at the top level
         if (

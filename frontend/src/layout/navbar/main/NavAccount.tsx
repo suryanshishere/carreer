@@ -13,7 +13,6 @@ import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
-import { NAV_ACCOUNT_LIST } from "users/db";
 
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -78,10 +77,10 @@ const NavAccount = () => {
       </button>
       <div className="absolute right-0 top-full -mt-[4px] flex float-start flex-row-reverse gap-1">
         {dropdownStates["main_nav_account"] && (
-          <NavAccountList data={NAV_ACCOUNT_LIST} />
+          <NavAccountList />
         )}
         {dropdownStates["setting"] && (
-          <NavAccountList data={NAV_ACCOUNT_LIST.setting} />
+          <NavAccountList keyProp="setting" />
         )}
       </div>
     </>
