@@ -14,11 +14,31 @@ import { AppDispatch } from "shared/store";
 import axiosInstance from "shared/utils/api/axios-instance";
 import _ from "lodash";
 import {
-  ICreateNewPostForm,
-  validationSchema,
-} from "admin/shared/admin_form_validation";
-import POST_DB from "posts/db";
+  validateApiKey,
+  validateNameOfThePost,
+  validatePostCode,
+  validateSection,
+  validateVersion,
+} from "admin/utils/form-validation-utils";
+import POST_DB, { ISectionKey } from "posts/db";
 import PageHeader from "shared/ui/PageHeader";
+import * as Yup from "yup";
+
+interface ICreateNewPostForm {
+  name_of_the_post: string;
+  post_code: string;
+  section: ISectionKey;
+  version?: string;
+  api_key_from_user?: string;
+}
+
+const validationSchema = Yup.object().shape({
+  name_of_the_post: validateNameOfThePost,
+  post_code: validatePostCode,
+  version: validateVersion,
+  api_key_from_user: validateApiKey,
+  section: validateSection,
+});
 
 const CreateNewPost: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

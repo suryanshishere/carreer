@@ -30,7 +30,7 @@ export const useAdminRoutes = () => {
           ],
         },
         {
-          path: "non-approved-posts",
+          path: "non-approved-posts/:section?",
           element: <NonApprovedPosts />,
         },
       ],

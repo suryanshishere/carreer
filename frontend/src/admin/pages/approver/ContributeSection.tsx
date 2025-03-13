@@ -1,26 +1,40 @@
 import { useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { startCase } from "lodash";
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "shared/utils/api/axios-instance";
 import POST_DB from "posts/db";
 import PageHeader from "shared/ui/PageHeader";
-import ContributionTrends from "./ContributeTrends";
 import Button from "shared/utils/form/Button";
 import Para from "shared/ui/Para";
+import DataStateWrapper from "shared/utils/DataStateWrapper";
+import renderPostData from "posts/shared/render-post-data";
 
 const ContributionSection = () => {
   const navigate = useNavigate();
-  // Retrieve the section parameter from the URL (if present)
   const { section: selectedSection } = useParams<{ section?: string }>();
 
   const handleSectionClick = useCallback(
     (section: string) => {
       if (selectedSection !== section) {
-        // Navigate to the new URL with the section as a path parameter
         navigate(`/approver/contributions-section/${section}`);
       }
     },
     [selectedSection, navigate]
   );
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["contributionTrends", selectedSection],
+    queryFn: async () => {
+      if (!selectedSection) return { data: [] };
+      const response = await axiosInstance.get(
+        `/admin/approver/contri-post-codes/${selectedSection}`
+      );
+      return response.data;
+    },
+    enabled: !!selectedSection,
+    retry: 3,
+  });
 
   return (
     <div className="flex flex-col">
@@ -45,11 +59,24 @@ const ContributionSection = () => {
 
         <div className="flex-1 overflow-y-auto">
           {selectedSection ? (
-            <ContributionTrends section={selectedSection} />
+            <DataStateWrapper
+              isLoading={isLoading}
+              error={error}
+              data={data?.data}
+              emptyCondition={(data) => !data || data.length === 0}
+              skipLoadingUI={false}
+              nodelay
+            >
+              {(validData) => (
+                <div className="w-full h-full flex items-start">
+                  {renderPostData("contributionTrends", validData)}
+                </div>
+              )}
+            </DataStateWrapper>
           ) : (
             <Para
               header="Select the section"
-              subHeader="under which you want to fetch the contributed posts"
+              subHeader="(Under which you want to fetch the contributed posts)"
             />
           )}
         </div>

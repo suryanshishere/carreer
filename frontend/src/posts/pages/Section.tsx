@@ -37,7 +37,7 @@ const Section: React.FC = () => {
     >
       {(validData) => (
         <div className="flex flex-col gap-3">
-          {section && <PostList data={validData} section={section} />}
+          <PostList data={validData} section={section as ISectionKey} />
         </div>
       )}
     </DataStateWrapper>

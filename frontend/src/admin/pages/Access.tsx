@@ -143,7 +143,7 @@ const Access: React.FC = () => {
       ) : (
         <Para
           header="Select the role and status"
-          subHeader="under which you want to fetch the access list"
+          subHeader="(Under which you want to fetch the access list)"
         />
       )}
     </div>
