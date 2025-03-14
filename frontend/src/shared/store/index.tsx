@@ -1,18 +1,33 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistStore, persistReducer, createTransform } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import dropdownReducer from "./dropdownSlice";
 import responseReducer from "./responseSlice";
-import userReducer from "./userSlice";
+import userReducer, { initialUserSliceState } from "./userSlice";
 import postReducer from "./postSlice";
 import modalReducer from "./modalSlice";
 
-const userPersistConfig = {
+const saveSubsetOfMode = createTransform(
+  // Inbound: persist only the `max` property.
+  (inboundState: any, key) => {
+    return { max: inboundState.max };
+  },
+  // Outbound: rehydrate by merging persisted `max` with default tag values.
+  (outboundState: any, key) => {
+    return {
+      max: outboundState.max,
+      tags: { ...initialUserSliceState.mode["tags"] },
+    };
+  },
+  { whitelist: ["mode"] }
+);
+
+export const userPersistConfig = {
   key: "auth",
   storage,
   whitelist: ["userData", "mode"],
+  transforms: [saveSubsetOfMode],
 };
-
 const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
 
 const store = configureStore({

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { startCase } from "lodash";
-import Tag, { shouldDisplayTag } from "posts/shared/tag/Tag";
+import Tag from "posts/shared/Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import { HomeSkeletonLoad } from "posts/shared/SkeletonLoad";
@@ -55,14 +55,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
           <>
             <ul className="flex flex-col">
               {data.slice(0, HOME_LIMIT).map((item) => {
-                // Use the helper to check if the tag should be displayed for this item.
-                const displayTag = shouldDisplayTag(
-                  item.date_ref,
-                  section,
-                  userTags
-                );
-
-                if (!displayTag) {
+                if (!userTags["none"] && !userTags[item.tag]) {
                   return null;
                 }
 
@@ -71,8 +64,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                     key={item._id}
                     className="group inline-flex justify-start items-center min-h-7 my-2"
                   >
-                    <Tag section={section} importantDates={item.date_ref} />
-
+                    <Tag tag={item.tag} />
                     <PostLinkItem section={section} item={item} />
                   </li>
                 );

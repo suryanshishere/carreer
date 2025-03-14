@@ -43,7 +43,7 @@ export default DateModel;
 
 // ------------------------
 
-interface IDateRange {
+export interface IDateRange {
   current_year?: Date;
   previous_year: Date;
 }

@@ -2,18 +2,20 @@ import POSTS_POPULATE from "@models/posts/db/post-map/post-populate-map";
 import HttpError from "@utils/http-errors";
 import { NextFunction } from "express";
 import PostModel from "@models/posts/Post";
-import { PopulateOption } from "@models/posts/db";
+import { PopulateOption, TAGS } from "@models/posts/db";
 import POST_POPULATE from "@models/posts/db/post-map/post-populate-map";
 import { ISectionKey } from "@models/posts/db";
 import getSortedDateIds from "./get-sorted-date-ids";
 import mongoose from "mongoose";
+import calculateDateDifference from "./calculate-date-diff";
+import { IDates } from "@models/posts/components/Date";
 
 export const fetchPostList = async (
   section: ISectionKey,
   includePopulate: boolean = true,
   next: NextFunction,
   approvedStatus: boolean = true,
-  includeSortedIds: boolean = true,
+  includeSortedIds: boolean = true
 ) => {
   try {
     let sortedPostIds: string[] = [];
@@ -49,12 +51,7 @@ export const fetchPostList = async (
       return posts;
     }
 
-    // Manually sort posts based on sortedPostIds order
-    const orderedPosts = sortedPostIds
-      .map((id) => posts.find((post) => post._id.toString() === id.toString()))
-      .filter((post): post is NonNullable<typeof post> => Boolean(post));
-
-    return orderedPosts;
+    return posts;
   } catch (error) {
     console.error("Error fetching post list:", error);
     return next(
@@ -63,12 +60,11 @@ export const fetchPostList = async (
   }
 };
 
-
 export const fetchPostDetail = async (
   section: ISectionKey,
   postIdOrCode: string,
   version: string = "main",
-  useLean: boolean = true  
+  useLean: boolean = true
 ) => {
   const query = mongoose.Types.ObjectId.isValid(postIdOrCode)
     ? {
@@ -92,4 +88,23 @@ export const fetchPostDetail = async (
   }
 
   return await queryBuilder;
+};
+
+export const getTagForPost = (
+  dateRef: Partial<IDates>,
+  section: ISectionKey
+): string => {
+  const days = calculateDateDifference(dateRef, section);
+ 
+  let tagKey: string = "none"; 
+  if (days !== null) {
+    const matchingTagEntry = Object.entries(TAGS).find(
+      ([key, range]) => range && days >= range[0] && days < range[1]
+    );
+
+    if (matchingTagEntry) {
+      tagKey = matchingTagEntry[0];
+    }
+  }
+  return tagKey;
 };

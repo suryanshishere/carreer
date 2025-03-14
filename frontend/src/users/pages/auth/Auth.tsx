@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ForgotPassword from "./ForgotPassword";
-import AuthComponent from "users/components/auth/AuthComponent";
+import AuthComponent from "users/components/auth/AuthItem";
 import EmailVerification from "users/components/auth/EmailVerification";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";

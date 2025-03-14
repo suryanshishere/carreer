@@ -30,14 +30,14 @@ const TagButton: React.FC<TagButtonProps> = ({
   onClick,
 }) => {
   // For visited tag - future perspective and feature in look pending
-  if (label === "VISITED") {
+  if (label === "none") {
     return (
       <span
         // basicButton
-        className={`flex items-center justify-center gap-1 text-xs font-medium select-none hover:bg-none px-1 py-1 ${classProp}`}
+        className={`flex items-center justify-center gap-1 text-xs font-medium select-none hover:bg-none px-1 py-1 uppercase ${classProp}`}
       >
-        <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
-        <span>{label}</span>
+        <span className="h-3 w-3 rounded-full bg-custom_black"></span>
+        <span>VISITED</span>
       </span>
     );
   }
@@ -46,7 +46,7 @@ const TagButton: React.FC<TagButtonProps> = ({
     <Button
       basicButton
       onClick={onClick}
-      classProp={`flex items-center gap-1 text-xs font-medium hover:bg-custom_white ${
+      classProp={`flex items-center gap-1 text-xs font-medium hover:bg-custom_white uppercase ${
         isActive ? "bg-custom_white" : ""
       } ${classProp}`}
     >
@@ -81,23 +81,22 @@ const NavTags: React.FC = () => {
   const viewType: ViewType = useResponsiveView(viewObject);
   const tagButtonShow =
     viewType === "tablet" ||
-    viewType === "large_mobile"||
+    viewType === "large_mobile" ||
     viewType === "medium_mobile" ||
     viewType === "mobile";
 
   return (
-    <div ref={dropdownRef} className="relative min-w-28 flex items-center">
+    <div ref={dropdownRef} className="relative min-w-28 h-fit flex items-center">
       {tagButtonShow ? (
         <button
           onClick={() => setShowTagsDropdown(!showTagsDropdown)}
           className={`rounded-full outline outline-custom_gray w-full h-full bg-custom_less_gray flex items-center justify-center gap-2 ${
-            viewType === "mobile"   ? "py-1" : "py-[1px]"
+            viewType === "mobile" ? "py-1" : "py-[1px]"
           } ${showTagsDropdown && "shadow-md shadow-custom_black"}`}
         >
           Tags
           <ArrowDropDownIcon
-            fontSize="small"
-            className="rounded-full bg-custom_gray text-custom_less_gray"
+            fontSize="small" 
           />
         </button>
       ) : (
@@ -105,8 +104,8 @@ const NavTags: React.FC = () => {
           {Object.entries(TAGS).map(([tagsKey, item]) => (
             <TagButton
               key={tagsKey}
-              label={item.label}
-              color={item.color}
+              label={tagsKey}
+              color={item ?? ""}
               isActive={currentTags[tagsKey as keyof IUserAccountMode["tags"]]}
               classProp="rounded-full"
               onClick={() =>
@@ -120,10 +119,10 @@ const NavTags: React.FC = () => {
       {showTagsDropdown && (
         <div className="absolute rounded top-full mt-1 w-full bg-custom_less_gray z-10 shadow-md shadow-custom_black p-1">
           {Object.entries(TAGS).map(([tagsKey, item], index, array) => (
-            <React.Fragment key={item.label}>
+            <React.Fragment key={tagsKey}>
               <TagButton
-                label={item.label}
-                color={item.color}
+                label={tagsKey}
+                color={item ?? ""}
                 isActive={
                   currentTags[tagsKey as keyof IUserAccountMode["tags"]]
                 }

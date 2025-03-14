@@ -1,3 +1,5 @@
+import { ITagKey } from "users/db";
+
 export interface ICommonListData {
   result_ref: { name_of_the_post: string };
   admission_ref: { name_of_the_post: string };
@@ -7,7 +9,7 @@ export interface ICommonListData {
   admit_card_ref: { name_of_the_post: string };
   important_ref: { name_of_the_post: string };
   latest_job_ref: { name_of_the_post: string };
-  
+  tag: ITagKey;
   result_approved: boolean;
   admission_approved: boolean;
   answer_key_approved: boolean;

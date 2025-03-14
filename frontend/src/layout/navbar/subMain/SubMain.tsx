@@ -1,6 +1,6 @@
 import React from "react";
 import Navlinks from "./Navlinks";
-import Tags from "./NavTags";
+import NavTags from "./NavTags";
 import useHandleScroll from "shared/hooks/handle-scroll-hook";
 import useResponsiveView, {
   viewObject,
@@ -20,7 +20,7 @@ const SubMain: React.FC = () => {
         ${showSubNav ? "translate-y-0" : "-translate-y-full"}`}
     >
       <Navlinks />
-      <Tags />
+      <NavTags />
     </div>
   );
 };

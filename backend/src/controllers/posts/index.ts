@@ -7,11 +7,12 @@ import FeeModel from "@models/posts/components/Fee";
 import DateModel from "@models/posts/components/Date";
 import LinkModel from "@models/posts/components/Link";
 import PostModel from "@models/posts/Post";
-import { fetchPostDetail, fetchPostList } from "./utils";
+import { fetchPostDetail, fetchPostList, getTagForPost } from "./utils";
 import { SECTION_POST_MODEL_MAP } from "@models/posts/db/post-map/post-model-map";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import User from "@models/users/User";
-import { ISectionKey } from "@models/posts/db";
+import { ISectionKey, ITagKey, TAGS } from "@models/posts/db";
+import calculateDateDifference from "./utils/calculate-date-diff";
 
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
@@ -39,13 +40,16 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
         const savedIds = savedPost?.[key]?.map(String) || [];
         const posts = await fetchPostList(key as ISectionKey, false, next);
 
-        //todo: improve error handling
         return {
-          [key]: posts?.map(({ _id, ...rest }) => ({
-            _id,
-            is_saved: savedIds.includes(String(_id)),
-            ...rest,
-          })),
+          [key]: posts?.map(({ _id, date_ref, ...rest }) => {
+            return {
+              _id,
+              is_saved: savedIds.includes(String(_id)),
+              tag: getTagForPost(date_ref, key as ISectionKey),
+              date_ref,
+              ...rest,
+            };
+          }),
         };
       }
     );
@@ -83,11 +87,17 @@ export const section = async (
     const includePopulate = user?.mode?.max || false;
     const response = await fetchPostList(section, includePopulate, next);
     //todo: if null them better
-    const postsWithSavedStatus = response?.map(({ _id, ...rest }) => ({
-      _id,
-      ...rest,
-      is_saved: savedIds.includes(String(_id)),
-    }));
+
+    //saved check and tags added here (since post count is limit until next pagination load it efficient)
+    const postsWithSavedStatus = response?.map(({ _id, date_ref, ...rest }) => {
+      return {
+        _id,
+        ...rest,
+        is_saved: savedIds.includes(String(_id)),
+        tag: getTagForPost(date_ref, section),
+        date_ref, // Ensure date_ref is included in the response
+      };
+    });
 
     const responseData = {
       data: { [section]: postsWithSavedStatus },

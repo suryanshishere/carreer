@@ -3,7 +3,7 @@ import RenderField from "posts/shared/render-post-data/RenderField";
 import _ from "lodash";
 import { excludedPostListKeys } from "posts/db/renders";
 import { ParaSkeletonLoad } from "./SkeletonLoad";
-import Tag, { shouldDisplayTag } from "./tag/Tag";
+import Tag from "./Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostLinkItem from "./PostLinkItem";
@@ -79,16 +79,13 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
   return (
     <ul className="self-start w-full p-0 m-0 flex flex-col text-base">
       {data.map((item) => {
-        // Use the helper to check if the tag should be displayed for this item.
-        const displayTag = shouldDisplayTag(item.date_ref, section, userTags);
-
-        if (!displayTag) {
+        if (!userTags["none"] && !userTags[item.tag]) {
           return null;
         }
 
         return (
           <li key={item._id} className="flex my-2">
-            <Tag section={section} importantDates={item.date_ref} />
+            <Tag tag={item.tag} />
             <div className="group w-full flex flex-col gap-1 justify-center">
               <PostLinkItem section={section} item={item} />
               <p className="text-sm text-custom_gray flex flex-col flex-wrap gap-[2px]">

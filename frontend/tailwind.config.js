@@ -56,7 +56,7 @@ module.exports = {
         "main-nav": "3rem",
         // "main-nav-sm": "3.5rem",
         auth_nav: "5rem",
-        sub_nav: "2rem",
+        sub_nav: "2.25rem",
         sub_nav_sm: "2.5rem",
         auth_sub_nav: "8rem",
         nav_overall: "8rem",

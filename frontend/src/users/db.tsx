@@ -8,27 +8,21 @@ import {
 } from "shared/store/dropdownSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "shared/store"; 
+import { AppDispatch } from "shared/store";
 
-interface ITagItem {
-  color: string;
-  label: string;
-  daysRange: [number, number];
-}
+export type ITagKey = "live" | "upcoming" | "released" | "expiring" | "none";
+
+export const TAGS: Record<ITagKey, string | null> = {
+  live: "custom_green",
+  upcoming: "custom_pale_orange",
+  released: "custom_gray",
+  expiring: "custom_red animate-pulse",
+  none: null,
+};
 
 interface IUserAccountModeDB {
   max_mode_off_confirm: ReactNode;
-  tags: {
-    live: ITagItem;
-    upcoming: ITagItem;
-    released: ITagItem;
-    expiring: ITagItem;
-    visited: {
-      color: string;
-      label: string;
-      daysRange?: [number, number];
-    };
-  };
+  tags: Record<ITagKey, string | null>;
 }
 
 export const USER_ACCOUNT_MODE_DB: IUserAccountModeDB = {
@@ -41,21 +35,7 @@ export const USER_ACCOUNT_MODE_DB: IUserAccountModeDB = {
       </p>
     </>
   ),
-  tags: {
-    live: { color: "custom_green", label: "LIVE", daysRange: [-3, 2] },
-    upcoming: {
-      color: "custom_pale_orange",
-      label: "UPCOMING",
-      daysRange: [3, 80],
-    },
-    released: { color: "custom_gray", label: "RELEASED", daysRange: [-300, -4] },
-    expiring: {
-      color: "custom_red animate-pulse",
-      label: "EXPIRING",
-      daysRange: [2000, 3000],
-    },
-    visited: { color: "custom_black", label: "VISITED" },
-  },
+  tags: TAGS,
 };
 
 export const CONTRIBUTER_DB = {
@@ -65,13 +45,7 @@ export const CONTRIBUTER_DB = {
 
 export interface IUserAccountMode {
   max: boolean;
-  tags: {
-    live: boolean;
-    upcoming: boolean;
-    released: boolean;
-    expiring: boolean;
-    visited: boolean;
-  };
+  tags: Record<ITagKey, boolean>;
 }
 
 export interface IUserData {

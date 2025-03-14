@@ -76,15 +76,14 @@ const Navlinks: React.FC = () => {
       {dropdownLinks.length > 0 && (
         <div ref={dropdownRef} className="relative flex-1 w-full">
           <button
-            className={`rounded-full outline outline-custom_gray w-full bg-custom_less_gray px-2 flex items-center justify-center gap-2 ${
+            className={`rounded-full outline outline-custom_gray w-full bg-custom_less_gray px-1 flex items-center justify-center gap-2 ${
                 viewType === "mobile"? "py-1" : "py-[1px]"
             } ${showDropdown && "shadow-md shadow-custom_black"}`}
             onClick={() => setShowDropdown(!showDropdown)}
           >
             {selectedSection ? startCase(selectedSection) : "More Section"}
             <ArrowDropDownIcon
-              fontSize="small"
-              className="rounded-full bg-custom_gray text-custom_less_gray"
+              fontSize="small" 
             />
           </button>
           {showDropdown && (

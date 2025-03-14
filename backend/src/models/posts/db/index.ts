@@ -1,5 +1,7 @@
 // ------------------------------------ POST DATA LIMITS
 
+import { IDates } from "../components/Date";
+
 interface CharLimits {
   min: number;
   max: number;
@@ -184,3 +186,24 @@ export type IOverPostRefKey =
   | "admission_ref"
   | "fee_ref"
   | "latest_job_ref";
+
+export const TAG_DATE_MAP: Record<ISectionKey, (keyof IDates)[]> = {
+  result: ["result_announcement_date"],
+  latest_job: ["application_start_date", "application_end_date"],
+  answer_key: ["answer_key_release_date"],
+  syllabus: ["application_start_date", "application_end_date"],
+  certificate_verification: ["certificate_verification_date"],
+  admission: ["counseling_start_date", "counseling_end_date"],
+  important: ["important_date"],
+  admit_card: ["admit_card_release_date"],
+};
+
+export type ITagKey = "live" | "upcoming" | "released" | "expiring" | "none";
+
+export const TAGS: Record<ITagKey, [number, number] | null> = {
+  live: [-3, 3],
+  upcoming: [3, 80],
+  released: [-300, -3],
+  expiring: [1111, 2812],
+  none: null,
+};

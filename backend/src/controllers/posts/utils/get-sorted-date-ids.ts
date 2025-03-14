@@ -1,16 +1,5 @@
-import DateModel, { IDates } from "@models/posts/components/Date";
-import { ISectionKey } from "@models/posts/db";
-
-const postSortMap: Record<string, (keyof IDates)[]> = {
-  result: ["result_announcement_date"],
-  latest_job: ["application_start_date", "application_end_date"],
-  answer_key: ["answer_key_release_date"],
-  syllabus: ["application_start_date", "application_end_date"],
-  certificate_verification: ["certificate_verification_date"],
-  admission: ["counseling_start_date", "counseling_end_date"],
-  important: ["important_date"],
-  admit_card: ["admit_card_release_date"],
-};
+import DateModel from "@models/posts/components/Date";
+import { ISectionKey, TAG_DATE_MAP } from "@models/posts/db";
 
 const getSortedDateIds = async (section: ISectionKey) => {
   const currentDate = new Date();
@@ -30,7 +19,7 @@ const getSortedDateIds = async (section: ISectionKey) => {
   );
 
   // Get the relevant date fields for the section
-  const fieldsToCheck = postSortMap[section] || [];
+  const fieldsToCheck = TAG_DATE_MAP[section] || [];
 
   if (fieldsToCheck.length === 0) {
     return []; // No valid fields, return empty

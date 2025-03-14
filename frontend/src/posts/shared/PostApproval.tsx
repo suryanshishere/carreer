@@ -7,7 +7,7 @@ const PostApproval: React.FC<{ approved: boolean }> = ({ approved = true }) => {
   const role = useSelector((state: RootState) => state.user.userData.role);
   const contributeActive = useSelector((state:RootState)=> state.post.isEditPostClicked);
 
-  if (!role || role == "none" || role == "publisher") {
+  if (!role || role === "none" || role === "publisher") {
     return null;
   }
 
