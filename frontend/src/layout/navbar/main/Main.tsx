@@ -1,6 +1,6 @@
 import React from "react";
 import NavAccount from "./NavAccount";
-import Mode from "./Mode";
+import Mode from "./NavMaxMode";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 
