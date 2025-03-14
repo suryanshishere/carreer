@@ -66,14 +66,14 @@ const NonApprovedPosts: React.FC = () => {
           </Button>
         ))}
 
-        <Toggle
+        {selectedSection && <Toggle
           checked={isActive}
           onChange={toggleActive}
           tooltip="Fetch current active posts"
           label="Active"
           labelClassName="w-20"
           dotActiveClassName="translate-x-14"
-        />
+        />}
       </div>
 
       <div className="flex-1 overflow-y-auto">

@@ -88,7 +88,7 @@ export const fetchPostDetail = async (
     .populate(POSTS_POPULATE.section_detail_populate[section]);
 
   if (useLean) {
-    queryBuilder = queryBuilder.lean();
+    queryBuilder = queryBuilder.lean() as any;
   }
 
   return await queryBuilder;

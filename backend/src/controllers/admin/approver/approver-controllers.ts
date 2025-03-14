@@ -165,7 +165,7 @@ export const applyContri = async (
     }
 
     // Update post data (in-memory modification, no session needed)
-    Object.keys(data).forEach((key) => _.set(post, key, data[key]));
+    Object.keys(data).forEach((key) => post && _.set(post, key, data[key]));
 
     // Update contributors list
     const contributorsField = `${section}_contributors`;

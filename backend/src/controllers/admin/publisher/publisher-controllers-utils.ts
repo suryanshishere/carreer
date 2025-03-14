@@ -1,5 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import crypto from "crypto";
+import { GoogleGenerativeAI } from "@google/generative-ai"; 
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import { JWTRequest } from "@middlewares/check-auth";
@@ -147,7 +146,7 @@ export const createComponentPost = async (
       await postDoc.save({ session });
     }
 
-    const currentPostId = postDoc._id; // Use this auto-generated ID for components.
+    const currentPostId: mongoose.Types.ObjectId = postDoc._id as mongoose.Types.ObjectId; // Use this auto-generated ID for components.
 
     let runCount = 0;
 

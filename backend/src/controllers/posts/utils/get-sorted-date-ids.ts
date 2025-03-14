@@ -1,4 +1,5 @@
 import DateModel, { IDates } from "@models/posts/components/Date";
+import { ISectionKey } from "@models/posts/db";
 
 const postSortMap: Record<string, (keyof IDates)[]> = {
   result: ["result_announcement_date"],
@@ -11,7 +12,7 @@ const postSortMap: Record<string, (keyof IDates)[]> = {
   admit_card: ["admit_card_release_date"],
 };
 
-const getSortedDateIds = async (section: string) => {
+const getSortedDateIds = async (section: ISectionKey) => {
   const currentDate = new Date();
 
   // Start of the previous month (1st day)
@@ -53,8 +54,15 @@ const getSortedDateIds = async (section: string) => {
 
     fieldsToCheck.forEach((field) => {
       queryConditions.push(
-        { [`${field}.current_year`]: { $gte: adjustedStart, $lte: adjustedEnd } },
-        { [`${field}.previous_year`]: { $gte: adjustedStart, $lte: adjustedEnd } }
+        {
+          [`${field}.current_year`]: { $gte: adjustedStart, $lte: adjustedEnd },
+        },
+        {
+          [`${field}.previous_year`]: {
+            $gte: adjustedStart,
+            $lte: adjustedEnd,
+          },
+        }
       );
     });
   }
@@ -64,7 +72,7 @@ const getSortedDateIds = async (section: string) => {
     .select("_id")
     .lean();
 
-  return sortedDateIds.map((date) => date._id);
+  return sortedDateIds.map((date) => String(date._id));
 };
 
 export default getSortedDateIds;
