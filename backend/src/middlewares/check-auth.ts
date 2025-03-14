@@ -1,3 +1,4 @@
+import { IRole } from "@models/admin/db";
 import HttpError from "@utils/http-errors";
 import { Response, NextFunction, Request } from "express";
 import { expressjwt } from "express-jwt";
@@ -62,6 +63,7 @@ export interface JWTRequest extends Request {
   userData: {
     userId: string;
     email: string;
+    role: IRole;
     deactivated_at?: Date;
   };
 }

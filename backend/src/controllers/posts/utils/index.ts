@@ -39,7 +39,7 @@ export const fetchPostList = async (
     }
 
     const posts = await PostModel.find(query)
-      .select("post_code version updatedAt")
+      .select(`post_code version updatedAt ${section}_approved`)
       .populate(populateArray)
       .lean()
       .sort(includeSortedIds ? undefined : { updatedAt: -1 })
@@ -84,7 +84,7 @@ export const fetchPostDetail = async (
       };
 
   let queryBuilder = PostModel.findOne(query)
-    .select("post_code version")
+    .select(`post_code version updatedAt ${section}_approved`)
     .populate(POSTS_POPULATE.section_detail_populate[section]);
 
   if (useLean) {

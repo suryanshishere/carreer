@@ -133,10 +133,23 @@ export const excludedKeys = [
   "post_code",
   "version",
   "admit_card_ref",
-  "certificate_verification_ref",
   "result_ref",
-  "answer_key_ref",
+  "certificate_verification_ref",
+  "admission_ref",
   "latest_job_ref",
+  "answer_key_ref",
+  "syllabus_ref",
+  "admission_ref",
+  "important_ref",
+  "admit_card_approved",
+  "result_approved",
+  "certificate_verification_approved",
+  "admission_approved",
+  "latest_job_approved",
+  "answer_key_approved",
+  "syllabus_approved",
+  "admission_approved",
+  "important_approved",
 ];
 
 export const notDisplayKeys = [];
@@ -178,8 +191,19 @@ export const excludedPostListKeys = [
   "admission_ref",
   "important_ref",
   "version",
+
+  "admit_card_approved",
+  "result_approved",
+  "certificate_verification_approved",
+  "admission_approved",
+  "latest_job_approved",
+  "answer_key_approved",
+  "syllabus_approved",
+  "admission_approved",
+  "important_approved",
 ];
 
+//content which you want to be expandable but at first collapse to make it interactive and clutter free.
 export const collapsible = ["result_ref.result.previous_year"];
 
 export const renamingKeys: {

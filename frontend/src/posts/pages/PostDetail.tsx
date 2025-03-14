@@ -8,6 +8,7 @@ import Info from "posts/components/post-detail/Info";
 import postDetailByPriority from "../components/post-detail/post-detail-by-priority";
 import DataStateWrapper from "shared/utils/DataStateWrapper";
 import { ISectionKey } from "posts/db";
+import PostApproval from "posts/shared/PostApproval";
 
 const fetchPostDetail = async (
   section: ISectionKey,
@@ -41,15 +42,17 @@ const PostDetail: React.FC = () => {
     isFetching,
     error,
   } = useQuery<{ data: any; is_saved: boolean }, Error>({
+    //using data as any since have render for any types
     queryKey: ["detailPost", section, postIdOrCode, version],
     queryFn: () =>
       section
         ? fetchPostDetail(section, postIdOrCode, version)
         : Promise.reject(new Error("Invalid section")),
-    enabled: !!section, // Prevents query execution if section is undefined
+    enabled: !!section,
   });
 
   const orderedData = section ? postDetailByPriority(data.data, section) : null;
+  console.log(orderedData);
   return (
     <div className="flex flex-col gap-3 relative min-h-screen">
       <div className="self-end flex gap-2 items-center justify-center z-10">
@@ -59,6 +62,9 @@ const PostDetail: React.FC = () => {
           postId={postIdOrCode}
           isSaved={data.is_saved}
         />
+        {orderedData && (
+          <PostApproval approved={orderedData[`${section}_approved`]} />
+        )}
       </div>
       <DataStateWrapper
         isLoading={isLoading || isFetching || !orderedData}

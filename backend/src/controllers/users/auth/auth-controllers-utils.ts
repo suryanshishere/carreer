@@ -40,6 +40,7 @@ export const sendVerificationResponse = async (
 export const generateJWTToken = (
   userId: string,
   email: string,
+  role: string = "none",
   deactivatedAt?: Date
 ): string => {
   if (!JWT_KEY) {
@@ -54,6 +55,7 @@ export const generateJWTToken = (
   const payload = {
     userId,
     email,
+    role,
     ...(deactivatedAt && { deactivated_at: deactivatedAt }),
   };
 
@@ -91,7 +93,12 @@ export const sendAuthenticatedResponse = (
   user: IUser,
   isEmailVerified: boolean = true
 ) => {
-  const token = generateJWTToken(user.id, user.email, user.deactivated_at);
+  const token = generateJWTToken(
+    user.id,
+    user.email,
+    "none",
+    user.deactivated_at
+  );
   const tokenExpiration = new Date(
     Date.now() + Number(JWT_KEY_EXPIRY) * 60000
   ).toISOString();

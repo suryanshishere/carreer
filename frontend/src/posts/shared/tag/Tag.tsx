@@ -12,8 +12,6 @@ const Tag: React.FC<{ section: ISectionKey; importantDates?: IDates }> = ({
   const days = calculateDateDifference(importantDates, section);
   if (days === null) return null;
 
-  console.log(days, section, importantDates);
-
   // Find the matching entry that contains both key and tag
   const matchingTagEntry = Object.entries(USER_ACCOUNT_MODE_DB.tags).find(
     ([key, tag]) =>
@@ -29,7 +27,7 @@ const Tag: React.FC<{ section: ISectionKey; importantDates?: IDates }> = ({
   return (
     <span
       className={`min-h-full w-1 mr-2 flex-none ${
-        matchingTag ? `bg-${matchingTag.color}` : ""
+        matchingTag ? `bg-${matchingTag.color}` : "hidden"
       }`}
     ></span>
   );

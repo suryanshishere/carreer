@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import Bookmark from "./Bookmark";
 import { ICommonListData } from "posts/db/interfaces";
-import { ISectionKey } from "posts/db";
+import { ISectionKey } from "posts/db"; 
 
 interface PostItemProps {
   section: ISectionKey;
-  item: ICommonListData;
+  item: ICommonListData; 
 }
 
 const PostLinkItem: React.FC<PostItemProps> = ({ section, item }) => {
@@ -27,7 +27,7 @@ const PostLinkItem: React.FC<PostItemProps> = ({ section, item }) => {
         className="custom_link"
       >
         {refData?.name_of_the_post ?? "Unnamed Post"}
-      </Link>
+      </Link> 
     </div>
   );
 };

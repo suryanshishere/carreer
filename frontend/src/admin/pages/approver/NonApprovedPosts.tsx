@@ -8,8 +8,7 @@ import Para from "shared/ui/Para";
 import DataStateWrapper from "shared/utils/DataStateWrapper";
 import PostList from "posts/shared/PostList";
 import POST_DB, { ISectionKey } from "posts/db";
-import { startCase } from "lodash";
-import Tooltip from "@mui/material/Tooltip";
+import { startCase } from "lodash"; 
 import Toggle from "shared/utils/form/Toggle";
 
 const NonApprovedPosts: React.FC = () => {
@@ -50,7 +49,7 @@ const NonApprovedPosts: React.FC = () => {
     <div className="w-full flex flex-col gap-3">
       <PageHeader
         header="Non-Approved Posts"
-        subHeader="Select a section to fetch posts"
+        subHeader="Posts which are yet to be approved"
       />
 
       <div className="flex items-center flex-wrap gap-2 -mt-5">
@@ -66,14 +65,16 @@ const NonApprovedPosts: React.FC = () => {
           </Button>
         ))}
 
-        {selectedSection && <Toggle
-          checked={isActive}
-          onChange={toggleActive}
-          tooltip="Fetch current active posts"
-          label="Active"
-          labelClassName="w-20"
-          dotActiveClassName="translate-x-14"
-        />}
+        {selectedSection && (
+          <Toggle
+            checked={isActive}
+            onChange={toggleActive}
+            tooltip="Fetch current active posts"
+            label="Active"
+            labelClassName="w-20"
+            dotActiveClassName="translate-x-14"
+          />
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto">

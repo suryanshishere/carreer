@@ -22,10 +22,10 @@ const getSkeletonItemCount = (height: string | undefined) => {
   if (height) {
     const numericHeight = parseInt(height, 10);
     if (numericHeight > 50) {
-      return 10;  
+      return 10;
     }
   }
-  return 6;  
+  return 6;
 };
 
 const HomeComponent: React.FC<HomeListItemProps> = ({
@@ -71,10 +71,7 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
                     key={item._id}
                     className="group inline-flex justify-start items-center min-h-7 my-2"
                   >
-                    <Tag
-                      section={section}
-                      importantDates={item.date_ref}
-                    />
+                    <Tag section={section} importantDates={item.date_ref} />
 
                     <PostLinkItem section={section} item={item} />
                   </li>

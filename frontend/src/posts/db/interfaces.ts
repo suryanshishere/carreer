@@ -7,6 +7,15 @@ export interface ICommonListData {
   admit_card_ref: { name_of_the_post: string };
   important_ref: { name_of_the_post: string };
   latest_job_ref: { name_of_the_post: string };
+  
+  result_approved: boolean;
+  admission_approved: boolean;
+  answer_key_approved: boolean;
+  certificate_verification_approved: boolean;
+  syllabus_approved: boolean;
+  admit_card_approved: boolean;
+  important_approved: boolean;
+  latest_job_approved: boolean;
   updatedAt: string;
   _id: string;
   is_saved: boolean;

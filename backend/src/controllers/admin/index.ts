@@ -1,17 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { JWTRequest } from "@middlewares/check-auth";
 import HttpError from "@utils/http-errors";
-import  handleValidationErrors  from "@controllers/utils/validation-error";
+import handleValidationErrors from "@controllers/utils/validation-error";
 import AdminModel from "@models/admin/Admin";
 import RequestModal, { IRequest } from "@models/admin/Request";
 import { authorisedAdmin } from "./admin-controllers-utils";
+import { generateJWTToken } from "@controllers/users/auth/auth-controllers-utils";
 
 export const getRole = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const userId = (req as JWTRequest).userData.userId;
+  const { userId, email, deactivated_at } = (req as JWTRequest).userData;
   try {
     const admin = await AdminModel.findById(userId).select("role");
 
@@ -19,9 +20,18 @@ export const getRole = async (
       return next(new HttpError("Nothing to activate found!", 404));
     }
 
-    return res
-      .status(200)
-      .json({ data: { role: admin.role }, message: "Activated successfully!" });
+    const newToken = generateJWTToken(
+      userId,
+      email,
+      admin.role,
+      deactivated_at
+    );
+
+    return res.status(200).json({
+      data: { role: admin.role },
+      token: newToken,
+      message: "Activated successfully!",
+    });
   } catch (error) {
     return next(new HttpError("Internal server error!", 500));
   }
@@ -139,4 +149,3 @@ export const accessUpdate = async (
     return next(new HttpError("Failed to handle access request.", 500));
   }
 };
-

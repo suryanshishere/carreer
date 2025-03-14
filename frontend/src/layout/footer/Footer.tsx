@@ -22,8 +22,8 @@ const Footer: React.FC = () => {
       const { data } = await axiosInstance.get("/admin/get-role");
       return data;
     },
-    onSuccess: ({ data: { role }, message }) => {
-      dispatch(updateUserData({ role }));
+    onSuccess: ({ data: { role }, token, message }) => {
+      dispatch(updateUserData({ role, token }));
       dispatch(triggerSuccessMsg(message || "Activated successfully!"));
     },
     onError: (error: any) => {
