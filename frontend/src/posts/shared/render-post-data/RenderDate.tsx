@@ -30,8 +30,13 @@ export const formatDate = (
   const previousYear = currentDate.clone().add(-1, "years").year();
   const adjustedDate = dateMoment.clone().year(currentYear);
   const adjustedMonthDiff = adjustedDate.diff(currentDate, "months", true);
+  const extractedMonth = dateMoment.month();
 
-  if (extractedYear === currentYear) {
+  // If the extracted date is in December, do not change the year unless the difference is greater than six months
+  if (extractedMonth === 11 && Math.abs(monthDifference) <= 6) {
+    formattedDate = dateRender;
+    validDate = dateMoment.format("YYYY-MM-DD");
+  }else if (extractedYear === currentYear) {
     formattedDate = dateRender;
   } else if (extractedYear > currentYear) {
     if (currentDate.month() !== 11) {

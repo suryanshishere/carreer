@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { startCase } from "lodash";
-import Tag, { shouldDisplayTag } from "posts/shared/Tag";
+import Tag, { shouldDisplayTag } from "posts/shared/tag/Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import { HomeSkeletonLoad } from "posts/shared/SkeletonLoad";

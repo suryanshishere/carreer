@@ -3,7 +3,7 @@ import RenderField from "posts/shared/render-post-data/RenderField";
 import _ from "lodash";
 import { excludedPostListKeys } from "posts/db/renders";
 import { ParaSkeletonLoad } from "./SkeletonLoad";
-import Tag, { shouldDisplayTag } from "./Tag";
+import Tag, { shouldDisplayTag } from "./tag/Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostLinkItem from "./PostLinkItem";
