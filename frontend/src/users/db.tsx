@@ -1,20 +1,14 @@
 import SHARED_DB from "shared/db";
 import { ReactNode } from "react";
 import { IRole } from "admin/db";
-import { useMutation } from "@tanstack/react-query";
-import axiosInstance from "shared/utils/api/axios-instance";
-import { logout, updateUserData } from "shared/store/userSlice";
+import { logout } from "shared/store/userSlice";
 import {
   closeAllDropdowns,
   toggleDropdownState,
 } from "shared/store/dropdownSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "shared/store";
-import {
-  triggerErrorMsg,
-  triggerSuccessMsg,
-} from "shared/store/thunks/response-thunk";
+import { AppDispatch } from "shared/store"; 
 
 interface ITagItem {
   color: string;
@@ -54,7 +48,7 @@ export const USER_ACCOUNT_MODE_DB: IUserAccountModeDB = {
       label: "UPCOMING",
       daysRange: [3, 80],
     },
-    released: { color: "custom_gray", label: "RELEASED", daysRange: [-80, -4] },
+    released: { color: "custom_gray", label: "RELEASED", daysRange: [-300, -4] },
     expiring: {
       color: "custom_red animate-pulse",
       label: "EXPIRING",

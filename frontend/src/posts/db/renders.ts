@@ -1,4 +1,5 @@
 import { ISectionKey } from ".";
+import { IDates } from "./interfaces";
 
 export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
   latest_job: [
@@ -135,7 +136,7 @@ export const excludedKeys = [
   "certificate_verification_ref",
   "result_ref",
   "answer_key_ref",
-  "latest_job_ref", 
+  "latest_job_ref",
 ];
 
 export const notDisplayKeys = [];
@@ -238,4 +239,16 @@ export const renamingValues: IRenamingValues = {
   post_exam_duration: "minutes",
   minimum_age: "year old",
   maximum_age: "year old",
+};
+
+//tag renders
+export const TAG_SECTION_MAP: Record<ISectionKey, (keyof IDates)[]> = {
+  result: ["result_announcement_date"],
+  latest_job: ["application_start_date", "application_end_date"],
+  answer_key: ["answer_key_release_date"],
+  syllabus: ["application_start_date", "application_end_date"],
+  certificate_verification: ["certificate_verification_date"],
+  admission: ["counseling_start_date", "counseling_end_date"],
+  important: ["important_date"],
+  admit_card: ["admit_card_release_date"],
 };

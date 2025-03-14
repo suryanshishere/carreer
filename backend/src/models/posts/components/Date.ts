@@ -11,7 +11,7 @@ const DateRangeSchema = new Schema<IDateRange>(
 
 const dateObject = { type: DateRangeSchema, required: false };
 
-export const dateSchema = new Schema<IDate>(
+export const dateSchema = new Schema<IDates>(
   {
     application_start_date: dateObject,
     application_end_date: dateObject,
@@ -38,7 +38,7 @@ export const dateSchema = new Schema<IDate>(
   { timestamps: true }
 );
 
-const DateModel: Model<IDate> = model<IDate>("Date", dateSchema);
+const DateModel: Model<IDates> = model<IDates>("Date", dateSchema);
 export default DateModel;
 
 // ------------------------
@@ -48,7 +48,7 @@ interface IDateRange {
   previous_year: Date;
 }
 
-export interface IDate extends Document {
+export interface IDates extends Document {
   application_start_date?: IDateRange;
   application_end_date?: IDateRange;
   exam_fee_payment_end_date?: IDateRange;

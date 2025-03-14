@@ -8,7 +8,7 @@ import CertificateVerificationModel, {
   ICertificateVerification,
 } from "@models/posts/sections/CertificateVerfication";
 import DateModel, {
-  IDate,
+  IDates,
 } from "@models/posts/components/Date";
 import LinkModel, {
   ILink,
@@ -43,7 +43,7 @@ import ResultModel, {
 const OVERALL_MODELS: Record<IOverallKey, Model<any> | undefined> = {
   certificate_verification:
     CertificateVerificationModel as Model<ICertificateVerification>,
-  date: DateModel as Model<IDate>,
+  date: DateModel as Model<IDates>,
   link: LinkModel as Model<ILink>,
   common: CommonModel as Model<ICommon>,
   fee: FeeModel as Model<IFee>,

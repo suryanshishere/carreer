@@ -2,22 +2,14 @@ import { IDateRange, IDates } from "posts/db/interfaces";
 import moment from "moment";
 import { formatDate } from "./render-post-data/RenderDate";
 import { USER_ACCOUNT_MODE_DB } from "users/db";
+import { TAG_SECTION_MAP } from "posts/db/renders";
+import { ISectionKey } from "posts/db";
 
-const calculateDateDifference = (importantDates: IDates, section: string) => {
-  const tagSectionMap: Record<string, (keyof IDates)[]> = {
-    result: ["result_announcement_date"],
-    latest_job: ["application_start_date", "application_end_date"],
-    answer_key: ["answer_key_release_date"],
-    syllabus: ["application_start_date", "application_end_date"],
-    certificate_verification: ["certificate_verification_date"],
-    admission: ["counseling_start_date", "counseling_end_date"],
-    important: ["important_date"],
-    admit_card: ["admit_card_release_date"],
-  };
-
-  const tagKeys = tagSectionMap[section];
-  if (!tagKeys) return null;
-
+const calculateDateDifference = (
+  importantDates: IDates,
+  section: ISectionKey
+) => {
+  const tagKeys = TAG_SECTION_MAP[section];
   const currentDate = moment();
 
   let validStartDate: string | null = null;
@@ -27,29 +19,29 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
     const startDate = importantDates[tagKeys[0]] as IDateRange | undefined;
     const endDate = importantDates[tagKeys[1]] as IDateRange | undefined;
 
-    const formattedStartDate = startDate?.current_year
-      ? formatDate(startDate.current_year)
-      : startDate?.previous_year
-      ? formatDate(startDate.previous_year)
+    const formattedStartDate = startDate
+      ? formatDate(startDate.current_year || startDate.previous_year || "")
+          .validDate
       : null;
 
-    const formattedEndDate = endDate?.current_year
-      ? formatDate(endDate.current_year)
-      : endDate?.previous_year
-      ? formatDate(endDate.previous_year)
+    const formattedEndDate = endDate
+      ? formatDate(endDate.current_year || endDate.previous_year || "")
+          .validDate
       : null;
 
-    validStartDate = formattedStartDate?.validDate || null;
-    validEndDate = formattedEndDate?.validDate || null;
+    validStartDate = formattedStartDate;
+    validEndDate = formattedEndDate;
   } else {
     const dateRange = importantDates[tagKeys[0]] as IDateRange | undefined;
     if (dateRange) {
-      const formattedDate = dateRange.current_year
-        ? formatDate(dateRange.current_year)
-        : dateRange.previous_year
-        ? formatDate(dateRange.previous_year)
+      const formattedCurrentYear = dateRange.current_year
+        ? formatDate(dateRange.current_year).validDate
         : null;
-      validStartDate = formattedDate?.validDate || null;
+      const formattedPreviousYear = dateRange.previous_year
+        ? formatDate(dateRange.previous_year).validDate
+        : null;
+
+      validStartDate = formattedCurrentYear || formattedPreviousYear;
     }
   }
 
@@ -63,11 +55,9 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
     endMoment &&
     currentDate.isBetween(startMoment, endMoment, undefined, "[]")
   ) {
-    // for expiring check
     if (endMoment.diff(currentDate, "days") <= 3) {
       return 2812;
     }
-
     return 0;
   }
 
@@ -78,21 +68,23 @@ const calculateDateDifference = (importantDates: IDates, section: string) => {
 
   // Case 3: The current date is after the end date (past event)
   if (endMoment && currentDate.isAfter(endMoment)) {
-    return currentDate.diff(endMoment, "days");
+    return -currentDate.diff(endMoment, "days"); // Now correctly handling negative values
   }
 
   // If there's only a start date but no end date, return the days since the start
   return currentDate.diff(startMoment, "days");
 };
 
-const Tag: React.FC<{ section: string; importantDates?: IDates }> = ({
+const Tag: React.FC<{ section: ISectionKey; importantDates?: IDates }> = ({
   section,
   importantDates,
 }) => {
-   if (!importantDates) return null;
+  if (!importantDates) return null;
 
   const days = calculateDateDifference(importantDates, section);
   if (days === null) return null;
+
+  console.log(days, section, importantDates);
 
   // Find the matching entry that contains both key and tag
   const matchingTagEntry = Object.entries(USER_ACCOUNT_MODE_DB.tags).find(
@@ -120,7 +112,7 @@ export default Tag;
 //for tag filtering feature where matching with store mode boolean and return true or false if matches.
 export const shouldDisplayTag = (
   importantDates: IDates,
-  section: string,
+  section: ISectionKey,
   userTags: Record<string, boolean>
 ): boolean => {
   //by chance usertags not loaded
