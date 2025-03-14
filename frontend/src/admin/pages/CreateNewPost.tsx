@@ -28,16 +28,16 @@ interface ICreateNewPostForm {
   name_of_the_post: string;
   post_code: string;
   section: ISectionKey;
-  version?: string;
-  api_key_from_user?: string;
+  version?: string | null;
+  api_key_from_user?: string | null;
 }
 
 const validationSchema = Yup.object().shape({
-  name_of_the_post: validateNameOfThePost,
-  post_code: validatePostCode,
-  version: validateVersion,
-  api_key_from_user: validateApiKey,
-  section: validateSection,
+  name_of_the_post: validateNameOfThePost.required("Name of the post is required."),
+  post_code: validatePostCode.required("Post code is required."),
+  version: validateVersion.notRequired(),
+  api_key_from_user: validateApiKey.notRequired(),
+  section: validateSection.required("Please select an option."),
 });
 
 const CreateNewPost: React.FC = () => {
@@ -85,7 +85,7 @@ const CreateNewPost: React.FC = () => {
     const updatedData = {
       ...data,
       post_code: formattedPostCode,
-      ...(formattedVersion && { version: formattedVersion }),
+      ...(formattedVersion ? { version: formattedVersion } : {}),
     };
 
     submitMutation.mutate(updatedData);

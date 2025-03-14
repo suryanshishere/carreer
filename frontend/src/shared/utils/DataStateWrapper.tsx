@@ -29,8 +29,13 @@ const DefaultLoadingComponent = () => (
 
 const DefaultErrorComponent = () => (
   <ul className="custom_ul text-custom_red font-semibold">
+    <li> Something went wrong, please try again later.</li>
+  </ul>
+);
+
+const DefaultEmptyComponent = () => (
+  <ul className="custom_ul text-custom_red font-semibold">
     <li>No Data / Nothing to show.</li>
-    <li>Or something went wrong, please try again later.</li>
   </ul>
 );
 
@@ -41,7 +46,7 @@ const DataStateWrapper = <T,>({
   emptyCondition,
   loadingComponent = <DefaultLoadingComponent />,
   errorComponent = <DefaultErrorComponent />,
-  emptyComponent = <DefaultErrorComponent />,
+  emptyComponent = <DefaultEmptyComponent />,
   children,
   skipLoadingUI = false,
   nodelay = false, // Default is false; loading UI delayed by 2000ms
@@ -67,7 +72,13 @@ const DataStateWrapper = <T,>({
     };
   }, [isLoading, nodelay]);
 
-  if (error) return <>{errorComponent}</>;
+  if (error) {
+    // If error is 404, show emptyComponent instead of errorComponent
+    if ((error as any)?.status === 404) {
+      return <>{emptyComponent}</>;
+    }
+    return <>{errorComponent}</>;
+  }
 
   if (isLoading) {
     if (skipLoadingUI) {

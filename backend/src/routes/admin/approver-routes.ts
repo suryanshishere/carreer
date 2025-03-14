@@ -2,11 +2,13 @@ import {
   applyContri,
   getContriPost,
   getContriPostCodes,
+  nonApprovedPosts,
 } from "@controllers/admin/approver/approver-controllers";
 import express from "express";
 import { body } from "express-validator";
 import {
   validateObject,
+  validateOptStr,
   validatePostCodeOrVersion,
   validateSection,
 } from "@routes/utils";
@@ -41,6 +43,12 @@ router.get(
     validatePostCodeOrVersion("version"),
   ],
   getContriPost
+);
+
+router.get(
+  "/non-approved-posts/:section/:active?",
+  [validateSection(), validateOptStr("active")],
+  nonApprovedPosts
 );
 
 export default router;

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "shared/utils/api/axios-instance";
@@ -9,25 +9,36 @@ import DataStateWrapper from "shared/utils/DataStateWrapper";
 import PostList from "posts/shared/PostList";
 import POST_DB, { ISectionKey } from "posts/db";
 import { startCase } from "lodash";
+import {    ToggleButton } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
 const NonApprovedPosts: React.FC = () => {
   const navigate = useNavigate();
   const { section: selectedSection } = useParams<{ section?: string }>();
+  const [isActive, setIsActive] = useState(false); // Local toggle state
 
   const handleSectionClick = useCallback(
     (section: string) => {
       if (selectedSection !== section) {
         navigate(`/approver/non-approved-posts/${section}`);
+        setIsActive(false); // Reset active when changing sections
       }
     },
     [selectedSection, navigate]
   );
 
+  const toggleActive = () => {
+    if (!selectedSection) return;
+    setIsActive((prev) => !prev);
+  };
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["nonApprovedPosts", selectedSection],
+    queryKey: ["nonApprovedPosts", selectedSection, isActive],
     queryFn: async () => {
       if (!selectedSection) return null;
-      const response = await axiosInstance.post("/admin/non-approved-posts", { section: selectedSection });
+      const url = `/admin/approver/non-approved-posts/${selectedSection}${isActive ? "/active" : ""}`;
+      const response = await axiosInstance.get(url);
       return response.data.data;
     },
     enabled: !!selectedSection,
@@ -37,26 +48,31 @@ const NonApprovedPosts: React.FC = () => {
   return (
     <div className="w-full flex flex-col">
       <PageHeader header="Non-Approved Posts" subHeader="Select a section to fetch posts" />
+
       <div className="flex flex-wrap gap-2 mb-5">
         {POST_DB.sections.map((item) => (
           <Button
             key={item}
             onClick={() => handleSectionClick(item)}
-            classProp={`min-w-fit max-w-fit text-sm ${selectedSection === item ? "bg-custom_pale_yellow" : ""}`}
+            classProp={`min-w-fit max-w-fit text-sm ${
+              selectedSection === item ? "bg-custom_pale_yellow" : ""
+            }`}
           >
             {startCase(item)}
           </Button>
         ))}
       </div>
+
+      <div className="flex gap-2 mb-5">
+        <ToggleButton value="active" selected={isActive} onClick={toggleActive} disabled={!selectedSection}>
+          {isActive ? <CheckCircleIcon color="success" /> : <RadioButtonUncheckedIcon color="disabled" />}
+          Active
+        </ToggleButton>
+      </div>
+
       <div className="flex-1 overflow-y-auto">
         {selectedSection ? (
-          <DataStateWrapper
-            isLoading={isLoading}
-            error={error}
-            data={data}
-            emptyCondition={(data) => !data || data.length === 0}
-            nodelay
-          >
+          <DataStateWrapper isLoading={isLoading} error={error} data={data} emptyCondition={(data) => !data || data.length === 0} nodelay>
             {(data) => <PostList data={data} section={selectedSection as ISectionKey} />}
           </DataStateWrapper>
         ) : (

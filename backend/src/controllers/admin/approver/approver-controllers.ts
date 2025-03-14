@@ -11,7 +11,7 @@ import {
 import mongoose from "mongoose";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import { ISectionKey } from "@models/posts/db";
-import { fetchPostDetail } from "@controllers/posts/utils";
+import { fetchPostDetail, fetchPostList } from "@controllers/posts/utils";
 import _ from "lodash";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
 
@@ -85,7 +85,7 @@ export const getContriPost = async (
     version?: string;
   };
   const postCodeVersion = generatePostCodeVersion(postCode, version);
-  
+
   try {
     handleValidationErrors(req, next);
 
@@ -219,5 +219,44 @@ export const applyContri = async (
     session.endSession();
 
     return next(new HttpError("Something went wrong. Please try again.", 500));
+  }
+};
+
+export const nonApprovedPosts = async (
+  req: Request<{
+    section: ISectionKey;
+    active?: string;
+  }>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { section, active } = req.params;
+    handleValidationErrors(req, next);
+    // Fetch non-approved posts
+    const response = await fetchPostList(
+      section,
+      true,
+      next,
+      false,
+      active ? true : false
+    );
+
+    if (!response || response.length === 0) {
+      return next(new HttpError("No non-approved posts found.", 404));
+    }
+
+    return res.status(200).json({
+      message: "Non-approved posts fetched successfully!",
+      data: response,
+    });
+  } catch (error) {
+    console.error("Error fetching non-approved posts:", error);
+    return next(
+      new HttpError(
+        "Failed to fetch non-approved posts. Please try again later.",
+        500
+      )
+    );
   }
 };

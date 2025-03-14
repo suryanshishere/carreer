@@ -11,8 +11,7 @@ export const validateNameOfThePost = Yup.string()
   .max(
     short_char_limit.max,
     `Name of the post must be between ${short_char_limit.min}-${short_char_limit.max} characters.`
-  )
-  .required("Name of the post is required.");
+  );
 
 export const validatePostCode = Yup.string()
   .min(
@@ -26,25 +25,31 @@ export const validatePostCode = Yup.string()
   .matches(
     alpha_num_underscore_space,
     "Post code can only contain letters, numbers, and spaces."
-  )
-  .required("Post code is required.");
+  );
 
 export const validateVersion = Yup.string()
-  .min(
-    short_char_limit.min,
-    `Version must be between ${short_char_limit.min}-${short_char_limit.max} characters.`
-  )
-  .max(
-    short_char_limit.max,
-    `Version must be between ${short_char_limit.min}-${short_char_limit.max} characters.`
-  )
-  .matches(
-    alpha_num_underscore_space,
-    "Version can only contain letters, numbers, and spaces."
+  .transform((value) => (value?.trim() === "" ? undefined : value)) // Convert empty string to undefined
+  .when((value, schema) =>
+    value !== undefined
+      ? schema
+          .min(
+            short_char_limit.min,
+            `Version must be between ${short_char_limit.min}-${short_char_limit.max} characters.`
+          )
+          .max(
+            short_char_limit.max,
+            `Version must be between ${short_char_limit.min}-${short_char_limit.max} characters.`
+          )
+          .matches(
+            alpha_num_underscore_space,
+            "Version can only contain letters, numbers, and spaces."
+          )
+      : schema
   );
 
 export const validateApiKey = Yup.string();
 
-export const validateSection = Yup.string()
-  .required("Please select an option.")
-  .oneOf(POST_DB.sections, `Must be one of: ${POST_DB.sections.join(", ")}.`);
+export const validateSection = Yup.string().oneOf(
+  POST_DB.sections,
+  `Must be one of: ${POST_DB.sections.join(", ")}.`
+);
