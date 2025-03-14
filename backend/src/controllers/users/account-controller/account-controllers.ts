@@ -1,9 +1,9 @@
 import handleValidationErrors from "@controllers/utils/validation-error";
 import { JWTRequest } from "@middlewares/check-auth";
 import AdminModel from "@models/admin/Admin";
+import { ADMIN_DATA } from "@models/admin/db";
 import RequestModal from "@models/admin/Request";
-// import PostModel from "@models/post/post-model";
-import { ADMIN_DATA } from "@shared/env-data";
+// import PostModel from "@models/post/post-model"; 
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";

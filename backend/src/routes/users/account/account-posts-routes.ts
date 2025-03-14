@@ -12,7 +12,7 @@ import {
   validateObject,
   validatePostCodeOrVersion,
   validateSection,
-} from "@routes/utils";
+} from "@routes/validation-utils";
 import { body } from "express-validator";
 
 const router = express.Router();

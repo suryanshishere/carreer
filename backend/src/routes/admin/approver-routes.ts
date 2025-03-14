@@ -11,7 +11,7 @@ import {
   validateOptStr,
   validatePostCodeOrVersion,
   validateSection,
-} from "@routes/utils";
+} from "@routes/validation-utils";
 
 const router = express.Router();
 

@@ -9,9 +9,7 @@ interface PostItemProps {
 }
 
 const PostLinkItem: React.FC<PostItemProps> = ({ section, item }) => {
-  // Build the key dynamically. For instance, if section is "syllabus", this becomes "syllabus_ref".
   const refKey = `${section}_ref` as keyof ICommonListData;
-  // Cast the value to the expected type
   const refData = item[refKey] as { name_of_the_post: string } | undefined;
   return (
     <div className="w-full min-h-7">

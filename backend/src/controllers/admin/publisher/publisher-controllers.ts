@@ -44,27 +44,10 @@ export const createNewPost = async (
 
   //since publisher id will be same as user id but just in the publisher model
   const publisherId = (req as JWTRequest).userData.userId;
-
   const session = await mongoose.startSession();
 
   try {
-    //authorization check
-    const publisher: IAdmin | null = await AdminModel.findById(publisherId)
-      .select("role")
-      .exec();
-    if (
-      !publisher ||
-      (publisher.role != "publisher" && publisher.role != "admin")
-    ) {
-      return next(
-        new HttpError(
-          "Not authorised, request for access or approval of req!",
-          403
-        )
-      );
-    }
-
-    // allow time out constraint to be removed (with transaction)
+     // allow time out constraint to be removed (with transaction)
     const result = await session.withTransaction(async () => {
       //checking the section cuz it's validated already by express validator from the same section it's mapped
       const model = SECTION_POST_MODEL_MAP[section];

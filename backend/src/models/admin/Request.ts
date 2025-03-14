@@ -1,6 +1,5 @@
-import { ADMIN_DATA, CONTACT_US_ENV_DATA } from "@shared/env-data";
-import { IAdminData } from "@shared/type-check-data";
-import mongoose, { Schema, Document } from "mongoose";
+ import mongoose, { Schema, Document } from "mongoose";
+import { ADMIN_DATA, CONTACT_US_ENV_DATA, IAdminData } from "./db";
 
 export interface IRequest extends Document {
   status: IAdminData["IStatus"];

@@ -1,4 +1,5 @@
-import POST_DB, { POST_LIMITS_DB } from "@models/posts/db";
+import { ADMIN_DATA } from "@models/admin/db";
+import POST_DB, { POST_LIMITS_DB } from "@models/posts/db"; 
 import { ValidationChain, check } from "express-validator";
 import _, { startCase } from "lodash";
 
@@ -7,14 +8,14 @@ const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS_DB;
 const { sections } = POST_DB;
 
 export const validatePostCodeOrVersion = (
-  name: string = "post_code",
+  field: string = "post_code",
   optional: boolean = false,
   extra: boolean = false
 ) => {
-  const friendlyName = _.startCase(_.toLower(name));
+  const friendlyName = _.startCase(_.toLower(field));
 
-  let chain = check(name);
-  if (name == "version" || optional) {
+  let chain = check(field);
+  if (field == "version" || optional) {
     chain = chain.optional({ nullable: true });
   }
 
@@ -36,10 +37,10 @@ export const validatePostCodeOrVersion = (
 };
 
 export const validatePostIdOrCode = (
-  name: string = "postIdOrCode",
+  field: string = "postIdOrCode",
   optional: boolean = false
 ) => {
-  let chain = check(name);
+  let chain = check(field);
 
   // Apply optional logic
   if (optional) {
@@ -57,7 +58,7 @@ export const validatePostIdOrCode = (
       const isMongoId = /^[a-f\d]{24}$/i.test(value);
 
       // Check post code validity
-      const isValidPostCode = validatePostCodeOrVersion(name)
+      const isValidPostCode = validatePostCodeOrVersion(field)
         .run(req)
         .then((result) => result.isEmpty());
 
@@ -76,12 +77,12 @@ export const validatePostIdOrCode = (
 };
 
 export const validateSection = (
-  name: string = "section",
+  field: string = "section",
   optional: boolean = false
 ) => {
-  const friendlyName = _.startCase(_.toLower(name));
+  const friendlyName = _.startCase(_.toLower(field));
 
-  let chain = check(name).customSanitizer((value) => _.snakeCase(value));
+  let chain = check(field).customSanitizer((value) => _.snakeCase(value));
 
   if (optional) {
     chain = chain.optional({ nullable: true });
@@ -95,12 +96,12 @@ export const validateSection = (
 };
 
 export const validateNameOfThePost = (
-  name: string = "name_of_the_post",
+  field: string = "name_of_the_post",
   optional: boolean = false
 ) => {
-  const friendlyName = _.startCase(_.toLower(name));
+  const friendlyName = _.startCase(_.toLower(field));
 
-  let chain = check(name);
+  let chain = check(field);
   if (optional) {
     chain = chain.optional({ nullable: true });
   }
@@ -128,10 +129,48 @@ export const validateObject = (fieldName: string): ValidationChain => {
     });
 };
 
-export const validateOptStr = (name: string, optional: boolean = true) => {
-  let chain = check(name);
+export const validateOptStr = (field: string, optional: boolean = true) => {
+  let chain = check(field);
   if (optional) {
     chain = chain.optional({ nullable: true });
   }
-  return chain.isString().withMessage(`${startCase(name)} must be a string.`);
+  return chain.isString().withMessage(`${startCase(field)} must be a string.`);
+};
+
+export const validateStatus = (
+  field: string = "status",
+  optional: boolean = false
+): ValidationChain => {
+  let chain = check(field);
+  if (optional) {
+    chain = chain.optional({ nullable: true });
+  }
+  return chain
+    .trim()
+    .isIn(ADMIN_DATA.STATUS)
+    .withMessage(`Must be one of them: ${ADMIN_DATA.STATUS.join(", ")}`);
+};
+
+export const validateRoleApplied = (
+  field: string = "role_applied",
+  optional: boolean = false
+): ValidationChain => {
+  let chain = check(field);
+  if (optional) {
+    chain = chain.optional({ nullable: true });
+  }
+  return chain
+    .isIn(ADMIN_DATA.ROLE_APPLIED)
+    .withMessage(`Must be one of them: ${ADMIN_DATA.ROLE_APPLIED.join(", ")}`);
+};
+
+export const validateMongoId = (
+  field: string,
+  optional: boolean = false
+): ValidationChain => {
+  let chain = check(field);
+  if (optional) {
+    chain = chain.optional({ nullable: true });
+  }
+  return chain.isMongoId().withMessage(`${field} must be valid ID.`);
 };

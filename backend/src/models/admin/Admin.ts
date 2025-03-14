@@ -1,6 +1,5 @@
-import { ADMIN_DATA } from "@shared/env-data";
-import { IAdminData } from "@shared/type-check-data";
 import mongoose, { Schema, Document } from "mongoose";
+import { ADMIN_DATA, IAdminData } from "./db";
 
 export interface IAdmin extends Document {
   // admin_status?: IAdminData["IAdminStatus"];

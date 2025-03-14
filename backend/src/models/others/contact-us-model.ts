@@ -1,5 +1,5 @@
-import { emailSchema } from "@models/model-utils";
-import { CONTACT_US_ENV_DATA } from "@shared/env-data";
+import { CONTACT_US_ENV_DATA } from "@models/admin/db";
+import { emailSchema } from "@models/utils"; 
 import { Schema, model } from "mongoose";
 
 const {

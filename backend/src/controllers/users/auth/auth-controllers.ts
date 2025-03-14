@@ -10,9 +10,9 @@ import {
   updateUnverifiedUser,
 } from "./auth-controllers-utils"; 
 import { getUserIdFromRequest, JWTRequest } from "@middlewares/check-auth";
-import { random } from "lodash"; 
-import { USER_ENV_DATA } from "@shared/env-data";
+import { random } from "lodash";  
 import handleValidationErrors from "../../utils/validation-error";
+import { USER_ENV_DATA } from "@models/users/db";
 
 const { EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY } =
   USER_ENV_DATA;

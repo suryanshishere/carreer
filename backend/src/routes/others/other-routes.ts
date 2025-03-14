@@ -1,5 +1,5 @@
-import { contactUs } from "@controllers/others";
-import { CONTACT_US_ENV_DATA } from "@shared/env-data";
+import { contactUs } from "@controllers/others"; 
+import { CONTACT_US_ENV_DATA } from "@models/admin/db";
 import express from "express";
 import { check } from "express-validator";
 const router = express.Router();

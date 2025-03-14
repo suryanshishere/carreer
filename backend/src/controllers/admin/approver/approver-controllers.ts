@@ -231,9 +231,7 @@ export const nonApprovedPosts = async (
   next: NextFunction
 ) => {
   try {
-    const { section, active } = req.params;
-    //admin authorisation check (just send the array of required access and it will check) utils
-
+    const { section, active } = req.params; 
     handleValidationErrors(req, next);
     // Fetch non-approved posts
     const response = await fetchPostList(
@@ -241,7 +239,7 @@ export const nonApprovedPosts = async (
       true,
       next,
       false,
-      // active ? true : false
+      active ? true : false
     );
 
     if (!response || response.length === 0) {

@@ -1,7 +1,7 @@
-import { USER_ENV_DATA } from "@shared/env-data";
-import POST_DB from "@models/posts/db";
+ import POST_DB from "@models/posts/db";
 import _ from "lodash";
 import mongoose, { Schema, Types, Document } from "mongoose";
+import { USER_ENV_DATA } from "./db";
 
 interface SavedPosts {
   [key: string]: Types.ObjectId[];
