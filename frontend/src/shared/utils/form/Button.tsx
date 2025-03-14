@@ -86,10 +86,10 @@ const Button: React.FC<ButtonProps> = ({
 
   // Auth Button
   if (authButtonType) {
-    const baseClass = `flex items-center justify-center min-w-fit whitespace-nowrap text-base overflow-hidden px-3 py-2 rounded-full text-custom_white font-bold hover:bg-custom_black`;
+    const baseClass = `flex items-center justify-center min-w-fit whitespace-nowrap text-base overflow-hidden px-3 py-2 rounded-full text-custom_white font-bold`;
     const stateClass = disabled
-      ? "cursor-not-allowed bg-custom_black"
-      : "cursor-pointer bg-custom_gray";
+      ? "cursor-not-allowed bg-custom_less_gray"
+      : "cursor-pointer bg-custom_gray hover:bg-custom_black";
     return (
       <button
         {...commonProps}

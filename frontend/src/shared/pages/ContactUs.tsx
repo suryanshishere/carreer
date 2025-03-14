@@ -88,8 +88,8 @@ const ContactUs: React.FC = () => {
   return (
     <div className="w-full flex flex-col justify-center">
       <PageHeader
-        header="contact us"
-        subHeader="Try to define your reason clearly"
+        header="Contact Us"
+        subHeader="Please provide accurate credentials for future reference."
       />
       <form
         onSubmit={handleSubmit(onSubmit)}

@@ -23,18 +23,26 @@ const Info = () => {
   const dropdownStates = useSelector(
     (state: RootState) => state.dropdown.dropdownStates
   );
+  const contributeActive = useSelector(
+    (state: RootState) => state.post.isEditPostClicked
+  );
 
   const infoButtonHandler = () => {
+    if (contributeActive) return;
     dispatch(toggleDropdownState({ id: "info" }));
   };
 
   return (
     <div className="relative flex justify-center items-center gap-1">
       {dropdownStates["info"] && (
-        <ContributeToPost section={section as ISectionKey} postCode={postCode} version={version} />
+        <ContributeToPost
+          section={section as ISectionKey}
+          postCode={postCode}
+          version={version}
+        />
       )}
       <Button iconButton onClick={infoButtonHandler}>
-        {!dropdownStates["info"] ? (
+        {!dropdownStates["info"]  ? (
           <InfoOutlinedIcon fontSize="small" />
         ) : (
           <InfoSharpIcon fontSize="small" className="text-custom_gray" />

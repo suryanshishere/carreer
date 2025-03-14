@@ -7,22 +7,20 @@ const PersistMain = () => {
   const { isNavAuthClicked, userData } = useSelector(
     (state: RootState) => state.user
   );
-  const { token, isEmailVerified, deactivatedAt } = userData;
-  const persistClassProp = `relative page-padding h-fit py-2 bg-custom_yellow z-20 shadow `;
+  const { token, isEmailVerified, deactivatedAt } = userData || {};
+
+  const showAuth = isNavAuthClicked || (token && !isEmailVerified);
+  const showActivateAccount = token && deactivatedAt;
+
+  if (!showAuth && !showActivateAccount) return null;
 
   return (
-    <>
-      {(isNavAuthClicked || (token && !isEmailVerified)) && (
-        <div className={persistClassProp}>
-          <Auth />
-        </div>
-      )}
-      {token && deactivatedAt && (
-        <div className={persistClassProp}>
-          <ActivateAccount />
-        </div>
-      )}
-    </>
+    <div className="z-30 relative h-fit py-2 bg-custom_white">
+      <div className="outline-custom_gray py-3 outline-dashed page-padding">
+        {showAuth && <Auth />}
+        {showActivateAccount && <ActivateAccount />}
+      </div>
+    </div>
   );
 };
 

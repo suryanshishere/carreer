@@ -10,7 +10,6 @@ const NavBar: React.FC = () => {
       <Main />
       <PersistMain />
       <SubMain />
-      <Response />
     </div>
   );
 };
