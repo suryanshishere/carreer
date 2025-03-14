@@ -78,8 +78,7 @@ postSchema.index({ post_code: 1, version: 1 }, { unique: true });
 
 //indexed this as well coz used commonly for searching
 POST_DB.sections.forEach((item) => {
-  postSchema.index({ [`${item}_approved`]: 1 });
-  postSchema.index({ [`${item}_ref`]: 1 });
+  postSchema.index({ [`${item}_approved`]: 1 }); 
   postSchema.index({ [`${item}_ref`]: 1 }, { sparse: true });
 });
 
