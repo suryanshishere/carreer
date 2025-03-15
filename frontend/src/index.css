@@ -42,12 +42,12 @@
     }
   }
 
-  .page-padding {
-    @apply large_mobile:px-page px-page_small w-full;
+  .page_padding {
+    @apply px-page_small desktop:px-page_large tablet:px-page_medium w-full;
   }
 
   .custom_link {
-    @apply underline decoration-1 text-custom_red underline-offset-4 hover:text-custom_dark_red visited:text-custom_black;
+    @apply underline decoration-1 text-custom_red underline-offset-4 hover:text-custom_dark_red;
   }
 
   .custom-external-link {

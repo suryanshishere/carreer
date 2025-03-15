@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { merge } from "lodash";
 import { IRole } from "admin/db";
 import {
   ITagKey,
@@ -69,34 +68,47 @@ const userSlice = createSlice({
             new Date().getTime() + 1000 * 60 * Number(AUTH_TOKEN_EXPIRY)
           );
 
-      state.isOtpSent = true;
-      state.mode = merge({}, state.mode, mode);
-      //this just update the required (same as updateUserData)
-      state.userData = merge({}, state.userData, {
-        token,
-        isEmailVerified,
+      console.log(mode);
+
+      if (mode) {
+        state.mode = {
+          ...state.mode,
+          ...(mode.max !== undefined && { max: mode.max }),
+          ...(mode.tags && {
+            tags: {
+              ...state.mode.tags,
+              ...mode.tags,
+            },
+          }),
+        };
+      }
+
+      state.userData = {
+        ...state.userData,
+        ...(token && { token }),
+        ...(isEmailVerified !== undefined && { isEmailVerified }),
         tokenExpiration: localTokenExpiration.toISOString(),
         role: role ?? state.userData.role,
-      });
+      };
 
-      if (isEmailVerified) {
-        state.isNavAuthClicked = false;
-        // window.location.reload();
+      if (!isEmailVerified) {
+        state.isOtpSent = true;
+        state.isNavAuthClicked = true;
       }
     },
 
     logout(state) {
       state.isNavAuthClicked = false;
-      state.mode = {
-        max: false,
-        tags: {
-          live: false,
-          upcoming: false,
-          released: false,
-          expiring: false,
-          none: true,
-        },
-      };
+      // state.mode = {
+      //   max: false,
+      //   tags: {
+      //     live: false,
+      //     upcoming: false,
+      //     released: false,
+      //     expiring: false,
+      //     none: true,
+      //   },
+      // };
       state.userData = {
         token: "",
         isEmailVerified: false,
@@ -109,30 +121,43 @@ const userSlice = createSlice({
     },
 
     updateUserData(state, action: PayloadAction<RecursivePartial<IUserData>>) {
-      state.userData = merge({}, state.userData, action.payload);
+      state.userData = { ...state.userData, ...action.payload };
     },
 
     updateMode(
       state,
       action: PayloadAction<RecursivePartial<IUserAccountMode>>
     ) {
-      // Merge the new mode state with the existing one.
-      state.mode = merge({}, state.mode, action.payload);
-      const tags = state.mode.tags;
+      const { max, tags } = action.payload;
 
-      // If the payload explicitly sets "none" to true, force all other tags to false.
-      if (action.payload.tags?.none) {
-        Object.keys(tags).forEach((key) => {
-          if (key !== "none") {
-            tags[key as ITagKey] = false;
-          }
-        });
-      } else if (action.payload.tags) {
-        // Otherwise, if any other tag is true, set "none" to false.
-        const anyOtherTrue = Object.entries(tags).some(
-          ([key, value]) => key !== "none" && value === true
-        );
-        tags.none = !anyOtherTrue;
+      // Ensure at least one valid key exists in the payload
+      if (max === undefined && (!tags || Object.keys(tags).length === 0)) {
+        return; // Ignore empty updates
+      }
+
+      // Create a new mode object merging only provided values
+      state.mode = {
+        ...state.mode,
+        ...(max !== undefined && { max }), // Update max only if provided
+        ...(tags && { tags: { ...state.mode.tags, ...tags } }), // Update tags only if provided
+      };
+
+      // Preserve `none` logic after merging updates
+      if (tags) {
+        if (tags.none) {
+          // If "none" is explicitly set to true, force all other tags to false
+          Object.keys(state.mode.tags).forEach((key) => {
+            if (key !== "none") {
+              state.mode.tags[key as ITagKey] = false;
+            }
+          });
+        } else {
+          // If any other tag is true, set "none" to false
+          const anyOtherTrue = Object.entries(state.mode.tags).some(
+            ([key, value]) => key !== "none" && value === true
+          );
+          state.mode.tags.none = !anyOtherTrue;
+        }
       }
     },
     handleAccountDeactivatedAt(

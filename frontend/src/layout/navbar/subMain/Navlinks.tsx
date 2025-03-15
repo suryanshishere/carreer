@@ -3,19 +3,17 @@ import { NavLink, useParams } from "react-router-dom";
 import { startCase } from "lodash";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import useResponsiveView, {
-  viewObject,
-  ViewType,
-} from "shared/hooks/useResponsiveView";
-import POST_DB from "posts/db";
+import useResponsiveView, { IView } from "shared/hooks/useResponsiveView";
+import POST_DB, { ISectionKey } from "posts/db";
+import NavDropdownUI from "shared/ui/NavDropdownUI";
 
 const visibleLinksMap = {
   mobile: 1,
-  medium_mobile: 3 ,
+  medium_mobile: 4,
   large_mobile: 5,
-  tablet: 6,
+  tablet: 4,
   desktop: 4,
-  extra_large: 6
+  desktop_hd: 6,
 } as const;
 
 type VisibleLinksKeys = keyof typeof visibleLinksMap;
@@ -34,7 +32,7 @@ const Navlinks: React.FC = () => {
   const { section = "" } = useParams<{ section: string }>();
   const navEntries = Object.entries(NAVLINKS);
 
-  const viewType: ViewType = useResponsiveView(viewObject);
+  const viewType: IView = useResponsiveView();
   const visibleLinksCount = visibleLinksMap[viewType as VisibleLinksKeys] ?? 0;
 
   const displayedLinks = navEntries.slice(0, visibleLinksCount);
@@ -48,10 +46,6 @@ const Navlinks: React.FC = () => {
     dropdownLinks.find(([key]) => key === section)?.[0] || null;
 
   useOutsideClick(dropdownRef, () => setShowDropdown(false));
-
-  const handleSelectLink = (sectionName: string) => {
-    setShowDropdown(false);
-  };
 
   return (
     <div className="flex-1 h-full flex items-center gap-3 min-w-30">
@@ -77,39 +71,24 @@ const Navlinks: React.FC = () => {
         <div ref={dropdownRef} className="relative flex-1 w-full">
           <button
             className={`rounded-full outline outline-custom_gray w-full bg-custom_less_gray px-1 flex items-center justify-center gap-2 ${
-                viewType === "mobile"? "py-1" : "py-[1px]"
+              viewType === "mobile" ? "py-1" : "py-[1px]"
             } ${showDropdown && "shadow-md shadow-custom_black"}`}
             onClick={() => setShowDropdown(!showDropdown)}
           >
             {selectedSection ? startCase(selectedSection) : "More Section"}
-            <ArrowDropDownIcon
-              fontSize="small" 
-            />
+            <ArrowDropDownIcon fontSize="small" />
           </button>
-          {showDropdown && (
-            <ul className="rounded absolute top-full mt-1 w-full bg-custom_less_gray shadow-md shadow-custom_black">
-              {dropdownLinks.map(([key, item], index) => (
-                <React.Fragment key={key}>
-                  <li className="text-center">
-                    <NavLink
-                      to={item.link}
-                      className={({ isActive }) =>
-                        `m-1 py-1 block rounded ${
-                          isActive
-                            ? "bg-custom_white"
-                            : "hover:bg-custom_white"
-                        }`
-                      }
-                      onClick={() => handleSelectLink(key)}
-                    >
-                      {startCase(key)}
-                    </NavLink>
-                  </li>
-                  {index < dropdownLinks.length - 1 && <hr className="my-1" />}
-                </React.Fragment>
-              ))}
-            </ul>
-          )}
+          <NavDropdownUI isVisible={showDropdown}>
+            {dropdownLinks.map(([key, item]) => (
+              <NavLink
+                key={key}
+                to={item.link}
+                onClick={() => setShowDropdown(false)}
+              >
+                {startCase(key)}
+              </NavLink>
+            ))}
+          </NavDropdownUI>
         </div>
       )}
     </div>

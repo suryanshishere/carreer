@@ -25,12 +25,12 @@ module.exports = {
     extend: {
       //response view hook check co related
       screens: {
-        mobile: "610px",
-        medium_mobile: "710px",
-        large_mobile: "1050px",
-        tablet: "1200px",
-        desktop: "1440px",
-        extra_large: "1441px",
+        mobile: "675px",
+        medium_mobile: "775px",
+        large_mobile: "900px",
+        tablet: "975px",
+        desktop: "1100px",
+        desktop_hd: "1250px",
       },
       colors: {
         custom_red: "rgb(165, 42, 42)",
@@ -64,9 +64,9 @@ module.exports = {
         footer: "5.5rem",
       },
       padding: {
-        page: "13vw",
+        page_large: "12vw",
+        page_medium: "6vw",
         page_small: "3vw",
-        page_medium: "8vw",
         button: ".45rem .5rem", //y,x
       },
       animation: {

@@ -9,7 +9,7 @@ const RootLayout: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <NavBar />
       <Response />
-      <div className="flex-grow page-padding mt-8 mb-20 transition-transform ease-in-out duration-300">
+      <div className="flex-grow page_padding mt-8 mb-20 transition-transform ease-in-out duration-300">
         <Outlet />
       </div>
       <Footer />

@@ -12,20 +12,18 @@ import { AppDispatch } from "shared/store";
 
 export type ITagKey = "live" | "upcoming" | "released" | "expiring" | "none";
 
-export const TAGS: Record<ITagKey, string | null> = {
+export const TAGS: Record<ITagKey, string> = {
   live: "custom_green",
   upcoming: "custom_pale_orange",
   released: "custom_gray",
   expiring: "custom_red animate-pulse",
-  none: null,
+  none: "",
 };
 
-interface IUserAccountModeDB {
+export const USER_ACCOUNT_MODE_DB: {
   max_mode_off_confirm: ReactNode;
-  tags: Record<ITagKey, string | null>;
-}
-
-export const USER_ACCOUNT_MODE_DB: IUserAccountModeDB = {
+  tags: Record<ITagKey, string>;
+} = {
   max_mode_off_confirm: (
     <>
       <p>

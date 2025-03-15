@@ -1,4 +1,4 @@
- import POST_DB from "@models/posts/db";
+import POST_DB, { ITagKey } from "@models/posts/db";
 import _ from "lodash";
 import mongoose, { Schema, Types, Document } from "mongoose";
 import { USER_ENV_DATA } from "./db";
@@ -43,13 +43,7 @@ export interface IUser extends Document {
   //status for personalised data rendering for the user
   mode: {
     max: boolean;
-    tags: {
-      live: boolean;
-      upcoming: boolean;
-      released: boolean;
-      expiring: boolean;
-      visited: boolean;
-    };
+    tags: Record<ITagKey, boolean>;
   };
 }
 
@@ -110,7 +104,7 @@ const userSchema: Schema = new Schema<IUser>(
           upcoming: { type: Boolean, required: true, default: false },
           released: { type: Boolean, required: true, default: false },
           expiring: { type: Boolean, required: true, default: false },
-          visited: { type: Boolean, required: true, default: false },
+          none: { type: Boolean, required: true, default: true },
         },
       },
       required: true,
@@ -121,7 +115,7 @@ const userSchema: Schema = new Schema<IUser>(
           upcoming: false,
           released: false,
           expiring: false,
-          visited: false,
+          none: true,
         },
       },
     },

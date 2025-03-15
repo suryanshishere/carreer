@@ -16,7 +16,7 @@ const PersistMain = () => {
 
   return (
     <div className="z-30 relative h-fit py-2 bg-custom_white">
-      <div className="outline-custom_gray py-3 outline-dashed page-padding">
+      <div className="outline-custom_gray py-3 outline-dashed page_padding">
         {showAuth && <Auth />}
         {showActivateAccount && <ActivateAccount />}
       </div>

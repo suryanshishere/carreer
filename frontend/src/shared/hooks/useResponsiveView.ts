@@ -1,32 +1,25 @@
 import { useState, useEffect } from "react";
 
-export type ViewType =
+export type IView =
   | "mobile"
   | "medium_mobile"
   | "large_mobile"
   | "desktop"
   | "tablet"
-  | "extra_large"
+  | "desktop_hd"
   | "other";
-
-export const viewObject = {
-  mobile: 610,
-  medium_mobile: 710,
-  large_mobile: 1050,
-  tablet: 1200,
-  desktop: 1440,
-};
 
 const useResponsiveView = (
   breakpoints = {
-    mobile: 610,
-    medium_mobile: 710,
-    large_mobile: 1050,
-    tablet: 1024,
-    desktop: 1440,
+    mobile: 675,
+    medium_mobile: 775,
+    large_mobile: 900,
+    tablet: 975,
+    desktop: 1100,
+    desktop_hd: 1250,
   }
 ) => {
-  const getViewType = (): ViewType => {
+  const getViewType = (): IView => {
     const width = window.innerWidth;
 
     if (width < breakpoints.mobile) return "mobile";
@@ -34,10 +27,11 @@ const useResponsiveView = (
     if (width < breakpoints.large_mobile) return "large_mobile";
     if (width < breakpoints.tablet) return "tablet";
     if (width < breakpoints.desktop) return "desktop";
-    return "extra_large";
+    if (width < breakpoints.desktop_hd) return "desktop_hd";
+    return "desktop";
   };
 
-  const [viewType, setViewType] = useState<ViewType>(getViewType);
+  const [viewType, setViewType] = useState<IView>(getViewType);
 
   useEffect(() => {
     const updateView = () => setViewType(getViewType());
