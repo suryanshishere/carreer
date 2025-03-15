@@ -32,7 +32,7 @@ const TagButton: React.FC<TagButtonProps> = ({
     <Button
       basicButton
       onClick={onClick}
-      className={`flex justify-center items-center gap-1 text-xs font-medium hover:bg-custom_white uppercase ${
+      className={`flex justify-center items-center gap-1 text-xs font-medium medium_mobile:hover:bg-custom_white uppercase ${
         isActive ? "bg-custom_white" : ""
       }`}
     >
@@ -65,7 +65,7 @@ const NavTags: React.FC = () => {
   };
 
   const viewType: IView = useResponsiveView();
-  const tagButtonShow = 
+  const tagButtonShow =
     viewType === "large_mobile" ||
     viewType === "medium_mobile" ||
     viewType === "mobile";
