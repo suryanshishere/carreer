@@ -142,7 +142,7 @@ const ChangePassword: React.FC = () => {
             outline
             type="submit"
             disabled={changePasswordMutation.isPending}
-            classProp="flex-1"
+            className="flex-1"
           >
             {changePasswordMutation.isPending
               ? "Changing password..."

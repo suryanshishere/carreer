@@ -86,7 +86,7 @@ const DeactivateAccount: React.FC = () => {
       <div className="lg:w-3/5 flex items-end gap-2">
         {!confirm ? (
           <Button
-            classProp="w-full transform ease-linear duration-100"
+            className="w-full transform ease-linear duration-100"
             warning
             onClick={() => setConfirm(true)}
           >
@@ -111,7 +111,7 @@ const DeactivateAccount: React.FC = () => {
               <Button
                 type="submit"
                 warning
-                classProp="flex-1"
+                className="flex-1"
                 disabled={deactivateMutation.isPending}
               >
                 {deactivateMutation.isPending

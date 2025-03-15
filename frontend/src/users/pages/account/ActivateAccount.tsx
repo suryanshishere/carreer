@@ -59,7 +59,7 @@ const ActivateAccount = () => {
         <Button
           onClick={() => activateMutation.mutate()}
           authButtonType
-          classProp={`flex-1 ${
+          className={`flex-1 ${
             activateMutation.isPending ? "bg-custom_black" : "bg-custom_gray"
           }`}
         >

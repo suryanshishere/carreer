@@ -18,7 +18,7 @@ export interface AuthProps {
   onBackLogin?: () => void;
   forgotPasswordClicked?: () => void;
   signupDataForwardHandler?: (email: string, message: string) => void;
-  classProp?: string;
+  className?: string;
 }
 
 interface ButtonConfig {

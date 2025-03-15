@@ -13,7 +13,7 @@ interface IDropdown {
   helperText?: string;
   register?: any; // Register from React Hook Form
   errorClassProp?: string;
-  classProp?: string;
+  className?: string;
   style?: CSSProperties;
   defaultValue?: string | number | Date;
   showDefaultText?: boolean; // NEW PROP: Show placeholder text if no default value
@@ -29,7 +29,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
       error,
       style,
       errorClassProp,
-      classProp,
+      className,
       onChange,
       required,
       multiple,
@@ -55,7 +55,7 @@ const Dropdown = forwardRef<HTMLSelectElement, IDropdown>(
           required={required}
           multiple={multiple}
           defaultValue={defaultValue ?? ""} // Explicitly setting an empty default
-          className={`w-full p-2 outline outline-2 outline-custom_less_gray text-base rounded ${classProp} ${
+          className={`w-full p-2 outline outline-2 outline-custom_less_gray text-base rounded ${className} ${
             error ? "outline-custom_red" : ""
           } ${error ? "focus:ring-custom_red" : "focus:ring-custom_less_gray"}`}
           style={style}

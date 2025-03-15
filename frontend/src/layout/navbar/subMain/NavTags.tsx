@@ -18,7 +18,7 @@ interface TagButtonProps {
   label: string;
   color: string;
   isActive: boolean;
-  classProp?: string;
+  className: string;
   onClick: () => void;
 }
 
@@ -26,7 +26,7 @@ const TagButton: React.FC<TagButtonProps> = ({
   label,
   color,
   isActive,
-  classProp,
+  className="",
   onClick,
 }) => {
   // For visited tag - future perspective and feature in look pending
@@ -34,7 +34,7 @@ const TagButton: React.FC<TagButtonProps> = ({
     return (
       <span
         // basicButton
-        className={`flex items-center justify-center gap-1 text-xs font-medium select-none hover:bg-none px-1 py-1 uppercase ${classProp}`}
+        className={`flex items-center justify-center gap-1 text-xs font-medium select-none hover:bg-none px-1 py-1 uppercase ${className}`}
       >
         <span className="h-3 w-3 rounded-full bg-custom_black"></span>
         <span>VISITED</span>
@@ -46,9 +46,9 @@ const TagButton: React.FC<TagButtonProps> = ({
     <Button
       basicButton
       onClick={onClick}
-      classProp={`flex items-center gap-1 text-xs font-medium hover:bg-custom_white uppercase ${
+      className={`flex items-center gap-1 text-xs font-medium hover:bg-custom_white uppercase ${
         isActive ? "bg-custom_white" : ""
-      } ${classProp}`}
+      } ${className}`}
     >
       <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
       <span>{label}</span>
@@ -107,7 +107,7 @@ const NavTags: React.FC = () => {
               label={tagsKey}
               color={item ?? ""}
               isActive={currentTags[tagsKey as keyof IUserAccountMode["tags"]]}
-              classProp="rounded-full"
+              className="rounded-full"
               onClick={() =>
                 tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])
               }
@@ -126,7 +126,7 @@ const NavTags: React.FC = () => {
                 isActive={
                   currentTags[tagsKey as keyof IUserAccountMode["tags"]]
                 }
-                classProp="justify-center py-2"
+                className="justify-center py-2"
                 onClick={() =>
                   tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])
                 }

@@ -152,7 +152,7 @@ const EmailVerification = () => {
           authButtonType
           onClick={handleOtpEmail}
           disabled={sendOtpMutation.isPending}
-          classProp={`${
+          className={`${
             sendOtpMutation.isPending ? "bg-custom_black" : "bg-custom_gray"
           }`}
         >
@@ -165,13 +165,13 @@ const EmailVerification = () => {
             error={!!errors.email_verification_otp}
             helperText={errors.email_verification_otp?.message}
             type="number"
-            classProp="py-2 text-md rounded placeholder:text-sm min-w-[6rem] flex-1 outline-custom_gray"
+            className="py-2 text-md rounded placeholder:text-sm min-w-[6rem] flex-1 outline-custom_gray"
             placeholder="Enter OTP"
             outerClassProp="flex-1"
           />
           <Button
             authButtonType
-            classProp={`${
+            className={`${
               verifyOtpMutation.isPending ? "bg-custom_black" : "bg-custom_gray"
             }`}
             type="submit"
@@ -184,7 +184,7 @@ const EmailVerification = () => {
       {isSendOnce && (
         <Button
         authButtonType
-          classProp={`${
+          className={`${
             sendOtpMutation.isPending
               ? "bg-custom_black"
               : resendTimer > 0

@@ -17,7 +17,7 @@ const PostLinkItem: React.FC<PostItemProps> = ({ section, item }) => {
         section={section}
         postId={item._id!}
         isSaved={item.is_saved}
-        classProp={`block float-right ${
+        className={`block float-right ${
           !item.is_saved ? "mobile:hidden group-hover:block" : ""
         }`}
       />

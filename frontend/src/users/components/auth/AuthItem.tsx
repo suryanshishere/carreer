@@ -80,7 +80,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
         error={!!errors.email}
         helperText={errors.email?.message}
         placeholder="Email"
-        classProp={`placeholder:text-sm outline-custom_gray`}
+        className={`placeholder:text-sm outline-custom_gray`}
         outerClassProp={`flex-1`}
       />
       <Input
@@ -89,7 +89,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
         error={!!errors.password}
         helperText={errors.password?.message}
         placeholder="Password / Create new password"
-        classProp={`placeholder:text-sm outline-custom_gray`}
+        className={`placeholder:text-sm outline-custom_gray`}
         outerClassProp={`flex-1`}
       />
       <Button authButtonType disabled={submitMutation.isPending} type="submit">

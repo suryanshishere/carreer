@@ -60,7 +60,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
                 })
               );
             }}
-            classProp="text-sm"
+            className="text-sm"
           >
             Undo
           </Button>
@@ -92,7 +92,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
             }}
             disabled={contributeMutation.isPending}
             authButtonType
-            classProp="text-sm p-0 px-2 py-1"
+            className="text-sm p-0 px-2 py-1"
           >
             {contributeMutation.isPending ? "Submitting..." : "Submit"}
           </Button>
@@ -100,7 +100,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
         <Button
           iconButton
           onClick={() => dispatch(openModal())}
-          classProp="ml-4"
+          className="ml-4"
         >
           <DeleteOutlineIcon fontSize="small" />
         </Button>

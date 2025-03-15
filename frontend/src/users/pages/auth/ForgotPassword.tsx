@@ -101,7 +101,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
         error={!!errors.email}
         helperText={errors.email?.message}
         placeholder="Email"
-        classProp={`placeholder:text-sm ${
+        className={`placeholder:text-sm ${
           !isForgotPasswordPage && "outline-custom_gray"
         }`}
         outerClassProp={`flex-1`}
@@ -114,7 +114,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
           authButtonType={!isForgotPasswordPage}
           outline={isForgotPasswordPage ? true : undefined}
           disabled={submitMutation.isPending}
-          classProp="w-full"
+          className="w-full"
           type="submit"
         >
           {submitMutation.isPending

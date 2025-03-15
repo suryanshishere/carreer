@@ -58,7 +58,7 @@ const MyContribution: React.FC = () => {
       <div className="flex mobile:justify-end gap-2 mb-3 -mt-3">
         <Button
           onClick={() => setSelectedTab("contribution")}
-          classProp={`rounded-full max-w-fit px-4 py-1 text-sm ${
+          className={`rounded-full max-w-fit px-4 py-1 text-sm ${
             selectedTab === "contribution" ? "bg-custom_pale_yellow" : ""
           }`}
         >
@@ -66,7 +66,7 @@ const MyContribution: React.FC = () => {
         </Button>
         <Button
           onClick={() => setSelectedTab("approved")}
-          classProp={`rounded-full max-w-fit px-2 py-1 text-sm ${
+          className={`rounded-full max-w-fit px-2 py-1 text-sm ${
             selectedTab === "approved" ? "bg-custom_pale_yellow" : ""
           }`}
         >

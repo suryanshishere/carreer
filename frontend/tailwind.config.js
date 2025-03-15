@@ -17,6 +17,7 @@ module.exports = {
       bg-custom_green
       bg-custom_red
       bg-custom_black
+      bg-custom_white
     `,
     },
   ],

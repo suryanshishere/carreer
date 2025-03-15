@@ -15,7 +15,7 @@ export interface InputProps
   helperText?: string;
   disabled?: boolean;
   type?: string;
-  classProp?: string;
+  className?: string;
   outerClassProp?: string;
   errorClassProp?: string;
 }
@@ -34,7 +34,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       onChange,
       error,
       helperText,
-      classProp,
+      className,
       outerClassProp,
       errorClassProp,
     },
@@ -84,7 +84,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder || startCase(name)}
             value={value}
             onChange={onChange}
-            className={`w-full pl-2 py-2 outline outline-2 focus:outline-custom_gray outline-custom_less_gray text-base rounded ${classProp} ${
+            className={`w-full pl-2 py-2 outline outline-2 focus:outline-custom_gray outline-custom_less_gray text-base rounded ${className} ${
               error ? "outline-custom_red" : ""
             } ${error ? "focus:ring-custom_red" : "focus:ring-custom_less_gray"}
             `}
@@ -130,7 +130,7 @@ export const TextArea = forwardRef<
       disabled = false,
       error,
       helperText,
-      classProp,
+      className,
       outerClassProp,
       errorClassProp,
       label,
@@ -154,7 +154,7 @@ export const TextArea = forwardRef<
           disabled={disabled}
           value={value}
           onChange={onChange} // Now specific to HTMLTextAreaElement
-          className={`w-full h-full pl-2 py-2 outline outline-2 outline-custom_less_gray text-base rounded ${classProp} ${
+          className={`w-full h-full pl-2 py-2 outline outline-2 outline-custom_less_gray text-base rounded ${className} ${
             error ? "outline-custom_red" : ""
           } ${error ? "focus:ring-custom_red" : "focus:ring-custom_less_gray"}`}
         />

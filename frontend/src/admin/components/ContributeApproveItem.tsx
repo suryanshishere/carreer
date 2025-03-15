@@ -37,7 +37,7 @@ const ContributeApproveItem: React.FC<ContributionItemProps> = ({
                       })
                     }
                     disabled={isPending}
-                    classProp="py-1 px-4 font-semibold text-xs"
+                    className="py-1 px-4 font-semibold text-xs"
                   >
                     {isPending ? "Applying..." : "Apply"}
                   </Button>

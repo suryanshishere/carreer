@@ -89,7 +89,7 @@ const ResetPassword: React.FC = () => {
             <b>Try again</b> if problem persist.
           </div>
         )}
-        <ForgotPassword classProp="w-2/3 flex flex-col gap-2" />
+        <ForgotPassword className="w-2/3 flex flex-col gap-2" />
       </div>
     );
 
@@ -113,7 +113,7 @@ const ResetPassword: React.FC = () => {
           error={!!errors.confirm_new_password}
           helperText={errors.confirm_new_password?.message}
         />
-        <Button type="submit" classProp="ml-auto" outline>
+        <Button type="submit" className="ml-auto" outline>
           {submitMutation.isPending
             ? "Submitting Reset Password.."
             : "Reset Password"}

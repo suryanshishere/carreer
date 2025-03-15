@@ -17,14 +17,14 @@ interface IBookmark {
   section: ISectionKey;
   postId: string;
   isSaved: boolean;
-  classProp?: string;
+  className?: string;
 }
 
 const Bookmark: React.FC<IBookmark> = ({
   section,
   postId,
   isSaved = false,
-  classProp,
+  className,
 }) => {
   const { token } = useSelector((state: RootState) => state.user.userData);
   const dispatch = useDispatch<AppDispatch>();
@@ -79,7 +79,7 @@ const Bookmark: React.FC<IBookmark> = ({
   };
 
   return (
-    <div className={classProp}>
+    <div className={className}>
       <Button iconButton onClick={handleClick} disabled={mutation.isPending}>
         {isBookmarked ? (
           <BookmarkSharpIcon fontSize="small" />

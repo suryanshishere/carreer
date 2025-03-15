@@ -129,7 +129,7 @@ const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
       {isSaved && (
         <Button
           onClick={handleUndo}
-          classProp="py-1 bg-custom_white transform ease-linear duration-200"
+          className="py-1 bg-custom_white transform ease-linear duration-200"
         >
           Undo
         </Button>

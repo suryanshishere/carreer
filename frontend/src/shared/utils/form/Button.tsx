@@ -4,7 +4,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   onClick?: () => void;
   tick?: boolean;
-  classProp?: string;
+  className?: string;
   type?: "button" | "submit" | "reset";
   outline?: boolean;
   disabled?: boolean;
@@ -19,7 +19,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  classProp = "",
+  className = "",
   style,
   disabled,
   type = "button",
@@ -34,8 +34,8 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   // Common props applied to every button
   const commonProps = { onClick, disabled, type, style, ...rest };
-  // Ensure "rounded" is present unless already provided in classProp
-  const roundedClass = classProp.includes("rounded") ? "" : "rounded";
+  // Ensure "rounded" is present unless already provided in className
+  const roundedClass = className.includes("rounded") ? "" : "rounded";
 
 
   if (basicButton) {
@@ -43,7 +43,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <button
         {...commonProps}
-        className={`${baseClase} ${roundedClass} ${classProp}`}
+        className={`${baseClase} ${roundedClass} ${className}`}
       >
         {children}
       </button>
@@ -59,7 +59,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <button
         {...commonProps}
-        className={`${baseClass} ${stateClass} ${classProp}`}
+        className={`${baseClass} ${stateClass} ${className}`}
       >
         {children}
       </button>
@@ -73,7 +73,7 @@ const Button: React.FC<ButtonProps> = ({
         {...commonProps}
         className={`relative inline-block font-medium group ${
           disabled ? "cursor-not-allowed" : "cursor-pointer"
-        } ${classProp}`}
+        } ${className}`}
       >
         <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
         <span className="absolute inset-0 w-full h-full bg-custom_red border-2 border-black group-hover:bg-custom_red"></span>
@@ -93,7 +93,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <button
         {...commonProps}
-        className={`${baseClass} ${stateClass} ${classProp}`}
+        className={`${baseClass} ${stateClass} ${className}`}
       >
         {children}
       </button>
@@ -107,7 +107,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <button
         {...commonProps}
-        className={`${baseClass} ${stateClass} ${classProp}`}
+        className={`${baseClass} ${stateClass} ${className}`}
       >
         {children}
       </button>
@@ -119,7 +119,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <button
         {...commonProps}
-        className={`p-1 rounded-full whitespace-nowrap hover:bg-custom_pale_yellow flex items-center justify-center cursor-pointer text-custom_less_gray hover:text-custom_gray ${classProp} `}
+        className={`p-1 rounded-full whitespace-nowrap hover:bg-custom_pale_yellow flex items-center justify-center cursor-pointer text-custom_less_gray hover:text-custom_gray ${className} `}
       >
         {children}
       </button>
@@ -134,7 +134,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       {...commonProps}
-      className={`${baseClass} ${stateClass} ${classProp}`}
+      className={`${baseClass} ${stateClass} ${className}`}
     >
       {children}
     </button>

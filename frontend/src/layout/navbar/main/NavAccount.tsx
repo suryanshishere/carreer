@@ -31,7 +31,7 @@ const NavAccount = () => {
       {!isNavAuthClicked && (
         <Button
           loginSignupType
-          classProp="px-2 py-1 text-sm"
+          className="px-2 py-1 text-sm"
           onClick={() => dispatch(handleAuthClick(!isNavAuthClicked))}
         >
           Login / Signup

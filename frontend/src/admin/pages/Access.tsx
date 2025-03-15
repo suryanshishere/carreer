@@ -107,7 +107,7 @@ const Access: React.FC = () => {
             error={!!errors.role_applied}
             helperText={errors.role_applied?.message}
             data={role_applied}
-            classProp="text-sm py-0"
+            className="text-sm py-0"
           />
           <Dropdown
             name="status"
@@ -116,11 +116,11 @@ const Access: React.FC = () => {
             error={!!errors.status}
             helperText={errors.status?.message}
             data={status}
-            classProp="text-sm py-0"
+            className="text-sm py-0"
           />
         </div>
 
-        <Button iconButton type="submit" classProp="outline">
+        <Button iconButton type="submit" className="outline">
           <DoneIcon fontSize="small" />
         </Button>
       </form>

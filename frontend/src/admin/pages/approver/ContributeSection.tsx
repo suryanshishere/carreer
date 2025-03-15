@@ -48,7 +48,7 @@ const ContributionSection = () => {
             <Button
               key={item}
               onClick={() => handleSectionClick(item)}
-              classProp={`min-w-fit max-w-fit text-sm ${
+              className={`min-w-fit max-w-fit text-sm ${
                 selectedSection === item ? "bg-custom_pale_yellow" : ""
               }`}
             >

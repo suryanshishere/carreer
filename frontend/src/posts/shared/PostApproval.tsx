@@ -14,7 +14,7 @@ const PostApproval: React.FC<{ approved: boolean }> = ({ approved = true }) => {
   // todo: if contribute is active, disabled it, have power for apprver, admin to directly contribute and apply the changes
   // instant disapprove power, approve power
   return (
-    <Button authButtonType disabled={contributeActive} classProp="whitespace-nowrap text-sm p-0 px-2 py-1">
+    <Button authButtonType disabled={contributeActive} className="whitespace-nowrap text-sm p-0 px-2 py-1">
       {approved ? "Disapprove" : "Approve"} 
     </Button>
   );

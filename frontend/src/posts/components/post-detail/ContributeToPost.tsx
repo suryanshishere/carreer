@@ -70,7 +70,7 @@ const ContributeToPost: React.FC<{
           }}
           disabled={contributeMutation.isPending}
           authButtonType
-          classProp="whitespace-nowrap text-sm p-0 px-2 py-1"
+          className="whitespace-nowrap text-sm p-0 px-2 py-1"
         >
           {contributeMutation.isPending ? "Submitting..." : "Submit"}
         </Button>

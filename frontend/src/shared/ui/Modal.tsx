@@ -38,7 +38,7 @@ const Modal: React.FC<ModalProps> = ({ header, children, footer, onClose }) => {
           <Button
             iconButton
             onClick={() => dispatch(closeModal())}
-            classProp="absolute top-2 right-2"
+            className="absolute top-2 right-2"
           >
             <CloseIcon />
           </Button>

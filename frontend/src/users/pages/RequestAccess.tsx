@@ -124,7 +124,7 @@ const RequestAccess: React.FC = () => {
         />
         <TextArea
           placeholder="Please include your full name, email, and reason for applying."
-          classProp="placeholder:text-sm"
+          className="placeholder:text-sm"
           {...register("reason")}
           error={!!errors.reason}
           helperText={errors.reason?.message}
