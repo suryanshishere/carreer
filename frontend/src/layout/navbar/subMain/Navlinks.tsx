@@ -6,6 +6,9 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import useResponsiveView, { IView } from "shared/hooks/useResponsiveView";
 import POST_DB, { ISectionKey } from "posts/db";
 import NavDropdownUI from "shared/ui/NavDropdownUI";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
+import { toggleDropdownState } from "shared/store/dropdownSlice";
 
 const visibleLinksMap = {
   mobile: 1,
@@ -39,13 +42,15 @@ const Navlinks: React.FC = () => {
   const dropdownLinks = navEntries.slice(visibleLinksCount);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [showDropdown, setShowDropdown] = React.useState(false);
+  const dropdownKey = "navlinks";
+  const showDropdown = useSelector((state:RootState)=>state.dropdown.dropdownStates[dropdownKey]);
+  const dispatch = useDispatch<AppDispatch>();
 
   // Determine the selected section for the dropdown button label
   const selectedSection =
     dropdownLinks.find(([key]) => key === section)?.[0] || null;
 
-  useOutsideClick(dropdownRef, () => setShowDropdown(false));
+  useOutsideClick(dropdownRef, () => dispatch(toggleDropdownState({ id: dropdownKey, bool: false })));
 
   return (
     <div className="flex-1 h-full flex items-center gap-3 min-w-30">
@@ -73,7 +78,7 @@ const Navlinks: React.FC = () => {
             className={`rounded-full outline outline-custom_gray w-full bg-custom_less_gray px-1 flex items-center justify-center gap-2 ${
               viewType === "mobile" ? "py-1" : "py-[1px]"
             } ${showDropdown && "shadow-md shadow-custom_black"}`}
-            onClick={() => setShowDropdown(!showDropdown)}
+            onClick={() => dispatch(toggleDropdownState({ id: dropdownKey  }))}
           >
             {selectedSection ? startCase(selectedSection) : "More Section"}
             <ArrowDropDownIcon fontSize="small" />
@@ -83,7 +88,7 @@ const Navlinks: React.FC = () => {
               <NavLink
                 key={key}
                 to={item.link}
-                onClick={() => setShowDropdown(false)}
+                onClick={() => dispatch(toggleDropdownState({ id: dropdownKey }))}
               >
                 {startCase(key)}
               </NavLink>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import useResponsiveView, { IView } from "shared/hooks/useResponsiveView";
@@ -9,6 +9,7 @@ import { updateMode } from "shared/store/userSlice";
 import { USER_ACCOUNT_MODE_DB } from "users/db";
 import { IUserAccountMode } from "users/db";
 import NavDropdownUI from "shared/ui/NavDropdownUI";
+import { toggleDropdownState } from "shared/store/dropdownSlice";
 
 const TAGS = USER_ACCOUNT_MODE_DB.tags;
 
@@ -29,30 +30,34 @@ const TagButton: React.FC<TagButtonProps> = ({
   if (label === "none") return null;
 
   return (
-    <Button
-      basicButton
+    <div
       onClick={onClick}
-      className={`flex justify-center items-center gap-1 text-xs font-medium medium_mobile:hover:bg-custom_white uppercase ${
+      className={`flex justify-center items-center gap-1 text-xs font-medium rounded-full py-1 px-2 cursor-pointer hover:bg-custom_white uppercase ${
         isActive ? "bg-custom_white" : ""
       }`}
     >
-      <span className={`h-3 w-3 rounded-full bg-${color}`}></span>
+      <span className={`h-3 w-3 rounded-sm bg-${color}`}></span>
       <span>{label}</span>
-    </Button>
+    </div>
   );
 };
 
 const NavTags: React.FC = () => {
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
   const dispatch = useDispatch<AppDispatch>();
+  const dropdownKey = "nav_tags";
+  const showTagsDropdown = useSelector(
+    (state: RootState) => state.dropdown.dropdownStates[dropdownKey]
+  );
 
   // Use useSelector to get the current tags state from Redux
   const currentTags = useSelector(
     (state: RootState) => state.user.mode.tags || {}
   );
 
-  const [showTagsDropdown, setShowTagsDropdown] = useState(false);
-  useOutsideClick(dropdownRef, () => setShowTagsDropdown(false));
+  useOutsideClick(dropdownRef, () =>
+    dispatch(toggleDropdownState({ id: dropdownKey, bool: false }))
+  );
 
   const tagClickHandler = (tagsKey: keyof IUserAccountMode["tags"]) => {
     dispatch(
@@ -77,7 +82,7 @@ const NavTags: React.FC = () => {
     >
       {tagButtonShow ? (
         <button
-          onClick={() => setShowTagsDropdown(!showTagsDropdown)}
+          onClick={() => dispatch(toggleDropdownState({ id: dropdownKey }))}
           className={`rounded-full outline outline-custom_gray w-full h-full bg-custom_less_gray flex items-center justify-center gap-2 ${
             viewType === "mobile" ? "py-1" : "py-[1px]"
           } ${showTagsDropdown && "shadow-md shadow-custom_black"}`}

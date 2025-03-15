@@ -13,10 +13,10 @@ const dropdownSlice = createSlice({
   reducers: {
     toggleDropdownState(
       state,
-      action: PayloadAction<{ id: string; state?: boolean }>
+      action: PayloadAction<{ id: string; bool?: boolean }>
     ) {
-      const { id, state: newState } = action.payload;
-      state.dropdownStates[id] = newState ?? !state.dropdownStates[id];
+      const { id, bool } = action.payload;
+      state.dropdownStates[id] = bool ?? !state.dropdownStates[id];
     },
     closeSpecificDropdowns(state, action: PayloadAction<string[]>) {
       action.payload.forEach((id) => {

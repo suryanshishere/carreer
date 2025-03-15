@@ -19,7 +19,7 @@ const NavDropdownUI: React.FC<NavDropdownUIProps> = ({ isVisible, children, clas
             return (
               <React.Fragment key={index}>
                 {React.cloneElement(child as ReactElement<{ className?: string }>, {
-                  className: `py-1 rounded text-center block medium_mobile:hover:bg-custom_white ${
+                  className: `py-1 rounded text-center block hover:bg-custom_white ${
                     child.props.className || ""
                   }`,
                 })}
