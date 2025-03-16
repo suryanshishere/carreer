@@ -1,4 +1,4 @@
-import { JWTRequest } from "@middlewares/check-auth";
+
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
 import ContactUs from "@models/others/contact-us-model";
@@ -10,7 +10,7 @@ export const contactUs = async (
 ) => {
   try {
     const { name, email, reason } = req.body;
-    const userId = (req as JWTRequest).userData.userId;
+    const userId = req.userData?.userId;
 
     const contactRequest = new ContactUs({
       user_id: userId,

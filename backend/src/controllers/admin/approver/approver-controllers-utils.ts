@@ -61,7 +61,7 @@ export const updateContributorContribution = async (
 
 export const updateContributorApproval = async (
   contributor: IContribution,
-  approverId: string,
+  approverId: string="",
   post_code: string,
   section: string,
   data: Record<string, any>,

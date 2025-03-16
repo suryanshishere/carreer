@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { JWTRequest } from "@middlewares/check-auth";
+
 import HttpError from "@utils/http-errors";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import AdminModel from "@models/admin/Admin";
@@ -12,11 +12,11 @@ export const getRole = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { userId, email, deactivated_at } = (req as JWTRequest).userData;
+  const { userId, email, deactivated_at } = req.userData || {};
   try {
     const admin = await AdminModel.findById(userId).select("role");
 
-    if (!admin || !admin.role) {
+    if (!userId || !email || !admin || !admin.role) {
       return next(new HttpError("Nothing to activate found!", 404));
     }
 
@@ -44,7 +44,7 @@ export const getReqAccess = async (
 ) => {
   handleValidationErrors(req, next);
 
-  const userId = (req as JWTRequest).userData.userId;
+  const userId = req.userData?.userId;
   const { status, role_applied } = req.body;
 
   try {
@@ -79,7 +79,7 @@ export const accessUpdate = async (
   session.startTransaction();
 
   try {
-    const userId = (req as JWTRequest).userData.userId;
+    const userId = req.userData?.userId;
     const { status, req_id, role_applied } = req.body;
 
     authorisedAdmin(userId, next);

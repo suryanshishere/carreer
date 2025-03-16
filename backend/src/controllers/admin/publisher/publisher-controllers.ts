@@ -3,7 +3,7 @@ import { NextFunction, Response, Request } from "express";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import PostModel from "@models/posts/Post";
-import { JWTRequest } from "@middlewares/check-auth";
+
 import {
   MODEL_MAP,
   SECTION_POST_MODEL_MAP,
@@ -43,7 +43,7 @@ export const createNewPost = async (
   } = req.body;
 
   //since publisher id will be same as user id but just in the publisher model
-  const publisherId = (req as JWTRequest).userData.userId;
+  const publisherId = req.userData?.userId;
   const session = await mongoose.startSession();
 
   try {
@@ -144,7 +144,7 @@ export const deletePost = async (
   handleValidationErrors(req, next);
   const { post_id, section }: { post_id: string; section: IOverallKey } =
     req.body;
-  const publisherId = (req as JWTRequest).userData.userId;
+  const publisherId = req.userData?.userId;
 
   try {
     //authorization check

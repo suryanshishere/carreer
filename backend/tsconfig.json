@@ -12,16 +12,28 @@
     "rootDir": "./src",
     "baseUrl": "./src",
     "paths": {
-      "@models/*": ["models/*"],
-      "@controllers/*": ["controllers/*"],
-      "@routes/*": ["routes/*"],
-      "@utils/*": ["utils/*"],
-      "@middlewares/*": ["middlewares/*"],
-      "@shared/*": ["shared/*"]
+      "@models/*": [
+        "models/*"
+      ],
+      "@controllers/*": [
+        "controllers/*"
+      ],
+      "@routes/*": [
+        "routes/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@middlewares/*": [
+        "middlewares/*"
+      ],
+      "@shared/*": [
+        "shared/*"
+      ]
     }
   },
   "include": [
-    "**/*.ts"  // This should include all .ts files in the backend directory
+    "**/*.ts"
   ],
   "exclude": [
     "node_modules"

@@ -1,7 +1,7 @@
 import ContributionModel from "@models/users/Contribution";
 import { NextFunction, Request, Response } from "express";
 import HttpError from "@utils/http-errors";
-import { JWTRequest } from "@middlewares/check-auth";
+
 import {
   flattenContributionData,
   savePostReferences,
@@ -14,6 +14,7 @@ import { ISectionKey } from "@models/posts/db";
 import { fetchPostDetail, fetchPostList } from "@controllers/posts/utils";
 import _ from "lodash";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
+import PostModel from "@models/posts/Post";
 
 export const getContriPostCodes = async (
   req: Request,
@@ -151,15 +152,15 @@ export const applyContri = async (
     version = "main",
     contributor_id,
   } = req.body;
-  const approverId = (req as JWTRequest).userData.userId;
-  const postCodeVersion = `${post_code}_1_${version}`;
+  const approverId = req.userData?.userId;
+  const postCodeVersion = `${post_code}_1_${version}`; //way method of storing postcode and version together
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
     handleValidationErrors(req, next);
 
-    let post = await fetchPostDetail(section, post_code, version, false);
+    let post = await fetchPostDetail(section, post_code, version);
     if (!post) {
       return next(new HttpError("Post not found or not approved yet!", 404));
     }
@@ -231,7 +232,7 @@ export const nonApprovedPosts = async (
   next: NextFunction
 ) => {
   try {
-    const { section, active } = req.params; 
+    const { section, active } = req.params;
     handleValidationErrors(req, next);
     // Fetch non-approved posts
     const response = await fetchPostList(
@@ -258,5 +259,29 @@ export const nonApprovedPosts = async (
         500
       )
     );
+  }
+};
+
+export const postApproval = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { postId, section, approved } = req.body;
+
+    const updatedPost = await PostModel.findByIdAndUpdate(
+      postId,
+      { $set: { [`${section}_approved`]: approved } },
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found!" });
+    }
+
+    return res.status(200).json({ message: "Approval status updated." });
+  } catch (error) {
+    next(error);
   }
 };

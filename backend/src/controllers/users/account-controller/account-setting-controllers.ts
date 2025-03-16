@@ -2,7 +2,7 @@ import User from "@models/users/User";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";
 import bcrypt from "bcryptjs";
-import { getUserIdFromRequest, JWTRequest } from "@middlewares/check-auth";
+
 import handleValidationErrors from "@controllers/utils/validation-error";
 
 export const changePassword = async (
@@ -14,7 +14,7 @@ export const changePassword = async (
 
   try {
     const { old_password, new_password } = req.body;
-    const userId = getUserIdFromRequest(req as JWTRequest);
+    const userId = req.userData?.userId;
     const user = await User.findById(userId);
 
     if (!user) {
@@ -53,7 +53,7 @@ export const deactivateAccount = async (
   handleValidationErrors(req, next);
 
   try {
-    const userId = getUserIdFromRequest(req as JWTRequest);
+    const userId = req.userData?.userId;
     const user = await User.findById(userId);
     if (!user) {
       return next(new HttpError("User not found!", 404));

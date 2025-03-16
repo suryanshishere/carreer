@@ -46,7 +46,7 @@ const NonApprovedPosts: React.FC = () => {
   });
 
   return (
-    <div className="w-full flex flex-col gap-3">
+    <div className="w-full flex flex-col gap-4">
       <PageHeader
         header="Non-Approved Posts"
         subHeader="Posts which are yet to be approved"

@@ -3,10 +3,13 @@ import {
   getContriPost,
   getContriPostCodes,
   nonApprovedPosts,
+  postApproval,
 } from "@controllers/admin/approver/approver-controllers";
 import express from "express";
 import { body } from "express-validator";
 import {
+  validateBoolean,
+  validateMongoId,
   validateObject,
   validateOptStr,
   validatePostCodeOrVersion,
@@ -49,6 +52,12 @@ router.get(
   "/non-approved-posts/:section/:active?",
   [validateSection(), validateOptStr("active")],
   nonApprovedPosts
+);
+
+router.patch(
+  "/post-approval",
+  [validateSection(), validateMongoId("postId"), validateBoolean("approved")],
+  postApproval
 );
 
 export default router;

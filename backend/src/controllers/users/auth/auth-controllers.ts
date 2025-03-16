@@ -8,9 +8,9 @@ import {
   sendAuthenticatedResponse,
   sendVerificationResponse,
   updateUnverifiedUser,
-} from "./auth-controllers-utils"; 
-import { getUserIdFromRequest, JWTRequest } from "@middlewares/check-auth";
-import { random } from "lodash";  
+} from "./auth-controllers-utils";
+
+import { random } from "lodash";
 import handleValidationErrors from "../../utils/validation-error";
 import { USER_ENV_DATA } from "@models/users/db";
 
@@ -66,7 +66,7 @@ export const sendPasswordResetLink = async (
   handleValidationErrors(req, next);
 
   const { email } = req.body;
-  const userId = getUserIdFromRequest(req as JWTRequest);
+  const userId = req.userData?.userId;
 
   try {
     let existingUser: IUser | null;
@@ -106,9 +106,9 @@ export const sendPasswordResetLink = async (
 
     await existingUser.save();
 
-    const FRONTEND_URL =
-      `${process.env.FRONTEND_URL}/user/reset_password` ||
-      "http://localhost:3000/user/reset_password";
+    const FRONTEND_URL = process.env.FRONTEND_URL
+      ? `${process.env.FRONTEND_URL}/user/reset-password`
+      : "http://localhost:3000/user/reset-password";
 
     await sendEmail(
       next,
@@ -248,9 +248,7 @@ export const sendVerificationOtp = async (
     handleValidationErrors(req, next);
   }
   // optional routes: since in backend action won't have token hence conditional not workin
-  const userId = options.isDirect
-    ? options.userId
-    : getUserIdFromRequest(req as JWTRequest);
+  const userId = options.isDirect ? options.userId : req.userData?.userId;
 
   try {
     let user: IUser | null = null;
@@ -326,7 +324,7 @@ export const verifyEmail = async (
   handleValidationErrors(req, next);
 
   const { otp } = req.body;
-  const userId = (req as JWTRequest).userData.userId;
+  const userId = req.userData?.userId;
 
   try {
     // Find the user by ID and validate existence

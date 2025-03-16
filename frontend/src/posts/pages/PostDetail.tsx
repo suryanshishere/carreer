@@ -63,7 +63,7 @@ const PostDetail: React.FC = () => {
           isSaved={data.is_saved}
         />
         {orderedData && (
-          <PostApproval approved={orderedData[`${section}_approved`]} />
+          <PostApproval approved={orderedData[`${section}_approved`]} postId={orderedData._id} />
         )}
       </div>
       <DataStateWrapper

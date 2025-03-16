@@ -1,5 +1,5 @@
 import { ADMIN_DATA } from "@models/admin/db";
-import POST_DB, { POST_LIMITS_DB } from "@models/posts/db"; 
+import POST_DB, { POST_LIMITS_DB } from "@models/posts/db";
 import { ValidationChain, check } from "express-validator";
 import _, { startCase } from "lodash";
 
@@ -173,4 +173,20 @@ export const validateMongoId = (
     chain = chain.optional({ nullable: true });
   }
   return chain.isMongoId().withMessage(`${field} must be valid ID.`);
+};
+
+export const validateBoolean = (
+  field: string,
+  optional: boolean = false
+): ValidationChain => {
+  let chain = check(field);
+
+  if (optional) {
+    chain = chain.optional({ nullable: true });
+  }
+
+  return chain
+    .isBoolean()
+    .withMessage(`${field} must be a boolean value.`)
+    .toBoolean(); // Converts the input to a proper boolean (true/false)
 };

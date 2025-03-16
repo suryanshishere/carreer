@@ -1,4 +1,4 @@
-import { JWTRequest } from "@middlewares/check-auth";
+
 import UserModal from "@models/users/User";
 import HttpError from "@utils/http-errors";
 import { NextFunction, Request, Response } from "express";
@@ -17,7 +17,7 @@ export const modeAccountHandler = async (
       return next(new HttpError("Invalid mode data provided", 400));
     }
 
-    const userId = (req as JWTRequest).userData.userId;
+    const userId = req.userData?.userId;
     const user = await UserModal.findById(userId);
 
     if (!user) {

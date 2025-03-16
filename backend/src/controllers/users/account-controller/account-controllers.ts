@@ -1,5 +1,5 @@
 import handleValidationErrors from "@controllers/utils/validation-error";
-import { JWTRequest } from "@middlewares/check-auth";
+
 import AdminModel from "@models/admin/Admin";
 import { ADMIN_DATA } from "@models/admin/db";
 import RequestModal from "@models/admin/Request";
@@ -17,7 +17,7 @@ export const reqAccess = async (
 ) => {
   handleValidationErrors(req, next);
 
-  const { userId } = (req as JWTRequest).userData;
+  const { userId } = req.userData || {};
   const { reason, role_applied } = req.body;
 
   const session = await mongoose.startSession();

@@ -53,8 +53,7 @@ const ResetPassword: React.FC = () => {
         JSON.stringify({
           resetPasswordToken: Number(resetPasswordToken?.slice(-6)),
           password: data.new_password,
-        }),
-        {}
+        })
       );
       return response.data;
     },

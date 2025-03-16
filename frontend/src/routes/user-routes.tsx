@@ -15,10 +15,10 @@ export const useUserRoutes = () => {
       {
         path: "user",
         children: [
-          {
-            path: "reset_password/:resetPasswordToken",
-            element: <ResetPassword />,
-          },
+          // {
+          //   path: "reset-password/:resetPasswordToken",
+          //   element: <ResetPassword />,
+          // },
           { path: "req-access", element: <ReqAccess /> },
           {
             path: "account",
@@ -30,7 +30,10 @@ export const useUserRoutes = () => {
                 children: [
                   { path: "change-password", element: <ChangePassword /> },
                   { path: "forgot-password", element: <ForgotPassword /> },
-                  { path: "deactivate-account", element: <DeactivateAccount /> },
+                  {
+                    path: "deactivate-account",
+                    element: <DeactivateAccount />,
+                  },
                 ],
               },
             ],
@@ -39,5 +42,10 @@ export const useUserRoutes = () => {
       },
     ];
   }
-  return [];
+  return [
+    {
+      path: "user/reset-password/:resetPasswordToken",
+      element: <ResetPassword />,
+    },
+  ];
 };

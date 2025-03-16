@@ -19,7 +19,9 @@ const ContributeToPost: React.FC<{
   const { isEditPostClicked, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
 
-  const token = useSelector((state: RootState) => state.user.userData.token);
+  const { token, role } = useSelector(
+    (state: RootState) => state.user.userData
+  );
 
   useEffect(() => {
     if (section && postCode) {
@@ -72,7 +74,13 @@ const ContributeToPost: React.FC<{
           authButtonType
           className="whitespace-nowrap text-sm p-0 px-2 py-1"
         >
-          {contributeMutation.isPending ? "Submitting..." : "Submit"}
+          {contributeMutation.isPending
+            ? role === "none" || role === "publisher"
+              ? "Submitting..."
+              : "Applying..."
+            : role === "none" || role === "publisher"
+            ? "Submit"
+            : "Apply Changes"}{" "}
         </Button>
       )}
     </div>

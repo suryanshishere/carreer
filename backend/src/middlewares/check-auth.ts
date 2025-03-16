@@ -1,4 +1,3 @@
-import { IRole } from "@models/admin/db";
 import HttpError from "@utils/http-errors";
 import { Response, NextFunction, Request } from "express";
 import { expressjwt } from "express-jwt";
@@ -59,21 +58,3 @@ const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 
 export default checkAuth;
 
-export interface JWTRequest extends Request {
-  userData: {
-    userId: string;
-    email: string;
-    role: IRole;
-    deactivated_at?: Date;
-  };
-}
-
-//for the optional path (that may have doubt of getting userid)
-export const getUserIdFromRequest = (req: JWTRequest): string | undefined => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader?.split(" ")[1];
-
-  return token && req.userData && (req as JWTRequest).userData.userId
-    ? (req as JWTRequest).userData.userId
-    : undefined;
-};

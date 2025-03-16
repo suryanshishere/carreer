@@ -13,6 +13,21 @@ import HttpError from "@utils/http-errors";
 import checkAuth from "@middlewares/check-auth";
 import checkAccountStatus from "@middlewares/check-account-status";
 import activateAccount from "@middlewares/activate-account";
+import { IRole } from "@models/admin/db";
+
+//extending request to essential types to the userData jwt intercepted
+declare global {
+  namespace Express {
+    interface Request {
+      userData?: {
+        userId: string;
+        email: string;
+        role: IRole;
+        deactivated_at?: Date;
+      };
+    }
+  }
+}
 
 const MONGO_URL: string = process.env.MONGO_URL || "";
 const LOCAL_HOST = process.env.LOCAL_HOST || 5050;

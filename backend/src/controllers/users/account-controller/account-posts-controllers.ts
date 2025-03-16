@@ -2,7 +2,7 @@ import { Response, NextFunction, Request } from "express";
 import User from "@models/users/User";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
-import { getUserIdFromRequest, JWTRequest } from "@middlewares/check-auth";
+
 import POST_DB from "@models/posts/db";
 import ContributionModel, {
   IContribution,
@@ -20,7 +20,7 @@ export const savedPosts = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = (req as JWTRequest).userData.userId;
+  const userId = req.userData?.userId;
 
   try {
     const query = User.findById(userId).select("saved_posts -_id");
@@ -74,7 +74,7 @@ export const bookmarkPost = async (
   try {
     const { section, post_id } = req.body;
 
-    const userId = getUserIdFromRequest(req as JWTRequest);
+    const userId = req.userData?.userId;
     const user = await User.findById(userId);
 
     if (!user) {
@@ -109,7 +109,7 @@ export const unBookmarkPost = async (
   try {
     const { section, post_id } = req.body;
 
-    const userId = getUserIdFromRequest(req as JWTRequest);
+    const userId = req.userData?.userId;
     const user = await User.findById(userId);
 
     if (!user) {
@@ -146,7 +146,7 @@ export const myContribution = async (
   next: NextFunction
 ) => {
   try {
-    const userId = (req as JWTRequest).userData.userId;
+    const userId = req.userData?.userId;
     const contributor: IContribution = await ContributionModel.findById(
       userId
     ).select("contribution approved updatedAt");
@@ -199,7 +199,7 @@ export const contributeToPost = async (
   const postCodeVersion = generatePostCodeVersion(post_code,version);
   validateContributionField(req, next);
 
-  const userId = (req as JWTRequest).userData.userId;
+  const userId = req.userData?.userId;
   const session = await mongoose.startSession();
 
   try {
@@ -277,7 +277,7 @@ export const deleteContribute = async (
   handleValidationErrors(req, next);
   const { post_code,version, section } = req.body;
   const postCodeVersion = generatePostCodeVersion(post_code,version);
-  const userId = (req as JWTRequest).userData.userId;
+  const userId = req.userData?.userId;
 
   try {
     const user = await ContributionModel.findById(userId);

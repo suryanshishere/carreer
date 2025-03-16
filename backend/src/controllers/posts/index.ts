@@ -1,7 +1,5 @@
-import { Response, NextFunction } from "express";
+import { Response, NextFunction, Request } from "express";
 import HttpError from "@utils/http-errors";
-import { Request } from "express-jwt";
-import { getUserIdFromRequest, JWTRequest } from "@middlewares/check-auth";
 import CommonModel from "@models/posts/components/Common";
 import FeeModel from "@models/posts/components/Fee";
 import DateModel from "@models/posts/components/Date";
@@ -11,9 +9,9 @@ import { fetchPostDetail, fetchPostList, getTagForPost } from "./utils";
 import { SECTION_POST_MODEL_MAP } from "@models/posts/db/post-map/post-model-map";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import User from "@models/users/User";
-import { ISectionKey, ITagKey, TAGS } from "@models/posts/db";
-import calculateDateDifference from "./utils/calculate-date-diff";
+import { ISectionKey } from "@models/posts/db";
 
+//TODO
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
 //todo
 // const CATEGORY_LIMIT =
@@ -30,7 +28,7 @@ export const helpless = () => {
 
 export const home = async (req: Request, res: Response, next: NextFunction) => {
   handleValidationErrors(req, next);
-  const userId = getUserIdFromRequest(req as JWTRequest);
+  const userId = req.userData?.userId;
   try {
     const user = await User.findById(userId);
     const savedPost = user?.saved_posts || null;
@@ -74,7 +72,7 @@ export const section = async (
   handleValidationErrors(req, next);
   try {
     const section = req.params.section as ISectionKey;
-    const userId = getUserIdFromRequest(req as JWTRequest);
+    const userId = req.userData?.userId;
     const user = await User.findById(userId);
     let savedIds: string[] = [];
     if (user) {
@@ -115,26 +113,27 @@ export const postDetail = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
-  const {
-    section,
-    postIdOrCode,
-    version = "main",
-  } = req.params as {
-    section: ISectionKey;
-    postIdOrCode: string;
-    version?: string;
-  };
-
   try {
-    const response = await fetchPostDetail(section, postIdOrCode, version);
+    handleValidationErrors(req, next);
+    const { role, userId } = req.userData || {};
+    const { section, postIdOrCode, version } = req.params as {
+      section: ISectionKey;
+      postIdOrCode: string;
+      version?: string;
+    };
+
+    const response = await fetchPostDetail(
+      section,
+      postIdOrCode,
+      version,
+      role
+    );
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));
     }
 
     let isSaved = false;
-    const userId = getUserIdFromRequest(req as JWTRequest);
     const user = await User.findById(userId);
     const { Types } = require("mongoose");
 

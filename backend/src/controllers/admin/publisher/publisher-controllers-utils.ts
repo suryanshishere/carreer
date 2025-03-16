@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"; 
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
-import { JWTRequest } from "@middlewares/check-auth";
+
 import { Request } from "express";
 import { COMPONENT_POST_MODEL_MAP } from "@models/posts/db/post-map/post-model-map";
 import {
@@ -134,7 +134,7 @@ export const createComponentPost = async (
   api_key_from_user?: string
 ): Promise<{ postId: mongoose.Types.ObjectId; postDoc: IPost }> => {
   try {
-    const userId = (req as JWTRequest).userData.userId;
+    const userId = req.userData?.userId;
     const { section, name_of_the_post, post_code, version } = req.body;
 
     const queryFilter = { post_code, version: version ?? "main" };

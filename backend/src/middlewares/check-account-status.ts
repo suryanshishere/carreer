@@ -1,21 +1,16 @@
 import HttpError from "@utils/http-errors";
 import { NextFunction, Response, Request } from "express";
-import {
-  excludedPaths,
-  JWTRequest,
-  optionalPaths,
-} from "./check-auth";
+import { excludedPaths, optionalPaths } from "./check-auth";
 import { isRegExp } from "lodash";
 
 const checkAccountStatus = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  const { deactivated_at } = (req as JWTRequest).userData || {};
+) => { 
   try {
     //todo: check for 30 days
-    if (deactivated_at) {
+    if (req.userData?.deactivated_at) {
       const isOptional = optionalPaths.some((path) => {
         if (isRegExp(path)) {
           return path.test(req.path);

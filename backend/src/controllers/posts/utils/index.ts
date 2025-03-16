@@ -9,6 +9,7 @@ import getSortedDateIds from "./get-sorted-date-ids";
 import mongoose from "mongoose";
 import calculateDateDifference from "./calculate-date-diff";
 import { IDates } from "@models/posts/components/Date";
+import { IRole } from "@models/admin/db";
 
 export const fetchPostList = async (
   section: ISectionKey,
@@ -64,12 +65,14 @@ export const fetchPostDetail = async (
   section: ISectionKey,
   postIdOrCode: string,
   version: string = "main",
-  useLean: boolean = true
+  userRole: IRole = "none"
 ) => {
   const query = mongoose.Types.ObjectId.isValid(postIdOrCode)
     ? {
         _id: postIdOrCode,
-        [`${section}_approved`]: true,
+        ...(userRole === "none" || userRole === "publisher"
+          ? { [`${section}_approved`]: true }
+          : {}),
         [`${section}_ref`]: { $exists: true },
       }
     : {
@@ -79,13 +82,9 @@ export const fetchPostDetail = async (
         [`${section}_ref`]: { $exists: true },
       };
 
-  let queryBuilder = PostModel.findOne(query)
+  const queryBuilder = PostModel.findOne(query)
     .select(`post_code version updatedAt ${section}_approved`)
     .populate(POSTS_POPULATE.section_detail_populate[section]);
-
-  if (useLean) {
-    queryBuilder = queryBuilder.lean() as any;
-  }
 
   return await queryBuilder;
 };
@@ -95,8 +94,8 @@ export const getTagForPost = (
   section: ISectionKey
 ): string => {
   const days = calculateDateDifference(dateRef, section);
- 
-  let tagKey: string = "none"; 
+
+  let tagKey: string = "none";
   if (days !== null) {
     const matchingTagEntry = Object.entries(TAGS).find(
       ([key, range]) => range && days >= range[0] && days < range[1]
