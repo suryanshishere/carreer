@@ -8,13 +8,21 @@ import { closeAllDropdowns } from "shared/store/dropdownSlice";
 
 interface NavAccountListProps {
   keyProp?: keyof INavAccountList;
+  className?: string;
 }
 
-const NavAccountList: React.FC<NavAccountListProps> = ({ keyProp }) => {
+const NavAccountList: React.FC<NavAccountListProps> = ({
+  keyProp,
+  className = "",
+}) => {
   const dispatch = useDispatch();
   const navList = useNavAccountList(keyProp);
-  const { role: userRole } = useSelector((state: RootState) => state.user.userData);
-  const dropdownStates = useSelector((state: RootState) => state.dropdown.dropdownStates);
+  const { role: userRole } = useSelector(
+    (state: RootState) => state.user.userData
+  );
+  const dropdownStates = useSelector(
+    (state: RootState) => state.dropdown.dropdownStates
+  );
 
   const renderItem = (key: string, item: any, index: number, total: number) => {
     // If the item has a role field, only render it if the user's role is included.
@@ -43,18 +51,18 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ keyProp }) => {
           {label}
         </NavLink>
       );
-    }else if (item?.func ) {
+    } else if (item?.func) {
       component = (
         <button
           onClick={item.func}
           className={`py-1 px-2 w-full rounded hover:bg-custom_white ${
-         (   dropdownStates[key]) ? "bg-custom_white" : ""
+            dropdownStates[key] ? "bg-custom_white" : ""
           }`}
         >
           {label}
         </button>
       );
-    } 
+    }
 
     return (
       component && (
@@ -70,8 +78,12 @@ const NavAccountList: React.FC<NavAccountListProps> = ({ keyProp }) => {
   const total = keys.length;
 
   return (
-    <ul className="h-fit w-[7rem] rounded shadow-md shadow-custom_black text-sm flex flex-col items-center text-custom_black bg-custom_less_gray p-1">
-      {keys.map((key, index) => renderItem(key, (navList as any)[key], index, total))}
+    <ul
+      className={`h-fit w-[7rem] rounded shadow-md shadow-custom_black text-sm flex flex-col items-center text-custom_black bg-custom_less_gray p-1 ${className}`}
+    >
+      {keys.map((key, index) =>
+        renderItem(key, (navList as any)[key], index, total)
+      )}
     </ul>
   );
 };

@@ -8,7 +8,9 @@ import Info from "posts/components/post-detail/Info";
 import postDetailByPriority from "../components/post-detail/post-detail-by-priority";
 import DataStateWrapper from "shared/utils/DataStateWrapper";
 import { ISectionKey } from "posts/db";
-import PostApproval from "posts/shared/PostApproval";
+import PostApproval from "admin/shared/PostApproval";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 
 const fetchPostDetail = async (
   section: ISectionKey,
@@ -31,7 +33,7 @@ const PostDetail: React.FC = () => {
     postCode: string;
     version: string;
   }>();
-
+  const role = useSelector((state: RootState) => state.user.userData.role);
   const location = useLocation();
   const postId = location.state?.postId;
   const postIdOrCode = postId ?? postCode;
@@ -52,7 +54,7 @@ const PostDetail: React.FC = () => {
   });
 
   const orderedData = section ? postDetailByPriority(data.data, section) : null;
-  console.log(orderedData);
+
   return (
     <div className="flex flex-col gap-3 relative min-h-screen">
       <div className="self-end flex gap-2 items-center justify-center z-10">
@@ -62,8 +64,11 @@ const PostDetail: React.FC = () => {
           postId={postIdOrCode}
           isSaved={data.is_saved}
         />
-        {orderedData && (
-          <PostApproval approved={orderedData[`${section}_approved`]} postId={orderedData._id} />
+        {orderedData && role !== "none" && role !== "publisher" && (
+          <PostApproval
+            approved={orderedData[`${section}_approved`]}
+            postId={orderedData._id}
+          />
         )}
       </div>
       <DataStateWrapper

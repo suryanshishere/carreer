@@ -10,6 +10,7 @@ import { USER_ACCOUNT_MODE_DB } from "users/db";
 import { IUserAccountMode } from "users/db";
 import NavDropdownUI from "shared/ui/NavDropdownUI";
 import { toggleDropdownState } from "shared/store/dropdownSlice";
+import { ClassNames } from "@emotion/react";
 
 const TAGS = USER_ACCOUNT_MODE_DB.tags;
 
@@ -17,6 +18,7 @@ interface TagButtonProps {
   label: string;
   color: string;
   isActive: boolean;
+  showTagsDropdown?: boolean;
   className?: string;
   onClick: () => void;
 }
@@ -26,19 +28,29 @@ const TagButton: React.FC<TagButtonProps> = ({
   color,
   isActive,
   onClick,
+  showTagsDropdown,
 }) => {
   if (label === "none") return null;
 
-  return (
-    <div
-      onClick={onClick}
-      className={`flex justify-center items-center gap-1 text-xs font-medium rounded-full py-1 px-2 cursor-pointer hover:bg-custom_white uppercase ${
-        isActive ? "bg-custom_white" : ""
-      }`}
-    >
+  const className = `flex justify-center items-center gap-1 text-xs font-medium ${
+    showTagsDropdown ? "rounded py-2" : "rounded-full"
+  } py-1 px-2 cursor-pointer hover:bg-custom_white uppercase`;
+
+  const buttonContent = (
+    <>
       <span className={`h-3 w-3 rounded-sm bg-${color}`}></span>
       <span>{label}</span>
-    </div>
+    </>
+  );
+
+  return isActive ? (
+    <button onClick={onClick} className={`bg-custom_white ${className}`}>
+      {buttonContent}
+    </button>
+  ) : (
+    <button onClick={onClick} className={className}>
+      {buttonContent}
+    </button>
   );
 };
 
@@ -123,6 +135,7 @@ const NavTags: React.FC = () => {
               onClick={() =>
                 tagClickHandler(tagsKey as keyof IUserAccountMode["tags"])
               }
+              showTagsDropdown
             />
           ))}
       </NavDropdownUI>

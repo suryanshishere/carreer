@@ -80,7 +80,7 @@ const NavAccount = () => {
           <NavAccountList />
         )}
         {dropdownStates["setting"] && (
-          <NavAccountList keyProp="setting" />
+          <NavAccountList keyProp="setting"/>
         )}
       </div>
     </>

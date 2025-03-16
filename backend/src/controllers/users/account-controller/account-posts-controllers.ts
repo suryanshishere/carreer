@@ -2,16 +2,14 @@ import { Response, NextFunction, Request } from "express";
 import User from "@models/users/User";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
-
-import POST_DB from "@models/posts/db";
-import ContributionModel, {
-  IContribution,
-} from "@models/users/Contribution";
+import POST_DB, { ISectionKey } from "@models/posts/db";
+import ContributionModel, { IContribution } from "@models/users/Contribution";
 import { validateContributionField } from "./account-controllers-utils";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import UserModal from "@models/users/User";
 import POSTS_POPULATE from "@models/posts/db/post-map/post-populate-map";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
+import { getTagForPost } from "@controllers/posts/utils";
 
 const postSectionsArray = POST_DB.sections;
 
@@ -23,7 +21,7 @@ export const savedPosts = async (
   const userId = req.userData?.userId;
 
   try {
-    const query = User.findById(userId).select("saved_posts -_id");
+    const query = User.findById(userId).select("saved_posts");
 
     postSectionsArray.forEach((section) => {
       query.populate({
@@ -52,6 +50,7 @@ export const savedPosts = async (
           ].map((post: any) => ({
             ...post,
             is_saved: true,
+            tag: getTagForPost(post.date_ref, section as ISectionKey),
           }));
         }
       });
@@ -196,7 +195,7 @@ export const contributeToPost = async (
 ) => {
   handleValidationErrors(req, next);
   let { data, section, post_code, version } = req.body;
-  const postCodeVersion = generatePostCodeVersion(post_code,version);
+  const postCodeVersion = generatePostCodeVersion(post_code, version);
   validateContributionField(req, next);
 
   const userId = req.userData?.userId;
@@ -275,8 +274,8 @@ export const deleteContribute = async (
   next: NextFunction
 ) => {
   handleValidationErrors(req, next);
-  const { post_code,version, section } = req.body;
-  const postCodeVersion = generatePostCodeVersion(post_code,version);
+  const { post_code, version, section } = req.body;
+  const postCodeVersion = generatePostCodeVersion(post_code, version);
   const userId = req.userData?.userId;
 
   try {

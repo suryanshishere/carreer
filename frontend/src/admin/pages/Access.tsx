@@ -92,12 +92,12 @@ const Access: React.FC = () => {
   });
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col gap-3">
       <PageHeader header="Access" subHeader="List of the access" />
 
       <form
         onSubmit={handleSubmit((data) => setFilters(data))}
-        className="w-full -mt-3 flex h-16 items-center mobile:justify-end gap-2 mb-7"
+        className="w-full flex h-16 items-center mobile:justify-end gap-2 mb-7"
       >
         <div className="flex justify-end gap-2">
           <Dropdown

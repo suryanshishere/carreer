@@ -28,13 +28,13 @@ const DefaultLoadingComponent = () => (
 );
 
 const DefaultErrorComponent = () => (
-  <ul className="custom_ul text-custom_red font-semibold">
+  <ul className="custom_ul text-custom_red font-semibold mt-2">
     <li> Something went wrong, please try again later.</li>
   </ul>
 );
 
 const DefaultEmptyComponent = () => (
-  <ul className="custom_ul text-custom_red font-semibold">
+  <ul className="custom_ul text-custom_red font-semibold mt-2">
     <li>No Data / Nothing to show.</li>
   </ul>
 );

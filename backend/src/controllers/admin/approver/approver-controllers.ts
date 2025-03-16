@@ -11,10 +11,15 @@ import {
 import mongoose from "mongoose";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import { ISectionKey } from "@models/posts/db";
-import { fetchPostDetail, fetchPostList } from "@controllers/posts/utils";
+import {
+  fetchPostDetail,
+  fetchPostList,
+  getTagForPost,
+} from "@controllers/posts/utils";
 import _ from "lodash";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
 import PostModel from "@models/posts/Post";
+import User from "@models/users/User";
 
 export const getContriPostCodes = async (
   req: Request,
@@ -224,16 +229,21 @@ export const applyContri = async (
 };
 
 export const nonApprovedPosts = async (
-  req: Request<{
-    section: ISectionKey;
-    active?: string;
-  }>,
+  req: Request<{ section: ISectionKey; active?: string }>,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { section, active } = req.params;
     handleValidationErrors(req, next);
+
+    const userId = req.userData?.userId;
+    const user = await User.findById(userId);
+    let savedIds: string[] = [];
+    if (user?.saved_posts?.[section]) {
+      savedIds = user.saved_posts[section].map(String);
+    }
+
     // Fetch non-approved posts
     const response = await fetchPostList(
       section,
@@ -247,9 +257,20 @@ export const nonApprovedPosts = async (
       return next(new HttpError("No non-approved posts found.", 404));
     }
 
+    // Adding saved status and tags
+    const postsWithSavedStatus = response?.map(({ _id, date_ref, ...rest }) => {
+      return {
+        _id,
+        ...rest,
+        is_saved: savedIds.includes(String(_id)),
+        tag: getTagForPost(date_ref, section),
+        date_ref,
+      };
+    });
+
     return res.status(200).json({
       message: "Non-approved posts fetched successfully!",
-      data: response,
+      data: postsWithSavedStatus,
     });
   } catch (error) {
     console.error("Error fetching non-approved posts:", error);

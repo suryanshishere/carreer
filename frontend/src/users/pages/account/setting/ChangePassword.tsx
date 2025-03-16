@@ -91,7 +91,7 @@ const ChangePassword: React.FC = () => {
   }
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col gap-3">
       <PageHeader
         header="Change Your Password"
         subHeader="Strong password for the best protection"

@@ -37,49 +37,47 @@ const ContributionSection = () => {
   });
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-3">
       <PageHeader
         header="Contribution Section"
         subHeader="Select a section to view its contributions"
       />
-      <div className="flex flex-col gap-5 justify-start">
-        <ul className="flex flex-wrap gap-2">
-          {POST_DB.sections.map((item) => (
-            <Button
-              key={item}
-              onClick={() => handleSectionClick(item)}
-              className={`min-w-fit max-w-fit text-sm ${
-                selectedSection === item ? "bg-custom_pale_yellow" : ""
-              }`}
-            >
-              {startCase(item)}
-            </Button>
-          ))}
-        </ul>
+      <ul className="flex flex-wrap gap-2">
+        {POST_DB.sections.map((item) => (
+          <Button
+            key={item}
+            onClick={() => handleSectionClick(item)}
+            className={`min-w-fit max-w-fit text-sm ${
+              selectedSection === item ? "bg-custom_pale_yellow" : ""
+            }`}
+          >
+            {startCase(item)}
+          </Button>
+        ))}
+      </ul>
 
-        <div className="flex-1 overflow-y-auto">
-          {selectedSection ? (
-            <DataStateWrapper
-              isLoading={isLoading}
-              error={error}
-              data={data?.data}
-              emptyCondition={(data) => !data || data.length === 0}
-              skipLoadingUI={false}
-              nodelay
-            >
-              {(validData) => (
-                <div className="w-full h-full flex items-start">
-                  {renderPostData("contributionTrends", validData)}
-                </div>
-              )}
-            </DataStateWrapper>
-          ) : (
-            <Para
-              header="Select the section"
-              subHeader="(Under which you want to fetch the contributed posts)"
-            />
-          )}
-        </div>
+      <div className="flex-1 overflow-y-auto">
+        {selectedSection ? (
+          <DataStateWrapper
+            isLoading={isLoading}
+            error={error}
+            data={data?.data}
+            emptyCondition={(data) => !data || data.length === 0}
+            skipLoadingUI={false}
+            nodelay
+          >
+            {(validData) => (
+              <div className="w-full h-full flex items-start">
+                {renderPostData("contributionTrends", validData)}
+              </div>
+            )}
+          </DataStateWrapper>
+        ) : (
+          <Para
+            header="Select the section"
+            subHeader="(Under which you want to fetch the contributed posts)"
+          />
+        )}
       </div>
     </div>
   );

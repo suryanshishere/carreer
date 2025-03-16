@@ -126,7 +126,7 @@ const ForgotPassword: React.FC<AuthProps> = ({ onBack }) => {
   );
 
   return isForgotPasswordPage ? (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col gap-3">
       <PageHeader
         header="Forgot Password"
         subHeader="Make your email handy for OTP"

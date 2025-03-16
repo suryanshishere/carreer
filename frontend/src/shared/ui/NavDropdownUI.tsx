@@ -12,7 +12,7 @@ const NavDropdownUI: React.FC<NavDropdownUIProps> = ({ isVisible, children, clas
   const childArray = React.Children.toArray(children).filter(Boolean); // Remove falsy values
 
   return (
-    <div className="absolute rounded top-full mt-1 w-full bg-custom_less_gray z-10 shadow-md shadow-custom_black p-1">
+    <div className="absolute rounded top-full mt-2 w-full bg-custom_less_gray z-10 shadow-md shadow-custom_black p-1">
       <div className={`flex flex-col ${className}`}>
         {childArray.map((child, index) => {
           if (React.isValidElement<{ className?: string }>(child)) {

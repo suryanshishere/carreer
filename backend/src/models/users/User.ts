@@ -123,5 +123,5 @@ const userSchema: Schema = new Schema<IUser>(
   { timestamps: true }
 );
 
-const UserModal = mongoose.model<IUser>("User", userSchema);
-export default UserModal;
+const User = mongoose.model<IUser>("User", userSchema);
+export default User;

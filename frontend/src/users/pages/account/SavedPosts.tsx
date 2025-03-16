@@ -34,7 +34,7 @@ const SavedPosts = () => {
   const savedPost = data?.data?.saved_posts ?? {};
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <PageHeader
         header="Saved Bookmarks"
         subHeader="Quick access to your interested post"
@@ -50,7 +50,7 @@ const SavedPosts = () => {
         nodelay={true}
       >
         {(validData) => (
-          <>
+          <div className="flex flex-col">
             {validData &&
               Object.entries(validData)
                 .filter(
@@ -67,7 +67,7 @@ const SavedPosts = () => {
                     />
                   </Fragment>
                 ))}
-          </>
+          </div>
         )}
       </DataStateWrapper>
     </div>

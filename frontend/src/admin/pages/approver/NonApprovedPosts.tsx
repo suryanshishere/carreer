@@ -8,7 +8,7 @@ import Para from "shared/ui/Para";
 import DataStateWrapper from "shared/utils/DataStateWrapper";
 import PostList from "posts/shared/PostList";
 import POST_DB, { ISectionKey } from "posts/db";
-import { startCase } from "lodash"; 
+import { startCase } from "lodash";
 import Toggle from "shared/utils/form/Toggle";
 
 const NonApprovedPosts: React.FC = () => {
@@ -20,16 +20,10 @@ const NonApprovedPosts: React.FC = () => {
     (section: string) => {
       if (selectedSection !== section) {
         navigate(`/approver/non-approved-posts/${section}`);
-        setIsActive(false); // Reset toggle when switching sections
       }
     },
     [selectedSection, navigate]
   );
-
-  const toggleActive = () => {
-    if (!selectedSection) return;
-    setIsActive((prev) => !prev);
-  };
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["nonApprovedPosts", selectedSection, isActive],
@@ -46,13 +40,13 @@ const NonApprovedPosts: React.FC = () => {
   });
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-3">
       <PageHeader
         header="Non-Approved Posts"
         subHeader="Posts which are yet to be approved"
       />
 
-      <div className="flex items-center flex-wrap gap-2 -mt-5">
+      <div className="flex items-center flex-wrap gap-2">
         {POST_DB.sections.map((item) => (
           <Button
             key={item}
@@ -65,16 +59,16 @@ const NonApprovedPosts: React.FC = () => {
           </Button>
         ))}
 
-        {selectedSection && (
-          <Toggle
-            checked={isActive}
-            onChange={toggleActive}
-            tooltip="Fetch current active posts"
-            label="Active"
-            labelClassName="w-20"
-            dotActiveClassName="translate-x-14"
-          />
-        )}
+        <Toggle
+          checked={isActive}
+          onChange={() => {
+            setIsActive((prev) => !prev);
+          }}
+          tooltip="Fetch current active posts"
+          label="Active"
+          labelClassName="w-20"
+          dotActiveClassName="translate-x-14"
+        />
       </div>
 
       <div className="flex-1 overflow-y-auto">
