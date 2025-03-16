@@ -32,7 +32,7 @@ export const validatePostCodeOrVersion = (
     )
     .matches(lowercase_alpha_num_underscrore)
     .withMessage(
-      `${friendlyName} can only contain lowercase letters, numbers, and underscores, with no spaces.`
+      `${friendlyName} is not in correct format.`
     );
 };
 

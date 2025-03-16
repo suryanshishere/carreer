@@ -2,8 +2,8 @@ import axios from "axios";
 import store from "shared/store";
 import { handleAccountDeactivatedAt } from "shared/store/userSlice";
 
-const DEACTIVATED_ACCOUNT_DAYS =
-  Number(process.env.REACT_APP_DEACTIVATED_ACCOUNT_DAYS) || 30;
+// const DEACTIVATED_ACCOUNT_DAYS =
+//   Number(process.env.REACT_APP_DEACTIVATED_ACCOUNT_DAYS) || 30;
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5050/api";
 
 const getTokenFromLocalStorage = () => {
@@ -36,7 +36,7 @@ axiosInstance.interceptors.request.use(
 
 //prevent any !get request before hand only
 axiosInstance.interceptors.request.use((config) => {
-  const deactivatedAt = store.getState().user.userData.deactivatedAt;
+  const deactivatedAt = store.getState().user.deactivatedAt;
   const authHeader =
     config.headers["Authorization"] || config.headers["authorization"];
   if (

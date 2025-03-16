@@ -52,9 +52,9 @@ export const ContributionSchema = new Schema<IContribution>(
 );
 
 // Create and export the Contribution model
-const ContributionModel = model<IContribution>(
+const Contribution = model<IContribution>(
   "Contribution",
   ContributionSchema
 );
 
-export default ContributionModel;
+export default Contribution;

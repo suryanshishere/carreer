@@ -17,9 +17,7 @@ const NavAccountList: React.FC<NavAccountListProps> = ({
 }) => {
   const dispatch = useDispatch();
   const navList = useNavAccountList(keyProp);
-  const { role: userRole } = useSelector(
-    (state: RootState) => state.user.userData
-  );
+  const userRole = useSelector((state: RootState) => state.user.role);
   const dropdownStates = useSelector(
     (state: RootState) => state.dropdown.dropdownStates
   );

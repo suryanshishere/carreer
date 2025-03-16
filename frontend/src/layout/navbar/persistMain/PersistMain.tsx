@@ -4,10 +4,8 @@ import { RootState } from "shared/store";
 import ActivateAccount from "users/pages/account/ActivateAccount";
 
 const PersistMain = () => {
-  const { isNavAuthClicked, userData } = useSelector(
-    (state: RootState) => state.user
-  );
-  const { token, isEmailVerified, deactivatedAt } = userData || {};
+  const { isNavAuthClicked, token, isEmailVerified, deactivatedAt } =
+    useSelector((state: RootState) => state.user);
 
   const showAuth = isNavAuthClicked || (token && !isEmailVerified);
   const showActivateAccount = token && deactivatedAt;

@@ -8,10 +8,9 @@ import {
   RecursivePartial,
 } from "users/db";
 
-interface IUserSlice {
+interface IUserSlice extends IUserData {
   isNavAuthClicked: boolean;
   isOtpSent: boolean;
-  userData: IUserData;
   mode: IUserAccountMode;
 }
 
@@ -33,11 +32,10 @@ const initialState: IUserSlice = {
       none: true,
     },
   },
-  userData: {
-    token: "",
-    isEmailVerified: false,
-    role: "none",
-  },
+  token: "",
+  tokenExpiration: "",
+  isEmailVerified: false,
+  role: "none",
 };
 
 const userSlice = createSlice({
@@ -68,13 +66,10 @@ const userSlice = createSlice({
           );
 
       state.mode = merge({}, state.mode, mode);
-      state.userData = merge({}, state.userData, {
-        token,
-        isEmailVerified,
-        tokenExpiration: localTokenExpiration.toISOString(),
-        role: role ?? state.userData.role,
-      });
-
+      state.tokenExpiration = localTokenExpiration.toISOString();
+      state.token = token;
+      state.isEmailVerified = isEmailVerified;
+      state.role = role ?? state.role;
       state.isOtpSent = true;
       if (isEmailVerified) {
         state.isNavAuthClicked = false;
@@ -87,7 +82,7 @@ const userSlice = createSlice({
     },
 
     updateUserData(state, action: PayloadAction<RecursivePartial<IUserData>>) {
-      state.userData = merge({}, state.userData, action.payload);
+      return merge(state, action.payload);
     },
 
     updateMode(
@@ -117,7 +112,7 @@ const userSlice = createSlice({
       state,
       action: PayloadAction<string | undefined>
     ) {
-      state.userData.deactivatedAt = action.payload;
+      state.deactivatedAt = action.payload;
     },
   },
 });

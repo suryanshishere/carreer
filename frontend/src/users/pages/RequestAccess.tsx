@@ -27,9 +27,7 @@ interface IRequestAccess {
 }
 
 const RequestAccess: React.FC = () => {
-  const { token, role } = useSelector(
-    (state: RootState) => state.user.userData
-  );
+  const { token, role } = useSelector((state: RootState) => state.user);
   const validationSchema = yup.object().shape({
     role_applied: yup
       .string()
@@ -103,7 +101,7 @@ const RequestAccess: React.FC = () => {
         create new posts. These posts can then be sent for approval before being
         published. <br />
         2. Once you have been granted approver access, you will be able to
-        approve created posts. These posts will then be displayed on the site. 
+        approve created posts. These posts will then be displayed on the site.
         <br />
         3. Once you have been granted admin access, you will be able to create
         new posts, approve created posts, manage publisher and approver access

@@ -51,7 +51,7 @@ export interface IUserData {
   isEmailVerified: boolean;
   role: IRole;
   deactivatedAt?: string;
-  tokenExpiration?: string;
+  tokenExpiration: string;
   sessionExpireMsg?: string;
 }
 

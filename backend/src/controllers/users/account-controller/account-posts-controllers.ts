@@ -3,7 +3,7 @@ import User from "@models/users/User";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import POST_DB, { ISectionKey } from "@models/posts/db";
-import ContributionModel, { IContribution } from "@models/users/Contribution";
+import Contribution, { IContribution } from "@models/users/Contribution";
 import { validateContributionField } from "./account-controllers-utils";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import UserModal from "@models/users/User";
@@ -146,7 +146,7 @@ export const myContribution = async (
 ) => {
   try {
     const userId = req.userData?.userId;
-    const contributor: IContribution = await ContributionModel.findById(
+    const contributor: IContribution = await Contribution.findById(
       userId
     ).select("contribution approved updatedAt");
 
@@ -216,17 +216,17 @@ export const contributeToPost = async (
 
     // If no contribution exists for the user, create a new one
     if (!contribution) {
-      contribution = new ContributionModel({
+      contribution = new Contribution({
         _id: userId,
         contribution: new Map(), // Initialize the contribution Map
       });
       user.contribution = userId;
-      await user.save({ session }); // Use the session in the save query
+      await user.save({ session });  
     }
 
     // Ensure contribution.contribution is always a Map
     if (!(contribution.contribution instanceof Map)) {
-      contribution.contribution = new Map(); // Initialize it as a Map if not already
+      contribution.contribution = new Map();  
     }
 
     //post code + __ + version
@@ -279,7 +279,7 @@ export const deleteContribute = async (
   const userId = req.userData?.userId;
 
   try {
-    const user = await ContributionModel.findById(userId);
+    const user = await Contribution.findById(userId);
     if (!user) {
       return next(
         new HttpError("User not found or has no contributions.", 404)

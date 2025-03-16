@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import store, { AppDispatch, RootState } from "shared/store";
-import { logout, handleAccountDeactivatedAt } from "shared/store/userSlice";
+import { logout } from "shared/store/userSlice";
 import {
   triggerErrorMsg,
   triggerSuccessMsg,
@@ -12,7 +12,7 @@ import Button from "shared/utils/form/Button";
 
 const ActivateAccount = () => {
   const { deactivatedAt, token } = useSelector(
-    (state: RootState) => state.user.userData
+    (state: RootState) => state.user
   );
   const dispatch = useDispatch<AppDispatch>();
 

@@ -19,9 +19,7 @@ const ContributeToPost: React.FC<{
   const { isEditPostClicked, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
 
-  const { token, role } = useSelector(
-    (state: RootState) => state.user.userData
-  );
+  const { token, role } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (section && postCode) {

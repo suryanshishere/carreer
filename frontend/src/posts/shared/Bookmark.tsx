@@ -26,7 +26,7 @@ const Bookmark: React.FC<IBookmark> = ({
   isSaved = false,
   className,
 }) => {
-  const { token } = useSelector((state: RootState) => state.user.userData);
+  const token  = useSelector((state: RootState) => state.user.token);
   const dispatch = useDispatch<AppDispatch>();
   const [isBookmarked, setIsBookmarked] = useState<boolean>(isSaved);
 

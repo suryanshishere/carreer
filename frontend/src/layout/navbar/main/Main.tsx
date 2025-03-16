@@ -7,7 +7,7 @@ import { RootState } from "shared/store";
 const LOGO = process.env.REACT_APP_LOGO || "saarkaari";
 
 const Main: React.FC = () => {
-  const { token } = useSelector((state: RootState) => state.user.userData);
+  const token  = useSelector((state: RootState) => state.user.token);
   return (
     <div className="relative page_padding w-full text-custom_white h-main-nav bg-custom_gray flex items-center justify-between gap-2 z-30">
       <header className="text-2xl font-bold">{LOGO}</header>

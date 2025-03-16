@@ -33,7 +33,7 @@ const PostDetail: React.FC = () => {
     postCode: string;
     version: string;
   }>();
-  const role = useSelector((state: RootState) => state.user.userData.role);
+  const role = useSelector((state: RootState) => state.user.role);
   const location = useLocation();
   const postId = location.state?.postId;
   const postIdOrCode = postId ?? postCode;

@@ -1,21 +1,16 @@
-import ContributionModel from "@models/users/Contribution";
+import Contribution from "@models/users/Contribution";
 import { NextFunction, Request, Response } from "express";
 import HttpError from "@utils/http-errors";
-
 import {
   flattenContributionData,
   savePostReferences,
-  updateContributorApproval,
-  updateContributorContribution,
+  updateContributors,
+  updatePost,
 } from "./approver-controllers-utils";
 import mongoose from "mongoose";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import { ISectionKey } from "@models/posts/db";
-import {
-  fetchPostDetail,
-  fetchPostList,
-  getTagForPost,
-} from "@controllers/posts/utils";
+import { fetchPostList, getTagForPost } from "@controllers/posts/utils";
 import _ from "lodash";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
 import PostModel from "@models/posts/Post";
@@ -30,7 +25,7 @@ export const getContriPostCodes = async (
 
   try {
     handleValidationErrors(req, next);
-    const result = await ContributionModel.aggregate([
+    const result = await Contribution.aggregate([
       {
         // Step 1: Convert the 'contribution' field to an array of key-value pairs
         $project: {
@@ -102,7 +97,7 @@ export const getContriPost = async (
     // }
 
     // Find the contribution posts for the specified section and postCode
-    const contributionPosts = await ContributionModel.find({
+    const contributionPosts = await Contribution.find({
       [`contribution.${postCodeVersion}.${section}`]: { $exists: true },
     })
       .select(`contribution.${postCodeVersion}.${section}`)
@@ -150,67 +145,26 @@ export const applyContri = async (
   res: Response,
   next: NextFunction
 ) => {
-  const {
-    post_code,
-    data,
-    section,
-    version = "main",
-    contributor_id,
-  } = req.body;
-  const approverId = req.userData?.userId;
-  const postCodeVersion = `${post_code}_1_${version}`; //way method of storing postcode and version together
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
     handleValidationErrors(req, next);
 
-    let post = await fetchPostDetail(section, post_code, version);
-    if (!post) {
-      return next(new HttpError("Post not found or not approved yet!", 404));
+    let post = await updatePost(req, next);
+    if (!post) return;
+
+    //only contributors is updated
+    if (req.body.contributor_req) {
+      let contributor = await updateContributors(req, session, next);
+      if (!contributor) return;
+      await contributor.save({ session });
     }
 
-    // Update post data (in-memory modification, no session needed)
-    Object.keys(data).forEach((key) => post && _.set(post, key, data[key]));
-
-    // Update contributors list
-    const contributorsField = `${section}_contributors`;
-    if (!Array.isArray(post[contributorsField])) post[contributorsField] = [];
-    if (!post[contributorsField].includes(contributor_id)) {
-      post[contributorsField].push(contributor_id);
-    }
-
-    // Fetch contributor details
-    const contributor = await ContributionModel.findById(contributor_id)
-      .select(`contribution.${postCodeVersion}.${section} approved`)
-      .session(session);
-
-    if (!contributor) return next(new HttpError("Contributor not found!", 400));
-
-    // Update contributor contribution and approval
-    await updateContributorContribution(
-      contributor,
-      postCodeVersion,
-      section,
-      data,
-      session
-    );
-    await updateContributorApproval(
-      contributor,
-      approverId,
-      postCodeVersion,
-      section,
-      data,
-      session
-    );
-
-    // Save all referenced fields efficiently
+    //saving of all modification on the db
     await savePostReferences(post);
+    await post.save({ session });
 
-    // Save contributor and post within the transaction
-    await Promise.all([contributor.save({ session }), post.save({ session })]);
-
-    // Commit transaction
     await session.commitTransaction();
     session.endSession();
 

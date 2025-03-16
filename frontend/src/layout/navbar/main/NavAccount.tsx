@@ -22,8 +22,8 @@ const NavAccount = () => {
   const dropdownStates = useSelector(
     (state: RootState) => state.dropdown.dropdownStates
   );
-  const { token, role } = useSelector(
-    (state: RootState) => state.user.userData
+  const token = useSelector(
+    (state: RootState) => state.user.token
   );
 
   let LoginSignup = (

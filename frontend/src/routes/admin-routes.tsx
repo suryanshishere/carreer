@@ -8,7 +8,7 @@ import ContributionApprove from "admin/pages/approver/ContributeApprove";
 import NonApprovedPosts from "admin/pages/approver/NonApprovedPosts";
 
 export const useAdminRoutes = () => {
-  const role = useSelector((state: RootState) => state.user.userData.role);
+  const role = useSelector((state: RootState) => state.user.role);
 
   // Helper function to check if the user has one of the required roles
   const hasAccess = (roles: IRole[]) => role && roles.includes(role);

@@ -9,7 +9,7 @@ import ResetPassword from "users/pages/auth/ResetPassword";
 import MyContribution from "users/pages/account/MyContribution";
 
 export const useUserRoutes = () => {
-  const token = useSelector((state: RootState) => state.user.userData.token);
+  const token = useSelector((state: RootState) => state.user.token);
   if (token) {
     return [
       {

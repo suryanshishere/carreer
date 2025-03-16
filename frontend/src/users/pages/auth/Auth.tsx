@@ -30,14 +30,14 @@ const Auth: React.FC<AuthProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [authState, setAuthState] = useState<AuthState>(AuthState.LOGIN);
   const { token, isEmailVerified } = useSelector(
-    (state: RootState) => state.user.userData
+    (state: RootState) => state.user
   );
 
   const handleStateChange = (newState: AuthState) => setAuthState(newState);
 
   React.useEffect(() => {
     if (token && !isEmailVerified) {
-      setAuthState(AuthState.VERIFY_EMAIL);  
+      setAuthState(AuthState.VERIFY_EMAIL);
     }
   }, [token, isEmailVerified]);
 

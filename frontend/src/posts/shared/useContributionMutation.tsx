@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "shared/utils/api/axios-instance";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "shared/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "shared/store";
 import { resetKeyValuePairs, setEditContribute } from "shared/store/postSlice";
 import {
   triggerErrorMsg,
@@ -11,6 +11,7 @@ import { ISectionKey } from "posts/db";
 
 const useContributeMutation = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const role = useSelector((state: RootState) => state.user.role);
 
   const contributeMutation = useMutation({
     mutationFn: async ({
@@ -25,16 +26,19 @@ const useContributeMutation = () => {
       version: string;
     }) => {
       const response = await axiosInstance.post(
-        "/user/account/post/contribute-to-post",
+        role !== "publisher" && role !== "none"
+          ? "/admin/approver/apply-contri"
+          : "/user/account/post/contribute-to-post",
         {
           data: keyValuePairs,
           section,
           post_code: postCode,
-          version: version,
+          version
         }
       );
       return response.data;
     },
+    retry: 3,
     onSuccess: ({ message }) => {
       dispatch(
         triggerSuccessMsg(message || "Contributed to post successfully!")
@@ -85,7 +89,6 @@ const useContributeMutation = () => {
       );
     },
   });
-  
 
   return { contributeMutation, deleteContributeMutation };
 };

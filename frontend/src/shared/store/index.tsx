@@ -7,18 +7,18 @@ import userReducer from "./userSlice";
 import postReducer from "./postSlice";
 import modalReducer from "./modalSlice";
 
-export const userPersistConfig = {
-  key: "auth",
-  storage,
-  whitelist: ["userData", "mode"],
-};
-const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
-
 const store = configureStore({
   reducer: {
     dropdown: dropdownReducer,
     response: responseReducer,
-    user: persistedUserReducer,
+  //user is persisted in the local storage for further use
+    user: persistReducer<ReturnType<typeof userReducer>>(
+      {
+        key: "user",
+        storage,
+      },
+      userReducer
+    ),
     post: postReducer,
     modal: modalReducer,
   },

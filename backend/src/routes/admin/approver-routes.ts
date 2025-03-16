@@ -6,7 +6,6 @@ import {
   postApproval,
 } from "@controllers/admin/approver/approver-controllers";
 import express from "express";
-import { body } from "express-validator";
 import {
   validateBoolean,
   validateMongoId,
@@ -25,9 +24,7 @@ router.post(
     validatePostCodeOrVersion(),
     validatePostCodeOrVersion("version"),
     validateObject("data"),
-    body("contributor_id")
-      .isMongoId()
-      .withMessage("Contributor ID must be a valid MongoDB ObjectId."),
+    validateMongoId("contributor_id", true),
   ],
   applyContri
 );

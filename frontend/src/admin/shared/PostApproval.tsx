@@ -15,7 +15,7 @@ const PostApproval: React.FC<{ approved: boolean; postId: string }> = ({
   postId,
   approved,
 }) => {
-  const role = useSelector((state: RootState) => state.user.userData.role);
+  const role = useSelector((state: RootState) => state.user.role);
   const contributeActive = useSelector(
     (state: RootState) => state.post.isEditPostClicked
   );

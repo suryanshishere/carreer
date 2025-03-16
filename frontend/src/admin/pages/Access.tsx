@@ -42,7 +42,7 @@ interface IAccessUpdate extends IAccessFilter {
 }
 
 const Access: React.FC = () => {
-  const { token } = useSelector((state: RootState) => state.user.userData);
+  const token  = useSelector((state: RootState) => state.user.token);
   const dispatch = useDispatch<AppDispatch>();
   const [filters, setFilters] = useState<IAccessFilter | null>(null);
 

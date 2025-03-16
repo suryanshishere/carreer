@@ -36,7 +36,7 @@ type OTPFormInputs = {
 };
 
 const EmailVerification = () => {
-  const { token } = useSelector((state: RootState) => state.user.userData);
+  const token  = useSelector((state: RootState) => state.user.token);
   const isOtpSent = useSelector((state: RootState) => state.user.isOtpSent);
   const [isSendOnce, setIsSendOnce] = useState<boolean>(isOtpSent);
   const dispatch = useDispatch<AppDispatch>();

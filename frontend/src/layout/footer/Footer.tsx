@@ -13,7 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 const LOGO = process.env.REACT_APP_LOGO || "SIRKARI";
 const Footer: React.FC = () => {
   const { role, token } = useSelector(
-    (state: RootState) => state.user.userData
+    (state: RootState) => state.user
   );
   const dispatch = useDispatch<AppDispatch>();
 
@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
       </div>
       <hr className="lg:hidden" />
-      <div className="grid grid-cols-2 gap-x-2 text-sm text-custom_red text-center">
+      <div className="grid grid-cols-2 gap-x-3 text-sm text-custom_red text-center">
         <Link to="/about" className={footerLinkClassName}>
           About
         </Link>
