@@ -19,12 +19,13 @@ const PostApproval: React.FC<{ approved: boolean; postId: string }> = ({
   const contributeActive = useSelector(
     (state: RootState) => state.post.isEditPostClicked
   );
-
   const { section } = useParams<{ section: ISectionKey }>();
   const dispatch = useDispatch<AppDispatch>();
 
-  // Local state to update approval status dynamically
   const [isApproved, setIsApproved] = useState(approved);
+  React.useEffect(() => {
+    setIsApproved(approved);
+  }, [approved]);
 
   const { mutate: toggleApproval, isPending } = useMutation({
     mutationFn: async () => {
@@ -39,7 +40,7 @@ const PostApproval: React.FC<{ approved: boolean; postId: string }> = ({
       return response.data;
     },
     onSuccess: ({ message }) => {
-      setIsApproved((prev) => !prev); 
+      setIsApproved((prev) => !prev);
       dispatch(
         triggerSuccessMsg(message || "Post approval updated successfully!")
       );

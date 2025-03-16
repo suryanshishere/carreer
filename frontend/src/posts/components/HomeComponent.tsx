@@ -53,20 +53,20 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
           </ul>
         ) : (
           <>
-            <ul className="flex flex-col">
-              {data.slice(0, HOME_LIMIT).map((item) => {
+            <ul className="flex flex-col gap-[6px]">
+              {data.map((item, index) => {
                 if (!userTags["none"] && !userTags[item.tag]) {
                   return null;
                 }
 
                 return (
-                  <li
-                    key={item._id}
-                    className="group inline-flex justify-start items-center min-h-7 my-2"
-                  >
-                    <Tag tag={item.tag} />
-                    <PostLinkItem section={section} item={item} />
-                  </li>
+                  <React.Fragment key={item._id}>
+                    <li className="group inline-flex justify-start items-center min-h-7">
+                      <Tag tag={item.tag} />
+                      <PostLinkItem section={section} item={item} />
+                    </li>
+                    {index !== data.length - 1 && <hr />}
+                  </React.Fragment>
                 );
               })}
             </ul>

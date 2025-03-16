@@ -191,7 +191,7 @@ export const excludedPostListKeys = [
   "admission_ref",
   "important_ref",
   "version",
-
+  "tag",
   "admit_card_approved",
   "result_approved",
   "certificate_verification_approved",

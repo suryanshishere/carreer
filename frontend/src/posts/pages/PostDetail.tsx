@@ -64,10 +64,10 @@ const PostDetail: React.FC = () => {
           postId={postIdOrCode}
           isSaved={data.is_saved}
         />
-        {orderedData && role !== "none" && role !== "publisher" && (
+        {role !== "none" && role !== "publisher" && (
           <PostApproval
-            approved={orderedData[`${section}_approved`]}
-            postId={orderedData._id}
+            approved={data.data[`${section}_approved`]}
+            postId={data.data._id}
           />
         )}
       </div>

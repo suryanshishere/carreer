@@ -77,22 +77,25 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
   };
 
   return (
-    <ul className="self-start w-full p-0 m-0 flex flex-col text-base">
-      {data.map((item) => {
+    <ul className="w-full flex flex-col gap-[6px]">
+      {data.map((item, index) => {
         if (!userTags["none"] && !userTags[item.tag]) {
           return null;
         }
 
         return (
-          <li key={item._id} className="flex my-2">
-            <Tag tag={item.tag} />
-            <div className="group w-full flex flex-col gap-1 justify-center">
-              <PostLinkItem section={section} item={item} />
-              <p className="text-sm text-custom_gray flex flex-col flex-wrap gap-[2px]">
-                {renderObject(item)}
-              </p>
-            </div>
-          </li>
+          <React.Fragment key={item._id}>
+            <li className="flex">
+              <Tag tag={item.tag} />
+              <div className="group w-full flex flex-col gap-1 justify-center">
+                <PostLinkItem section={section} item={item} />
+                <p className="text-sm text-custom_gray flex flex-col flex-wrap gap-[2px]">
+                  {renderObject(item)}
+                </p>
+              </div>
+            </li>
+            {index !== data.length - 1 && <hr />}
+          </React.Fragment>
         );
       })}
     </ul>
