@@ -4,8 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Bookmark from "posts/shared/Bookmark";
 import PostDetailItem from "posts/components/post-detail";
-import Info from "posts/components/post-detail/Info";
-import postDetailByPriority from "../components/post-detail/post-detail-by-priority";
+import Info from "posts/components/post-detail/Info"; 
 import DataStateWrapper from "shared/utils/DataStateWrapper";
 import { ISectionKey } from "posts/db";
 import PostApproval from "admin/shared/PostApproval";
@@ -52,8 +51,7 @@ const PostDetail: React.FC = () => {
         : Promise.reject(new Error("Invalid section")),
     enabled: !!section,
   });
-
-  const orderedData = section ? postDetailByPriority(data.data, section) : null;
+ 
 
   return (
     <div className="flex flex-col gap-3 relative min-h-screen">
@@ -72,9 +70,9 @@ const PostDetail: React.FC = () => {
         )}
       </div>
       <DataStateWrapper
-        isLoading={isLoading || isFetching || !orderedData}
+        isLoading={isLoading || isFetching }
         error={error || (!section ? new Error("Invalid section") : null)}
-        data={orderedData}
+        data={data.data}
         emptyCondition={(data) => !data || Object.keys(data).length === 0}
         skipLoadingUI={true}
       >

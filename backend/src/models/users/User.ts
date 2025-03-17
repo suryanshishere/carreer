@@ -48,8 +48,8 @@ export interface IUser extends Document {
 }
 
 const dynamicReferences: Record<string, any> = {};
-POST_DB.sections.forEach((key) => {
-  dynamicReferences[key] = [{ type: Schema.Types.ObjectId, ref: "Post" }];
+POST_DB.sections.forEach((section) => {
+  dynamicReferences[section] = [{ type: Schema.Types.ObjectId, ref: "Post" }];
 });
 
 const savedPostsSchema = new Schema(dynamicReferences, { _id: false });

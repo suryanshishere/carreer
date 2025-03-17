@@ -1,7 +1,9 @@
-import { ISectionKey } from "posts/db";
-import { POST_DETAILS_PRIORITY } from "posts/db/renders";
+import { ISectionKey, POST_DETAILS_PRIORITY } from "@models/posts/db";
 
-const postDetailByPriority = (data: Record<string, any>, section: ISectionKey) => {
+const postDetailByPriority = (
+  data: Record<string, any>,
+  section: ISectionKey
+) => {
   const result: Record<string, any> = {};
   const priorityKeys = POST_DETAILS_PRIORITY[section];
   // Convert array to Set for O(1) lookups during recursion.

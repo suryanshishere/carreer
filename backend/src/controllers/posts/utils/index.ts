@@ -82,11 +82,11 @@ export const fetchPostDetail = async (
         [`${section}_ref`]: { $exists: true },
       };
 
-  const queryBuilder = PostModel.findOne(query)
+  const response = PostModel.findOne(query)
     .select(`post_code version updatedAt ${section}_approved`)
     .populate(POSTS_POPULATE.section_detail_populate[section]);
 
-  return await queryBuilder;
+  return response;
 };
 
 export const getTagForPost = (

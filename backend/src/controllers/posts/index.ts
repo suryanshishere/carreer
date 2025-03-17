@@ -10,6 +10,7 @@ import { SECTION_POST_MODEL_MAP } from "@models/posts/db/post-map/post-model-map
 import handleValidationErrors from "@controllers/utils/validation-error";
 import User from "@models/users/User";
 import { ISectionKey } from "@models/posts/db";
+import postDetailByPriority from "./utils/get-detail-by-priority";
 
 //TODO
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
@@ -122,29 +123,26 @@ export const postDetail = async (
       version?: string;
     };
 
-    const response = await fetchPostDetail(
-      section,
-      postIdOrCode,
-      version,
-      role
-    );
+    let response = await fetchPostDetail(section, postIdOrCode, version, role);
 
     if (!response) {
       return next(new HttpError("Post not found!", 404));
     }
 
     let isSaved = false;
-    const user = await User.findById(userId);
-    const { Types } = require("mongoose");
+    if (userId) {
+      const user = await User.exists({
+        _id: userId,
+        [`saved_posts.${section}`]: response._id,
+      });
 
-    if (user && user?.saved_posts) {
-      const savedPosts = user.saved_posts[section] || [];
-      const postIdObj = new Types.ObjectId(response._id);
-      isSaved = savedPosts.some((savedPost) => savedPost.equals(postIdObj));
+      isSaved = !!user;
     }
 
+    const responseObject = postDetailByPriority(response.toObject(), section);
+
     return res.status(200).json({
-      data: response,
+      data: responseObject,
       is_saved: isSaved,
     });
   } catch (err) {
