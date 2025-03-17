@@ -37,10 +37,9 @@ const PostDetailItem: React.FC<{
         return (
           <div key={index} className="w-full flex flex-col gap-1">
             <h2 className="whitespace-nowrap text-custom_red">
-              {typeof renamingData?.[key] === "string" &&
-              renamingData[key] !== undefined
-                ? renamingData[key]
-                : _.startCase(displayKey)}
+              <h2 className="whitespace-nowrap text-custom_red">
+                {(renamingData?.[key] as string) || _.startCase(displayKey)}
+              </h2>
             </h2>
             <div className="flex flex-col">{renderPostData(key, value)}</div>
           </div>
