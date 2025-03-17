@@ -1,7 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"; 
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
-
 import { Request } from "express";
 import { COMPONENT_POST_MODEL_MAP } from "@models/posts/db/post-map/post-model-map";
 import {
@@ -46,13 +45,6 @@ const parseGeneratedContent = (content: string) => {
     throw new HttpError(`${syntaxError}`, 500);
   }
 };
-
-// export const postIdGeneration = async (postCode: string): Promise<string> => {
-//   const hash = crypto.createHash("sha256");
-//   hash.update(postCode);
-//   const uniqueId = hash.digest("hex");
-//   return uniqueId.slice(0, 24);
-// };
 
 interface GeneratePostDataParams {
   keyOrSection: string;
