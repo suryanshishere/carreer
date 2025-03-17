@@ -13,7 +13,7 @@ const RenderObject: React.FC<RenderObjectProps> = ({ value, parentKey }) => {
   return (
     <div className="w-full flex flex-col items-start gap-4">
       {Object.entries(value).map(([subKey, subValue]) => {
-        if (excludedKeys.includes(subKey)) {
+        if (excludedKeys[subKey]) {
           return null;
         }
 

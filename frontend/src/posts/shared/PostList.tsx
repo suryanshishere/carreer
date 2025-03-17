@@ -1,7 +1,6 @@
 import React from "react";
 import RenderField from "posts/shared/render-post-data/RenderField";
-import _ from "lodash";
-import { excludedPostListKeys } from "posts/db/renders";
+import _ from "lodash"; 
 import { ParaSkeletonLoad } from "./SkeletonLoad";
 import Tag from "./Tag";
 import { useSelector } from "react-redux";
@@ -9,6 +8,7 @@ import { RootState } from "shared/store";
 import PostLinkItem from "./PostLinkItem";
 import { ICommonListData } from "posts/db/interfaces";
 import { ISectionKey } from "posts/db";
+import { excludedKeys } from "posts/db/renders";
 
 interface ListProps {
   data: ICommonListData[];
@@ -32,7 +32,7 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
 
   const renderObject = (obj: ICommonListData) => {
     return Object.entries(obj)
-      .filter(([key]) => !excludedPostListKeys.includes(key))
+      .filter(([key]) => !excludedKeys[key])
       .map(([key, value]: [string, any]) => {
         if (!value) return null;
 

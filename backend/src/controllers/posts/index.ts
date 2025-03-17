@@ -140,7 +140,7 @@ export const postDetail = async (
 
     return res.status(200).json({
       data: responseObject,
-      metaData: { createdAt, updatedAt, _id },
+      meta_data: { createdAt, updatedAt, _id, contributors: response.get(`${section}_contributors`) },
       is_saved: isSaved,
     });
   } catch (err) {

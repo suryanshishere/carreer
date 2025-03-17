@@ -1,10 +1,10 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys, renamingKeys } from "posts/db/renders";
+import { excludedKeys, renamingData } from "posts/db/renders";
 import renderPostData from "../../shared/render-post-data";
 import { ParaSkeletonLoad, TableSkeletonLoad } from "posts/shared/SkeletonLoad";
 
-const PostDetailComponent: React.FC<{
+const PostDetailItem: React.FC<{
   data: any;
 }> = ({ data }) => {
   const isEmpty = Object.keys(data).length === 0;
@@ -31,7 +31,7 @@ const PostDetailComponent: React.FC<{
       {Object.entries(data).map(([key, value]: [string, any], index) => {
         //filtering the logic at the top level
         if (
-          excludedKeys.includes(key) ||
+          excludedKeys[key] ||
           value === null ||
           value === undefined ||
           (typeof value === "object" && Object.keys(value).length === 0) ||
@@ -53,7 +53,9 @@ const PostDetailComponent: React.FC<{
         return (
           <div key={index} className="w-full flex flex-col gap-1">
             <h2 className="whitespace-nowrap text-custom_red">
-              {renamingKeys[key] ?? startCase(displayKey)}
+              {typeof renamingData[key] === "string"
+                ? renamingData[key]
+                : startCase(displayKey)}
             </h2>
             <div className="flex flex-col">{renderPostData(key, value)}</div>
           </div>
@@ -63,4 +65,4 @@ const PostDetailComponent: React.FC<{
   );
 };
 
-export default PostDetailComponent;
+export default PostDetailItem;

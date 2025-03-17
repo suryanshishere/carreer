@@ -18,7 +18,7 @@ const RenderTable: React.FC<RenderTableProps> = ({
   tableKey,
   isCollapsible = false,
 }) => {
-  if (!value || typeof value !== "object" || excludedKeys.includes(tableKey))
+  if (!value || typeof value !== "object" || excludedKeys[tableKey])
     return null;
 
   const isArray = Array.isArray(value);
@@ -67,7 +67,7 @@ const RenderTable: React.FC<RenderTableProps> = ({
               );
             })
           : Object.entries(value).map(([subKey, subValue], index) => {
-              if (excludedKeys.includes(subKey)) return null;
+              if (excludedKeys[subKey]) return null;
               const randomBgColor = bgColors[index % bgColors.length];
               const fullKey = `${tableKey}.${subKey}`;
               return (

@@ -4,8 +4,8 @@ import _, { startCase } from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostEditable from "../post-editable";
-import { POST_LIMIT_DROPDOWN_DATA, POST_LIMITS_DB } from "posts/db";
-import { IRenamingValues, renamingValues } from "posts/db/renders";
+import { POST_LIMIT_DROPDOWN_DATA } from "posts/db";
+import { renamingData } from "posts/db/renders";
 
 const RenderField = ({
   stringValue,
@@ -23,12 +23,12 @@ const RenderField = ({
   }
 
   let strValue: string = _.toString(stringValue);
-  const lastKey = uniqueKey.split(".").pop() as keyof IRenamingValues;
+  const lastKey: string = uniqueKey?.split(".").pop() || uniqueKey;
 
   if (POST_LIMIT_DROPDOWN_DATA.has(strValue)) {
-    const keyValues = renamingValues[
-      lastKey as keyof IRenamingValues
-    ] as IRenamingValues;
+    const keyValues = renamingData[lastKey] as {
+      [key: string]: string;
+    };
 
     if (keyValues && strValue in keyValues && keyValues[strValue]) {
       return <>{keyValues[strValue]}</>;
@@ -138,7 +138,7 @@ const RenderField = ({
   }
 
   //adding extra renders to it.
-  const value = renamingValues[lastKey as keyof IRenamingValues];
+  const value = renamingData[lastKey];
   if (typeof value === "string") {
     return <>{strValue + " " + value}</>;
   }
