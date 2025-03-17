@@ -50,7 +50,7 @@ const SavedPosts = () => {
         nodelay={true}
       >
         {(validData) => (
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-[6px]">
             {validData &&
               Object.entries(validData)
                 .filter(

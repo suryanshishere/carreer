@@ -47,7 +47,7 @@ const MyContribution: React.FC = () => {
   const selectedData = data?.data?.[selectedTab] || {};
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       {/* Render header and tab buttons always */}
       <PageHeader
         header="My Contribution"
@@ -55,7 +55,7 @@ const MyContribution: React.FC = () => {
           data?.metadata?.timeStamp?.updatedAt || ""
         ).format("LL")}`}
       />
-      <div className="flex mobile:justify-end gap-2 mb-3 -mt-3">
+      <div className="flex mobile:justify-end gap-2">
         <Button
           onClick={() => setSelectedTab("contribution")}
           className={`rounded-full max-w-fit px-4 py-1 text-sm ${
