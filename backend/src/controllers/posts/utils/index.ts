@@ -1,6 +1,6 @@
 import POSTS_POPULATE from "@models/posts/db/post-map/post-populate-map";
 import HttpError from "@utils/http-errors";
-import { NextFunction } from "express";
+import { NextFunction, Request } from "express";
 import PostModel from "@models/posts/Post";
 import { PopulateOption, TAGS } from "@models/posts/db";
 import POST_POPULATE from "@models/posts/db/post-map/post-populate-map";
@@ -9,7 +9,6 @@ import getSortedDateIds from "./get-sorted-date-ids";
 import mongoose from "mongoose";
 import calculateDateDifference from "./calculate-date-diff";
 import { IDates } from "@models/posts/components/Date";
-import { IRole } from "@models/admin/db";
 
 export const fetchPostList = async (
   section: ISectionKey,
@@ -61,12 +60,18 @@ export const fetchPostList = async (
   }
 };
 
-export const fetchPostDetail = async (
-  section: ISectionKey,
-  postIdOrCode: string,
-  version: string = "main",
-  userRole: IRole = "none"
-) => {
+export const fetchPostDetail = async (req: Request, next: NextFunction) => {
+  const {
+    section,
+    postIdOrCode,
+    version = "main",
+  } = req.params as {
+    section: ISectionKey;
+    postIdOrCode: string;
+    version?: string;
+  };
+  const userRole = req.userData?.role ?? "none";
+
   const query = mongoose.Types.ObjectId.isValid(postIdOrCode)
     ? {
         _id: postIdOrCode,
@@ -82,9 +87,13 @@ export const fetchPostDetail = async (
         [`${section}_ref`]: { $exists: true },
       };
 
-  const response = PostModel.findOne(query)
-    .select(`post_code version updatedAt ${section}_approved`)
+  const response = await PostModel.findOne(query)
+    .select(`post_code version ${section}_approved`)
     .populate(POSTS_POPULATE.section_detail_populate[section]);
+
+  if (!response) {
+    return next(new HttpError("Post not found!", 404));
+  }
 
   return response;
 };

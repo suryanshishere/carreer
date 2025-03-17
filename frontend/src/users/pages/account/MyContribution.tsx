@@ -19,10 +19,8 @@ interface IContribution {
 interface MyContributionResponse {
   data: IContribution;
   metadata: {
-    timeStamp: {
-      updatedAt: string;
-      createdAt: string;
-    };
+    updatedAt: string;
+    createdAt: string;
   };
   message: string;
 }
@@ -52,7 +50,7 @@ const MyContribution: React.FC = () => {
       <PageHeader
         header="My Contribution"
         subHeader={`Last contributed on ${moment(
-          data?.metadata?.timeStamp?.updatedAt || ""
+          data?.metadata?.updatedAt || ""
         ).format("LL")}`}
       />
       <div className="flex mobile:justify-end gap-2">

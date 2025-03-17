@@ -174,9 +174,7 @@ export const myContribution = async (
         approved: mergedApprovedData,
       },
       metadata: {
-        timeStamp: {
-          updatedAt,
-        },
+        updatedAt,
       },
       message: "Contribution fetched successfully!",
     });
@@ -221,12 +219,12 @@ export const contributeToPost = async (
         contribution: new Map(), // Initialize the contribution Map
       });
       user.contribution = userId;
-      await user.save({ session });  
+      await user.save({ session });
     }
 
     // Ensure contribution.contribution is always a Map
     if (!(contribution.contribution instanceof Map)) {
-      contribution.contribution = new Map();  
+      contribution.contribution = new Map();
     }
 
     //post code + __ + version

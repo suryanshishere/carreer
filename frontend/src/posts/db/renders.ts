@@ -1,6 +1,8 @@
 import { ISectionKey } from ".";
 import { IDates } from "./interfaces";
 
+
+//how the data to be present like meta data and all so that it's need is vanished
 export const excludedKeys = [
   "_id",
   "created_by",

@@ -116,18 +116,15 @@ export const postDetail = async (
 ) => {
   try {
     handleValidationErrors(req, next);
-    const { role, userId } = req.userData || {};
-    const { section, postIdOrCode, version } = req.params as {
+    const userId = req.userData?.userId;
+    const { section } = req.params as {
       section: ISectionKey;
-      postIdOrCode: string;
-      version?: string;
     };
 
-    let response = await fetchPostDetail(section, postIdOrCode, version, role);
+    let response = await fetchPostDetail(req, next);
+    if (!response) return;
 
-    if (!response) {
-      return next(new HttpError("Post not found!", 404));
-    }
+    const { createdAt, updatedAt, _id } = response.get(`${section}_ref`);
 
     let isSaved = false;
     if (userId) {
@@ -143,6 +140,7 @@ export const postDetail = async (
 
     return res.status(200).json({
       data: responseObject,
+      metaData: { createdAt, updatedAt, _id },
       is_saved: isSaved,
     });
   } catch (err) {

@@ -4,7 +4,7 @@ import POST_DB from "@models/posts/db";
 import { IPost } from "@models/posts/Post";
 import Contribution, { IContribution } from "@models/users/Contribution";
 import HttpError from "@utils/http-errors";
-import { Request } from "express";
+import { NextFunction, Request } from "express";
 import _ from "lodash";
 import mongoose from "mongoose";
 
@@ -29,14 +29,17 @@ export const flattenContributionData = (
 
 export const updatePost = async (
   req: Request,
-  next: (error: HttpError) => void
+  next: NextFunction
 ): Promise<IPost | void> => {
   const { post_code, version, data, contributor_id, section } = req.body;
-  // Fetch the post detail
-  const post = await fetchPostDetail(section, post_code, version);
-  if (!post) {
-    return next(new HttpError("Post not found or not approved yet!", 404));
-  }
+  
+  //for fetch post detail to work
+  req.params.postIdOrCode = post_code;
+  req.params.version = version;
+  req.params.section = section;
+
+  const post = await fetchPostDetail(req, next);
+  if (!post) return;
 
   // Update post data (in-memory modification)
   Object.keys(data).forEach((key) => {
