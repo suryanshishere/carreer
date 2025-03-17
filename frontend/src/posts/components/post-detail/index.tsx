@@ -1,7 +1,7 @@
 import React from "react";
-import { startCase } from "lodash";
-import { excludedKeys, renamingData } from "posts/db/renders";
-import renderPostData from "../../shared/render-post-data";
+import _ from "lodash";
+import { renamingData, shouldExcludeKey } from "posts/db/renders";
+import renderPostData from "posts/shared/render-post-data";
 import { ParaSkeletonLoad, TableSkeletonLoad } from "posts/shared/SkeletonLoad";
 
 const PostDetailItem: React.FC<{
@@ -30,32 +30,17 @@ const PostDetailItem: React.FC<{
     <div className="w-full flex flex-col gap-[1.75rem]">
       {Object.entries(data).map(([key, value]: [string, any], index) => {
         //filtering the logic at the top level
-        if (
-          excludedKeys[key] ||
-          value === null ||
-          value === undefined ||
-          (typeof value === "object" && Object.keys(value).length === 0) ||
-          (typeof value === "object" &&
-            Object.keys(value).length === 1 &&
-            "_id" in value) ||
-          (typeof value === "object" &&
-            Object.keys(value).length === 4 &&
-            "_id" in value &&
-            "createdAt" in value &&
-            "updatedAt" in value &&
-            "__v" in value)
-        ) {
-          return null;
-        }
+        if (shouldExcludeKey(key, value)) return null;
 
         const displayKey = key.includes(".") ? key.split(".")[1] : key;
 
         return (
           <div key={index} className="w-full flex flex-col gap-1">
             <h2 className="whitespace-nowrap text-custom_red">
-              {typeof renamingData[key] === "string"
+              {typeof renamingData?.[key] === "string" &&
+              renamingData[key] !== undefined
                 ? renamingData[key]
-                : startCase(displayKey)}
+                : _.startCase(displayKey)}
             </h2>
             <div className="flex flex-col">{renderPostData(key, value)}</div>
           </div>

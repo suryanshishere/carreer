@@ -29,6 +29,28 @@ export const excludedKeys: Record<string, boolean> = {
   tag: true,
 };
 
+export const shouldExcludeKey = (key: string, value: any): boolean => {
+  if (excludedKeys[key]) return true;
+  if (value === null || value === undefined) return true;
+
+  if (typeof value === "object") {
+    const keys = Object.keys(value);
+    if (keys.length === 0) return true;
+    if (keys.length === 1 && "_id" in value) return true;
+    if (
+      keys.length === 4 &&
+      "_id" in value &&
+      "createdAt" in value &&
+      "updatedAt" in value &&
+      "__v" in value
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 export const tableRequired: Record<string, boolean> = {
   age_criteria: true,
   "result_ref.result": true,

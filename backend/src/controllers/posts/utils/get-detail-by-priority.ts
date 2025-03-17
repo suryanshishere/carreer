@@ -1,4 +1,5 @@
 import { ISectionKey, POST_DETAILS_PRIORITY } from "@models/posts/db";
+import _ from "lodash";
 
 // Utility: Flattens a nested object into a dot-notation key map.
 const flatten = (
@@ -34,7 +35,7 @@ const postDetailByPriority = (
     } else {
       orderedFlat[key] = data[key];
     }
-    delete data[key];
+    _.unset(data, key);
   }
 
   // Reconstruct the nested object.
