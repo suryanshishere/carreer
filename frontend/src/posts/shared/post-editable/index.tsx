@@ -129,7 +129,7 @@ const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
       {isSaved && (
         <Button
           onClick={handleUndo}
-          className="py-1 bg-custom_white transform ease-linear duration-200"
+          className="py-2 bg-custom_white transform ease-linear duration-200"
         >
           Undo
         </Button>
@@ -142,7 +142,7 @@ const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
             if (isValid) handleSave();
           }}
           disabled={!isValid}
-          className={`flex-1 px-2 py-1 rounded transform ease-linear duration-200 ${
+          className={`flex-1 px-2 py-2 rounded transform ease-linear duration-200 ${
             isValid
               ? "bg-custom_blue text-custom_white hover:bg-custom_dark_blue"
               : "bg-custom_less_gray text-custom_gray cursor-not-allowed"

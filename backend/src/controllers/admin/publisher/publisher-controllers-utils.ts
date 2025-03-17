@@ -17,7 +17,7 @@ export const postGeneration = async (
   try {
     const genAI = new GoogleGenerativeAI(api_key_from_user);
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.0-flash-lite",
       // model: "gemini-1.5-pro",
       generationConfig: {
         responseMimeType: "application/json",

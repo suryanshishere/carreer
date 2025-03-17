@@ -8,6 +8,7 @@ import {
   triggerSuccessMsg,
 } from "shared/store/thunks/response-thunk";
 import { ISectionKey } from "posts/db";
+import { closeAllDropdowns } from "shared/store/dropdownSlice";
 
 const useContributeMutation = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,6 +48,7 @@ const useContributeMutation = () => {
       dispatch(
         setEditContribute({ clicked: false, section: "", postCode: "" })
       );
+      dispatch(closeAllDropdowns());
     },
     onError: (error: any) => {
       dispatch(

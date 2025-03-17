@@ -83,7 +83,6 @@ export const fetchPostDetail = async (req: Request, next: NextFunction) => {
     : {
         post_code: postIdOrCode,
         version,
-        [`${section}_approved`]: true,
         [`${section}_ref`]: { $exists: true },
       };
 

@@ -55,7 +55,11 @@ export const POST_DB: IPostEnvData = {
       { path: "latest_job_ref" },
     ],
     syllabus: [
-      { path: "date_ref", select: "additional_resources" },
+      {
+        path: "date_ref",
+        select:
+          "application_start_date application_end_date exam_date additional_resources",
+      },
       { path: "link_ref", select: "official_website" },
       { path: "common_ref" },
       { path: "syllabus_ref" },

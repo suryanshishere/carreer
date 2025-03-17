@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { startCase } from "lodash";
+import _ from "lodash";
 import Tag from "posts/shared/Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
@@ -15,7 +15,7 @@ interface HomeListItemProps {
   height?: string;
 }
 
-const HOME_LIMIT = Number(process.env.REACT_APP_NUMBER_OF_POST_HOMELIST) || 12;
+// const HOME_LIMIT = Number(process.env.REACT_APP_NUMBER_OF_POST_HOMELIST) || 12;
 
 // Function to determine the number of skeleton items based on height
 const getSkeletonItemCount = (height: string | undefined) => {
@@ -41,9 +41,10 @@ const HomeComponent: React.FC<HomeListItemProps> = ({
   return (
     <div className="w-full text-base flex flex-col gap-1" style={{ height }}>
       <div className="flex flex-col justify-center items-center gap-2">
-        <h2 className="w-full text-center">{startCase(section)}</h2>
+        <h2 className="w-full text-center">{_.startCase(section)}</h2>
       </div>
       <hr />
+      <hr className="mb-2"/>
       <div className="flex flex-col justify-between h-full">
         {data.length === 0 ? (
           <ul className="flex flex-col gap-3">

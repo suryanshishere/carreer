@@ -78,7 +78,7 @@ const ContributeToPost: React.FC<{
               : "Applying..."
             : role === "none" || role === "publisher"
             ? "Submit"
-            : "Apply Changes"}{" "}
+            : "Apply Changes"}
         </Button>
       )}
     </div>
