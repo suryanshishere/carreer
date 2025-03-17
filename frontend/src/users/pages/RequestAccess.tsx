@@ -27,7 +27,7 @@ interface IRequestAccess {
 }
 
 const RequestAccess: React.FC = () => {
-  const { token, role } = useSelector((state: RootState) => state.user);
+  const role = useSelector((state: RootState) => state.user.role);
   const validationSchema = yup.object().shape({
     role_applied: yup
       .string()
@@ -61,12 +61,7 @@ const RequestAccess: React.FC = () => {
     mutationFn: async (data: IRequestAccess) => {
       const response = await axiosInstance.post(
         "/user/account/req-access",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        data
       );
 
       return response.data;

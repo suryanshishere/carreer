@@ -3,7 +3,6 @@ import { NextFunction, Response, Request } from "express";
 import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import PostModel from "@models/posts/Post";
-
 import {
   MODEL_MAP,
   SECTION_POST_MODEL_MAP,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { startCase } from "lodash";
 import { excludedKeys } from "posts/db/renders";
 import renderPostData from "posts/shared/render-post-data";
@@ -25,9 +25,7 @@ const RenderTable: React.FC<RenderTableProps> = ({
 
   // For arrays, generate headers and rows
   const headers = isArray
-    ? Object.keys(value[0] || {}).filter(
-        (header) => !["_id"].includes(header)
-      )
+    ? Object.keys(value[0] || {}).filter((header) => !["_id"].includes(header))
     : [];
 
   const tableContent = (
