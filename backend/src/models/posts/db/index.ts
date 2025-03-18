@@ -200,6 +200,8 @@ export const TAG_DATE_MAP: Record<ISectionKey, (keyof IDates)[]> = {
 
 export type ITagKey = "live" | "upcoming" | "released" | "expiring" | "none";
 
+export const TAG_ORDER: ITagKey[] = ["expiring", "live", "upcoming", "released", "none"];
+
 export const TAGS: Record<ITagKey, [number, number] | null> = {
   live: [-3, 3],
   upcoming: [3, 80],
@@ -212,6 +214,7 @@ export const TAGS: Record<ITagKey, [number, number] | null> = {
 export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
   latest_job: [
     "latest_job_ref.name_of_the_post",
+    "last_updated",
     "common_ref.short_information",
     "common_ref.department",
     "common_ref.stage_level",
@@ -232,6 +235,7 @@ export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
   ],
   result: [
     "result_ref.name_of_the_post",
+    "last_updated",
     "common_ref.short_information",
     "common_ref.department",
     "common_ref.stage_level",
@@ -250,6 +254,7 @@ export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
   ],
   admit_card: [
     "admit_card_ref.name_of_the_post",
+    "last_updated",
     "common_ref.short_information",
     "common_ref.department",
     "common_ref.stage_level",
@@ -268,6 +273,7 @@ export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
   ],
   answer_key: [
     "answer_key_ref.name_of_the_post",
+    "last_updated",
     "common_ref.short_information",
     "common_ref.department",
     "common_ref.stage_level",
@@ -283,6 +289,7 @@ export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
   ],
   admission: [
     "admission_ref.name_of_the_post",
+    "last_updated",
     "common_ref.short_information",
     "common_ref.department",
     "common_ref.stage_level",
@@ -296,6 +303,7 @@ export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
   ],
   certificate_verification: [
     "certificate_verification_ref.name_of_the_post",
+    "last_updated",
     "common_ref.short_information",
     "common_ref.department",
     "common_ref",
@@ -304,6 +312,7 @@ export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
   ],
   important: [
     "important_ref.name_of_the_post",
+    "last_updated",
     "common_ref.short_information",
     "common_ref.department",
     "common_ref.stage_level",
@@ -315,6 +324,7 @@ export const POST_DETAILS_PRIORITY: Record<ISectionKey, string[]> = {
   ],
   syllabus: [
     "syllabus_ref.name_of_the_post",
+    "last_updated",
     "common_ref.short_information",
     "common_ref.department",
     "common_ref.stage_level",

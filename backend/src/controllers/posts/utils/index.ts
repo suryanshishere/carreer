@@ -41,10 +41,9 @@ export const fetchPostList = async (
     }
 
     const posts = await PostModel.find(query)
-      .select(`post_code version updatedAt ${section}_approved`)
+      .select(`post_code version`)
       .populate(populateArray)
       .lean()
-      .sort(includeSortedIds ? undefined : { updatedAt: -1 })
       .exec();
 
     if (!includeSortedIds) {

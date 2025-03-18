@@ -69,7 +69,7 @@ const ContributionApprove = () => {
   });
 
   return (
-    <main>
+    <main className="flex flex-col gap-3">
       <PageHeader
         header={`${postCode} / ${version}`}
         subHeader={`${startCase(section)} (Contribution Approval)`}

@@ -10,9 +10,14 @@ import { ISectionKey } from "posts/db";
 import PostApproval from "admin/shared/PostApproval";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
+import RenderDate from "posts/shared/render-post-data/RenderDate";
 
 const PostDetail: React.FC = () => {
-  const { section, postCode = "", version = "main" } = useParams<{
+  const {
+    section,
+    postCode = "",
+    version = "main",
+  } = useParams<{
     section: ISectionKey;
     postCode: string;
     version: string;
@@ -32,7 +37,7 @@ const PostDetail: React.FC = () => {
       return response.data;
     },
     enabled: Boolean(section),
-    staleTime: 5 * 60 * 1000, 
+    staleTime: 5 * 60 * 1000,
   });
 
   const isSaved = data?.is_saved ?? false;
@@ -43,10 +48,17 @@ const PostDetail: React.FC = () => {
     <div className="flex flex-col gap-3 relative min-h-screen">
       <div className="self-end flex gap-2 items-center justify-center z-10">
         <Info />
-        <Bookmark section={section as ISectionKey} postId={postIdOrCode} isSaved={isSaved} />
+        <Bookmark
+          section={section as ISectionKey}
+          postId={postIdOrCode}
+          isSaved={isSaved}
+        />
         {role !== "none" && role !== "publisher" && postData._id && (
-          <PostApproval approved={postData[`${section}_approved`]} postId={postData._id} />
-        )}
+          <PostApproval
+            approved={postData[`${section}_approved`]}
+            postId={postData._id}
+          />
+        )} 
       </div>
 
       <DataStateWrapper

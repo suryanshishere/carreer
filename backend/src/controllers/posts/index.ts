@@ -9,7 +9,7 @@ import { fetchPostDetail, fetchPostList, getTagForPost } from "./utils";
 import { SECTION_POST_MODEL_MAP } from "@models/posts/db/post-map/post-model-map";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import User from "@models/users/User";
-import { ISectionKey } from "@models/posts/db";
+import { ISectionKey, ITagKey, TAG_ORDER } from "@models/posts/db";
 import postDetailByPriority from "./utils/get-detail-by-priority";
 
 //TODO
@@ -30,6 +30,7 @@ export const helpless = () => {
 export const home = async (req: Request, res: Response, next: NextFunction) => {
   handleValidationErrors(req, next);
   const userId = req.userData?.userId;
+
   try {
     const user = await User.findById(userId);
     const savedPost = user?.saved_posts || null;
@@ -40,23 +41,27 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
         const posts = await fetchPostList(key as ISectionKey, false, next);
 
         return {
-          [key]: posts?.map(({ _id, date_ref, ...rest }) => {
-            return {
-              _id,
-              is_saved: savedIds.includes(String(_id)),
-              tag: getTagForPost(date_ref, key as ISectionKey),
-              date_ref,
-              ...rest,
-            };
-          }),
+          [key]: posts
+            ?.map(({ _id, date_ref, ...rest }) => {
+              return {
+                _id,
+                is_saved: savedIds.includes(String(_id)),
+                tag: getTagForPost(date_ref, key as ISectionKey),
+                date_ref,
+                ...rest,
+              };
+            })
+            .sort(
+              (a, b) =>
+                TAG_ORDER.indexOf(a.tag as ITagKey) -
+                TAG_ORDER.indexOf(b.tag as ITagKey)
+            ),
         };
       }
     );
 
     const dataArray = await Promise.all(dataPromises);
-    const response = dataArray.reduce((acc, curr) => {
-      return { ...acc, ...curr };
-    }, {});
+    const response = dataArray.reduce((acc, curr) => ({ ...acc, ...curr }), {});
 
     return res.status(200).json({ data: response });
   } catch (err) {
@@ -87,16 +92,21 @@ export const section = async (
     const response = await fetchPostList(section, includePopulate, next);
     //todo: if null them better
 
-    //saved check and tags added here (since post count is limit until next pagination load it efficient)
-    const postsWithSavedStatus = response?.map(({ _id, date_ref, ...rest }) => {
-      return {
-        _id,
-        ...rest,
-        is_saved: savedIds.includes(String(_id)),
-        tag: getTagForPost(date_ref, section),
-        date_ref, // Ensure date_ref is included in the response
-      };
-    });
+    const postsWithSavedStatus = response
+      ?.map(({ _id, date_ref, ...rest }) => {
+        return {
+          _id,
+          ...rest,
+          is_saved: savedIds.includes(String(_id)),
+          tag: getTagForPost(date_ref, section),
+          date_ref,
+        };
+      })
+      .sort(
+        (a, b) =>
+          TAG_ORDER.indexOf(a.tag as ITagKey) -
+          TAG_ORDER.indexOf(b.tag as ITagKey)
+      );
 
     const responseData = {
       data: { [section]: postsWithSavedStatus },
@@ -124,8 +134,6 @@ export const postDetail = async (
     let response = await fetchPostDetail(req, next);
     if (!response) return;
 
-    const { createdAt, updatedAt, _id } = response.get(`${section}_ref`);
-
     let isSaved = false;
     if (userId) {
       const user = await User.exists({
@@ -137,10 +145,18 @@ export const postDetail = async (
     }
 
     const responseObject = postDetailByPriority(response.toObject(), section);
+    // console.log(responseObject)
 
+    const { createdAt, updatedAt, _id } = response.get(`${section}_ref`);
     return res.status(200).json({
       data: responseObject,
-      meta_data: { createdAt, updatedAt, _id, contributors: response.get(`${section}_contributors`) },
+      meta_data: {
+        createdAt,
+        last_updated_at: updatedAt,
+        _id,
+        contributors: response.get(`${section}_contributors`),
+        created_by: response.get(`${section}_created_by`),
+      },
       is_saved: isSaved,
     });
   } catch (err) {

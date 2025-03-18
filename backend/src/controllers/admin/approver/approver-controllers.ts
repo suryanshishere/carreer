@@ -155,7 +155,7 @@ export const applyContri = async (
     if (!post) return;
 
     //only contributors is updated
-    if (req.body.contributor_req) {
+    if (req.body.contributor_id) {
       let contributor = await updateContributors(req, session, next);
       if (!contributor) return;
       await contributor.save({ session });

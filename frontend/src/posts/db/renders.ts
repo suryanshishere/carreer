@@ -2,7 +2,7 @@ export const excludedKeys: Record<string, boolean> = {
   _id: true,
   created_by: true,
   createdAt: true,
-  updatedAt: true,
+  // updatedAt: true,
   contributors: true,
   is_saved: true,
   __v: true,
@@ -29,27 +29,7 @@ export const excludedKeys: Record<string, boolean> = {
   tag: true,
 };
 
-export const shouldExcludeKey = (key: string, value: any): boolean => {
-  if (excludedKeys[key]) return true;
-  if (value === null || value === undefined) return true;
 
-  if (typeof value === "object") {
-    const keys = Object.keys(value);
-    if (keys.length === 0) return true;
-    if (keys.length === 1 && "_id" in value) return true;
-    if (
-      keys.length === 4 &&
-      "_id" in value &&
-      "createdAt" in value &&
-      "updatedAt" in value &&
-      "__v" in value
-    ) {
-      return true;
-    }
-  }
-
-  return false;
-};
 
 export const tableRequired: Record<string, boolean> = {
   age_criteria: true,
@@ -80,6 +60,7 @@ export const renamingData: {
   date_ref: "Important Dates",
   link_ref: "Important Links",
   common_ref: "Common Information",
+  fee_ref: "Application Fees",
   stage_level: {
     national:
       "National Level - Open to participants across the entire country, fostering large-scale competition.",

@@ -2,7 +2,7 @@ import moment from "moment";
 
 interface IRenderDate {
   stringValue: string;
-  uniqueKey: string; // Renamed from `key` to avoid conflict
+  uniqueKey?: string; // Renamed from `key` to avoid conflict
 }
 
 export const formatDate = (
