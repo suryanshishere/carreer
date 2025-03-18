@@ -2,7 +2,7 @@ export const excludedKeys: Record<string, boolean> = {
   _id: true,
   created_by: true,
   createdAt: true,
-  // updatedAt: true,
+  updatedAt: true,
   contributors: true,
   is_saved: true,
   __v: true,
