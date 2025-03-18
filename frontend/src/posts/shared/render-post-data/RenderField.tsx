@@ -19,6 +19,10 @@ const RenderField = ({
   const { isEditPostClicked } = useSelector((state: RootState) => state.post);
   //if editpostclicked is true, then render editable post (other factor can be added to more precise)
   if (isEditPostClicked) {
+    if (uniqueKey === "last_updated")
+      return (
+        <span className="text-custom_less_gray">Can't be contributed.</span>
+      );
     return <PostEditable valueProp={stringValue} keyProp={uniqueKey} />;
   }
 

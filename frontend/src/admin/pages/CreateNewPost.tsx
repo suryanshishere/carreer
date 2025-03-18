@@ -61,7 +61,7 @@ const CreateNewPost: React.FC = () => {
       return response.data;
     },
     onSuccess: ({ message }) => {
-      dispatch(triggerSuccessMsg(message || "Post submission successfull!", 7));
+      dispatch(triggerSuccessMsg(message || "Post submission successfull!", 20));
     },
     onError: (error: any) => {
       dispatch(

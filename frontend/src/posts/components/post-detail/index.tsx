@@ -29,7 +29,7 @@ const PostDetailItem: React.FC<{
   return (
     <div className="w-full flex flex-col gap-[1.75rem]">
       {Object.entries(data).map(([key, value]: [string, any], index) => {
-        if (excludedKeys[key]) return null;
+        if (excludedKeys[key] || !value) return null;
         const displayKey = key.includes(".") ? key.split(".")[1] : key;
 
         return (
