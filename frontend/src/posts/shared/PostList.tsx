@@ -1,6 +1,6 @@
 import React from "react";
 import RenderField from "posts/shared/render-post-data/RenderField";
-import _ from "lodash"; 
+import _ from "lodash";
 import { ParaSkeletonLoad } from "./SkeletonLoad";
 import Tag from "./Tag";
 import { useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import { RootState } from "shared/store";
 import PostLinkItem from "./PostLinkItem";
 import { ICommonListData } from "posts/db/interfaces";
 import { ISectionKey } from "posts/db";
-import { excludedKeys } from "posts/db/renders";
+import { excludedKeys, renamingData } from "posts/db/renders";
 
 interface ListProps {
   data: ICommonListData[];
@@ -44,7 +44,9 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
 
           return (
             <span key={key} className="mr-2">
-              <span className="mr-2">{_.startCase(key)}:</span>
+              <span className="mr-2">
+                {(renamingData?.[key] as string) || _.startCase(key)}:
+              </span>
               {dateCheck ? (
                 <span>
                   <RenderField
