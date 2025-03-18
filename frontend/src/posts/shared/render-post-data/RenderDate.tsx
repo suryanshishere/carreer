@@ -100,24 +100,4 @@ const RenderDate: React.FC<IRenderDate> = ({ stringValue, uniqueKey }) => {
 
 export default RenderDate;
 
-//old logic
-// if (extractedYear >= currentYear) {
-//   if (monthDifference > 0 || monthDifference < -2) {
-//     formattedDate = `${dateMoment.format("Do MMMM")} ${nextYear} (Estimated)`;
-//   } else if (extractedYear > currentYear || dateMoment.isAfter(currentDate)) {
-//     formattedDate = `${dateRender} (Estimated)`;
-//   } else {
-//     formattedDate = dateRender;
-//   }
-// } else {
-//   dateMoment.year(currentYear);
-//   const updatedMonthDifference = dateMoment.diff(currentDate, "months");
 
-//   if (updatedMonthDifference > 0 || updatedMonthDifference < -1) {
-//     formattedDate = `This ${dateMoment.format(
-//       "MMMM"
-//     )} ${nextYear} (Estimated)`;
-//   } else {
-//     formattedDate = `${dateMoment.format("MMMM")}, ${currentYear}`;
-//   }
-// }

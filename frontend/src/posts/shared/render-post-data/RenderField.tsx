@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import RenderDate from "./RenderDate";
 import _, { startCase } from "lodash";
 import { useSelector } from "react-redux";
@@ -17,8 +17,10 @@ const RenderField = ({
   noLinkClassProp?: boolean;
 }) => {
   const { isEditPostClicked } = useSelector((state: RootState) => state.post);
+  const location = useLocation();
+  const urlPath = location.pathname;
   //if editpostclicked is true, then render editable post (other factor can be added to more precise)
-  if (isEditPostClicked) {
+  if (isEditPostClicked && /^\/sections\/[^/]+\/[^/]+/.test(urlPath)) {
     if (uniqueKey === "last_updated")
       return (
         <span className="text-custom_less_gray">Can't be contributed.</span>

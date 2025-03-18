@@ -11,6 +11,7 @@ import handleValidationErrors from "@controllers/utils/validation-error";
 import User from "@models/users/User";
 import { ISectionKey, ITagKey, TAG_ORDER } from "@models/posts/db";
 import postDetailByPriority from "./utils/get-detail-by-priority";
+import { formatDate, formattedDateRef } from "./utils/calculate-date";
 
 //TODO
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
@@ -43,11 +44,12 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
         return {
           [key]: posts
             ?.map(({ _id, date_ref, ...rest }) => {
+              const dateRef = formattedDateRef(date_ref);
               return {
                 _id,
                 is_saved: savedIds.includes(String(_id)),
-                tag: getTagForPost(date_ref, key as ISectionKey),
-                date_ref,
+                tag: getTagForPost(dateRef, key as ISectionKey),
+                date_ref: dateRef,
                 ...rest,
               };
             })
@@ -94,12 +96,13 @@ export const section = async (
 
     const postsWithSavedStatus = response
       ?.map(({ _id, date_ref, ...rest }) => {
+        const dateRef = formattedDateRef(date_ref);
         return {
           _id,
           ...rest,
           is_saved: savedIds.includes(String(_id)),
-          tag: getTagForPost(date_ref, section),
-          date_ref,
+          tag: getTagForPost(dateRef, section),
+          date_ref: dateRef,
         };
       })
       .sort(
@@ -114,6 +117,7 @@ export const section = async (
 
     return res.status(200).json(responseData);
   } catch (err) {
+    console.log("Error at fetching section", err);
     return next(new HttpError("An error occurred while fetching posts!", 500));
   }
 };
@@ -145,7 +149,6 @@ export const postDetail = async (
     }
 
     const responseObject = postDetailByPriority(response.toObject(), section);
-    // console.log(responseObject)
 
     const { createdAt, updatedAt, _id } = response.get(`${section}_ref`);
     return res.status(200).json({

@@ -1,5 +1,6 @@
 import { ISectionKey, POST_DETAILS_PRIORITY } from "@models/posts/db";
 import _ from "lodash";
+import { formattedDateRef } from "./calculate-date";
 
 const flatten = (
   obj: Record<string, any>,
@@ -88,12 +89,19 @@ const postDetailByPriority = (
     // otherwise get it from the nested structure.
     const flatValue = flatData[key];
     const nestedValue = _.get(data, key);
-    const value =
+    let value =
       flatValue !== undefined
         ? flatValue
         : nestedValue !== undefined
         ? nestedValue
         : "";
+
+    if (key === "date_ref" && typeof value === "object" && value !== null) {
+      console.log(value)
+      value = formattedDateRef(value ); 
+      console.log(value)
+    }
+
     orderedResult[key] = value;
     _.unset(data, key);
   }

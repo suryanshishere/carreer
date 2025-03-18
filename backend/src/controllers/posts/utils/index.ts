@@ -7,8 +7,8 @@ import POST_POPULATE from "@models/posts/db/post-map/post-populate-map";
 import { ISectionKey } from "@models/posts/db";
 import getSortedDateIds from "./get-sorted-date-ids";
 import mongoose from "mongoose";
-import calculateDateDifference from "./calculate-date-diff";
-import { IDates } from "@models/posts/components/Date";
+import {calculateDateDifference} from "./calculate-date";
+import { IDateRange, IDates } from "@models/posts/components/Date";
 
 export const fetchPostList = async (
   section: ISectionKey,
@@ -97,7 +97,7 @@ export const fetchPostDetail = async (req: Request, next: NextFunction) => {
 };
 
 export const getTagForPost = (
-  dateRef: Partial<IDates>,
+  dateRef: Record<keyof IDates, IDateRange>,
   section: ISectionKey
 ): string => {
   const days = calculateDateDifference(dateRef, section);
@@ -112,5 +112,6 @@ export const getTagForPost = (
       tagKey = matchingTagEntry[0];
     }
   }
+  
   return tagKey;
 };
