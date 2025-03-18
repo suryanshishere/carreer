@@ -49,7 +49,7 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
                 _id,
                 is_saved: savedIds.includes(String(_id)),
                 tag: getTagForPost(dateRef, key as ISectionKey),
-                date_ref: dateRef,
+                date_ref,
                 ...rest,
               };
             })
@@ -102,7 +102,7 @@ export const section = async (
           ...rest,
           is_saved: savedIds.includes(String(_id)),
           tag: getTagForPost(dateRef, section),
-          date_ref: dateRef,
+          date_ref,
         };
       })
       .sort(
