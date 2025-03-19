@@ -90,12 +90,12 @@ const NavTags: React.FC = () => {
   return (
     <div
       ref={dropdownRef}
-      className="relative min-w-28 h-fit flex items-center"
+      className="relative min-w-[6.5rem] h-fit flex items-center"
     >
       {tagButtonShow ? (
         <button
           onClick={() => dispatch(toggleDropdownState({ id: dropdownKey }))}
-          className={`rounded-full outline outline-custom_gray w-full h-full bg-custom_less_gray flex items-center justify-center gap-2 ${
+          className={`px-[6px] rounded-full outline outline-custom_gray w-full h-full bg-custom_less_gray flex items-center justify-center gap-1 ${
             viewType === "mobile" ? "py-1" : "py-[1px]"
           } ${showTagsDropdown && "shadow-md shadow-custom_black"}`}
         >

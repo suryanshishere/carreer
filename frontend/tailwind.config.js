@@ -27,7 +27,7 @@ module.exports = {
       screens: {
         mobile: "675px",
         medium_mobile: "775px",
-        large_mobile: "900px",
+        large_mobile: "910px",
         tablet: "975px",
         desktop: "1100px",
         desktop_hd: "1250px",
@@ -66,7 +66,7 @@ module.exports = {
       padding: {
         page_large: "12vw",
         page_medium: "6vw",
-        page_small: "3vw",
+        page_small: "4vw",
         button: ".45rem .5rem", //y,x
       },
       animation: {

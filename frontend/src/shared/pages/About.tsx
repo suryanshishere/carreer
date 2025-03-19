@@ -2,13 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "shared/ui/PageHeader";
 
-const About = () => {
+const About:React.FC = () => {
   return (
-    <div className="w-full flex flex-col">
-      <PageHeader
-        header="about"
-        subHeader="This section try to explain our purpose"
-      />
+    <div className="w-full flex flex-col gap-3">
+      <PageHeader header="About" subHeader="Our Purpose Explained Below" />
       <div className="flex flex-col gap-2 text-base lg:w-2/3 w-full">
         <p>
           1. A web application for users who want to apply for government posts.
@@ -21,7 +18,6 @@ const About = () => {
           application procedures into a single data-driven platform.
         </p>
 
-        <br />
         <br />
 
         <span className="font-semibold">

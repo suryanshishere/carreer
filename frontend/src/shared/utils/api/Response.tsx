@@ -7,7 +7,7 @@ const Response = () => {
   const successMsg = useSelector(selectSuccessMsg);
 
   return (
-    <div className="fixed page_padding text-custom_white rounded font-bold flex justify-center bottom-2 w-full gap-2 z-50">
+    <div className="fixed page_padding text-custom_white rounded font-bold flex justify-center bottom-2 w-full gap-2 z-50 text-center">
       {successMsg && (
         <motion.p
           initial={{ y: 20, opacity: 0 }}

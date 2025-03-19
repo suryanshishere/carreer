@@ -15,7 +15,7 @@ const SubMain: React.FC = () => {
 
   return (
     <div
-      className={`z-20 page_padding bg-custom_pale_yellow text-base flex justify-center items-center gap-3 
+      className={`z-20 page_padding bg-custom_pale_yellow text-base flex justify-center items-center gap-[.75rem] mobile:gap-3 
         transform transition-transform duration-300 ease-in-out ${
           viewType === "mobile" ? "h-sub_nav_sm" : "h-sub_nav"
         }

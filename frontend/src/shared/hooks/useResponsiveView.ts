@@ -13,7 +13,7 @@ const useResponsiveView = (
   breakpoints = {
     mobile: 675,
     medium_mobile: 775,
-    large_mobile: 900,
+    large_mobile: 910,
     tablet: 975,
     desktop: 1100,
     desktop_hd: 1250,

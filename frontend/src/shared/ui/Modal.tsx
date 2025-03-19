@@ -28,10 +28,10 @@ const Modal: React.FC<ModalProps> = ({ header, children, footer, onClose }) => {
   if (!modalRoot || !isModalOpen) return null;
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
+    <div className="fixed page_padding inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div
         // ref={modalRef}
-        className="bg-white rounded shadow-lg w-full max-w-lg p-2 m-2 relative flex flex-col gap-2"
+        className="bg-white rounded shadow-lg w-full max-w-lg p-2 relative flex flex-col gap-2"
       >
         {/* Close Icon */}
         {onClose && (
