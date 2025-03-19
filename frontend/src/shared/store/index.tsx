@@ -11,7 +11,7 @@ const store = configureStore({
   reducer: {
     dropdown: dropdownReducer,
     response: responseReducer,
-  //user is persisted in the local storage for further use
+    //user is persisted in the local storage for further use
     user: persistReducer<ReturnType<typeof userReducer>>(
       {
         key: "user",

@@ -10,6 +10,15 @@ export const HomeSkeletonLoad = () => {
   );
 };
 
+export const LineSkeletonLoad = () => {
+  return (
+    <div
+      style={{ width: `${Math.random() * 25 + 76}%` }}
+      className="h-4 w-2/3 bg-custom_less_gray rounded-sm"
+    ></div>
+  );
+};
+
 export const ParaSkeletonLoad = () => {
   return (
     <li className="py-2 flex flex-col gap-2 animate-pulse">

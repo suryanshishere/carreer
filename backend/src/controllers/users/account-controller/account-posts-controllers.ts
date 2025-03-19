@@ -4,7 +4,7 @@ import HttpError from "@utils/http-errors";
 import mongoose from "mongoose";
 import POST_DB, { ISectionKey } from "@models/posts/db";
 import Contribution, { IContribution } from "@models/users/Contribution";
-import { validateContributionField } from "./account-controllers-utils";
+import { validateContributionField } from "./contribute-validation-utils";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import UserModal from "@models/users/User";
 import POSTS_POPULATE from "@models/posts/db/post-map/post-populate-map";

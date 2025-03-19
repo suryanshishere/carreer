@@ -7,9 +7,13 @@ import { handleAccountDeactivatedAt } from "shared/store/userSlice";
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5050/api";
 
 const getTokenFromLocalStorage = () => {
-  const state = JSON.parse(localStorage.getItem("persist:auth") || "{}");
-  const userData = state.userData ? JSON.parse(state.userData) : null;
-  return userData ? userData.token : null;
+  const state = JSON.parse(localStorage.getItem("persist:user") || "{}");
+  if (!state.token) return null;
+  try {
+    return JSON.parse(state.token);
+  } catch (e) {
+    return state.token;
+  }
 };
 
 const axiosInstance = axios.create({
@@ -34,6 +38,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+const EXEMPT_URLS = ["/user/account/activate-account"];
 //prevent any !get request before hand only
 axiosInstance.interceptors.request.use((config) => {
   const deactivatedAt = store.getState().user.deactivatedAt;
@@ -72,5 +77,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
-const EXEMPT_URLS = ["/user/account/activate-account"];

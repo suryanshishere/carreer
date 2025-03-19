@@ -16,7 +16,7 @@ import { IDateRange, IDates } from "@models/posts/components/Date";
 
 export const fetchPostList = async (
   section: ISectionKey,
-  includePopulate: boolean = true,
+  includePopulate: boolean,
   next: NextFunction,
   approvedStatus: boolean = true,
   includeSortedIds: boolean = true
