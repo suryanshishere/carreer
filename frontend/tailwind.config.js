@@ -7,7 +7,6 @@ module.exports = {
       raw: `
       border-custom_green
       border-custom_pale_orange
-      border-custom_gray
       border-custom_red
       border-custom_black 
       outline
@@ -38,7 +37,7 @@ module.exports = {
         custom_dark_red: "rgb(130, 17, 49)",
         custom_white: "rgba(255, 255, 255, 1)",
         custom_black: "#000000",
-        custom_gray: "rgba(104, 109, 118)",
+        custom_gray: "#686D76",
         custom_less_gray: "rgb(228, 224, 225)",
         // "custom-super-less-gray": "rgba(238, 238, 238, 0.25)",
         // "custom-backdrop": "#2C3333",

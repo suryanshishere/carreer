@@ -14,7 +14,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   warning?: boolean;
   contributeSaveButton?: boolean;
   basicButton?: boolean;
-  iconButton?: boolean; // New prop for icon button variant
+  iconButton?: boolean;
+  navButton?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -30,6 +31,7 @@ const Button: React.FC<ButtonProps> = ({
   contributeSaveButton,
   iconButton,
   basicButton,
+  navButton,
   ...rest
 }) => {
   // Common props applied to every button
@@ -37,9 +39,20 @@ const Button: React.FC<ButtonProps> = ({
   // Ensure "rounded" is present unless already provided in className
   const roundedClass = className.includes("rounded") ? "" : "rounded";
 
+  if (navButton) {
+    return (
+      <button
+        className={`rounded border-2 border-solid border-custom_gray w-full px-[6px] flex items-center justify-center gap-1 py-[1px] ${className}`}
+        onClick={onClick}
+      >
+        {children}
+      </button>
+    );
+  }
 
   if (basicButton) {
-    const baseClase = "w-full whitespace-nowrap hover:bg-custom_less_gray transform duration-100 ease-linear px-2 py-1 "
+    const baseClase =
+      "w-full whitespace-nowrap hover:bg-custom_less_gray transform duration-100 ease-linear px-2 py-1 ";
     return (
       <button
         {...commonProps}

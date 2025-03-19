@@ -11,6 +11,7 @@ import { IUserAccountMode } from "users/db";
 import NavDropdownUI from "shared/ui/NavDropdownUI";
 import { toggleDropdownState } from "shared/store/dropdownSlice";
 import { ClassNames } from "@emotion/react";
+import { startCase } from "lodash";
 
 const TAGS = USER_ACCOUNT_MODE_DB.tags;
 
@@ -32,24 +33,17 @@ const TagButton: React.FC<TagButtonProps> = ({
 }) => {
   if (label === "none") return null;
 
-  const className = `flex justify-center items-center gap-1 text-xs font-medium ${
-    showTagsDropdown ? "rounded py-2" : "rounded-full"
-  } py-1 px-2 cursor-pointer hover:bg-custom_white uppercase`;
+  const baseClass = `text-sm px-2 py-[2px] cursor-pointer flex items-center justify-center gap-1`;
+  const roundedClass = showTagsDropdown ? "py-2" : "rounded";
+  const activeClass = isActive ? "bg-custom_white" : "hover:bg-custom_white";
 
-  const buttonContent = (
-    <>
-      <span className={`h-3 w-3 rounded-sm bg-${color}`}></span>
-      <span>{label}</span>
-    </>
-  );
-
-  return isActive ? (
-    <button onClick={onClick} className={`bg-custom_white ${className}`}>
-      {buttonContent}
-    </button>
-  ) : (
-    <button onClick={onClick} className={className}>
-      {buttonContent}
+  return (
+    <button
+      onClick={onClick}
+      className={`${baseClass} ${roundedClass} ${activeClass}`}
+    >
+      <span className={`h-3 w-3 rounded-sm bg-${color}`} />
+      <span>{startCase(label)}</span>
     </button>
   );
 };
@@ -93,15 +87,16 @@ const NavTags: React.FC = () => {
       className="relative min-w-[6.5rem] h-fit flex items-center"
     >
       {tagButtonShow ? (
-        <button
+        <Button
+          navButton
           onClick={() => dispatch(toggleDropdownState({ id: dropdownKey }))}
-          className={`px-[6px] rounded-full outline outline-custom_gray w-full h-full bg-custom_less_gray flex items-center justify-center gap-1 ${
-            viewType === "mobile" ? "py-1" : "py-[1px]"
-          } ${showTagsDropdown && "shadow-md shadow-custom_black"}`}
+          className={`${
+            showTagsDropdown ? "bg-custom_less_gray" : "hover:bg-custom_less_gray"
+          } ${viewType === "mobile" ? "py-[2px]" : ""}`}
         >
           Tags
           <ArrowDropDownIcon fontSize="small" />
-        </button>
+        </Button>
       ) : (
         <div className="flex items-center gap-1">
           {Object.entries(TAGS)
