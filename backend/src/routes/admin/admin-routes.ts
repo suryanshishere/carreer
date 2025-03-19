@@ -1,5 +1,5 @@
 import express from "express";
-import { accessUpdate, getReqAccess, getRole } from "@controllers/admin";
+import { accessUpdate, getReqAccessList, getRole } from "@controllers/admin";
 import approverRoutes from "./approver-routes";
 import publisherRoutes from "./publisher/publisher_routes";
 import {
@@ -16,10 +16,11 @@ router.use("/approver", authorizeRoles(["approver"]), approverRoutes);
 
 router.get("/get-role", getRole);
 
+router.use(authorizeRoles(["admin"]));
 router.post(
-  "/req-access",
+  "/req-access-list",
   [validateStatus(), validateRoleApplied()],
-  getReqAccess
+  getReqAccessList
 );
 
 router.post(

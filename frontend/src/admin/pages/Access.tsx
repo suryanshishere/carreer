@@ -11,7 +11,7 @@ import {
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import DoneIcon from "@mui/icons-material/Done";
 import ADMIN_DB from "admin/db";
 import PageHeader from "shared/ui/PageHeader";
@@ -42,7 +42,7 @@ interface IAccessUpdate extends IAccessFilter {
 }
 
 const Access: React.FC = () => {
-  const token  = useSelector((state: RootState) => state.user.token);
+  const token = useSelector((state: RootState) => state.user.token);
   const dispatch = useDispatch<AppDispatch>();
   const [filters, setFilters] = useState<IAccessFilter | null>(null);
 
@@ -55,32 +55,39 @@ const Access: React.FC = () => {
     mode: "onSubmit",
   });
 
-  // for fetching access list
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["accessRequests", filters],
-    queryFn: async () => {
-      if (!filters) return null;
-      const response = await axiosInstance.post("/admin/req-access", filters);
+  // Mutation for fetching the access list
+  const fetchAccessMutation = useMutation({
+    mutationFn: async (filters: IAccessFilter) => {
+      const response = await axiosInstance.post(
+        "/admin/req-access-list",
+        filters
+      );
       return response.data.data;
     },
-    enabled: !!filters,  
+    onSuccess: (data) => {
+      if (data !== null) {
+        dispatch(triggerSuccessMsg("Access list fetched successfully!"));
+      }
+    },
   });
 
-  // for updating there access
+  // Mutation for updating access
   const updateAccessMutation = useMutation({
     mutationFn: async ({ req_id, role_applied, status }: IAccessUpdate) => {
-      const { data } = await axiosInstance.post(
-        "/admin/access-update",
-        { req_id, role_applied, status },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await axiosInstance.post("/admin/access-update", {
+        req_id,
+        role_applied,
+        status,
+      });
       return data;
     },
     onSuccess: ({ message }) => {
       dispatch(triggerSuccessMsg(message || "Updated access successfully!"));
-      refetch();
+      // setTimeout(() => {
+      //   if (filters) {
+      //     fetchAccessMutation.mutate(filters);
+      //   }
+      // }, 1000);
     },
     onError: (error: any) => {
       dispatch(
@@ -91,12 +98,17 @@ const Access: React.FC = () => {
     },
   });
 
+  const onSubmit = (data: IAccessFilter) => {
+    setFilters(data);
+    fetchAccessMutation.mutate(data);
+  };
+
   return (
     <div className="w-full flex flex-col gap-3">
       <PageHeader header="Access" subHeader="List of the access" />
 
       <form
-        onSubmit={handleSubmit((data) => setFilters(data))}
+        onSubmit={handleSubmit(onSubmit)}
         className="w-full flex h-16 items-center mobile:justify-end gap-2 mb-7"
       >
         <div className="flex justify-end gap-2">
@@ -127,9 +139,9 @@ const Access: React.FC = () => {
 
       {filters ? (
         <DataStateWrapper
-          isLoading={isLoading}
-          error={error}
-          data={data}
+          isLoading={fetchAccessMutation.isPending}
+          error={fetchAccessMutation.error}
+          data={fetchAccessMutation.data}
           emptyCondition={(data) => !data || data.length === 0}
           nodelay
         >

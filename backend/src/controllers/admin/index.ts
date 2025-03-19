@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-
 import HttpError from "@utils/http-errors";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import AdminModel from "@models/admin/Admin";
 import RequestModal, { IRequest } from "@models/admin/Request";
-import { authorisedAdmin } from "./admin-controllers-utils";
 import { generateJWTToken } from "@controllers/users/auth/auth-controllers-utils";
 
 export const getRole = async (
@@ -37,18 +35,16 @@ export const getRole = async (
   }
 };
 
-export const getReqAccess = async (
+export const getReqAccessList = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   handleValidationErrors(req, next);
 
-  const userId = req.userData?.userId;
   const { status, role_applied } = req.body;
 
   try {
-    authorisedAdmin(userId, next);
     const requestList = await RequestModal.find({
       status,
       role_applied,
@@ -79,10 +75,7 @@ export const accessUpdate = async (
   session.startTransaction();
 
   try {
-    const userId = req.userData?.userId;
     const { status, req_id, role_applied } = req.body;
-
-    authorisedAdmin(userId, next);
 
     const request: IRequest | null = await RequestModal.findById(
       req_id
