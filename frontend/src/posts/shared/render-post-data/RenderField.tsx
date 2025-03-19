@@ -140,7 +140,7 @@ const RenderField = ({
     const match = partialDateRegex.exec(strValue);
     if (!match) return <>{strValue}</>;
 
-    return <RenderDate stringValue={strValue} uniqueKey={uniqueKey} />;
+    return <RenderDate strValue={strValue} uniqueKey={uniqueKey} />;
   }
 
   //adding extra renders to it.

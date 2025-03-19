@@ -10,7 +10,6 @@ import { ISectionKey } from "posts/db";
 import PostApproval from "admin/shared/PostApproval";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import RenderDate from "posts/shared/render-post-data/RenderDate";
 
 const PostDetail: React.FC = () => {
   const {

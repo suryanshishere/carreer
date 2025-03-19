@@ -11,7 +11,7 @@ import handleValidationErrors from "@controllers/utils/validation-error";
 import User from "@models/users/User";
 import { ISectionKey, ITagKey, TAG_ORDER } from "@models/posts/db";
 import postDetailByPriority from "./utils/get-detail-by-priority";
-import { formatDate, formattedDateRef } from "./utils/calculate-date";
+import {formattedDateRef, formattedDateRefView } from "./utils/calculate-date";
 
 //TODO
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
@@ -97,12 +97,13 @@ export const section = async (
     const postsWithSavedStatus = response
       ?.map(({ _id, date_ref, ...rest }) => {
         const dateRef = formattedDateRef(date_ref);
+        const dateRefView = formattedDateRefView(date_ref);
         return {
           _id,
           ...rest,
           is_saved: savedIds.includes(String(_id)),
           tag: getTagForPost(dateRef, section),
-          date_ref,
+          date_ref:dateRefView,
         };
       })
       .sort(

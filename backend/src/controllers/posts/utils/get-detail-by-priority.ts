@@ -1,6 +1,6 @@
 import { ISectionKey, POST_DETAILS_PRIORITY } from "@models/posts/db";
 import _ from "lodash";
-import { formattedDateRef } from "./calculate-date";
+import { formattedDateRef, formattedDateRefView } from "./calculate-date";
 
 const flatten = (
   obj: Record<string, any>,
@@ -100,11 +100,11 @@ const postDetailByPriority = (
     ///do it on the formatedate of backend where we getting the right dates year and
     //renames date is good but while contributing fill the default input value of the date to current date (since anyway i may change the date)
     //this way it may work everywhere as demanded
-    // if (key === "date_ref" && typeof value === "object" && value !== null) {
-    //   console.log(value);
-    //   value = formattedDateRef(value);
-    //   console.log(value);
-    // }
+    if (key === "date_ref" && typeof value === "object" && value !== null) {
+      value = formattedDateRefView(value);
+      console.log(value);
+      // console.log(value);
+    }
 
     orderedResult[key] = value;
     _.unset(data, key);
