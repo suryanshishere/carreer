@@ -96,14 +96,8 @@ const postDetailByPriority = (
         ? nestedValue
         : "";
 
-    ////////make the renaming of the data work right (for that i need og dates note: do it on backend such way that we have the original data as well renamed  only)
-    ///do it on the formatedate of backend where we getting the right dates year and
-    //renames date is good but while contributing fill the default input value of the date to current date (since anyway i may change the date)
-    //this way it may work everywhere as demanded
     if (key === "date_ref" && typeof value === "object" && value !== null) {
       value = formattedDateRefView(value);
-      console.log(value);
-      // console.log(value);
     }
 
     orderedResult[key] = value;
