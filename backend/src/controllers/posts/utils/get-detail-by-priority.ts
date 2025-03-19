@@ -1,6 +1,6 @@
 import { ISectionKey, POST_DETAILS_PRIORITY } from "@models/posts/db";
 import _ from "lodash";
-import { formattedDateRef, formattedDateRefView } from "./calculate-date";
+import { formattedDateRefView } from "./calculate-date";
 
 const flatten = (
   obj: Record<string, any>,

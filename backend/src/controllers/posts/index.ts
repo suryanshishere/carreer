@@ -5,13 +5,12 @@ import FeeModel from "@models/posts/components/Fee";
 import DateModel from "@models/posts/components/Date";
 import LinkModel from "@models/posts/components/Link";
 import PostModel from "@models/posts/Post";
-import { fetchPostDetail, fetchPostList, getTagForPost } from "./utils";
+import { fetchPostDetail, fetchPostList, getTagAndDateRef } from "./utils";
 import { SECTION_POST_MODEL_MAP } from "@models/posts/db/post-map/post-model-map";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import User from "@models/users/User";
-import { ISectionKey, ITagKey, TAG_ORDER } from "@models/posts/db";
+import POST_DB, { ISectionKey, ITagKey, TAG_ORDER } from "@models/posts/db";
 import postDetailByPriority from "./utils/get-detail-by-priority";
-import {formattedDateRef, formattedDateRefView } from "./utils/calculate-date";
 
 //TODO
 // const HOME_LIMIT = Number(process.env.NUMBER_OF_POST_SEND_HOMELIST) || 12;
@@ -36,20 +35,18 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findById(userId);
     const savedPost = user?.saved_posts || null;
 
-    const dataPromises = Object.keys(SECTION_POST_MODEL_MAP).map(
-      async (key) => {
-        const savedIds = savedPost?.[key]?.map(String) || [];
-        const posts = await fetchPostList(key as ISectionKey, false, next);
+    const dataPromises = POST_DB.sections.map(
+      async (section) => {
+        const savedIds = savedPost?.[section]?.map(String) || [];
+        const posts = await fetchPostList(section, false, next);
 
         return {
-          [key]: posts
+          [section]: posts
             ?.map(({ _id, date_ref, ...rest }) => {
-              const dateRef = formattedDateRef(date_ref);
               return {
                 _id,
                 is_saved: savedIds.includes(String(_id)),
-                tag: getTagForPost(dateRef, key as ISectionKey),
-                date_ref,
+                ...getTagAndDateRef(date_ref, section),
                 ...rest,
               };
             })
@@ -95,15 +92,12 @@ export const section = async (
     //todo: if null them better
 
     const postsWithSavedStatus = response
-      ?.map(({ _id, date_ref, ...rest }) => {
-        const dateRef = formattedDateRef(date_ref);
-        const dateRefView = formattedDateRefView(date_ref);
+      ?.map(({ _id, date_ref, ...rest }) => { 
         return {
           _id,
           ...rest,
           is_saved: savedIds.includes(String(_id)),
-          tag: getTagForPost(dateRef, section),
-          date_ref:dateRefView,
+          ...getTagAndDateRef(date_ref, section),
         };
       })
       .sort(

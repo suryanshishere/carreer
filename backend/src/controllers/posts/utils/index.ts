@@ -7,7 +7,11 @@ import POST_POPULATE from "@models/posts/db/post-map/post-populate-map";
 import { ISectionKey } from "@models/posts/db";
 import getSortedDateIds from "./get-sorted-date-ids";
 import mongoose from "mongoose";
-import {calculateDateDifference} from "./calculate-date";
+import {
+  calculateDateDifference,
+  formattedDateRefView,
+  IDateRangeView,
+} from "./calculate-date";
 import { IDateRange, IDates } from "@models/posts/components/Date";
 
 export const fetchPostList = async (
@@ -95,23 +99,23 @@ export const fetchPostDetail = async (req: Request, next: NextFunction) => {
 
   return response;
 };
-
-export const getTagForPost = (
+export const getTagAndDateRef = (
   dateRef: Record<keyof IDates, IDateRange>,
   section: ISectionKey
-): string => {
+): { tag: string; date_ref: Record<keyof IDates, IDateRangeView> } => {
+  // Process the date reference to obtain both formatted versions
+  const formattedView = formattedDateRefView(dateRef);
   const days = calculateDateDifference(dateRef, section);
 
   let tagKey: string = "none";
   if (days !== null) {
     const matchingTagEntry = Object.entries(TAGS).find(
-      ([key, range]) => range && days >= range[0] && days < range[1]
+      ([, range]) => range && days >= range[0] && days < range[1]
     );
-
     if (matchingTagEntry) {
       tagKey = matchingTagEntry[0];
     }
   }
-  
-  return tagKey;
+
+  return { tag: tagKey, date_ref: formattedView };
 };

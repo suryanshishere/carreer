@@ -86,7 +86,7 @@ const ContactUs: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col justify-center">
+    <div className="w-full flex flex-col justify-center gap-3">
       <PageHeader
         header="Contact Us"
         subHeader="Please provide accurate credentials for future reference."

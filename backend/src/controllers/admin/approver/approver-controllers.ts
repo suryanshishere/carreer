@@ -10,7 +10,7 @@ import {
 import mongoose from "mongoose";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import { ISectionKey } from "@models/posts/db";
-import { fetchPostList, getTagForPost } from "@controllers/posts/utils";
+import { fetchPostList, getTagAndDateRef } from "@controllers/posts/utils";
 import _ from "lodash";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
 import PostModel from "@models/posts/Post";
@@ -217,8 +217,7 @@ export const nonApprovedPosts = async (
         _id,
         ...rest,
         is_saved: savedIds.includes(String(_id)),
-        tag: getTagForPost(date_ref, section),
-        date_ref,
+        ...getTagAndDateRef(date_ref, section),
       };
     });
 

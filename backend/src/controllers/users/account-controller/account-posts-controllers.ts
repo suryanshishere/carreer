@@ -9,7 +9,7 @@ import handleValidationErrors from "@controllers/utils/validation-error";
 import UserModal from "@models/users/User";
 import POSTS_POPULATE from "@models/posts/db/post-map/post-populate-map";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
-import { getTagForPost } from "@controllers/posts/utils";
+import { getTagAndDateRef } from "@controllers/posts/utils";
 
 const postSectionsArray = POST_DB.sections;
 
@@ -50,7 +50,7 @@ export const savedPosts = async (
           ].map((post: any) => ({
             ...post,
             is_saved: true,
-            tag: getTagForPost(post.date_ref, section as ISectionKey),
+            ...getTagAndDateRef(post.date_ref, section as ISectionKey),
           }));
         }
       });
