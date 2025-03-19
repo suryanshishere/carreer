@@ -88,7 +88,6 @@ export const section = async (
 
     //if not max mode then not include populate of whole data
     const includePopulate = user?.mode?.max ?? false;
-    console.log("includePopulate", userId);
     const response = await fetchPostList(section, includePopulate, next);
     //todo: if null them better
 
