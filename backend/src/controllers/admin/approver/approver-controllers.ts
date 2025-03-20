@@ -10,7 +10,7 @@ import {
 import mongoose from "mongoose";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import { ISectionKey } from "@models/posts/db";
-import { fetchPostList, getTagAndDateRef } from "@controllers/posts/utils";
+import { fetchPostList, getTagDateLinkRef } from "@controllers/posts/utils";
 import _ from "lodash";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
 import PostModel from "@models/posts/Post";
@@ -212,12 +212,12 @@ export const nonApprovedPosts = async (
     }
 
     // Adding saved status and tags
-    const postsWithSavedStatus = response?.map(({ _id, date_ref, ...rest }) => {
+    const postsWithSavedStatus = response?.map(({ _id, date_ref,link_ref, ...rest }) => {
       return {
         _id,
         ...rest,
         is_saved: savedIds.includes(String(_id)),
-        ...getTagAndDateRef(date_ref, section),
+        ...getTagDateLinkRef(date_ref, section,link_ref),
       };
     });
 

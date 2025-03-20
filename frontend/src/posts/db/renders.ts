@@ -29,8 +29,6 @@ export const excludedKeys: Record<string, boolean> = {
   tag: true,
 };
 
-
-
 export const tableRequired: Record<string, boolean> = {
   age_criteria: true,
   "result_ref.result": true,
@@ -101,8 +99,23 @@ export const renamingData: {
     internship:
       "Internship - Learning-based job experience for students or freshers, usually for a limited period.",
   },
-  post_exam_toughness_ranking: "ranked",
-  post_exam_duration: "minutes",
-  minimum_age: "year old",
-  maximum_age: "year old",
+  "common_ref.post_exam_toughness_ranking": "ranked",
+  "common_ref.post_exam_duration": "minutes",
+  "common_ref.age_criteria.minimum_age": "year old",
+  "common_ref.age_criteria.maximum_age": "year old",
+  "fee_ref.male": "Rs/-",
+  "fee_ref.female": "Rs/-",
+  "fee_ref.other": "Rs/-",
+  "fee_ref.category_wise.general": "Rs/-",
+  "fee_ref.category_wise.obc": "Rs/-",
+  "fee_ref.category_wise.ews": "Rs/-",
+  "fee_ref.category_wise.sc": "Rs/-",
+  "fee_ref.category_wise.st": "Rs/-",
+  "fee_ref.category_wise.ph_dviyang": "Rs/-",
+  "common_ref.vacancy.category_wise.general": "vacancies",
+  "common_ref.vacancy.category_wise.obc": "vacancies",
+  "common_ref.vacancy.category_wise.sc": "vacancies",
+  "common_ref.vacancy.category_wise.st": "vacancies",
+  "common_ref.vacancy.category_wise.ph_dviyang": "vacancies",
+  "common_ref.vacancy.category_wise.ews": "vacancies",
 };

@@ -12,7 +12,8 @@ import {
   formattedDateRefView,
   IDateRangeView,
 } from "./calculate-date";
-import { IDateRange, IDates } from "@models/posts/components/Date";
+import { IDates } from "@models/posts/components/Date";
+import { ILink } from "@models/posts/components/Link";
 
 export const fetchPostList = async (
   section: ISectionKey,
@@ -99,10 +100,16 @@ export const fetchPostDetail = async (req: Request, next: NextFunction) => {
 
   return response;
 };
-export const getTagAndDateRef = (
-  dateRef: Record<keyof IDates, IDateRange>,
-  section: ISectionKey
-): { tag: string; date_ref: Record<keyof IDates, IDateRangeView> } => {
+
+export const getTagDateLinkRef = (
+  dateRef: IDates,
+  section: ISectionKey,
+  linkRef?: ILink
+): {
+  tag: string;
+  important_dates: Record<keyof IDates, IDateRangeView>;
+  important_links?: ILink;
+} => {
   // Process the date reference to obtain both formatted versions
   const formattedView = formattedDateRefView(dateRef);
   const days = calculateDateDifference(dateRef, section);
@@ -117,5 +124,9 @@ export const getTagAndDateRef = (
     }
   }
 
-  return { tag: tagKey, date_ref: formattedView };
+  return {
+    tag: tagKey,
+    important_dates: formattedView,
+    ...(linkRef && { important_links: linkRef }),
+  };
 };

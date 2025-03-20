@@ -1,6 +1,6 @@
 import moment from "moment";
 import { ISectionKey, TAG_DATE_MAP } from "@models/posts/db";
-import { IDateRange, IDates } from "@models/posts/components/Date";
+import {  IDates } from "@models/posts/components/Date";
 
 function formatDate(inputDate: Date): Date {
   const dateObj = new Date(inputDate);
@@ -22,7 +22,7 @@ function formatDate(inputDate: Date): Date {
 }
 
 export const calculateDateDifference = (
-  importantDates: Record<keyof IDates, IDateRange>,
+  importantDates: IDates,
   section: ISectionKey
 ) => {
   const tagKeys = TAG_DATE_MAP[section];
@@ -112,7 +112,7 @@ export type IDateRangeView = {
 };
 
 export const formattedDateRefView = (
-  dateRef: Record<keyof IDates, IDateRange> | null | undefined
+  dateRef: IDates | null | undefined
 ): Record<keyof IDates, IDateRangeView> => {
   if (!dateRef) return {} as Record<keyof IDates, IDateRangeView>;
 

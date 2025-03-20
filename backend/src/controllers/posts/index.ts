@@ -5,8 +5,7 @@ import FeeModel from "@models/posts/components/Fee";
 import DateModel from "@models/posts/components/Date";
 import LinkModel from "@models/posts/components/Link";
 import PostModel from "@models/posts/Post";
-import { fetchPostDetail, fetchPostList, getTagAndDateRef } from "./utils";
-import { SECTION_POST_MODEL_MAP } from "@models/posts/db/post-map/post-model-map";
+import { fetchPostDetail, fetchPostList, getTagDateLinkRef } from "./utils";
 import handleValidationErrors from "@controllers/utils/validation-error";
 import User from "@models/users/User";
 import POST_DB, { ISectionKey, ITagKey, TAG_ORDER } from "@models/posts/db";
@@ -35,29 +34,27 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findById(userId);
     const savedPost = user?.saved_posts || null;
 
-    const dataPromises = POST_DB.sections.map(
-      async (section) => {
-        const savedIds = savedPost?.[section]?.map(String) || [];
-        const posts = await fetchPostList(section, false, next);
+    const dataPromises = POST_DB.sections.map(async (section) => {
+      const savedIds = savedPost?.[section]?.map(String) || [];
+      const posts = await fetchPostList(section, false, next);
 
-        return {
-          [section]: posts
-            ?.map(({ _id, date_ref, ...rest }) => {
-              return {
-                _id,
-                is_saved: savedIds.includes(String(_id)),
-                ...getTagAndDateRef(date_ref, section),
-                ...rest,
-              };
-            })
-            .sort(
-              (a, b) =>
-                TAG_ORDER.indexOf(a.tag as ITagKey) -
-                TAG_ORDER.indexOf(b.tag as ITagKey)
-            ),
-        };
-      }
-    );
+      return {
+        [section]: posts
+          ?.map(({ _id, link_ref, date_ref, ...rest }) => {
+            return {
+              _id,
+              is_saved: savedIds.includes(String(_id)),
+              ...getTagDateLinkRef(date_ref, section, link_ref),
+              ...rest,
+            };
+          })
+          .sort(
+            (a, b) =>
+              TAG_ORDER.indexOf(a.tag as ITagKey) -
+              TAG_ORDER.indexOf(b.tag as ITagKey)
+          ),
+      };
+    });
 
     const dataArray = await Promise.all(dataPromises);
     const response = dataArray.reduce((acc, curr) => ({ ...acc, ...curr }), {});
@@ -92,12 +89,12 @@ export const section = async (
     //todo: if null them better
 
     const postsWithSavedStatus = response
-      ?.map(({ _id, date_ref, ...rest }) => { 
+      ?.map(({ _id, date_ref, link_ref, ...rest }) => {
         return {
           _id,
           ...rest,
           is_saved: savedIds.includes(String(_id)),
-          ...getTagAndDateRef(date_ref, section),
+          ...getTagDateLinkRef(date_ref, section, link_ref),
         };
       })
       .sort(

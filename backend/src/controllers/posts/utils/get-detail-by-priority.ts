@@ -38,6 +38,7 @@ const flatten = (
   }, {});
 };
 
+//getting the updatedAt while looking up the whole data recent most date
 const flattenAndPreserveUpdatedAt = (
   obj: Record<string, any>
 ): Record<string, any> => {
@@ -74,7 +75,6 @@ const flattenAndPreserveUpdatedAt = (
   return flatObj;
 };
 
-// Reorder the response data based on the priority keys without deleting any keys.
 const postDetailByPriority = (
   data: Record<string, any>,
   section: ISectionKey
@@ -96,6 +96,7 @@ const postDetailByPriority = (
         ? nestedValue
         : "";
 
+    //correctly formated the dates view
     if (key === "date_ref" && typeof value === "object" && value !== null) {
       value = formattedDateRefView(value);
     }

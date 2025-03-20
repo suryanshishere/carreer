@@ -31,18 +31,6 @@ const RenderField = ({
   let strValue: string = _.toString(stringValue);
   const lastKey: string = uniqueKey?.split(".").pop() || uniqueKey;
 
-  if (POST_LIMIT_DROPDOWN_DATA.has(strValue)) {
-    const keyValues = renamingData[lastKey] as {
-      [key: string]: string;
-    };
-
-    if (keyValues && strValue in keyValues && keyValues[strValue]) {
-      return <>{keyValues[strValue]}</>;
-    }
-
-    return <>{startCase(strValue)}</>;
-  }
-
   if (strValue.startsWith("https://")) {
     return (
       <a
@@ -121,6 +109,34 @@ const RenderField = ({
     );
   }
 
+  //date check
+  const partialDateRegex = /\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(.\d+)?Z)?/;
+  if (partialDateRegex.test(strValue)) {
+    const match = partialDateRegex.exec(strValue);
+    if (!match) return <>{strValue}</>;
+
+    return <RenderDate strValue={strValue} uniqueKey={uniqueKey} />;
+  }
+
+  //adding extra renders to it.
+  if (POST_LIMIT_DROPDOWN_DATA.has(strValue)) {
+    const keyValues = renamingData[lastKey] as {
+      [key: string]: string;
+    };
+
+    if (keyValues && strValue in keyValues && keyValues[strValue]) {
+      return <>{keyValues[strValue]}</>;
+    }
+
+    return <>{startCase(strValue)}</>;
+  }
+
+  const uniValue = renamingData[uniqueKey];
+  if (typeof uniValue === "string") {
+    return <>{strValue + " " + uniValue}</>;
+  }
+
+  //for post code and version link checks
   if (strValue === strValue.toLowerCase() && strValue.includes("_")) {
     const [postCode, version = "main"] = strValue.split("_1_");
     return (
@@ -132,21 +148,6 @@ const RenderField = ({
 
   if (strValue.includes("_")) {
     return <>{startCase(strValue)}</>;
-  }
-
-  //date check
-  const partialDateRegex = /\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(.\d+)?Z)?/;
-  if (partialDateRegex.test(strValue)) {
-    const match = partialDateRegex.exec(strValue);
-    if (!match) return <>{strValue}</>;
-
-    return <RenderDate strValue={strValue} uniqueKey={uniqueKey} />;
-  }
-
-  //adding extra renders to it.
-  const value = renamingData[lastKey];
-  if (typeof value === "string") {
-    return <>{strValue + " " + value}</>;
   }
 
   return <> {strValue}</>;
