@@ -9,9 +9,7 @@ import { Input, TextArea } from "shared/utils/form/Input";
 import { getFieldValidation, validateFieldValue } from "./post-editable-utils";
 import { IContribute } from "posts/db/interfaces";
 
-// Helper to convert a value to an ISO date string
 const formatDateValue = (value: any): string => {
-  // Ensure we have a valid date
   const date = new Date(value);
   return isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10);
 };
@@ -21,7 +19,6 @@ const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
   const lastName = keyProp.split(".").pop() || "";
   const validationConfig = getFieldValidation(lastName);
 
-  // Determine the input type.
   const inputType =
     typeof valueProp === "number"
       ? "number"
@@ -29,16 +26,17 @@ const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
       ? "date"
       : "text";
 
-  // If it's a date, initialize with a properly formatted string
   const initialInputValue =
     inputType === "date" ? formatDateValue(valueProp) : valueProp;
 
   const [inputValue, setInputValue] = useState<string | number>(initialInputValue);
   const [isChanged, setIsChanged] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isFirstRender, setIsFirstRender] = useState(inputType === "date");
 
-  // Validation (updated to handle string dates)
-  const { isValid, error } = validateFieldValue(inputValue, validationConfig);
+  const { isValid, error } = isFirstRender && inputType === "date"
+    ? { isValid: true, error: "" }
+    : validateFieldValue(inputValue, validationConfig);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -49,22 +47,20 @@ const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
     if (typeof valueProp === "number") {
       newValue = +e.target.value;
     } else if (inputType === "date") {
-      // Ensure the date value is in the correct format
-      newValue = e.target.value; // Should already be in YYYY-MM-DD format
+      newValue = e.target.value;
     }
     setInputValue(newValue);
     setIsChanged(true);
     setIsSaved(false);
+    if (isFirstRender) setIsFirstRender(false);
   };
 
   const handleSave = () => {
-    // When saving, you might want to convert back if needed.
-    // For date inputs, you can keep the ISO date string or convert it to a Date object.
     const parsedValue =
       typeof valueProp === "number"
         ? +inputValue
         : validationConfig?.type === "date"
-        ? inputValue.toString() // or: new Date(inputValue.toString())
+        ? inputValue.toString()
         : inputValue.toString();
 
     dispatch(setKeyValuePair({ key: keyProp, value: parsedValue }));

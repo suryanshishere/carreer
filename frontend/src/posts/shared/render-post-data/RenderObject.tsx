@@ -25,7 +25,7 @@ const RenderObject: React.FC<RenderObjectProps> = ({ value, parentKey }) => {
               <SquareUI />
               {startCase(subKey)}
             </h2>
-            <div className="pl-5 w-full">{renderData(fullKey, subValue)}</div>
+            <div className="pl-[1rem] w-full">{renderData(fullKey, subValue)}</div>
           </div>
         );
       })}
