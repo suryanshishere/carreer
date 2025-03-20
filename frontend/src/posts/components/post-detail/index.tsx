@@ -96,7 +96,7 @@ const PostDetailItem: React.FC<{ data: any }> = ({ data }) => {
           <div className="flex items-center">
             <div className="border-t-2 flex-grow border-dashed border-custom_gray"></div>
             <h3 className="whitespace-nowrap px-2 text-custom_red font-bold bg-custom_white">
-              Direct Link and Date Information
+              Direct Links and Dates Information
             </h3>
             <div className="border-t-2 flex-grow border-dashed border-custom_gray"></div>
           </div>
