@@ -132,7 +132,7 @@ const Access: React.FC = () => {
           />
         </div>
 
-        <Button iconButton type="submit" className="outline">
+        <Button iconButton type="submit" className="border-2 border-solid">
           <DoneIcon fontSize="small" />
         </Button>
       </form>

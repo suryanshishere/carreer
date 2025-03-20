@@ -34,9 +34,7 @@ const Button: React.FC<ButtonProps> = ({
   navButton,
   ...rest
 }) => {
-  // Common props applied to every button
   const commonProps = { onClick, disabled, type, style, ...rest };
-  // Ensure "rounded" is present unless already provided in className
   const roundedClass = className.includes("rounded") ? "" : "rounded";
 
   if (navButton) {
