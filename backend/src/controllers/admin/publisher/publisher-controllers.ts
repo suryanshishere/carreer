@@ -25,7 +25,8 @@ export const createNewPost = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   const {
     section,
@@ -140,7 +141,8 @@ export const deletePost = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
   const { post_id, section }: { post_id: string; section: IOverallKey } =
     req.body;
   const publisherId = req.userData?.userId;

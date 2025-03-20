@@ -15,7 +15,8 @@ export const reqAccess = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   const { userId } = req.userData || {};
   const { reason, role_applied } = req.body;

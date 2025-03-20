@@ -24,7 +24,8 @@ export const getContriPostCodes = async (
   const { section } = req.params;
 
   try {
-    handleValidationErrors(req, next);
+    const errors = handleValidationErrors(req, next);
+    if (errors) return;
     const result = await Contribution.aggregate([
       {
         // Step 1: Convert the 'contribution' field to an array of key-value pairs
@@ -88,7 +89,8 @@ export const getContriPost = async (
   const postCodeVersion = generatePostCodeVersion(postCode, version);
 
   try {
-    handleValidationErrors(req, next);
+    const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
     // Retrieve the post document
     // const post = await fetchPostDetail(section, postCode, version);
@@ -149,7 +151,8 @@ export const applyContri = async (
   session.startTransaction();
 
   try {
-    handleValidationErrors(req, next);
+    const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
     let post = await updatePost(req, next);
     if (!post) return;
@@ -189,7 +192,8 @@ export const nonApprovedPosts = async (
 ) => {
   try {
     const { section, active } = req.params;
-    handleValidationErrors(req, next);
+    const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
     const userId = req.userData?.userId;
     const user = await User.findById(userId);

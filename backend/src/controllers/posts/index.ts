@@ -27,7 +27,8 @@ export const helpless = () => {
 };
 
 export const home = async (req: Request, res: Response, next: NextFunction) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
   const userId = req.userData?.userId;
 
   try {
@@ -71,7 +72,8 @@ export const section = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
   try {
     const section = req.params.section as ISectionKey;
     const userId = req.userData?.userId;
@@ -121,7 +123,11 @@ export const postDetail = async (
   next: NextFunction
 ) => {
   try {
-    handleValidationErrors(req, next);
+    const errors = handleValidationErrors(req, next);
+    if (errors) return;
+
+    if (res.headersSent) return;
+
     const userId = req.userData?.userId;
     const { section } = req.params as {
       section: ISectionKey;

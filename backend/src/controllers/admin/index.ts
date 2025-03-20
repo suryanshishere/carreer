@@ -40,7 +40,8 @@ export const getReqAccessList = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   const { status, role_applied } = req.body;
 
@@ -69,7 +70,8 @@ export const accessUpdate = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   const session = await RequestModal.startSession();
   session.startTransaction();

@@ -18,7 +18,8 @@ const { EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY } =
   USER_ENV_DATA;
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   const { email, password } = req.body;
   const existingUser: IUser | null = await User.findOne({ email });
@@ -63,7 +64,8 @@ export const sendPasswordResetLink = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   const { email } = req.body;
   const userId = req.userData?.userId;
@@ -135,7 +137,8 @@ export const resetPassword = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   const { resetPasswordToken, password } = req.body;
   const { userId } = req.params;
@@ -245,7 +248,8 @@ export const sendVerificationOtp = async (
   } = {}
 ) => {
   if (!options.isDirect) {
-    handleValidationErrors(req, next);
+    const errors = handleValidationErrors(req, next);
+    if (errors) return;
   }
   // optional routes: since in backend action won't have token hence conditional not workin
   const userId = options.isDirect ? options.userId : req.userData?.userId;
@@ -321,7 +325,8 @@ export const verifyEmail = async (
   next: NextFunction
 ) => {
   // Validate request
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   const { otp } = req.body;
   const userId = req.userData?.userId;

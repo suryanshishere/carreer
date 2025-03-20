@@ -10,7 +10,8 @@ export const changePassword = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   try {
     const { old_password, new_password } = req.body;
@@ -50,7 +51,8 @@ export const deactivateAccount = async (
   res: Response,
   next: NextFunction
 ) => {
-  handleValidationErrors(req, next);
+  const errors = handleValidationErrors(req, next);
+    if (errors) return;
 
   try {
     const userId = req.userData?.userId;
