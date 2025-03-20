@@ -138,14 +138,14 @@ const Button: React.FC<ButtonProps> = ({
   }
 
   // Default Button
-  const baseClass = `whitespace-nowrap focus:outline-custom_pale_yellow focus:ring-2 focus:ring-custom_pale_yellow text-center ${roundedClass} outline outline-custom_less_gray p-button ease-linear transform duration-100 w-full py-[.5rem] px-[0.5rem] md:py-[.45rem] text-base overflow-hidden`;
+  const baseClass = `whitespace-nowrap text-center border-2 border-solid border-custom_less_gray p-button ease-linear transform duration-100 w-full py-[.5rem] px-[0.5rem] md:py-[.45rem] text-base overflow-hidden`;
   const stateClass = disabled
     ? "cursor-not-allowed text-custom_gray bg-custom_pale_yellow"
     : "cursor-pointer hover:bg-custom_pale_yellow hover:outline-custom_gray";
   return (
     <button
       {...commonProps}
-      className={`${baseClass} ${stateClass} ${className}`}
+      className={`${baseClass} ${stateClass} ${roundedClass} ${className}`}
     >
       {children}
     </button>

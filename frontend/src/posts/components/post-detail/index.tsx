@@ -32,6 +32,7 @@ const PostDetailItem: React.FC<{
         if (
           excludedKeys[key] ||
           value === null ||
+          value === "" ||
           value === undefined ||
           (typeof value === "object" && Object.keys(value).length === 0) ||
           (typeof value === "object" &&
