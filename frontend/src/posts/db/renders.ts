@@ -1,3 +1,5 @@
+import { ISectionKey } from ".";
+
 export const excludedKeys: Record<string, boolean> = {
   _id: true,
   created_by: true,
@@ -118,4 +120,15 @@ export const renamingData: {
   "common_ref.vacancy.category_wise.st": "vacancies",
   "common_ref.vacancy.category_wise.ph_dviyang": "vacancies",
   "common_ref.vacancy.category_wise.ews": "vacancies",
+};
+
+export const QUICK_ACCESS_RENDER: Record<ISectionKey, null | [number,number]> = {
+  result: [ 5, 10 ],
+  admit_card: [ 5, 10 ],
+  certificate_verification: null,
+  admission: [ 5, 7 ],
+  latest_job: [ 5, 13 ],
+  answer_key: [ 5, 7 ],
+  syllabus: [ 5, 8 ],
+  important: null,
 };
