@@ -55,6 +55,8 @@ export const savedPosts = async (
               section as ISectionKey,
               post.link_ref
             ),
+            date_ref: undefined,
+            link_ref: undefined,
           }));
         }
       });
@@ -196,7 +198,7 @@ export const contributeToPost = async (
   next: NextFunction
 ) => {
   const errors = handleValidationErrors(req, next);
-    if (errors) return;
+  if (errors) return;
   let { data, section, post_code, version } = req.body;
   const postCodeVersion = generatePostCodeVersion(post_code, version);
   validateContributionField(req, next);
@@ -277,7 +279,7 @@ export const deleteContribute = async (
   next: NextFunction
 ) => {
   const errors = handleValidationErrors(req, next);
-    if (errors) return;
+  if (errors) return;
   const { post_code, version, section } = req.body;
   const postCodeVersion = generatePostCodeVersion(post_code, version);
   const userId = req.userData?.userId;
