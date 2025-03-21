@@ -63,7 +63,6 @@ const ContributionSection = () => {
             error={error}
             data={data?.data}
             emptyCondition={(data) => !data || data.length === 0}
-            skipLoadingUI={false}
             nodelay
           >
             {(validData) => (

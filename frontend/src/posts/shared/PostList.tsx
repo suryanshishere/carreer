@@ -20,16 +20,6 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
     (state: RootState) => state.user.mode.tags || {}
   );
 
-  if (data.length === 0) {
-    return (
-      <ul className="self-start w-full p-0 m-0 flex flex-col gap-2">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <ParaSkeletonLoad key={index} />
-        ))}
-      </ul>
-    );
-  }
-
   const renderObject = (obj: ICommonListData) => {
     return Object.entries(obj)
       .filter(([key]) => !excludedKeys[key])
