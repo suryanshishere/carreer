@@ -18,6 +18,7 @@ export interface InputProps
   className?: string;
   outerClassProp?: string;
   errorClassProp?: string;
+  maxHeight?: number;
 }
 
 // Forward ref to Input component
@@ -112,7 +113,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = "Input";
 
-// TextArea Component
 export const TextArea = forwardRef<
   HTMLTextAreaElement,
   Omit<InputProps, "onChange"> & {
@@ -134,9 +134,21 @@ export const TextArea = forwardRef<
       outerClassProp,
       errorClassProp,
       label,
+      maxHeight = 300, 
     },
     ref
   ) => {
+    const textAreaRef = React.useRef<HTMLTextAreaElement | null>(null);
+    const [height, setHeight] = useState<string>("auto");
+
+    React.useEffect(() => {
+      if (textAreaRef.current) {
+        setHeight("auto"); // Reset before recalculating
+        const newHeight = textAreaRef.current.scrollHeight;
+        setHeight(`${Math.min(newHeight, maxHeight)}px`); // Limit height
+      }
+    }, [value]); // Recalculate on value change
+
     return (
       <div className={`relative ${outerClassProp || ""}`}>
         {label && (
@@ -146,17 +158,33 @@ export const TextArea = forwardRef<
         )}
         <textarea
           placeholder={placeholder}
-          ref={ref}
+          ref={(el) => {
+            if (ref) {
+              if (typeof ref === "function") ref(el);
+              else ref.current = el;
+            }
+            textAreaRef.current = el;
+          }}
           id={name}
           name={name}
           rows={row}
           required={required}
           disabled={disabled}
           value={value}
-          onChange={onChange} // Now specific to HTMLTextAreaElement
-          className={`w-full h-full pl-2 py-2 outline outline-2 outline-custom_less_gray text-base rounded ${className} ${
+          onChange={(e) => {
+            if (onChange) onChange(e);
+            setHeight("auto"); // Reset before recalculating
+            const newHeight = e.target.scrollHeight;
+            setHeight(`${Math.min(newHeight, maxHeight)}px`); // Limit height
+          }}
+          className={`w-full pl-2 py-2 outline outline-2 outline-custom_less_gray text-base rounded ${className} ${
             error ? "outline-custom_red" : ""
           } ${error ? "focus:ring-custom_red" : "focus:ring-custom_less_gray"}`}
+          style={{
+            height,
+            maxHeight: `${maxHeight}px`, // Apply max height
+            overflowY: height === `${maxHeight}px` ? "auto" : "hidden", // Show scrollbar only at max height
+          }}
         />
         {helperText && (
           <p
@@ -172,4 +200,4 @@ export const TextArea = forwardRef<
   }
 );
 
-TextArea.displayName = "TextArea"; // Optional: Set display name for better debugging
+TextArea.displayName = "TextArea";
