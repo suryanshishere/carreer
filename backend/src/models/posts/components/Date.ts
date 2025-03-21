@@ -1,10 +1,16 @@
 import { Document, Schema, model, Model } from "mongoose";
-import { POST_LIMITS_DB } from "../db";
+import { POST_LIMITS_DB, TAG_DATE_MAP } from "../db";
+
+const uniqueFields = new Set(Object.values(TAG_DATE_MAP).flat());
 
 const DateRangeSchema = new Schema<IDateRange>(
   {
     current_year: { type: Date },
     previous_year: { type: Date, required: true },
+    current_mmdd: { type: String },
+    current_year_val: { type: Number },
+    previous_mmdd: { type: String },
+    previous_year_val: { type: Number },
   },
   { _id: false }
 );
@@ -38,6 +44,54 @@ export const dateSchema = new Schema<IDates>(
   { timestamps: true }
 );
 
+// Pre-save hook to compute month-day and year values for only the fields in TAG_DATE_MAP
+dateSchema.pre("save", function (next) {
+  const doc = this as any;
+
+  const computeFields = (dateRange: any) => {
+    if (!dateRange) return;
+    if (dateRange.current_year) {
+      const d = new Date(dateRange.current_year);
+      dateRange.current_mmdd =
+        ("0" + (d.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + d.getDate()).slice(-2);
+      dateRange.current_year_val = d.getFullYear();
+    }
+    if (dateRange.previous_year) {
+      const d = new Date(dateRange.previous_year);
+      dateRange.previous_mmdd =
+        ("0" + (d.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + d.getDate()).slice(-2);
+      dateRange.previous_year_val = d.getFullYear();
+    }
+  };
+
+  // this solve a problem to uphold to store the computed values for tags only (not all fields)
+  uniqueFields.forEach((field) => {
+    if (doc[field]) {
+      computeFields(doc[field]);
+    }
+  });
+
+  next();
+});
+
+// Loop through the unique fields to add indexes for computed fields
+uniqueFields.forEach((field) => {
+  // Index for the primary field (computed current_year values)
+  dateSchema.index(
+    { [`${field}.current_mmdd`]: 1, [`${field}.current_year_val`]: 1 },
+    { name: `idx_${field}_current` }
+  );
+  // Index for the fallback field (computed previous_year values)
+  dateSchema.index(
+    { [`${field}.previous_mmdd`]: 1, [`${field}.previous_year_val`]: 1 },
+    { name: `idx_${field}_previous` }
+  );
+});
+
 const DateModel: Model<IDates> = model<IDates>("Date", dateSchema);
 export default DateModel;
 
@@ -46,6 +100,11 @@ export default DateModel;
 export interface IDateRange {
   current_year?: Date;
   previous_year: Date;
+  // computed fields
+  current_mmdd?: string;
+  current_year_val?: number;
+  previous_mmdd?: string;
+  previous_year_val?: number;
 }
 
 export interface IDates extends Document {

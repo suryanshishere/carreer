@@ -9,9 +9,10 @@ import { Input, TextArea } from "shared/utils/form/Input";
 import { getFieldValidation, validateFieldValue } from "./post-editable-utils";
 import { IContribute } from "posts/db/interfaces";
 
+//TODO: to improve to have right date, right now no intial date is set
 const formatDateValue = (value: any): string => {
-  const date = new Date(value);
-  return isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10);
+  // const date = new Date(value);
+  return "";
 };
 
 const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
@@ -29,14 +30,17 @@ const PostEditable: React.FC<IContribute> = ({ keyProp, valueProp }) => {
   const initialInputValue =
     inputType === "date" ? formatDateValue(valueProp) : valueProp;
 
-  const [inputValue, setInputValue] = useState<string | number>(initialInputValue);
+  const [inputValue, setInputValue] = useState<string | number>(
+    initialInputValue
+  );
   const [isChanged, setIsChanged] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isFirstRender, setIsFirstRender] = useState(inputType === "date");
 
-  const { isValid, error } = isFirstRender && inputType === "date"
-    ? { isValid: true, error: "" }
-    : validateFieldValue(inputValue, validationConfig);
+  const { isValid, error } =
+    isFirstRender && inputType === "date"
+      ? { isValid: true, error: "" }
+      : validateFieldValue(inputValue, validationConfig);
 
   const handleInputChange = (
     e: React.ChangeEvent<

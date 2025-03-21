@@ -1,6 +1,6 @@
 import moment from "moment";
 import { ISectionKey, TAG_DATE_MAP } from "@models/posts/db";
-import {  IDates } from "@models/posts/components/Date";
+import { IDates } from "@models/posts/components/Date";
 
 function formatDate(inputDate: Date): Date {
   const dateObj = new Date(inputDate);
@@ -28,15 +28,19 @@ export const calculateDateDifference = (
   const tagKeys = TAG_DATE_MAP[section];
   const currentDate = moment();
 
-  let { current_year: startCurr, previous_year: startPrev } =
-    importantDates[tagKeys[0]] || {};
-  let { current_year: endCurr, previous_year: endPrev } =
-    importantDates[tagKeys[1]] || {};
+  const startData = tagKeys[0] ? importantDates[tagKeys[0]] || {} : {};
+  const endData =
+    tagKeys.length > 1 && tagKeys[1] !== undefined
+      ? importantDates[tagKeys[1]] || {}
+      : {};
+
+  let { current_year: startCurr, previous_year: startPrev } = startData;
+  let { current_year: endCurr, previous_year: endPrev } = endData;
 
   startCurr = startCurr ? formatDate(startCurr) : undefined;
-  startPrev = formatDate(startPrev);
+  startPrev = startPrev ? formatDate(startPrev) : undefined;
   endCurr = endCurr ? formatDate(endCurr) : undefined;
-  endPrev = formatDate(endPrev);
+  endPrev = endPrev ? formatDate(endPrev) : undefined;
 
   const startMoment = moment(startCurr || startPrev, "YYYY-MM-DD");
   const endMoment = moment(endCurr || endPrev, "YYYY-MM-DD") || null;
