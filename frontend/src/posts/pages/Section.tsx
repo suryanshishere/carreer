@@ -2,31 +2,49 @@ import React from "react";
 import PostList from "posts/shared/PostList";
 import axiosInstance from "shared/utils/api/axios-instance";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import DataStateWrapper from "shared/utils/DataStateWrapper";
 import { ISectionKey } from "posts/db";
 import { ParaSkeletonLoad } from "posts/shared/SkeletonLoad";
+
+interface SectionResponse {
+  data: Record<ISectionKey, any[]>;
+  nextPage?: number | null;
+}
 
 const Section: React.FC = () => {
   const { section } = useParams<{ section?: ISectionKey }>();
 
   const {
-    data = { data: {} },
+    data,
     isLoading,
     error,
-  } = useQuery({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<SectionResponse, Error>({
     queryKey: ["categoryPostList", section],
-    queryFn: async () => {
+    queryFn: async ({ pageParam = 1 }) => {
       if (!section) throw new Error("Invalid section");
-      const response = await axiosInstance.get(`/public/sections/${section}`);
+      const response = await axiosInstance.get(
+        `/public/sections/${section}?page=${pageParam}`
+      );
       return response.data;
     },
+    initialPageParam: 1,
     enabled: Boolean(section),
     retry: 3,
     staleTime: 5 * 60 * 1000,
+    getNextPageParam: (lastPage) =>
+      lastPage.nextPage !== undefined && lastPage.nextPage !== null
+        ? lastPage.nextPage
+        : undefined,
   });
 
-  const postListData = section ? data.data[section] ?? [] : [];
+  const postListData = section
+    ? data?.pages.flatMap((page) => page.data[section] || []) ?? []
+    : [];
+  const pages = data?.pages ?? [];
 
   return (
     <DataStateWrapper
@@ -45,7 +63,38 @@ const Section: React.FC = () => {
     >
       {(validData) => (
         <div className="flex flex-col gap-3">
-          <PostList data={validData} section={section as ISectionKey} />
+          {pages.map((page, index) => (
+            <div key={index}>
+              {index !== 0 && <hr className="my-4" />}
+              <PostList
+                data={page.data[section as ISectionKey] || []}
+                section={section as ISectionKey}
+              />
+            </div>
+          ))}
+          <div className="flex justify-center mt-4">
+            <button
+              className={"custom_link flex items-center "}
+              onClick={() => fetchNextPage()}
+              disabled={!hasNextPage || isFetchingNextPage}
+            >
+              {isFetchingNextPage
+                ? "Loading..."
+                : hasNextPage
+                ? "Load More"
+                : "No More Posts"}
+            </button>
+          </div>
+          {isFetchingNextPage && (
+            <div>
+              <hr className="my-4" />
+              <ul className="self-start w-full p-0 m-0 flex flex-col gap-2">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <ParaSkeletonLoad key={index} />
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </DataStateWrapper>

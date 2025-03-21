@@ -20,13 +20,18 @@ export const fetchPostList = async (
   includePopulate: boolean,
   next: NextFunction,
   approvedStatus: boolean = true,
-  includeSortedIds: boolean = true
+  includeSortedIds: boolean = true,
+  pageParam?: number
 ) => {
   try {
     let sortedPostIds: string[] = [];
+    let pageNumber: number | null = null;
+
     if (includeSortedIds) {
       // sorted ids as per required dates nearest
-      sortedPostIds = await getSortedDateIds(section);
+      const result = await getSortedDateIds(section, pageParam);
+      sortedPostIds = result.sortedDateIds;
+      pageNumber = result.pageNumber;
     }
 
     // Prepare populate array only if needed
@@ -51,11 +56,11 @@ export const fetchPostList = async (
       .lean()
       .exec();
 
-    if (!includeSortedIds) {
-      return posts;
-    }
+    // if (!includeSortedIds) {
+    //   return posts;
+    // }
 
-    return posts;
+    return { posts, pageNumber };
   } catch (error) {
     console.error("Error fetching post list:", error);
     return next(

@@ -28,7 +28,7 @@ export const helpless = () => {
 
 export const home = async (req: Request, res: Response, next: NextFunction) => {
   const errors = handleValidationErrors(req, next);
-    if (errors) return;
+  if (errors) return;
   const userId = req.userData?.userId;
 
   try {
@@ -37,7 +37,10 @@ export const home = async (req: Request, res: Response, next: NextFunction) => {
 
     const dataPromises = POST_DB.sections.map(async (section) => {
       const savedIds = savedPost?.[section]?.map(String) || [];
-      const posts = await fetchPostList(section, false, next);
+      const fetchResult = await fetchPostList(section, false, next);
+      if (!fetchResult) return;
+
+      const { posts } = fetchResult;
 
       return {
         [section]: posts
@@ -73,9 +76,11 @@ export const section = async (
   next: NextFunction
 ) => {
   const errors = handleValidationErrors(req, next);
-    if (errors) return;
+  if (errors) return;
   try {
     const section = req.params.section as ISectionKey;
+    const pageParam = Number(req.query.page) || 1;
+
     const userId = req.userData?.userId;
     const user = await User.findById(userId);
     let savedIds: string[] = [];
@@ -87,8 +92,17 @@ export const section = async (
 
     //if not max mode then not include populate of whole data
     const includePopulate = user?.mode?.max ?? false;
-    const response = await fetchPostList(section, includePopulate, next);
-    //todo: if null them better
+    const fetchResult = await fetchPostList(
+      section,
+      includePopulate,
+      next,
+      true,
+      true,
+      pageParam
+    );
+    if (!fetchResult) return;
+
+    const { posts: response, pageNumber } = fetchResult;
 
     const postsWithSavedStatus = response
       ?.map(({ _id, date_ref, link_ref, ...rest }) => {
@@ -107,6 +121,7 @@ export const section = async (
 
     const responseData = {
       data: { [section]: postsWithSavedStatus },
+      nextPage: pageNumber ? pageNumber + 1 : null,
     };
 
     return res.status(200).json(responseData);
@@ -125,8 +140,6 @@ export const postDetail = async (
   try {
     const errors = handleValidationErrors(req, next);
     if (errors) return;
-
-    if (res.headersSent) return;
 
     const userId = req.userData?.userId;
     const { section } = req.params as {

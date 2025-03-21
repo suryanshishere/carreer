@@ -203,7 +203,7 @@ export const nonApprovedPosts = async (
     }
 
     // Fetch non-approved posts
-    const response = await fetchPostList(
+    const fetchResult = await fetchPostList(
       section,
       true,
       next,
@@ -211,19 +211,21 @@ export const nonApprovedPosts = async (
       active ? true : false
     );
 
-    if (!response || response.length === 0) {
-      return next(new HttpError("No non-approved posts found.", 404));
-    }
+    if (!fetchResult) return;
+
+    const { posts: response } = fetchResult;
 
     // Adding saved status and tags
-    const postsWithSavedStatus = response?.map(({ _id, date_ref,link_ref, ...rest }) => {
-      return {
-        _id,
-        ...rest,
-        is_saved: savedIds.includes(String(_id)),
-        ...getTagDateLinkRef(date_ref, section,link_ref),
-      };
-    });
+    const postsWithSavedStatus = response?.map(
+      ({ _id, date_ref, link_ref, ...rest }) => {
+        return {
+          _id,
+          ...rest,
+          is_saved: savedIds.includes(String(_id)),
+          ...getTagDateLinkRef(date_ref, section, link_ref),
+        };
+      }
+    );
 
     return res.status(200).json({
       message: "Non-approved posts fetched successfully!",
