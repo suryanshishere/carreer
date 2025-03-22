@@ -13,16 +13,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { ParaSkeletonLoad } from "posts/shared/SkeletonLoad";
 
-const fetchSavedPosts = async (): Promise<{
-  data: { saved_posts: Partial<Record<ISectionKey, ICommonListData[]>> };
-}> => {
-  const response = await axiosInstance.get("/user/account/post/saved-posts");
-  return response.data;
-};
-
 const SavedPosts = () => {
   const { section } = useParams<{ section?: ISectionKey }>();
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+  const [expandedSections, setExpandedSections] = useState<
+    Record<string, boolean>
+  >({});
 
   const {
     data = { data: { saved_posts: {} } },
@@ -33,7 +28,12 @@ const SavedPosts = () => {
     Error
   >({
     queryKey: ["savedPosts", section],
-    queryFn: fetchSavedPosts,
+    queryFn: async () => {
+      const response = await axiosInstance.get(
+        "/user/account/post/saved-posts"
+      );
+      return response.data;
+    },
   });
 
   const savedPost = data?.data?.saved_posts ?? {};
@@ -78,7 +78,9 @@ const SavedPosts = () => {
           <div className="flex flex-col gap-[6px]">
             {validData &&
               Object.entries(validData)
-                .filter(([key, posts]) => (posts as ICommonListData[])?.length > 0)
+                .filter(
+                  ([key, posts]) => (posts as ICommonListData[])?.length > 0
+                )
                 .map(([key, posts]) => (
                   <Fragment key={key}>
                     <div className="flex items-center gap-2 cursor-pointer">
@@ -94,7 +96,11 @@ const SavedPosts = () => {
                         )}
                       </h2>
                     </div>
-                    <Collapse in={expandedSections[key]} timeout="auto" unmountOnExit>
+                    <Collapse
+                      in={expandedSections[key]}
+                      timeout="auto"
+                      unmountOnExit
+                    >
                       <PostList
                         data={posts as ICommonListData[]}
                         section={key as ISectionKey}
