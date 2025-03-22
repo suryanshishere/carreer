@@ -34,7 +34,7 @@ interface IAuthForm {
 // Define the mutation input type as a union so it can also accept a Google token
 type AuthMutationInput = IAuthForm | { googleToken: string };
 
-const AuthComponent: React.FC<AuthProps> = () => {
+const AuthItem: React.FC<AuthProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
@@ -114,7 +114,7 @@ const AuthComponent: React.FC<AuthProps> = () => {
           className="placeholder:text-sm outline-custom_gray"
           outerClassProp="flex-1"
         />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 overflow-hidden">
           <Button
             authButtonType
             disabled={submitMutation.isPending}
@@ -135,4 +135,4 @@ const AuthComponent: React.FC<AuthProps> = () => {
   );
 };
 
-export default AuthComponent;
+export default AuthItem;
