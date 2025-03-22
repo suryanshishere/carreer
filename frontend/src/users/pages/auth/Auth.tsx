@@ -109,7 +109,7 @@ const Auth: React.FC<AuthProps> = () => {
   };
 
   return (
-    <div className="w-full flex flex-col mobile:flex-row gap-3">
+    <div className="w-full flex flex-col mobile:flex-row mobile:items-center gap-3">
       {renderComponents()}
       {renderButtons()}
     </div>

@@ -15,6 +15,7 @@ const {
   EMAIL_VERIFICATION_OTP_EXPIRY,
   PASSWORD_RESET_TOKEN_EXPIRY,
   // ACCOUNT_MODE,
+  EMAIL_UNVERIFIED_EXPIRY,
 } = USER_ENV_DATA;
 
 export interface IUser extends Document {
@@ -45,6 +46,8 @@ export interface IUser extends Document {
     max: boolean;
     tags: Record<ITagKey, boolean>;
   };
+
+  expireAt?: Date;
 }
 
 const dynamicReferences: Record<string, any> = {};
@@ -119,9 +122,34 @@ const userSchema: Schema = new Schema<IUser>(
         },
       },
     },
+
+    // Field to auto-delete unverified users
+    expireAt: { type: Date },
   },
   { timestamps: true }
 );
+
+// Pre-save middleware to set expireAt only when creating an unverified user
+userSchema.pre("save", function (next) {
+  if (!this.isEmailVerified) {
+    this.expireAt = new Date(Date.now() + EMAIL_UNVERIFIED_EXPIRY * 60 * 1000);
+  } else {
+    this.expireAt = undefined;
+  }
+  next();
+});
+
+// TTL Index: Documents will be removed when expireAt < current time
+userSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
+
+// When the user verifies their email, update the document to remove the expireAt field.
+// This logic would typically be part of your verification route/controller.
+userSchema.methods.markEmailVerified = async function () {
+  this.isEmailVerified = true;
+  // Remove expireAt to prevent deletion
+  this.expireAt = undefined;
+  await this.save();
+};
 
 const User = mongoose.model<IUser>("User", userSchema);
 export default User;
