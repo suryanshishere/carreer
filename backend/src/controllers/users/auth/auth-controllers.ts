@@ -9,22 +9,61 @@ import {
   sendVerificationResponse,
   updateUnverifiedUser,
 } from "./auth-controllers-utils";
-
 import { random } from "lodash";
 import handleValidationErrors from "../../utils/validation-error";
 import { USER_ENV_DATA } from "@models/users/db";
+import { OAuth2Client } from "google-auth-library";
 
 const { EMAIL_VERIFICATION_OTP_EXPIRY, PASSWORD_RESET_TOKEN_EXPIRY } =
   USER_ENV_DATA;
 
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   const errors = handleValidationErrors(req, next);
-    if (errors) return;
+  if (errors) return;
 
-  const { email, password } = req.body;
-  const existingUser: IUser | null = await User.findOne({ email });
+  // Get potential googleToken along with email and password
+  const { email, password, googleToken } = req.body;
 
+  // If a googleToken is provided, handle Google Authentication
+  if (googleToken) {
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: googleToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      if (!payload?.email) {
+        return next(
+          new HttpError("Google authentication failed: no email found.", 401)
+        );
+      }
+
+      // Check if a user with this email exists; if not, create one
+      let user: IUser | null = await User.findOne({ email: payload.email });
+      if (!user) {
+        user = new User({
+          email: payload.email,
+          // Optionally store additional profile info from payload
+          // name: payload.name,
+          isEmailVerified: true, // Mark email as verified from Google
+          // You might want to set a random password or flag this account as Google only
+          password: await bcrypt.hash(random(100000, 999999).toString(), 12),
+        });
+        await user.save();
+      }
+
+      return sendAuthenticatedResponse(res, user);
+    } catch (error) {
+      console.error("Google Auth error:", error);
+      return next(new HttpError("Google authentication failed.", 500));
+    }
+  }
+
+  // Proceed with the existing email/password authentication logic
   try {
+    const existingUser: IUser | null = await User.findOne({ email });
     if (existingUser) {
       const isValidPassword = await bcrypt.compare(
         password,
@@ -53,7 +92,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
       return sendVerificationResponse(req, res, next, newUser);
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return next(new HttpError("Authentication failed, please try again.", 500));
   }
 };
@@ -65,7 +104,7 @@ export const sendPasswordResetLink = async (
   next: NextFunction
 ) => {
   const errors = handleValidationErrors(req, next);
-    if (errors) return;
+  if (errors) return;
 
   const { email } = req.body;
   const userId = req.userData?.userId;
@@ -138,7 +177,7 @@ export const resetPassword = async (
   next: NextFunction
 ) => {
   const errors = handleValidationErrors(req, next);
-    if (errors) return;
+  if (errors) return;
 
   const { resetPasswordToken, password } = req.body;
   const { userId } = req.params;
@@ -326,7 +365,7 @@ export const verifyEmail = async (
 ) => {
   // Validate request
   const errors = handleValidationErrors(req, next);
-    if (errors) return;
+  if (errors) return;
 
   const { otp } = req.body;
   const userId = req.userData?.userId;

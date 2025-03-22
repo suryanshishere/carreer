@@ -70,7 +70,7 @@ const Auth: React.FC<AuthProps> = () => {
   };
 
   const renderButtons = () => (
-    <div className="md:pl-4 gap-x-3 flex md:flex-col self-center md:gap-[3px] md:items-start text-xs">
+    <div className="gap-x-3 flex mobile:flex-col self-center mobile:gap-[3px] mobile:items-start text-xs">
       {buttonsConfig[authState]?.map(({ text, onClick }, index) => (
         <button
           key={index}
@@ -109,7 +109,7 @@ const Auth: React.FC<AuthProps> = () => {
   };
 
   return (
-    <div className="w-full flex flex-col md:grid grid-cols-[85%_15%] gap-y-3">
+    <div className="w-full flex flex-col mobile:flex-row gap-3">
       {renderComponents()}
       {renderButtons()}
     </div>

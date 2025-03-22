@@ -6,7 +6,7 @@ import {
   verifyEmail,
   resetPassword,
   sendPasswordResetLink,
-} from "@controllers/users/auth/auth-controllers"; 
+} from "@controllers/users/auth/auth-controllers";
 import { USER_ENV_DATA } from "@models/users/db";
 
 const router = express.Router();
@@ -22,10 +22,19 @@ const {
 router.post(
   "/",
   [
-    check("email").trim().normalizeEmail().isEmail(),
-    check("password")
+    check("email")
+      .if((value, { req }) => !req.body.googleToken)
       .trim()
-      .isLength({ min: Number(MIN_PWD_LENGTH), max: Number(MAX_PWD_LENGTH) }),
+      .normalizeEmail()
+      .isEmail()
+      .withMessage("Invalid email"),
+    check("password")
+      .if((value, { req }) => !req.body.googleToken)
+      .trim()
+      .isLength({ min: Number(MIN_PWD_LENGTH), max: Number(MAX_PWD_LENGTH) })
+      .withMessage(
+        `Password must be between ${MIN_PWD_LENGTH} and ${MAX_PWD_LENGTH} characters`
+      ),
   ],
   auth
 );
