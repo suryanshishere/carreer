@@ -16,6 +16,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   basicButton?: boolean;
   iconButton?: boolean;
   navButton?: boolean;
+  loadMoreButton?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -32,10 +33,27 @@ const Button: React.FC<ButtonProps> = ({
   iconButton,
   basicButton,
   navButton,
+  loadMoreButton,
   ...rest
 }) => {
   const commonProps = { onClick, disabled, type, style, ...rest };
   const roundedClass = className.includes("rounded") ? "" : "rounded";
+
+  if (loadMoreButton) {
+    return (
+      <button
+        className={`custom_link flex items-center ${
+          disabled
+            ? "text-custom_less_gray cursor-not-allowed hover:text-custom_less_gray"
+            : ""
+        }`}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {children}
+      </button>
+    );
+  }
 
   if (navButton) {
     return (

@@ -204,7 +204,7 @@ export const TAG_ORDER: ITagKey[] = ["expiring", "live", "upcoming", "released",
 
 export const TAGS: Record<ITagKey, [number, number] | null> = {
   live: [-3, 3],
-  upcoming: [3, 80],
+  upcoming: [3, 40],
   released: [-100, -3],
   expiring: [1111, 2812],
   none: null,

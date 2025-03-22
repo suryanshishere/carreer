@@ -6,6 +6,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import DataStateWrapper from "shared/utils/DataStateWrapper";
 import { ISectionKey } from "posts/db";
 import { ParaSkeletonLoad } from "posts/shared/SkeletonLoad";
+import Button from "shared/utils/form/Button";
 
 interface SectionResponse {
   data: Record<ISectionKey, any[]>;
@@ -64,8 +65,8 @@ const Section: React.FC = () => {
       {(validData) => (
         <div className="flex flex-col gap-3">
           {pages.map((page, index) => (
-            <div key={index}>
-              {index !== 0 && <hr className="my-4" />}
+            <div key={index} className="flex flex-col gap-3">
+              {index !== 0 && <hr />}
               <PostList
                 data={page.data[section as ISectionKey] || []}
                 section={section as ISectionKey}
@@ -73,8 +74,8 @@ const Section: React.FC = () => {
             </div>
           ))}
           <div className="flex justify-center mt-4">
-            <button
-              className={"custom_link flex items-center "}
+            <Button
+              loadMoreButton
               onClick={() => fetchNextPage()}
               disabled={!hasNextPage || isFetchingNextPage}
             >
@@ -83,17 +84,15 @@ const Section: React.FC = () => {
                 : hasNextPage
                 ? "Load More"
                 : "No More Posts"}
-            </button>
+            </Button>
           </div>
+
           {isFetchingNextPage && (
-            <div>
-              <hr className="my-4" />
-              <ul className="self-start w-full p-0 m-0 flex flex-col gap-2">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <ParaSkeletonLoad key={index} />
-                ))}
-              </ul>
-            </div>
+            <ul className="self-start w-full p-0 m-0 flex flex-col gap-2">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <ParaSkeletonLoad key={index} />
+              ))}
+            </ul>
           )}
         </div>
       )}
