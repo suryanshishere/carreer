@@ -53,7 +53,10 @@ const Navlinks: React.FC = () => {
 
   // Determine the selected section for the dropdown button label
   const location = useLocation();
-  const isValidUrl = /^\/sections\/[^/]+$/.test(location.pathname);
+  const isValidUrl = new RegExp(
+    `^/sections/(${POST_DB.sections.join("|")})(/[^/]+){0,2}$`
+  ).test(location.pathname);
+  
   const selectedSection =
     (isValidUrl && dropdownLinks.find(([key]) => key === section)?.[0]) || null;
 
