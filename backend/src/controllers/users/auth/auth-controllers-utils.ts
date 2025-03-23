@@ -4,11 +4,11 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { NextFunction, Response, Request } from "express";
 import { random } from "lodash";
+import { USER_ENV_DATA } from "@models/users/db";
 
-const JWT_KEY = process.env.JWT_KEY;
-const JWT_KEY_EXPIRY = process.env.JWT_KEY_EXPIRY || "15";
-// const EMAIL_VERIFICATION_TOKEN_EXPIRY =
-//   Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRY) || 3;
+
+const { JWT_KEY,  } = USER_ENV_DATA;
+
 
 // Update unverified user fields with new password and verification token
 export const updateUnverifiedUser = async (user: IUser, password: string) => {
@@ -47,11 +47,6 @@ export const generateJWTToken = (
     throw new Error("JWT_KEY environment variable is not defined!");
   }
 
-  const expiryInMinutes = parseInt(JWT_KEY_EXPIRY, 10);
-  if (isNaN(expiryInMinutes)) {
-    throw new Error("JWT_KEY_EXPIRY must be a valid number!");
-  }
-
   const payload = {
     userId,
     email,
@@ -60,7 +55,7 @@ export const generateJWTToken = (
   };
 
   return jwt.sign(payload, JWT_KEY, {
-    expiresIn: `${expiryInMinutes}m`,
+    expiresIn: `${USER_ENV_DATA.JWT_KEY_EXPIRY}m`,
   });
 };
 
@@ -100,7 +95,7 @@ export const sendAuthenticatedResponse = (
     user.deactivated_at
   );
   const tokenExpiration = new Date(
-    Date.now() + Number(JWT_KEY_EXPIRY) * 60000
+    Date.now() + Number(USER_ENV_DATA.JWT_KEY_EXPIRY) * 60000
   ).toISOString();
   return res.status(200).json({
     mode: user.mode,

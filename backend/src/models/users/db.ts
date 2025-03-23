@@ -1,5 +1,3 @@
-import { IRole } from "@models/admin/db";
-
 export interface IUserEnvData {
   ALPHA_NUM_SPECIAL_CHAR: RegExp;
   MIN_PWD_LENGTH: number;
@@ -12,6 +10,8 @@ export interface IUserEnvData {
   OTP_ERROR_MSG: string;
   // ACCOUNT_MODE: AccountModeType;
   EMAIL_UNVERIFIED_EXPIRY: number;
+  JWT_KEY_EXPIRY: number;
+  JWT_KEY: string;
 }
 
 export const USER_ENV_DATA: IUserEnvData = {
@@ -28,4 +28,6 @@ export const USER_ENV_DATA: IUserEnvData = {
   OTP_ERROR_MSG: "Invalid OTP!",
   // ACCOUNT_MODE: AccountMode,
   EMAIL_UNVERIFIED_EXPIRY: Number(process.env.EMAIL_UNVERIFIED_EXPIRY) || 30,
+  JWT_KEY_EXPIRY: Number(process.env.JWT_KEY_EXPIRY) || 1000,
+  JWT_KEY: process.env.JWT_KEY || "",
 };

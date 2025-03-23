@@ -33,12 +33,12 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
             (value?.current_year || value?.previous_year) != null;
 
           return (
-            <span key={key} className="mr-2">
-              <span className="mr-2">
+            <span key={key} className="ml-1">
+              <span >
                 {(renamingData?.[key] as string) || _.startCase(key)}:
               </span>
               {dateCheck ? (
-                <span>
+                <span >
                   <RenderField
                     stringValue={`${
                       value.current_year || `${value.previous_year}`
@@ -54,9 +54,9 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
         }
 
         return (
-          <span key={key} className="mr-1">
-            <span className={`mr-1`}>{_.startCase(key)}:</span>
-            <span className="mr-1">
+          <span key={key} className="ml-1">
+            <span>{_.startCase(key)}:</span>
+            <span className="ml-1">
               <RenderField
                 stringValue={_.toString(value)}
                 uniqueKey={key}

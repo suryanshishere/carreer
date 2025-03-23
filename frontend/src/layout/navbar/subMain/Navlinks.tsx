@@ -2,7 +2,8 @@ import React, { useRef } from "react";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import { startCase } from "lodash";
 import useOutsideClick from "shared/hooks/outside-click-hook";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import useResponsiveView, { IView } from "shared/hooks/useResponsiveView";
 import POST_DB from "posts/db";
 import NavDropdownUI from "shared/ui/NavDropdownUI";
@@ -92,13 +93,17 @@ const Navlinks: React.FC = () => {
         <div ref={dropdownRef} className="relative flex-1 w-full">
           <Button
             navButton
-            className={`${showDropdown ? "bg-custom_less_gray" : "hover:bg-custom_less_gray"} ${
-              viewType === "mobile" ? "py-[2px]" : ""
-            }`}
+            className={`${
+              showDropdown ? "bg-custom_less_gray" : "hover:bg-custom_less_gray"
+            } ${viewType === "mobile" ? "py-[2px]" : ""}`}
             onClick={() => dispatch(toggleDropdownState({ id: dropdownKey }))}
           >
             {selectedSection ? startCase(selectedSection) : "More Section"}
-            <ArrowDropDownIcon fontSize="small" />
+            {showDropdown ? (
+              <ExpandLessIcon fontSize="small" />
+            ) : (
+              <ExpandMoreIcon fontSize="small" />
+            )}
           </Button>
           <NavDropdownUI isVisible={showDropdown}>
             {dropdownLinks.map(([key, item]) => (

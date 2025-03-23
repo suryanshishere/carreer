@@ -1,5 +1,5 @@
 import React from "react";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import useResponsiveView, { IView } from "shared/hooks/useResponsiveView";
 import Button from "shared/utils/form/Button";
@@ -10,7 +10,7 @@ import { USER_ACCOUNT_MODE_DB } from "users/db";
 import { IUserAccountMode } from "users/db";
 import NavDropdownUI from "shared/ui/NavDropdownUI";
 import { toggleDropdownState } from "shared/store/dropdownSlice";
-import { ClassNames } from "@emotion/react";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { startCase } from "lodash";
 
 const TAGS = USER_ACCOUNT_MODE_DB.tags;
@@ -91,11 +91,17 @@ const NavTags: React.FC = () => {
           navButton
           onClick={() => dispatch(toggleDropdownState({ id: dropdownKey }))}
           className={`${
-            showTagsDropdown ? "bg-custom_less_gray" : "hover:bg-custom_less_gray"
+            showTagsDropdown
+              ? "bg-custom_less_gray"
+              : "hover:bg-custom_less_gray"
           } ${viewType === "mobile" ? "py-[2px]" : ""}`}
         >
           Tags
-          <ArrowDropDownIcon fontSize="small" />
+          {showTagsDropdown ? (
+            <ExpandLessIcon fontSize="small" />
+          ) : (
+            <ExpandMoreIcon fontSize="small" />
+          )}
         </Button>
       ) : (
         <div className="flex items-center gap-1">

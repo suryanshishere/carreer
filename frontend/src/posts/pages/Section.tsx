@@ -7,6 +7,7 @@ import DataStateWrapper from "shared/utils/DataStateWrapper";
 import { ISectionKey } from "posts/db";
 import { ParaSkeletonLoad } from "posts/shared/SkeletonLoad";
 import Button from "shared/utils/form/Button";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface SectionResponse {
   data: Record<ISectionKey, any[]>;
@@ -82,7 +83,7 @@ const Section: React.FC = () => {
               {isFetchingNextPage
                 ? "Loading..."
                 : hasNextPage
-                ? "Load More"
+                ? <> Load More <ExpandMoreIcon fontSize="small" /></>
                 : "No More Posts"}
             </Button>
           </div>

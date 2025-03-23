@@ -87,7 +87,7 @@ const Auth: React.FC<AuthProps> = () => {
       <Link to="/contact-us" className="hover:text-custom_less_red">
         Need help?
       </Link>
-      {!isOtpSent && isEmailVerified && (
+      {(!token || isEmailVerified) && (
         <button
           onClick={() => dispatch(handleAuthClick(false))}
           className="hover:text-custom_less_red"

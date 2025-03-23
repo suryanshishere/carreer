@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="lg:px-page px-page_small bottom-0 min-mt-screen bg-custom_pale_yellow py-4 flex flex-col-reverse lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
-      <div className="select-none self-center">
+      <div className="select-none self-center text-center">
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
       </div>
       <hr className="lg:hidden" />

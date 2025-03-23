@@ -8,11 +8,12 @@ import {
   closeSpecificDropdowns,
   toggleDropdownState,
 } from "shared/store/dropdownSlice";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import NavAccountList from "./NavAccountList";
 import Button from "shared/utils/form/Button";
 import useOutsideClick from "shared/hooks/outside-click-hook";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 const NavAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,9 +23,7 @@ const NavAccount = () => {
   const dropdownStates = useSelector(
     (state: RootState) => state.dropdown.dropdownStates
   );
-  const token = useSelector(
-    (state: RootState) => state.user.token
-  );
+  const token = useSelector((state: RootState) => state.user.token);
 
   let LoginSignup = (
     <>
@@ -73,15 +72,15 @@ const NavAccount = () => {
         }`}
       >
         <PermIdentityOutlinedIcon fontSize="small" />
-        <ArrowDropDownIcon fontSize="small" />
+        {dropdownStates["main_nav_account"] ? (
+          <ExpandLessIcon fontSize="small" />
+        ) : (
+          <ExpandMoreIcon fontSize="small" />
+        )}
       </button>
       <div className="absolute right-0 top-full -mt-[4px] flex float-start flex-row-reverse gap-1">
-        {dropdownStates["main_nav_account"] && (
-          <NavAccountList />
-        )}
-        {dropdownStates["setting"] && (
-          <NavAccountList keyProp="setting"/>
-        )}
+        {dropdownStates["main_nav_account"] && <NavAccountList />}
+        {dropdownStates["setting"] && <NavAccountList keyProp="setting" />}
       </div>
     </>
   );

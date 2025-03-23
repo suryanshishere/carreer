@@ -9,9 +9,9 @@ import DataStateWrapper from "shared/utils/DataStateWrapper";
 import { useParams } from "react-router-dom";
 import { ISectionKey } from "posts/db";
 import Collapse from "@mui/material/Collapse";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { ParaSkeletonLoad } from "posts/shared/SkeletonLoad";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const SavedPosts = () => {
   const { section } = useParams<{ section?: ISectionKey }>();
@@ -90,9 +90,9 @@ const SavedPosts = () => {
                       >
                         {startCase(key)}
                         {expandedSections[key] ? (
-                          <ArrowDropUpIcon />
+                          <ExpandLessIcon fontSize="small" />
                         ) : (
-                          <ArrowDropDownIcon />
+                          <ExpandMoreIcon fontSize="small" />
                         )}
                       </h2>
                     </div>

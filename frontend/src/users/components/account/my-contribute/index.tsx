@@ -4,8 +4,8 @@ import SubContriHeader from "./SubContriHeader";
 import SubContriValue from "./SubContriValue";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import { IContributionDetails } from "users/pages/account/MyContribution";
 import { ISectionKey } from "posts/db";
@@ -46,9 +46,9 @@ const MyContriComponent: React.FC<{ data: IContributionDetails }> = ({
             >
               {startCase(postCode)} / {startCase(version)}
               {expandedSections[postCodeVersion] ? (
-                <ArrowDropUpIcon />
+                <ExpandLessIcon fontSize="small" />
               ) : (
-                <ArrowDropDownIcon />
+                <ExpandMoreIcon fontSize="small" />
               )}
             </h2>
             <Collapse
