@@ -206,7 +206,7 @@ export const resetPassword = async (
       !resetPasswordToken ||
       existingUser.passwordResetToken !== resetPasswordToken
     ) {
-      return next(new HttpError("Invalid reset token", 400));
+      return next(new HttpError("Invalid reset token!", 400));
     }
 
     // Validate token expiration (3 minutes)
@@ -298,7 +298,7 @@ export const sendVerificationOtp = async (
     if (!options.email) {
       user = await User.findById(userId);
       if (!user) {
-        return next(new HttpError("User not found!", 404));
+        return next(new HttpError("User not found or verification expired. Please re-login or sign up.", 404));
       } else if (user.isEmailVerified) {
         return next(new HttpError("User email already verified!", 409));
       }
@@ -314,7 +314,7 @@ export const sendVerificationOtp = async (
         new HttpError(
           "Please wait for " +
             delayInSeconds +
-            " second(s) or verify your last OTP sent",
+            " second(s) or verify your last OTP.",
           429,
           delayInSeconds
         )

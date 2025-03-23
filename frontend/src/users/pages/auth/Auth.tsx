@@ -28,6 +28,7 @@ interface ButtonConfig {
 
 const Auth: React.FC<AuthProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const isOtpSent = useSelector((state: RootState) => state.user.isOtpSent);
   const [authState, setAuthState] = useState<AuthState>(AuthState.LOGIN);
   const { token, isEmailVerified } = useSelector(
     (state: RootState) => state.user
@@ -86,12 +87,14 @@ const Auth: React.FC<AuthProps> = () => {
       <Link to="/contact-us" className="hover:text-custom_less_red">
         Need help?
       </Link>
-      <button
-        onClick={() => dispatch(handleAuthClick(false))}
-        className="hover:text-custom_less_red"
-      >
-        Close
-      </button>
+      {!isOtpSent && isEmailVerified && (
+        <button
+          onClick={() => dispatch(handleAuthClick(false))}
+          className="hover:text-custom_less_red"
+        >
+          Close
+        </button>
+      )}
     </div>
   );
 

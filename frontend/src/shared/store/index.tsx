@@ -7,16 +7,24 @@ import userReducer from "./userSlice";
 import postReducer from "./postSlice";
 import modalReducer from "./modalSlice";
 
+const userPersistConfig = {
+  key: "user",
+  storage,
+  migrate: async (persistedState: any) => {
+    if (persistedState) {
+      return { ...persistedState, isOtpSent: false };
+    }
+    return persistedState;
+  },
+};
+
 const store = configureStore({
   reducer: {
     dropdown: dropdownReducer,
     response: responseReducer,
     //user is persisted in the local storage for further use
     user: persistReducer<ReturnType<typeof userReducer>>(
-      {
-        key: "user",
-        storage,
-      },
+      userPersistConfig,
       userReducer
     ),
     post: postReducer,

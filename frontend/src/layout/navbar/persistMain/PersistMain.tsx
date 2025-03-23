@@ -15,7 +15,7 @@ const PersistMain: React.FC = () => {
 
   return (
     <Collapse in={shouldShow} timeout="auto" unmountOnExit>
-      <div className="z-30 relative h-fit py-2 bg-custom_white">
+      <div className="z-20 relative h-fit py-2 bg-custom_white">
         <div className="outline-custom_gray py-3 outline-dashed page_padding">
           {(showActivateAccount && <ActivateAccount />) ||
             (showAuth && <Auth />)}

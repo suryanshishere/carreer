@@ -36,7 +36,7 @@ type OTPFormInputs = {
 };
 
 const EmailVerification = () => {
-  const token  = useSelector((state: RootState) => state.user.token);
+  const token = useSelector((state: RootState) => state.user.token);
   const isOtpSent = useSelector((state: RootState) => state.user.isOtpSent);
   const [isSendOnce, setIsSendOnce] = useState<boolean>(isOtpSent);
   const dispatch = useDispatch<AppDispatch>();
@@ -135,12 +135,12 @@ const EmailVerification = () => {
   return (
     <form
       onSubmit={handleSubmit(verifyOtp)}
-      className="h-full flex-1 flex items-center gap-2 justify-between "
+      className="h-full flex-1 flex flex-col mobile:flex-row mobile:items-center gap-3 justify-between "
     >
-      <div className="flex-wrap w-fit">
+      <div className="flex-wrap self-center w-fit">
         {isSendOnce
-          ? "Enter your OTP for verification, which was sent to your email "
-          : "Generate OTP for verification on your email "}
+          ? "Enter the OTP sent to your email for verification."
+          : "Generate an OTP to verify your email."}
         <span className="text-custom_red">
           {/* {email &&
             `${email.slice(0, 3)}***${email.slice(email.indexOf("@") - 2)}`} */}
@@ -154,7 +154,7 @@ const EmailVerification = () => {
           disabled={sendOtpMutation.isPending}
           className={`${
             sendOtpMutation.isPending ? "bg-custom_black" : "bg-custom_gray"
-          }`}
+          } self-center`}
         >
           {sendOtpMutation.isPending ? "Generating..." : "Generate OTP"}
         </Button>
@@ -169,37 +169,39 @@ const EmailVerification = () => {
             placeholder="Enter OTP"
             outerClassProp="flex-1"
           />
-          <Button
-            authButtonType
-            className={`${
-              verifyOtpMutation.isPending ? "bg-custom_black" : "bg-custom_gray"
-            }`}
-            type="submit"
-            disabled={verifyOtpMutation.isPending}
-          >
-            {verifyOtpMutation.isPending ? "Verifying..." : "Verify OTP"}
-          </Button>
+          <div className="self-end flex gap-3">
+            <Button
+              authButtonType
+              className={`${
+                verifyOtpMutation.isPending
+                  ? "bg-custom_black"
+                  : "bg-custom_gray"
+              } mobile:min-w-[6rem]`}
+              type="submit"
+              disabled={verifyOtpMutation.isPending}
+            >
+              {verifyOtpMutation.isPending ? "Verifying..." : "Verify OTP"}
+            </Button>
+            <Button
+              authButtonType
+              className={`${
+                sendOtpMutation.isPending
+                  ? "bg-custom_black"
+                  : resendTimer > 0
+                  ? "bg-custom_less_gray"
+                  : "bg-custom_gray"
+              }`}
+              onClick={handleOtpEmail}
+              disabled={resendTimer > 0 || sendOtpMutation.isPending}
+            >
+              {sendOtpMutation.isPending
+                ? "Resending..."
+                : resendTimer > 0
+                ? `Resend (${resendTimer}s)`
+                : "Resend"}
+            </Button>
+          </div>
         </>
-      )}
-      {isSendOnce && (
-        <Button
-        authButtonType
-          className={`${
-            sendOtpMutation.isPending
-              ? "bg-custom_black"
-              : resendTimer > 0
-              ? "bg-custom_less_gray"
-              : "bg-custom_gray"
-          } ml-2`}
-          onClick={handleOtpEmail}
-          disabled={resendTimer > 0 || sendOtpMutation.isPending}
-        >
-          {sendOtpMutation.isPending
-            ? "Resending..."
-            : resendTimer > 0
-            ? `Resend (${resendTimer}s)`
-            : "Resend"}
-        </Button>
       )}
     </form>
   );

@@ -51,7 +51,7 @@ const userSlice = createSlice({
       action: PayloadAction<{
         token: string;
         isEmailVerified: boolean;
-        tokenExpiration?: string;
+        tokenExpiration: string;
         role: IRole;
         mode: IUserAccountMode;
       }>
@@ -59,14 +59,8 @@ const userSlice = createSlice({
       const { token, tokenExpiration, isEmailVerified, role, mode } =
         action.payload;
 
-      const localTokenExpiration = tokenExpiration
-        ? new Date(tokenExpiration)
-        : new Date(
-            new Date().getTime() + 1000 * 60 * Number(AUTH_TOKEN_EXPIRY)
-          );
-
       state.mode = merge({}, state.mode, mode);
-      state.tokenExpiration = localTokenExpiration.toISOString();
+      state.tokenExpiration = new Date(tokenExpiration).toISOString();
       state.token = token;
       state.isEmailVerified = isEmailVerified;
       state.role = role ?? state.role;

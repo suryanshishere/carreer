@@ -14,7 +14,7 @@ const Response = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="px-2 py-1 bg-custom_green rounded m-1"
+          className="px-3 py-1 bg-custom_green rounded m-1"
         >
           {successMsg}
         </motion.p>
@@ -25,7 +25,7 @@ const Response = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="px-2 py-1 bg-custom_red rounded m-1"
+          className="px-3 py-1 bg-custom_red rounded-full m-1"
         >
           {errorMsg}
         </motion.p>

@@ -27,5 +27,5 @@ export const USER_ENV_DATA: IUserEnvData = {
   PWD_RESET_ERROR_MSG: "Invalid password reset token!",
   OTP_ERROR_MSG: "Invalid OTP!",
   // ACCOUNT_MODE: AccountMode,
-  EMAIL_UNVERIFIED_EXPIRY: Number(process.env.EMAIL_UNVERIFIED_EXPIRY) || 10,
+  EMAIL_UNVERIFIED_EXPIRY: Number(process.env.EMAIL_UNVERIFIED_EXPIRY) || 30,
 };
