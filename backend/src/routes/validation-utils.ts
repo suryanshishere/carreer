@@ -31,9 +31,7 @@ export const validatePostCodeOrVersion = (
       `${friendlyName} must be between ${short_char_limit.min} and ${short_char_limit.max} characters.`
     )
     .matches(lowercase_alpha_num_underscrore)
-    .withMessage(
-      `${friendlyName} is not in correct format.`
-    );
+    .withMessage(`${friendlyName} is not in correct format.`);
 };
 
 export const validatePostIdOrCode = (
@@ -148,7 +146,7 @@ export const validateStatus = (
   return chain
     .trim()
     .isIn(ADMIN_DATA.STATUS)
-    .withMessage(`Must be one of them: ${ADMIN_DATA.STATUS.join(", ")}`);
+    .withMessage(`${field} be one of them: ${ADMIN_DATA.STATUS.join(", ")}.`);
 };
 
 export const validateRoleApplied = (
@@ -161,7 +159,9 @@ export const validateRoleApplied = (
   }
   return chain
     .isIn(ADMIN_DATA.ROLE_APPLIED)
-    .withMessage(`Must be one of them: ${ADMIN_DATA.ROLE_APPLIED.join(", ")}`);
+    .withMessage(
+      `${field} be one of them: ${ADMIN_DATA.ROLE_APPLIED.join(", ")}.`
+    );
 };
 
 export const validateMongoId = (

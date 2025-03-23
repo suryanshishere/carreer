@@ -9,6 +9,10 @@ export interface IContribution extends Document {
     approver: Schema.Types.ObjectId | string;
     data: Map<string, Record<string, any>>;
   }>;
+  disapproved: Array<{
+    approver: Schema.Types.ObjectId | string;
+    data: Map<string, Record<string, any>>;
+  }>;
   contribution: Map<string, Record<string, any>>;
 }
 
@@ -41,6 +45,10 @@ export const ContributionSchema = new Schema<IContribution>(
       type: [ApprovedContributionSchema],
       default: [],
     },
+    disapproved: {
+      type: [ApprovedContributionSchema],
+      default: [],
+    },
     contribution: {
       type: Map,
       of: new Schema(dynamicFields, { _id: false }),
@@ -52,9 +60,6 @@ export const ContributionSchema = new Schema<IContribution>(
 );
 
 // Create and export the Contribution model
-const Contribution = model<IContribution>(
-  "Contribution",
-  ContributionSchema
-);
+const Contribution = model<IContribution>("Contribution", ContributionSchema);
 
 export default Contribution;

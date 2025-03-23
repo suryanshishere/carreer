@@ -33,9 +33,9 @@ const fetchSavedPosts = async (): Promise<MyContributionResponse> => {
 };
 
 const MyContribution: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<"contribution" | "approved">(
-    "contribution"
-  );
+  const [selectedTab, setSelectedTab] = useState<
+    "contribution" | "approved" | "disapproved"
+  >("contribution");
 
   const { data, isLoading, error } = useQuery<MyContributionResponse, Error>({
     queryKey: ["myContribution"],
@@ -56,11 +56,19 @@ const MyContribution: React.FC = () => {
       <div className="flex mobile:justify-end gap-2">
         <Button
           onClick={() => setSelectedTab("contribution")}
-          className={`rounded-full max-w-fit px-4 py-1 text-sm ${
+          className={`rounded-full min-w-fit max-w-40 py-1 text-sm ${
             selectedTab === "contribution" ? "bg-custom_pale_yellow" : ""
           }`}
         >
           Contribution
+        </Button>
+        <Button
+          onClick={() => setSelectedTab("disapproved")}
+          className={`rounded-full max-w-fit px-2 py-1 text-sm ${
+            selectedTab === "disapproved" ? "bg-custom_pale_yellow" : ""
+          }`}
+        >
+          Disapproved
         </Button>
         <Button
           onClick={() => setSelectedTab("approved")}

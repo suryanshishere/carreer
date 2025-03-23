@@ -154,30 +154,44 @@ export const myContribution = async (
     const userId = req.userData?.userId;
     const contributor: IContribution = await Contribution.findById(
       userId
-    ).select("contribution approved updatedAt");
+    ).select("contribution approved disapproved updatedAt");
 
     if (!contributor) {
       return next(new HttpError("Contribution not found!", 404));
     }
 
-    const { contribution, approved, updatedAt } = contributor;
+    const { contribution, approved = [], disapproved = [], updatedAt } = contributor;
 
     // Merge all approved data into a single object
     const mergedApprovedData: Record<string, any> = {};
-    approved.forEach(({ data }) => {
-      data.forEach((value, key) => {
-        if (!mergedApprovedData[key]) {
-          mergedApprovedData[key] = value;
-        } else {
-          mergedApprovedData[key] = { ...mergedApprovedData[key], ...value };
-        }
+    const mergedDisapprovedData: Record<string, any> = {};
+
+    const mergeData = (
+      sourceArray: Array<{ data: Map<string, Record<string, any>> }>,
+      targetObject: Record<string, any>
+    ) => {
+      sourceArray.forEach(({ data }) => {
+        data.forEach((value, key) => {
+          if (!targetObject[key]) {
+            targetObject[key] = value;
+          } else {
+            targetObject[key] = { ...targetObject[key], ...value };
+          }
+        });
       });
-    });
+    };
+
+    // Merge approved data
+    mergeData(approved, mergedApprovedData);
+
+    // Merge disapproved data
+    mergeData(disapproved, mergedDisapprovedData);
 
     return res.status(200).json({
       data: {
         contribution,
         approved: mergedApprovedData,
+        disapproved: mergedDisapprovedData,
       },
       metadata: {
         updatedAt,

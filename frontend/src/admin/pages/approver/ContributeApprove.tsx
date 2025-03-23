@@ -12,6 +12,7 @@ import { startCase } from "lodash";
 import PageHeader from "shared/ui/PageHeader";
 import DataStateWrapper from "shared/utils/DataStateWrapper"; 
 import ContributeApproveItem from "admin/components/ContributeApproveItem";
+import { IStatus } from "admin/db";
 
 const ContributionApprove = () => {
   const { section, postCode, version } = useParams();
@@ -34,10 +35,12 @@ const ContributionApprove = () => {
       id,
       key,
       value,
+      status,
     }: {
       id: string;
       key: string;
       value: any;
+      status: IStatus
     }) => {
       setApplying((prev) => ({ ...prev, [`${id}-${key}`]: true }));
       const response = await axiosInstance.post(
@@ -48,6 +51,7 @@ const ContributionApprove = () => {
           post_code: postCode,
           version,
           section,
+          status,
         }
       );
       return response.data;
@@ -90,7 +94,7 @@ const ContributionApprove = () => {
                 <ContributeApproveItem
                   item={item}
                   applying={applying}
-                  applyMutation={applyMutation}
+                  applyMutation={applyMutation.mutate}
                 />
                 {contriData.length - 1 !== index && <hr />}
               </React.Fragment>

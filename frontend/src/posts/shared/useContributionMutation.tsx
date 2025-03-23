@@ -34,7 +34,8 @@ const useContributeMutation = () => {
           data: keyValuePairs,
           section,
           post_code: postCode,
-          version
+          version,
+          status: "approved", //for some role needed
         }
       );
       return response.data;

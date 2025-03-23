@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { useMutation } from "@tanstack/react-query";
 import DoneIcon from "@mui/icons-material/Done";
-import ADMIN_DB from "admin/db";
+import ADMIN_DB, { IStatus } from "admin/db";
 import PageHeader from "shared/ui/PageHeader";
 import DataStateWrapper from "shared/utils/DataStateWrapper";
 import AccessItem from "admin/components/AccessItem";
@@ -33,7 +33,7 @@ const filterSchema = yup.object().shape({
 });
 
 interface IAccessFilter {
-  status: string;
+  status: IStatus;
   role_applied: string;
 }
 
@@ -41,8 +41,7 @@ interface IAccessUpdate extends IAccessFilter {
   req_id: string;
 }
 
-const Access: React.FC = () => {
-  const token = useSelector((state: RootState) => state.user.token);
+const Access: React.FC = () => { 
   const dispatch = useDispatch<AppDispatch>();
   const [filters, setFilters] = useState<IAccessFilter | null>(null);
 

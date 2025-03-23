@@ -64,12 +64,12 @@ export const updateContributors = async (
   next: (error: HttpError) => void
 ): Promise<IContribution | void> => {
   try {
-    const { contributor_id, post_code, version, section, data } = req.body;
+    const { contributor_id, post_code, version, section, data,status } = req.body;
     const postCodeVersion = generatePostCodeVersion(post_code, version);
     const approverId = req.userData?.userId || "";
 
     let contributor = await Contribution.findById(contributor_id)
-      .select(`contribution.${postCodeVersion}.${section} approved`)
+      .select(`contribution.${postCodeVersion}.${section} approved disapproved`)
       .session(session);
 
     if (!contributor) {
@@ -113,14 +113,17 @@ export const updateContributors = async (
     }
 
     // =======================
-    // Update Contributor Approval
+    // Update Contributor Approval (on bases of status)
     // =======================
-    if (!Array.isArray(contributor.approved)) {
-      contributor.approved = [];
+
+    let contributorApprovals = status === "approved" ? contributor.approved : contributor.disapproved;
+
+    if (!Array.isArray(contributorApprovals)) {
+      contributorApprovals = [];
     }
 
     // Find an existing approval by the same approver
-    const existingApproval = contributor.approved.find(
+    const existingApproval = contributorApprovals.find(
       (approval) => approval.approver.toString() === approverId
     );
 
@@ -134,7 +137,7 @@ export const updateContributors = async (
       // Create a new approval entry for this approver
       const newApprovalData = new Map<string, Record<string, any>>();
       newApprovalData.set(postCodeVersion, { [section]: data });
-      contributor.approved.push({
+      contributorApprovals.push({
         approver: approverId as string,
         data: newApprovalData,
       });

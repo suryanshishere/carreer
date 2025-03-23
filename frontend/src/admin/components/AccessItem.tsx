@@ -1,7 +1,7 @@
 import React from "react";
 import { startCase } from "lodash";
 import moment from "moment";
-import ADMIN_DB from "admin/db";
+import ADMIN_DB, { IStatus } from "admin/db";
 
 const { status, status_classname } = ADMIN_DB;
 
@@ -16,7 +16,7 @@ interface IAccess {
 
 interface AccessItemProps {
   data: IAccess[];
-  onUpdateAccess: (access: { req_id: string; role_applied: string; status: string }) => void;
+  onUpdateAccess: (access: { req_id: string; role_applied: string; status: IStatus }) => void;
 }
 
 const AccessItem: React.FC<AccessItemProps> = ({ data, onUpdateAccess }) => {
@@ -59,10 +59,10 @@ const AccessItem: React.FC<AccessItemProps> = ({ data, onUpdateAccess }) => {
                             onUpdateAccess({
                               req_id: publisher._id,
                               role_applied: publisher.role_applied,
-                              status: item,
+                              status: item as IStatus,
                             })
                           }
-                          className={`text-sm border rounded-full px-3 py-[2px] hover:text-custom_white ${status_classname[item]}`}
+                          className={`text-sm py-[2px] ${status_classname[item]}`}
                         >
                           {startCase(item)}
                         </button>

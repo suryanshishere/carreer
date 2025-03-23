@@ -154,8 +154,13 @@ export const applyContri = async (
     const errors = handleValidationErrors(req, next);
     if (errors) return;
 
-    let post = await updatePost(req, next);
-    if (!post) return;
+    let post = null;
+    if (req.body.status === "approved") {
+      post = await updatePost(req, next);
+      if (!post) return;
+      await post.save({ session });
+      await savePostReferences(post);
+    }
 
     //only contributors is updated
     if (req.body.contributor_id) {
@@ -165,15 +170,18 @@ export const applyContri = async (
     }
 
     //saving of all modification on the db
-    await savePostReferences(post);
-    await post.save({ session });
 
     await session.commitTransaction();
     session.endSession();
 
     return res
       .status(200)
-      .json({ message: "Post updated and configured successfully!" });
+      .json({
+        message:
+          req.body.status === "approved"
+            ? "Post updated and configured successfully!"
+            : "Post rejected dissaproved",
+      });
   } catch (error) {
     console.error(error);
 

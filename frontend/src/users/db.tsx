@@ -1,4 +1,3 @@
-import SHARED_DB from "shared/db";
 import { ReactNode } from "react";
 import { IRole } from "admin/db";
 import { logout } from "shared/store/userSlice";
@@ -36,10 +35,7 @@ export const USER_ACCOUNT_MODE_DB: {
   tags: TAGS,
 };
 
-export const CONTRIBUTER_DB = {
-  status: SHARED_DB.status,
-  status_classname: SHARED_DB.status_classname,
-};
+
 
 export interface IUserAccountMode {
   max: boolean;

@@ -13,6 +13,7 @@ import {
   validateOptStr,
   validatePostCodeOrVersion,
   validateSection,
+  validateStatus,
 } from "@routes/validation-utils";
 
 const router = express.Router();
@@ -25,6 +26,8 @@ router.post(
     validatePostCodeOrVersion("version"),
     validateObject("data"),
     validateMongoId("contributor_id", true),
+    validateStatus(),
+
   ],
   applyContri
 );

@@ -1,6 +1,8 @@
+export type IStatus =  "pending" | "approved" | "rejected";
+
 export interface IAdminData {
   IRoleApplied: IRole
-  IStatus: "pending" | "approved" | "rejected";
+  IStatus: IStatus
   // IAdminStatus: "handlePublisher" | "handleApprover" | "admin" | "none";
 }
 
@@ -14,7 +16,7 @@ interface ContactUsEnvData {
 }
 
 interface AdminData {
-  STATUS: string[];
+  STATUS: IStatus[];
   STATUS_DEFAULT: string;
   ROLE_APPLIED: IRole[];
   REQUEST_DOC_EXPIRY: number;
