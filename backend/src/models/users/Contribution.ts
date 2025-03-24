@@ -43,11 +43,11 @@ export const ContributionSchema = new Schema<IContribution>(
   {
     approved: {
       type: [ApprovedContributionSchema],
-      default: [],
+      default: undefined,
     },
     disapproved: {
       type: [ApprovedContributionSchema],
-      default: [],
+      default: undefined, 
     },
     contribution: {
       type: Map,

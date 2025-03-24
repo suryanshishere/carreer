@@ -67,11 +67,11 @@ const resultSchema = new Schema<IResult>({
     type: new Schema(
       {
         current_year: { type: resultCategorySchema, required: false },
-        previous_year: { type: resultCategorySchema, required: true },
+        previous_year: { type: resultCategorySchema, required: false },
       },
       { _id: false }
     ),
-    required: true,
+    required: false,
   },
 });
 

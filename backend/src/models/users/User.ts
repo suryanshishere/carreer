@@ -3,10 +3,6 @@ import _ from "lodash";
 import mongoose, { Schema, Types, Document } from "mongoose";
 import { USER_ENV_DATA } from "./db";
 
-interface SavedPosts {
-  [key: string]: Types.ObjectId[];
-}
-
 const {
   MIN_EMAIL_OTP,
   MAX_EMAIL_OTP,
@@ -39,7 +35,7 @@ export interface IUser extends Document {
   contribution?: mongoose.Types.ObjectId | string; //contribution model id is contributor id so i have so when needed
 
   // Saved posts
-  saved_posts?: SavedPosts;
+  saved_posts?: { [key: string]: Types.ObjectId[] };
 
   //status for personalised data rendering for the user
   mode: {
@@ -59,8 +55,6 @@ const savedPostsSchema = new Schema(dynamicReferences, { _id: false });
 
 const userSchema: Schema = new Schema<IUser>(
   {
-    // Authentication and verification fields
-    //todo: add expire below
     isEmailVerified: { type: Boolean, default: false },
     emailVerificationToken: {
       type: Number,
