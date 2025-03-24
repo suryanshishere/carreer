@@ -9,14 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "shared/store";
 import { updateMode } from "shared/store/userSlice";
 import Modal from "shared/ui/Modal";
-import Button from "shared/utils/form/Button";
-import { openModal, closeModal } from "shared/store/modalSlice";
+import Button from "shared/utils/form/Button"; 
 import { USER_ACCOUNT_MODE_DB } from "users/db";
 import Toggle from "shared/utils/form/Toggle";
+import { closeSpecificModal, toggleModalState } from "shared/store/modalSlice";
 
 const Mode: React.FC = () => {
   const mode = useSelector((state: RootState) => state.user.mode);
   const [isChecked, setIsChecked] = useState(mode?.max || false);
+  const isModalOpen = useSelector((state: RootState) => state.modal.modalStates["max_mode"]);
   const dispatch = useDispatch<AppDispatch>();
 
   const mutation = useMutation({
@@ -44,7 +45,7 @@ const Mode: React.FC = () => {
   const handleCheckboxChange = () => {
     const newState = !isChecked;
     if (isChecked && !newState) {
-      dispatch(openModal());
+      dispatch(toggleModalState({ id: "max_mode", bool: true }));
     } else {
       setIsChecked(newState);
       mutation.mutate(newState);
@@ -54,14 +55,13 @@ const Mode: React.FC = () => {
   const handleConfirm = () => {
     setIsChecked(false);
     mutation.mutate(false);
-    dispatch(closeModal());
+    dispatch(closeSpecificModal(["max_mode"]));
   };
 
   const handleCancel = () => {
-    dispatch(closeModal());
+    dispatch(closeSpecificModal(["max_mode"]));
   };
 
-  const isModalOpen = useSelector((state: RootState) => state.modal.isOpen);
 
   return (
     <div>
@@ -75,7 +75,7 @@ const Mode: React.FC = () => {
       />
       {isModalOpen && (
         <Modal
-          onClose
+          onClose={handleCancel}
           header="Mode Change Confirmation"
           footer={
             <div className="flex justify-end gap-2">

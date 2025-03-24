@@ -9,9 +9,9 @@ import { AppDispatch, RootState } from "shared/store";
 import { resetKeyValuePairs, setEditContribute } from "shared/store/postSlice";
 import { startCase } from "lodash";
 import useContributeMutation from "posts/shared/useContributionMutation";
-import Modal from "shared/ui/Modal";
-import { closeModal, openModal } from "shared/store/modalSlice";
+import Modal from "shared/ui/Modal"; 
 import { ISectionKey } from "posts/db";
+import { closeSpecificModal, toggleModalState } from "shared/store/modalSlice";
 
 type SubContriHeaderProps = {
   section: ISectionKey;
@@ -32,6 +32,11 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
 
   const { contributeMutation, deleteContributeMutation } =
     useContributeMutation();
+
+
+    const closeDeleteModalHandler = () => {
+      dispatch(closeSpecificModal(["delete_contribute"]));
+    }
 
   return (
     <div className="flex items-center justify-between gap-2">
@@ -99,7 +104,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
         )}
         <Button
           iconButton
-          onClick={() => dispatch(openModal())}
+          onClick={() => dispatch(toggleModalState({ id: "delete_contribute", bool: true }))} 
           className="ml-4"
         >
           <DeleteOutlineIcon fontSize="small" />
@@ -109,11 +114,11 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
       {/* Delete Confirmation Modal */}
 
       <Modal
-        onClose
+        onClose={closeDeleteModalHandler}
         header="Confirm Deletion"
         footer={
           <div className="flex justify-end gap-2">
-            <Button onClick={() => dispatch(closeModal())}>Cancel</Button>
+            <Button onClick={() => dispatch(closeSpecificModal(["delete"]))}>Cancel</Button>
             <Button
               authButtonType
               onClick={() => {
@@ -122,7 +127,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
                   version,
                   section,
                 });
-                !deleteContributeMutation.isPending && dispatch(closeModal());
+                !deleteContributeMutation.isPending && closeDeleteModalHandler();
               }}
             >
               {deleteContributeMutation.isPending ? "Confirming..." : "Confirm"}

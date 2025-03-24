@@ -1,31 +1,18 @@
 import React, { ReactNode } from "react";
 import ReactDOM from "react-dom";
 import Button from "shared/utils/form/Button";
-import CloseIcon from "@mui/icons-material/Close";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "shared/store";
-// import useOutsideClick from "shared/hooks/outside-click-hook";
-import { closeModal } from "shared/store/modalSlice";
+import CloseIcon from "@mui/icons-material/Close"; 
 
 interface ModalProps {
   header: string;
   children: ReactNode;
   footer?: ReactNode;
-  onClose?: boolean;
+  onClose?: () => void;
 }
 
 const Modal: React.FC<ModalProps> = ({ header, children, footer, onClose }) => {
-  // const modalRef = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
-  const isModalOpen = useSelector((state: RootState) => state.modal.isOpen);
-
-  // Close modal on outside click
-  // useOutsideClick(modalRef, () => {
-  //   if (isModalOpen && onClose) dispatch(closeModal());
-  // });
-
   const modalRoot = document.getElementById("modal-root");
-  if (!modalRoot || !isModalOpen) return null;
+  if (!modalRoot) return null;
 
   return ReactDOM.createPortal(
     <div className="fixed page_padding inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -37,7 +24,7 @@ const Modal: React.FC<ModalProps> = ({ header, children, footer, onClose }) => {
         {onClose && (
           <Button
             iconButton
-            onClick={() => dispatch(closeModal())}
+            onClick={onClose}
             className="absolute top-2 right-2"
           >
             <CloseIcon />
