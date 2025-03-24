@@ -1,7 +1,6 @@
 import React from "react";
 import RenderField from "posts/shared/render-post-data/RenderField";
-import _ from "lodash";
-import { ParaSkeletonLoad } from "./SkeletonLoad";
+import _ from "lodash"; 
 import Tag from "./Tag";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
@@ -34,13 +33,13 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
 
           return (
             <span key={key} className="ml-1">
-              <span >
+              <span>
                 {(renamingData?.[key] as string) || _.startCase(key)}:
               </span>
               {dateCheck ? (
-                <span >
+                <span>
                   <RenderField
-                    stringValue={`${
+                    valueProp={`${
                       value.current_year || `${value.previous_year}`
                     }`}
                     uniqueKey={key}
@@ -57,11 +56,7 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
           <span key={key} className="ml-1">
             <span>{_.startCase(key)}:</span>
             <span className="ml-1">
-              <RenderField
-                stringValue={_.toString(value)}
-                uniqueKey={key}
-                noLinkClassProp
-              />
+              <RenderField valueProp={value} uniqueKey={key} noLinkClassProp />
             </span>
           </span>
         );

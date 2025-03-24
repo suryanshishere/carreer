@@ -18,23 +18,25 @@ const renderPostData = (key: string, value: any) => {
 
   if (renderStrategies.isArrayOrObjectWithTable(key, value))
     return (
-      <RenderTable
-        value={value}
-        tableKey={key}
-        isCollapsible={collapsible[key]}
-      />
+      <>
+        <RenderTable
+          value={value}
+          tableKey={key}
+          isCollapsible={collapsible[key]}
+        />
+      </>
     );
 
   if (renderStrategies.isPlainObject(value)) {
     if (value?.current_year || value?.previous_year) {
       const yearData = value.current_year || value.previous_year;
       return (
-        <RenderField stringValue={yearData} uniqueKey={`${key}.current_year`} />
+        <RenderField valueProp={yearData} uniqueKey={`${key}.current_year`} />
       );
     }
     return <RenderObject value={value} parentKey={key} />;
   }
-  return <RenderField stringValue={value} uniqueKey={key} />;
+  return <RenderField valueProp={value} uniqueKey={key} />;
 };
 
 export default renderPostData;

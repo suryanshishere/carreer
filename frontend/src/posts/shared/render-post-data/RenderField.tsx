@@ -8,11 +8,11 @@ import { POST_LIMIT_DROPDOWN_DATA } from "posts/db";
 import { renamingData } from "posts/db/renders";
 
 const RenderField = ({
-  stringValue,
+  valueProp,
   uniqueKey,
   noLinkClassProp,
 }: {
-  stringValue: any;
+  valueProp: any;
   uniqueKey: string;
   noLinkClassProp?: boolean;
 }) => {
@@ -25,10 +25,10 @@ const RenderField = ({
       return (
         <span className="text-custom_less_gray">Can't be contributed.</span>
       );
-    return <PostEditable valueProp={stringValue} keyProp={uniqueKey} />;
+    return <PostEditable valueProp={valueProp} keyProp={uniqueKey} />;
   }
 
-  let strValue: string = _.toString(stringValue);
+  let strValue: string = _.toString(valueProp);
   const lastKey: string = uniqueKey?.split(".").pop() || uniqueKey;
 
   if (strValue.startsWith("https://")) {
@@ -79,8 +79,8 @@ const RenderField = ({
       return match;
     });
 
-    if (lastIndex < stringValue.length) {
-      parts.push(stringValue.slice(lastIndex));
+    if (lastIndex < valueProp.length) {
+      parts.push(valueProp.slice(lastIndex));
     }
 
     return <>{parts}</>;

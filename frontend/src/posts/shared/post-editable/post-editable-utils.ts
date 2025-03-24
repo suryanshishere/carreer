@@ -10,14 +10,16 @@ const {
   dropdown_data,
 } = POST_LIMITS_DB;
 
-type ValidationConfig =
+export type IValidationConfig =
   | { type: "dropdown"; data: string[] }
   | { type: "date" }
   | { type: "numeric"; min: number; max: number }
   | { type: "string"; min: number; max: number }
   | null;
 
-export const getFieldValidation = (fieldName: string): ValidationConfig => {
+export const getFieldValidation = (
+  fieldName: string
+): IValidationConfig   => {
   const fieldType = Object.entries(limit_keys_division).find(([_, values]) =>
     values.includes(fieldName)
   )?.[0];
@@ -67,11 +69,10 @@ export const getFieldValidation = (fieldName: string): ValidationConfig => {
 
 export const validateFieldValue = (
   value: string | number,
-  validationConfig: ValidationConfig
+  validationConfig: IValidationConfig
 ): { isValid: boolean; error?: string } => {
-  // Handle null config or invalid dropdown values
   if (!validationConfig) {
-    return { isValid: false, error: "Invalid field configuration" };
+    return { isValid: true, error: undefined };
   }
 
   // Handle dropdown type validation
@@ -86,14 +87,14 @@ export const validateFieldValue = (
     };
   }
 
-  // Handle date type validation (if needed) 
+  // Handle date type validation (if needed)
   if (validationConfig.type === "date") {
-    const date = new Date(value);
-    const isValid = !isNaN(date.getTime());
-    
+    // const date = new Date(value);
+    // const isValid = !isNaN(date.getTime());
+
     return {
-      isValid,
-      error: isValid ? undefined : "Invalid date format.",
+      isValid: true,
+      error: undefined,
     };
   }
 
