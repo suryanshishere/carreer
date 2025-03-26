@@ -9,6 +9,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import { ISectionKey } from "posts/db";
 import { closeAllDropdowns } from "shared/store/dropdownSlice";
+import { closeSpecificModal } from "shared/store/modalSlice";
 
 const useContributeMutation = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -82,6 +83,7 @@ const useContributeMutation = () => {
       return response.data;
     },
     onSuccess: ({ message }) => {
+       dispatch(closeSpecificModal(["delete_contribute"]));
       dispatch(triggerSuccessMsg(message || "Contribution deleted!"));
     },
     onError: (error: any) => {

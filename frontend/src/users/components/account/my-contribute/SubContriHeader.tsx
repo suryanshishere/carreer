@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "shared/store";
 import { resetKeyValuePairs, setEditContribute } from "shared/store/postSlice";
 import { startCase } from "lodash";
 import useContributeMutation from "posts/shared/useContributionMutation";
-import Modal from "shared/ui/Modal"; 
+import Modal from "shared/ui/Modal";
 import { ISectionKey } from "posts/db";
 import { closeSpecificModal, toggleModalState } from "shared/store/modalSlice";
 
@@ -29,14 +29,16 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
   const dispatch = useDispatch<AppDispatch>();
   const { isEditContribute, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
+  const showModal = useSelector(
+    (state: RootState) => state.modal.modalStates["delete_contribute"]
+  );
 
   const { contributeMutation, deleteContributeMutation } =
     useContributeMutation();
 
-
-    const closeDeleteModalHandler = () => {
-      dispatch(closeSpecificModal(["delete_contribute"]));
-    }
+  const closeDeleteModalHandler = () => {
+    dispatch(closeSpecificModal(["delete_contribute"]));
+  };
 
   return (
     <div className="flex items-center justify-between gap-2">
@@ -104,42 +106,45 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
         )}
         <Button
           iconButton
-          onClick={() => dispatch(toggleModalState({ id: "delete_contribute", bool: true }))} 
+          onClick={() =>
+            dispatch(toggleModalState({ id: "delete_contribute", bool: true }))
+          }
           className="ml-4"
         >
           <DeleteOutlineIcon fontSize="small" />
         </Button>
       </div>
 
-      {/* Delete Confirmation Modal */}
-
-      <Modal
-        onClose={closeDeleteModalHandler}
-        header="Confirm Deletion"
-        footer={
-          <div className="flex justify-end gap-2">
-            <Button onClick={() => dispatch(closeSpecificModal(["delete"]))}>Cancel</Button>
-            <Button
-              authButtonType
-              onClick={() => {
-                deleteContributeMutation.mutate({
-                  post_code: postCode,
-                  version,
-                  section,
-                });
-                !deleteContributeMutation.isPending && closeDeleteModalHandler();
-              }}
-            >
-              {deleteContributeMutation.isPending ? "Confirming..." : "Confirm"}
-            </Button>
-          </div>
-        }
-      >
-        <p>Are you sure you want to delete this contribution?</p>
-        <mark>
-          {postCode} / {section}
-        </mark>
-      </Modal>
+      {showModal &&
+        <Modal
+          onClose={closeDeleteModalHandler}
+          header="Confirm Deletion"
+          footer={
+            <div className="flex justify-end gap-2">
+              <Button onClick={closeDeleteModalHandler}>Cancel</Button>
+              <Button
+                authButtonType
+                onClick={() => {
+                  deleteContributeMutation.mutate({
+                    post_code: postCode,
+                    version,
+                    section,
+                  });
+                }}
+              >
+                {deleteContributeMutation.isPending
+                  ? "Confirming..."
+                  : "Confirm"}
+              </Button>
+            </div>
+          }
+        >
+          <p>Are you sure you want to delete this contribution?</p>
+          <mark>
+            {postCode} / {section}
+          </mark>
+        </Modal>
+      }
     </div>
   );
 };

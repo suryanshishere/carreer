@@ -6,12 +6,6 @@ import { getFieldValidation, validateFieldValue } from "./post-editable-utils";
 import InputField from "./InputField";
 import ActionButtons from "./ActionButtons";
 
-//TODO: to improve to have right date, right now no intial date is set
-// const formatDateValue = (value: any): string => {
-//   // const date = new Date(value);
-//   return "";
-// };
-
 const PostEditable: React.FC<{
   keyProp: string;
   valueProp: string | number;
@@ -29,15 +23,15 @@ const PostEditable: React.FC<{
       : "text";
 
   const initialInputValue = inputType === "date" ? "" : valueProp;
-  //states change hooks
-  const [inputValue, setInputValue] = useState<string | number>(
-    initialInputValue
-  );
-  const [isChanged, setIsChanged] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
-  const [isFirstRender, setIsFirstRender] = useState(inputType === "date");
-  
-  const { isValid, error } = validateFieldValue(inputValue, validationConfig);
+
+  const [state, setState] = useState({
+    inputValue: initialInputValue as string | number,
+    isChanged: false,
+    isSaved: false,
+    isFirstRender: inputType === "date",
+  });
+
+  const { isValid, error } = validateFieldValue(state.inputValue, validationConfig);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -50,30 +44,35 @@ const PostEditable: React.FC<{
     } else if (inputType === "date") {
       newValue = e.target.value;
     }
-    setInputValue(newValue);
-    setIsChanged(true);
-    setIsSaved(false);
-    if (isFirstRender) setIsFirstRender(false);
+    setState((prev) => ({
+      ...prev,
+      inputValue: newValue,
+      isChanged: true,
+      isSaved: false,
+      isFirstRender: false,
+    }));
   };
 
   const handleSave = () => {
     const parsedValue =
       typeof valueProp === "number"
-        ? +inputValue
+        ? +state.inputValue
         : validationConfig?.type === "date"
-        ? inputValue.toString()
-        : inputValue.toString();
+        ? state.inputValue.toString()
+        : state.inputValue.toString();
 
     dispatch(setKeyValuePair({ key: keyProp, value: parsedValue }));
-    setIsChanged(false);
-    setIsSaved(true);
+    setState((prev) => ({ ...prev, isChanged: false, isSaved: true }));
   };
 
   const handleUndo = () => {
-    setInputValue(initialInputValue);
+    setState({
+      inputValue: initialInputValue,
+      isChanged: false,
+      isSaved: false,
+      isFirstRender: inputType === "date",
+    });
     dispatch(removeKeyValuePair(keyProp));
-    setIsChanged(false);
-    setIsSaved(false);
   };
 
   return (
@@ -81,7 +80,7 @@ const PostEditable: React.FC<{
       <InputField
         keyProp={keyProp}
         valueProp={valueProp}
-        inputValue={inputValue}
+        inputValue={state.inputValue}
         inputType={inputType}
         isValid={isValid}
         error={error}
@@ -90,8 +89,8 @@ const PostEditable: React.FC<{
         lastName={lastName}
       />
       <ActionButtons
-        isSaved={isSaved}
-        isChanged={isChanged}
+        isSaved={state.isSaved}
+        isChanged={state.isChanged}
         isValid={isValid}
         onSave={handleSave}
         onUndo={handleUndo}

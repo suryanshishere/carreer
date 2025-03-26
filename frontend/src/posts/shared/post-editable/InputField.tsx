@@ -47,7 +47,7 @@ const InputField: React.FC<InputFieldProps> = ({
     );
   }
 
-  const isLongText = typeof valueProp === "string" && valueProp.length > 75;
+  const isLongText = typeof inputValue === "string" && inputValue.length > 85;
 
   if (isLongText) {
     return (
