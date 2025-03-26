@@ -6,6 +6,8 @@ import { getFieldValidation, validateFieldValue } from "./post-editable-utils";
 import InputField from "./InputField";
 import ActionButtons from "./ActionButtons";
 import { Input } from "shared/utils/form/Input";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 type Mode = "idle" | "editing" | "saved";
 
@@ -118,41 +120,58 @@ const PostEditable: React.FC<{
 
   return (
     <div className="w-full h-full my-1 flex flex-col gap-2">
-      {genKey && (
-        <div className="flex flex-row items-center gap-2">
-          {state.mode === "idle" && <button onClick={handleAdd}>Add</button>}
-        </div>
+      {genKey && state.mode === "idle" && (
+        <button
+          onClick={handleAdd}
+          className="self-center flex gap-1 items-center outline p-1 my-3 rounded px-2 text-custom_gray outline-custom_gray"
+        >
+          <AddIcon /> Add New Information
+        </button>
       )}
 
-      <div className="flex gap-2 items-end">
-        {(state.mode === "editing" || state.mode === "saved") && (
-          <Input
-            name="customKey"
-            label="Enter custom key name:"
-            type="text"
-            value={state.customKey}
-            onChange={handleCustomKeyChange}
-            className=""
-          />
-        )}
+      {(state.mode === "editing" || state.mode === "saved" || !genKey) && (
+        <div className="w-full flex gap-2 items-center">
+           <div
+    className={`flex flex-col medium_mobile:flex-row gap-2 ${
+      (!genKey || (genKey && state.customKey)) ? "flex-1" : "flex-grow-0"
+    }`}
+  >
+            {(state.mode === "editing" || state.mode === "saved") && (
+              <Input
+                name="customKey"
+                label="Enter custom key name:"
+                type="text"
+                value={state.customKey}
+                onChange={handleCustomKeyChange}
+              />
+            )}
 
-        {(!genKey || (genKey && state.customKey)) && (
-          <InputField
-            keyProp={keyProp + "." + effectiveKey}
-            valueProp={valueProp}
-            inputValue={state.inputValue}
-            inputType={inputType}
-            isValid={isValid}
-            error={error}
-            handleInputChange={handleInputChange}
-            validationConfig={validationConfig}
-            lastName={lastName}
-          />
-        )}
-        {state.mode === "saved" || state.mode ==="editing" && (
-          <button onClick={handleDelete}>Delete</button>
-        )}
-      </div>
+            {(!genKey || (genKey && state.customKey)) && (
+              <InputField
+                keyProp={keyProp + "." + effectiveKey}
+                valueProp={valueProp}
+                inputValue={state.inputValue}
+                inputType={inputType}
+                isValid={isValid}
+                error={error}
+                handleInputChange={handleInputChange}
+                validationConfig={validationConfig}
+                lastName={lastName}
+                className="self-end w-full"
+              />
+            )}
+          </div>
+          {state.mode === "saved" ||
+            (state.mode === "editing" && (
+              <button
+                onClick={handleDelete}
+                className="flex-shrink-0 self-end pb-2 text-custom_gray"
+              >
+                <DeleteOutlineIcon />
+              </button>
+            ))}
+        </div>
+      )}
       <ActionButtons
         isSaved={state.mode === "saved"}
         isChanged={state.isChanged}

@@ -3,6 +3,7 @@ import { POST_LIMITS_DB } from "posts/db";
 import { Input, TextArea } from "shared/utils/form/Input";
 import Dropdown from "shared/utils/form/Dropdown";
 import { IValidationConfig } from "./post-editable-utils";
+import useResponsiveView from "shared/hooks/useResponsiveView";
 
 interface InputFieldProps {
   keyProp: string;
@@ -19,6 +20,7 @@ interface InputFieldProps {
   validationConfig?: IValidationConfig;
   // lastName is used for retrieving dropdown data
   lastName: string;
+  className?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -31,7 +33,10 @@ const InputField: React.FC<InputFieldProps> = ({
   handleInputChange,
   validationConfig,
   lastName,
+  className="",
 }) => {
+  const viewType = useResponsiveView();
+
   if (validationConfig?.type === "dropdown") {
     return (
       <Dropdown
@@ -47,7 +52,12 @@ const InputField: React.FC<InputFieldProps> = ({
     );
   }
 
-  const isLongText = typeof inputValue === "string" && inputValue.length > 85;
+  const isLongText =
+    typeof inputValue === "string"
+      ? viewType === "mobile"
+        ? inputValue.length > 40
+        : inputValue.length > 85
+      : false;
 
   if (isLongText) {
     return (
@@ -70,7 +80,7 @@ const InputField: React.FC<InputFieldProps> = ({
       error={!isValid}
       helperText={error}
       onChange={handleInputChange}
-      outerClassProp="flex-1"
+      outerClassProp={"flex-grow " + className}
     />
   );
 };

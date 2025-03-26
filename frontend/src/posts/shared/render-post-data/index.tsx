@@ -36,7 +36,12 @@ const renderPostData = (key: string, value: any) => {
         <RenderField valueProp={yearData} uniqueKey={`${key}.current_year`} />
       );
     }
-    return <RenderObject value={value} parentKey={key} />;
+    return (
+      <> 
+        <RenderObject value={value} parentKey={key} /> 
+        <PostEditable valueProp={value} keyProp={key} genKey={true} />
+      </>
+    );
   }
   return <RenderField valueProp={value} uniqueKey={key} />;
 };
