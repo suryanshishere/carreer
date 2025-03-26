@@ -23,7 +23,7 @@ const RenderField = ({
   if (isEditPostClicked && /^\/sections\/[^/]+\/[^/]+/.test(urlPath)) {
     if (uniqueKey === "last_updated")
       return (
-        <span className="text-custom_less_gray">Can't be contributed.</span>
+        <span className="text-custom_less_gray">This can't be contributed.</span>
       );
     return <PostEditable valueProp={valueProp} keyProp={uniqueKey} />;
   }

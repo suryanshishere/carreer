@@ -2,6 +2,7 @@ import { collapsible, tableRequired } from "posts/db/renders";
 import RenderTable from "./RenderTable";
 import RenderObject from "./RenderObject";
 import RenderField from "posts/shared/render-post-data/RenderField";
+import PostEditable from "../post-editable";
 
 const renderStrategies = {
   isNullOrUndefined: (value: any) => value === null || value === undefined,
@@ -24,6 +25,7 @@ const renderPostData = (key: string, value: any) => {
           tableKey={key}
           isCollapsible={collapsible[key]}
         />
+        <PostEditable valueProp={value} keyProp={key} genKey={true} />
       </>
     );
 

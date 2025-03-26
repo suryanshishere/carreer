@@ -57,7 +57,7 @@ const InputField: React.FC<InputFieldProps> = ({
         error={!isValid}
         helperText={error}
         onChange={handleInputChange}
-        outerClassProp="h-full"
+        outerClassProp="h-full flex-1"
       />
     );
   }
@@ -70,6 +70,7 @@ const InputField: React.FC<InputFieldProps> = ({
       error={!isValid}
       helperText={error}
       onChange={handleInputChange}
+      outerClassProp="flex-1"
     />
   );
 };

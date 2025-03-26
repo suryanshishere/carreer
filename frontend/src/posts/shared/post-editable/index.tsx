@@ -30,8 +30,7 @@ const PostEditable: React.FC<{
   });
 
   // effective key is the custom key if one exists (when genKey is true and a custom key is provided)
-  const effectiveKey =
-    genKey && state.customKey ? state.customKey : keyProp;
+  const effectiveKey = genKey && state.customKey ? state.customKey : keyProp;
   const lastName = effectiveKey.split(".").pop() || "";
   const validationConfig = getFieldValidation(lastName);
   const inputType =
@@ -101,6 +100,7 @@ const PostEditable: React.FC<{
       ...prev,
       inputValue: typeof valueProp === "number" ? valueProp : "",
       isChanged: false,
+      mode: "editing",
     }));
     dispatch(removeKeyValuePair(effectiveKey));
   };
@@ -120,41 +120,39 @@ const PostEditable: React.FC<{
     <div className="w-full h-full my-1 flex flex-col gap-2">
       {genKey && (
         <div className="flex flex-row items-center gap-2">
-          {state.mode === "idle" && (
-            <button onClick={handleAdd}>Add</button>
-          )}
-          {(state.mode === "editing" || state.mode === "saved") && (
-            <>
-              <Input
-                name="customKey"
-                label="Enter custom key name:"
-                type="text"
-                value={state.customKey}
-                onChange={handleCustomKeyChange}
-                className=""
-              />
-              {state.mode === "saved" && (
-                <button onClick={handleDelete}>Delete</button>
-              )}
-            </>
-          )}
+          {state.mode === "idle" && <button onClick={handleAdd}>Add</button>}
         </div>
       )}
 
-      {(!genKey || (genKey && state.customKey)) && (
-        <InputField
-          keyProp={keyProp + "." + effectiveKey}
-          valueProp={valueProp}
-          inputValue={state.inputValue}
-          inputType={inputType}
-          isValid={isValid}
-          error={error}
-          handleInputChange={handleInputChange}
-          validationConfig={validationConfig}
-          lastName={lastName}
-        />
-      )}
+      <div className="flex gap-2 items-end">
+        {(state.mode === "editing" || state.mode === "saved") && (
+          <Input
+            name="customKey"
+            label="Enter custom key name:"
+            type="text"
+            value={state.customKey}
+            onChange={handleCustomKeyChange}
+            className=""
+          />
+        )}
 
+        {(!genKey || (genKey && state.customKey)) && (
+          <InputField
+            keyProp={keyProp + "." + effectiveKey}
+            valueProp={valueProp}
+            inputValue={state.inputValue}
+            inputType={inputType}
+            isValid={isValid}
+            error={error}
+            handleInputChange={handleInputChange}
+            validationConfig={validationConfig}
+            lastName={lastName}
+          />
+        )}
+        {state.mode === "saved" || state.mode ==="editing" && (
+          <button onClick={handleDelete}>Delete</button>
+        )}
+      </div>
       <ActionButtons
         isSaved={state.mode === "saved"}
         isChanged={state.isChanged}
