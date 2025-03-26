@@ -34,7 +34,7 @@ const TagButton: React.FC<TagButtonProps> = ({
   if (label === "none") return null;
 
   const baseClass = `text-sm px-2 py-[2px] cursor-pointer flex items-center justify-center gap-1`;
-  const roundedClass = showTagsDropdown ? "py-2" : "rounded";
+  const roundedClass = showTagsDropdown ? "py-2" : "rounded-full";
   const activeClass = isActive ? "bg-custom_white" : "hover:bg-custom_white";
 
   return (
