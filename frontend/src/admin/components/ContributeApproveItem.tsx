@@ -1,6 +1,5 @@
 import ADMIN_DB, { IStatus } from "admin/db";
-import React from "react";
-import Button from "shared/utils/form/Button";
+import React from "react"; 
 
 interface ContributionItemProps {
   item: Record<string, any>;
@@ -13,7 +12,7 @@ interface ContributionItemProps {
   }) => void;
 }
 
-const { status, status_classname } = ADMIN_DB;
+const {  status_classname } = ADMIN_DB;
 
 const ContributeApproveItem: React.FC<ContributionItemProps> = ({
   item,
@@ -30,7 +29,10 @@ const ContributeApproveItem: React.FC<ContributionItemProps> = ({
         {Object.entries(item)
           .filter(([key]) => key !== "_id")
           .map(([key, value]) => {
-            const isPending = applying[`${item._id}-${key}`];
+            // Using different pending keys for each action
+            const isRejecting = applying[`${item._id}-${key}-rejected`];
+            const isApproving = applying[`${item._id}-${key}-approved`];
+
             return (
               <div key={key} className="flex flex-col gap-2">
                 <dt className="font-bold">{key.replace(/\./g, " / ")}</dt>
@@ -46,10 +48,10 @@ const ContributeApproveItem: React.FC<ContributionItemProps> = ({
                           status: "rejected",
                         })
                       }
-                      disabled={isPending}
+                      disabled={isRejecting}
                       className={`py-1 px-4 font-semibold text-xs ${status_classname.rejected}`}
                     >
-                      {isPending ? "Rejecting..." : "Reject"}
+                      {isRejecting ? "Rejecting..." : "Reject"}
                     </button>
                     <button
                       onClick={() =>
@@ -60,10 +62,10 @@ const ContributeApproveItem: React.FC<ContributionItemProps> = ({
                           status: "approved",
                         })
                       }
-                      disabled={isPending}
+                      disabled={isApproving}
                       className={`py-1 px-4 font-semibold text-xs ${status_classname.approved}`}
                     >
-                      {isPending ? "Approving..." : "Approve"}
+                      {isApproving ? "Approving..." : "Approve"}
                     </button>
                   </div>
                 </div>

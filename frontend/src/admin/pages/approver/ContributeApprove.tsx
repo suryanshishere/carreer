@@ -42,7 +42,7 @@ const ContributionApprove = () => {
       value: any;
       status: IStatus
     }) => {
-      setApplying((prev) => ({ ...prev, [`${id}-${key}`]: true }));
+      setApplying((prev) => ({ ...prev, [`${id}-${key}-${status}`]: true }));
       const response = await axiosInstance.post(
         "/admin/approver/apply-contri",
         {
@@ -60,7 +60,8 @@ const ContributionApprove = () => {
       dispatch(
         triggerSuccessMsg(message || "Applying contribution successful!")
       );
-      setApplying((prev) => ({ ...prev, [`${id}-${key}`]: false }));
+      setApplying((prev) => ({ ...prev, [`${id}-${key}-approved`]: false }));
+      setApplying((prev) => ({ ...prev, [`${id}-${key}-rejected`]: false }));
     },
     onError: (error: any, { id, key }) => {
       dispatch(

@@ -5,6 +5,7 @@ import RenderField from "posts/shared/render-post-data/RenderField";
 import PostEditableList from "../post-editable/PostEditableList";
 import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
+import { useLocation } from "react-router-dom";
 
 const renderStrategies = {
   isNullOrUndefined: (value: any) => value === null || value === undefined,
@@ -26,6 +27,8 @@ const RenderPostData: React.FC<RenderPostDataProps> = ({
   valueProp,
 }) => {
   const { isEditPostClicked } = useSelector((state: RootState) => state.post);
+  const location = useLocation();
+  const urlPath = location.pathname;
 
   if (renderStrategies.isNullOrUndefined(valueProp)) return null;
 
@@ -37,7 +40,7 @@ const RenderPostData: React.FC<RenderPostDataProps> = ({
           tableKey={keyProp}
           isCollapsible={collapsible[keyProp]}
         />
-        {isEditPostClicked && (
+        {isEditPostClicked && /^\/sections\/[^/]+\/[^/]+/.test(urlPath) && (
           <PostEditableList
             initialItems={[{ id: Date.now(), keyProp, valueProp }]}
           />
@@ -55,11 +58,7 @@ const RenderPostData: React.FC<RenderPostDataProps> = ({
         />
       );
     }
-    return (
-      <>
-        <RenderObject value={valueProp} parentKey={keyProp} />
-      </>
-    );
+    return <RenderObject value={valueProp} parentKey={keyProp} />;
   }
   return <RenderField valueProp={valueProp} uniqueKey={keyProp} />;
 };
