@@ -159,7 +159,7 @@ export const postDetail = async (
       isSaved = !!user;
     }
 
-    const responseObject = postDetailByPriority(response.toObject(), section);
+    const responseObject = postDetailByPriority(response.toObject(), section,response.dynamic_field);
 
     const { createdAt, updatedAt, _id } = response.get(`${section}_ref`);
     return res.status(200).json({

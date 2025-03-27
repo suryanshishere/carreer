@@ -77,16 +77,15 @@ const flattenAndPreserveUpdatedAt = (
 
 const postDetailByPriority = (
   data: Record<string, any>,
-  section: ISectionKey
+  section: ISectionKey,
+  dynamicField?: Map<string, string>
 ) => {
   const priorityKeys = POST_DETAILS_PRIORITY[section];
   const flatData = flattenAndPreserveUpdatedAt(data);
-
   const orderedResult: Record<string, any> = {};
 
+  // Process priority keys from flatData/nested data.
   for (const key of priorityKeys) {
-    // Retrieve the value from the flattened data if available,
-    // otherwise get it from the nested structure.
     const flatValue = flatData[key];
     const nestedValue = _.get(data, key);
     let value =
@@ -96,7 +95,7 @@ const postDetailByPriority = (
         ? nestedValue
         : "";
 
-    //correctly formated the dates view
+    // Correctly format the dates view.
     if (key === "date_ref" && typeof value === "object" && value !== null) {
       value = formattedDateRefView(value);
     }
@@ -105,7 +104,54 @@ const postDetailByPriority = (
     _.unset(data, key);
   }
 
-  return { ...orderedResult, ...data };
+  // Prepare dynamic field grouping:
+  // Map a base key (all segments except the last) to its dynamic entries,
+  // storing only the last segment as key.
+  const dynamicFieldsByBase: Record<string, Record<string, string>> = {};
+  if (dynamicField) {
+    for (const [dKey, dValue] of dynamicField.entries()) {
+      // Replace _1_ with a dot.
+      const dotKey = dKey.replace(/_1_/g, ".");
+      const parts = dotKey.split(".");
+      if (parts.length < 2) continue; // Skip if we cannot determine a base key.
+      // Base key is everything except the last segment.
+      const baseKey = parts.slice(0, parts.length - 1).join(".");
+      const lastSegment = parts[parts.length - 1];
+
+      if (!dynamicFieldsByBase[baseKey]) {
+        dynamicFieldsByBase[baseKey] = {};
+      }
+      // Only add the last segment as the key.
+      dynamicFieldsByBase[baseKey][lastSegment] = dValue;
+    }
+  }
+
+  // Build final result: insert each priority key, then immediately insert
+  // any dynamic fields whose base matches the priority key.
+  const finalResult: Record<string, any> = {};
+
+  for (const pKey of priorityKeys) {
+    if (pKey in orderedResult) {
+      finalResult[pKey] = orderedResult[pKey];
+      if (dynamicFieldsByBase[pKey]) {
+        for (const dynLastKey in dynamicFieldsByBase[pKey]) {
+          finalResult[dynLastKey] = dynamicFieldsByBase[pKey][dynLastKey];
+        }
+      }
+    }
+  }
+
+  // Merge any remaining keys from orderedResult that weren't in the priority.
+  for (const key in orderedResult) {
+    if (!(key in finalResult)) {
+      finalResult[key] = orderedResult[key];
+    }
+  }
+
+  // Finally, merge any remaining keys from data.
+  return { ...finalResult, ...data };
 };
 
 export default postDetailByPriority;
+
+

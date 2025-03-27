@@ -48,11 +48,11 @@ export const updatePost = async (
     } else {
       let dynamicKey = key.includes(".") ? key.replace(/\./g, "_1_") : key;
 
-      if (!post.dynamic_fields) {
-        post.dynamic_fields = new Map<string, string>();
+      if (!post.dynamic_field) {
+        post.dynamic_field = new Map<string, string>();
       }
-      post.dynamic_fields.set(dynamicKey, data[key]);
-      post.markModified("dynamic_fields");
+      post.dynamic_field.set(dynamicKey, data[key]);
+      post.markModified("dynamic_field");
     }
   });
 

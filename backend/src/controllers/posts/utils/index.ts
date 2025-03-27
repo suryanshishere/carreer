@@ -96,7 +96,7 @@ export const fetchPostDetail = async (req: Request, next: NextFunction) => {
       };
 
   const response = await PostModel.findOne(query)
-    .select(`post_code version ${section}_approved`)
+    .select(`post_code version ${section}_approved dynamic_field`)
     .populate(POSTS_POPULATE.section_detail_populate[section]);
 
   if (!response) {

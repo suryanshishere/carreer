@@ -7,7 +7,7 @@ const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS_DB;
 export interface IPost extends Document {
   post_code: string;
   version: string;
-  dynamic_fields?: Map<string, string>;
+  dynamic_field?: Map<string, string>;
   [key: string]: any;
 }
 
@@ -68,7 +68,7 @@ const postSchema = new Schema<IPost>(
           "Version can only contain letters, numbers, and underscores, with no spaces.",
       },
     },
-    dynamic_fields: {
+    dynamic_field: {
       type: Map,
       of: String,
     },
