@@ -23,6 +23,16 @@ interface InputFieldProps {
   className?: string;
 }
 
+const formatDateForInput = (date: string | number) => {
+  if (typeof date === "string") {
+    const parsedDate = new Date(date);
+    if (!isNaN(parsedDate.getTime())) {
+      return parsedDate.toISOString().split("T")[0]; // Formats as "yyyy-MM-dd"
+    }
+  }
+  return ""; // Return empty string if invalid
+};
+
 const InputField: React.FC<InputFieldProps> = ({
   keyProp,
   valueProp,
@@ -76,7 +86,7 @@ const InputField: React.FC<InputFieldProps> = ({
     <Input
       name={keyProp}
       type={inputType}
-      value={inputValue}
+      value={inputType === "date" ? formatDateForInput(inputValue) : inputValue}
       error={!isValid}
       helperText={error}
       onChange={handleInputChange}

@@ -92,12 +92,20 @@ const PostEditable: React.FC<PostEditableProps> = ({
         ? state.inputValue.toString()
         : state.inputValue.toString();
 
-    if (parsedValue === valueProp) { 
+    if (parsedValue === valueProp) {
+      // If the value is the same as before, remove it instead of saving again
       handleDelete();
       return;
     }
 
-    dispatch(setKeyValuePair({ key: effectiveKey, value: parsedValue }));
+    dispatch(
+      setKeyValuePair({
+        key: genKey
+          ? `${keyProp}.${effectiveKey.replace(/\s+/g, "_").toLowerCase()}`
+          : keyProp,
+        value: parsedValue,
+      })
+    );
 
     setState((prev) => ({
       ...prev,
@@ -177,7 +185,7 @@ const PostEditable: React.FC<PostEditableProps> = ({
 
             {(!genKey || (genKey && state.customKey)) && (
               <InputField
-                keyProp={keyProp + "." + effectiveKey}
+                keyProp={effectiveKey}
                 valueProp={valueProp}
                 inputValue={state.inputValue}
                 inputType={inputType}
