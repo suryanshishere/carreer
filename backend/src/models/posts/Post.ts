@@ -7,7 +7,7 @@ const { short_char_limit, lowercase_alpha_num_underscrore } = POST_LIMITS_DB;
 export interface IPost extends Document {
   post_code: string;
   version: string;
-  dynamic_fields?: Array<Record<string, string>>;
+  dynamic_fields?: Map<string, string>;
   [key: string]: any;
 }
 
@@ -31,6 +31,7 @@ const overallPostFields: Record<string, any> = POST_DB.overall.reduce(
       {
         type: Schema.Types.ObjectId,
         ref: "User",
+        default: undefined,
       },
     ];
     return fields;
@@ -55,7 +56,7 @@ const postSchema = new Schema<IPost>(
     },
     version: {
       type: String,
-      default: "main", // Default version so that every document gets a version value
+      default: "main",
       required: true,
       minlength: short_char_limit.min,
       maxlength: short_char_limit.max,
@@ -68,13 +69,8 @@ const postSchema = new Schema<IPost>(
       },
     },
     dynamic_fields: {
-      type: [
-        {
-          type: Map,
-          of: String,
-        },
-      ],
-      default: undefined,
+      type: Map,
+      of: String,
     },
     ...overallPostFields,
   },

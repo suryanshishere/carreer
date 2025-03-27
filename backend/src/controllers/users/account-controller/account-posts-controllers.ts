@@ -278,8 +278,9 @@ export const contributeToPost = async (
       message: "Contributed to post successfully",
     });
   } catch (error) {
-    // If an error occurs, abort the transaction and roll back
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
     session.endSession();
 
     console.log(error);

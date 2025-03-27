@@ -120,9 +120,42 @@ export const validateObject = (fieldName: string): ValidationChain => {
     .isObject()
     .withMessage(`${fieldName} must be an object.`)
     .custom((value) => {
-      if (Object.keys(value).length === 0) {
+      const keys = Object.keys(value);
+      if (keys.length === 0) {
         throw new Error(`${fieldName} must not be empty.`);
       }
+
+      // Updated regex: allow lowercase letters, numbers, underscores, and dots.
+      const validKeyRegex = /^[a-z0-9_.]+$/;
+
+      keys.forEach((originalKey) => {
+        // Prevent nested objects as values.
+        if (
+          typeof value[originalKey] === "object" &&
+          value[originalKey] !== null
+        ) {
+          throw new Error(
+            `${fieldName} must be a simple key-value pair. Nested objects are not allowed.`
+          );
+        }
+
+        // Transform the key: lower-case and replace spaces with underscores.
+        const transformedKey = originalKey.toLowerCase().replace(/\s+/g, "_");
+
+        // If the key was transformed, update the object.
+        if (transformedKey !== originalKey) {
+          value[transformedKey] = value[originalKey];
+          delete value[originalKey];
+        }
+
+        // Validate that the (possibly transformed) key meets the regex.
+        if (!validKeyRegex.test(transformedKey)) {
+          throw new Error(
+            `${fieldName} contains an invalid key: "${originalKey}". Keys must be lowercase and use underscores in place of spaces.`
+          );
+        }
+      });
+
       return true;
     });
 };

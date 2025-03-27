@@ -65,7 +65,7 @@ const PostDetail: React.FC = () => {
       </div>
       {isEditPostClicked && (
 
-        <ul className="custom_ul text-custom_gray bg-custom_pale_yellow outline outline-custom_less_gray p-2 rounded">
+        <ul className="custom_ul text-custom_gray bg-custom_pale_yellow outline outline-custom_less_gray p-2 my-2 rounded">
           <li>
             Provide accurate and well-structured data to enhance the chances of
             contribution acceptance.

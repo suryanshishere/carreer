@@ -12,9 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 
 const LOGO = process.env.REACT_APP_LOGO || "SIRKARI";
 const Footer: React.FC = () => {
-  const { role, token } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { role, token } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 
   const { mutate: activateAccess } = useMutation({
@@ -55,12 +53,19 @@ const Footer: React.FC = () => {
             Request Access
           </Link>
         )}
-        {token && role === "none" && (
+        {token && role === "none" ? (
           <button
             onClick={() => activateAccess()}
             className={footerLinkClassName}
           >
             Activate access
+          </button>
+        ) : (
+          <button
+            onClick={() => dispatch(updateUserData({ role: "none" }))}
+            className={footerLinkClassName}
+          >
+            Deactivate access
           </button>
         )}
       </div>

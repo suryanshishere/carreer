@@ -73,9 +73,9 @@ const validateFieldValue = (
 ): { isValid: boolean; error?: string } => {
   // Handle null config or invalid dropdown values
   if (!validationConfig) {
-    return { isValid: false, error: "Invalid field configuration" };
+    return { isValid: true, error: undefined };
   }
-
+  
   // Handle dropdown type validation
   if (validationConfig.type === "dropdown") {
     const isValid =
@@ -152,7 +152,7 @@ export const validateContributionField = (req: Request, next: NextFunction) => {
     if (!isValid) {
       errors.push({
         field: key,
-        message: error || `Invalid value for ${lastName}`,
+        message: error || `Invalid value for ${lastName}.`,
       });
     }
   }

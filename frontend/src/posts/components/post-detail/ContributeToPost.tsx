@@ -19,8 +19,6 @@ const ContributeToPost: React.FC<{
   const { isEditPostClicked, isAllKeyValuePairsStored, keyValuePairs } =
     useSelector((state: RootState) => state.post);
 
-  console.log(keyValuePairs);
-
   const { token, role } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {

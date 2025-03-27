@@ -32,7 +32,7 @@ export const updatePost = async (
   next: NextFunction
 ): Promise<IPost | void> => {
   const { post_code, version, data, contributor_id, section } = req.body;
-  
+
   //for fetch post detail to work
   req.params.postIdOrCode = post_code;
   req.params.version = version;
@@ -43,7 +43,17 @@ export const updatePost = async (
 
   // Update post data (in-memory modification)
   Object.keys(data).forEach((key) => {
-    _.set(post, key, data[key]);
+    if (_.has(post, key)) {
+      _.set(post, key, data[key]);
+    } else {
+      let dynamicKey = key.includes(".") ? key.replace(/\./g, "_1_") : key;
+
+      if (!post.dynamic_fields) {
+        post.dynamic_fields = new Map<string, string>();
+      }
+      post.dynamic_fields.set(dynamicKey, data[key]);
+      post.markModified("dynamic_fields");
+    }
   });
 
   // Update contributors list
@@ -64,7 +74,8 @@ export const updateContributors = async (
   next: (error: HttpError) => void
 ): Promise<IContribution | void> => {
   try {
-    const { contributor_id, post_code, version, section, data,status } = req.body;
+    const { contributor_id, post_code, version, section, data, status } =
+      req.body;
     const postCodeVersion = generatePostCodeVersion(post_code, version);
     const approverId = req.userData?.userId || "";
 
@@ -116,7 +127,8 @@ export const updateContributors = async (
     // Update Contributor Approval (on bases of status)
     // =======================
 
-    let contributorApprovals = status === "approved" ? contributor.approved : contributor.disapproved;
+    let contributorApprovals =
+      status === "approved" ? contributor.approved : contributor.disapproved;
 
     if (!Array.isArray(contributorApprovals)) {
       contributorApprovals = [];
