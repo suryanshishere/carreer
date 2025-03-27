@@ -1,8 +1,8 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "posts/db/renders";
-import renderData from ".";
+import { excludedKeys } from "posts/db/renders"; 
 import { SquareUI } from "shared/ui";
+import RenderPostData from ".";
 
 interface RenderObjectProps {
   value: any;
@@ -25,7 +25,9 @@ const RenderObject: React.FC<RenderObjectProps> = ({ value, parentKey }) => {
               <SquareUI />
               {startCase(subKey)}
             </h2>
-            <div className="pl-[1rem] w-full">{renderData(fullKey, subValue)}</div>
+            <div className="pl-[1rem] w-full"> 
+              <RenderPostData keyProp={fullKey} valueProp={subValue} /> 
+            </div>
           </div>
         );
       })}

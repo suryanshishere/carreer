@@ -1,33 +1,12 @@
 import React from "react";
 import _ from "lodash";
-import {
-  excludedKeys,
-  QUICK_ACCESS_RENDER,
-  renamingData,
-} from "posts/db/renders";
-import renderPostData from "posts/shared/render-post-data";
-import { ParaSkeletonLoad, TableSkeletonLoad } from "posts/shared/SkeletonLoad";
+import { excludedKeys, QUICK_ACCESS_RENDER } from "posts/db/renders";
 import { useParams } from "react-router-dom";
 import { ISectionKey } from "posts/db";
+import Item from "./item";
 
 const PostDetailItem: React.FC<{ data: any }> = ({ data }) => {
-  const isEmpty = Object.keys(data).length === 0;
-  const section = useParams<{ section: ISectionKey }>().section;
-
-  // Skeleton Rendering
-  if (isEmpty) {
-    return (
-      <div className="w-full flex flex-col gap-3 animate-pulse">
-        {[...Array(3)].map((_, index) => (
-          <ParaSkeletonLoad key={index} />
-        ))}
-        <TableSkeletonLoad />
-        {[...Array(3)].map((_, index) => (
-          <ParaSkeletonLoad key={index} />
-        ))}
-      </div>
-    );
-  }
+  const { section } = useParams<{ section: ISectionKey }>();
 
   // Filter out the excluded items
   const filteredEntries = Object.entries(data).filter(([key, value]) => {
@@ -66,7 +45,7 @@ const PostDetailItem: React.FC<{ data: any }> = ({ data }) => {
     <div className="w-full flex flex-col gap-[1.75rem]">
       {/* Render items before the defined range */}
       {filteredEntries.slice(0, startIdx).map(([key, value], index) => (
-        <ItemComponent key={index} k={key} v={value} />
+        <Item key={index} k={key} v={value} />
       ))}
 
       {/* Render items inside the range (wrapped in a single box) */}
@@ -79,7 +58,7 @@ const PostDetailItem: React.FC<{ data: any }> = ({ data }) => {
             {filteredEntries
               .slice(startIdx, endIdx + 1)
               .map(([key, value], index) => (
-                <ItemComponent key={index} k={key} v={value} />
+                <Item key={index} k={key} v={value} />
               ))}
           </div>
         </div>
@@ -87,7 +66,7 @@ const PostDetailItem: React.FC<{ data: any }> = ({ data }) => {
 
       {/* Render remaining items after the range */}
       {otherAfterItems.map(([key, value], index) => (
-        <ItemComponent key={index} k={key} v={value} />
+        <Item key={index} k={key} v={value} />
       ))}
 
       {lastTwoAfterItems.length === 2 ? (
@@ -101,35 +80,15 @@ const PostDetailItem: React.FC<{ data: any }> = ({ data }) => {
             <div className="border-t-2 flex-grow border-dashed border-custom_gray"></div>
           </div>
           {lastTwoAfterItems.map(([key, value], index) => (
-            <ItemComponent key={index} k={key} v={value} />
+            <Item key={index} k={key} v={value} />
           ))}
         </div>
       ) : (
         // If not, simply render them normally.
         lastTwoAfterItems.map(([key, value], index) => (
-          <ItemComponent key={index} k={key} v={value} />
+          <Item key={index} k={key} v={value} />
         ))
       )}
-    </div>
-  );
-};
-
-const ItemComponent: React.FC<{ k: string; v: any }> = ({ k, v }) => {
-  const displayKey = k.includes(".") ? k.split(".")[1] : k;
-  const renderKey = ["date_ref", "link_ref", "fee_ref", "common_ref"].includes(
-    k
-  )
-    ? k
-    : null;
-
-  return (
-    <div className="w-full flex flex-col gap-1">
-      <h2 className="whitespace-nowrap text-custom_red">
-        {renderKey
-          ? (renamingData?.[renderKey] as string)
-          : _.startCase(displayKey)}
-      </h2>
-      <div className="flex flex-col">{renderPostData(k, v)}</div>
     </div>
   );
 };

@@ -56,7 +56,7 @@ const InputField: React.FC<InputFieldProps> = ({
     typeof inputValue === "string"
       ? viewType === "mobile"
         ? inputValue.length > 40
-        : inputValue.length > 85
+        : inputValue.length > 75
       : false;
 
   if (isLongText) {

@@ -7,8 +7,8 @@ import POST_DB from "posts/db";
 import PageHeader from "shared/ui/PageHeader";
 import Button from "shared/utils/form/Button";
 import Para from "shared/ui/Para";
-import DataStateWrapper from "shared/utils/DataStateWrapper";
-import renderPostData from "posts/shared/render-post-data";
+import DataStateWrapper from "shared/utils/DataStateWrapper"; 
+import RenderPostData from "posts/shared/render-post-data";
 
 const ContributionSection = () => {
   const navigate = useNavigate();
@@ -66,8 +66,11 @@ const ContributionSection = () => {
             nodelay
           >
             {(validData) => (
-              <div className="w-full h-full flex items-start">
-                {renderPostData("contributionTrends", validData)}
+              <div className="w-full h-full flex items-start"> 
+                <RenderPostData
+                  keyProp={"contributionTrends"}
+                  valueProp={validData}
+                />
               </div>
             )}
           </DataStateWrapper>

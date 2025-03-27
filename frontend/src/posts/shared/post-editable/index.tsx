@@ -11,11 +11,21 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 type Mode = "idle" | "editing" | "saved";
 
-const PostEditable: React.FC<{
+type PostEditableProps = {
   keyProp: string;
   valueProp: string | number;
   genKey?: boolean;
-}> = ({ keyProp, valueProp, genKey }) => {
+  onSaved?: () => void;
+  onRemove?: () => void;
+};
+
+const PostEditable: React.FC<PostEditableProps> = ({
+  keyProp,
+  valueProp,
+  genKey,
+  onSaved,
+  onRemove,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const initialInputValue = !genKey ? valueProp : "";
@@ -82,25 +92,28 @@ const PostEditable: React.FC<{
         ? state.inputValue.toString()
         : state.inputValue.toString();
 
+    if (parsedValue === valueProp) { 
+      handleDelete();
+      return;
+    }
+
     dispatch(setKeyValuePair({ key: effectiveKey, value: parsedValue }));
 
-    // if using dynamic key, move to saved mode so the custom key stays and a delete button appears
-    if (genKey) {
-      setState((prev) => ({
-        ...prev,
-        isChanged: false,
-        mode: "saved",
-      }));
-    } else {
-      setState((prev) => ({ ...prev, isChanged: false }));
-    }
+    setState((prev) => ({
+      ...prev,
+      isChanged: false,
+      mode: "saved",
+    }));
+
+    // notify parent that this field has been saved
+    if (onSaved) onSaved();
   };
 
   const handleUndo = () => {
     // reset input value to its initial value
     setState((prev) => ({
       ...prev,
-      inputValue: typeof valueProp === "number" ? valueProp : "",
+      inputValue: valueProp,
       isChanged: false,
       mode: "editing",
     }));
@@ -108,22 +121,39 @@ const PostEditable: React.FC<{
   };
 
   const handleDelete = () => {
-    // delete the saved custom key/value and revert to idle so the add button reappears
-    dispatch(removeKeyValuePair(effectiveKey));
-    setState({
-      mode: "idle",
-      customKey: "",
-      inputValue: initialInputValue,
-      isChanged: false,
-    });
+    if (state.mode !== "saved") {
+      // If not yet saved, simply reset the field to its initial state
+      setState({
+        mode: "idle",
+        customKey: "",
+        inputValue: initialInputValue,
+        isChanged: false,
+      });
+      // Also remove any potential value from redux store
+      dispatch(removeKeyValuePair(effectiveKey));
+    } else {
+      // If already saved, remove from the parent's list
+      dispatch(removeKeyValuePair(effectiveKey));
+      setState({
+        mode: "idle",
+        customKey: "",
+        inputValue: initialInputValue,
+        isChanged: false,
+      });
+      if (onRemove) onRemove();
+    }
   };
 
   return (
-    <div className="w-full h-full my-1 flex flex-col gap-2">
+    <div
+      className={`w-full h-full flex flex-col gap-2 ${
+        genKey ? " my-2" : "my-1"
+      }`}
+    >
       {genKey && state.mode === "idle" && (
         <button
           onClick={handleAdd}
-          className="self-center flex gap-1 items-center outline p-1 my-3 rounded px-2 text-custom_gray outline-custom_gray"
+          className="self-end flex gap-1 items-center outline p-1 rounded px-2 text-custom_gray outline-custom_gray"
         >
           <AddIcon /> Add New Information
         </button>
@@ -131,15 +161,14 @@ const PostEditable: React.FC<{
 
       {(state.mode === "editing" || state.mode === "saved" || !genKey) && (
         <div className="w-full flex gap-2 items-center">
-           <div
-    className={`flex flex-col medium_mobile:flex-row gap-2 ${
-      (!genKey || (genKey && state.customKey)) ? "flex-1" : "flex-grow-0"
-    }`}
-  >
-            {(state.mode === "editing" || state.mode === "saved") && (
+          <div
+            className={`flex flex-col medium_mobile:flex-row medium_mobile:items-center gap-2 ${
+              !genKey || (genKey && state.customKey) ? "flex-1" : "flex-grow-0"
+            }`}
+          >
+            {(state.mode === "editing" || state.mode === "saved") && genKey && (
               <Input
                 name="customKey"
-                label="Enter custom key name:"
                 type="text"
                 value={state.customKey}
                 onChange={handleCustomKeyChange}
@@ -157,19 +186,18 @@ const PostEditable: React.FC<{
                 handleInputChange={handleInputChange}
                 validationConfig={validationConfig}
                 lastName={lastName}
-                className="self-end w-full"
+                className="w-full"
               />
             )}
           </div>
-          {state.mode === "saved" ||
-            (state.mode === "editing" && (
-              <button
-                onClick={handleDelete}
-                className="flex-shrink-0 self-end pb-2 text-custom_gray"
-              >
-                <DeleteOutlineIcon />
-              </button>
-            ))}
+          {(state.mode === "saved" || state.mode === "editing") && genKey && (
+            <button
+              onClick={handleDelete}
+              className="flex-shrink-0 text-custom_gray"
+            >
+              <DeleteOutlineIcon />
+            </button>
+          )}
         </div>
       )}
       <ActionButtons

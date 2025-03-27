@@ -1,4 +1,3 @@
-// ActionButtons.tsx
 import React from "react";
 import Button from "shared/utils/form/Button";
 
@@ -22,7 +21,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       {isSaved && (
         <Button
           onClick={onUndo}
-          className="py-2 bg-custom_white transform ease-linear duration-200"
+          className="py-2 bg-custom_white font-medium transform ease-linear duration-200"
         >
           Undo
         </Button>

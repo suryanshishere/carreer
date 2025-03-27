@@ -31,13 +31,14 @@ export const excludedKeys: Record<string, boolean> = {
   tag: true,
 };
 
-export const tableRequired: Record<string, boolean> = {
+export const TABLE_REQUIRED: Record<string, boolean> = {
   age_criteria: true,
   "result_ref.result": true,
   male: true,
   female: true,
   other: true,
   "common_ref.vacancy.category_wise": true,
+  "common_ref.vacancy.detail[0]": true,
   link_ref: true,
   date_ref: true,
   eligibility: true,
@@ -54,7 +55,7 @@ export const collapsible: { [key: string]: boolean } = {
   "result_ref.result.previous_year": true,
 };
 
-export const renamingData: {
+export const RENAMING_DATA: {
   [key: string]: string | { [key: string]: string };
 } = {
   date_ref: "Important Dates",

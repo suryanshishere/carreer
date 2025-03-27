@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "shared/store";
 import PostEditable from "../post-editable";
 import { POST_LIMIT_DROPDOWN_DATA } from "posts/db";
-import { renamingData } from "posts/db/renders";
+import { RENAMING_DATA, TABLE_REQUIRED } from "posts/db/renders";
+import PostEditableList from "../post-editable/PostEditableList";
 
 const RenderField = ({
   valueProp,
@@ -23,9 +24,24 @@ const RenderField = ({
   if (isEditPostClicked && /^\/sections\/[^/]+\/[^/]+/.test(urlPath)) {
     if (uniqueKey === "last_updated")
       return (
-        <span className="text-custom_less_gray">This can't be contributed.</span>
+        <span className="text-custom_less_gray">
+          This can't be contributed.
+        </span>
       );
-    return <PostEditable valueProp={valueProp} keyProp={uniqueKey} />;
+    const parts = uniqueKey.split("."); 
+    const onePartKey = parts[0];
+    const twoPartKey = parts.slice(0, 2).join(".");
+    const threePartKey = parts.slice(0, 3).join(".");
+    return (
+      <>
+        <PostEditable valueProp={valueProp} keyProp={uniqueKey} />
+        {( !TABLE_REQUIRED[onePartKey]  &&  !TABLE_REQUIRED[twoPartKey] && !TABLE_REQUIRED[threePartKey])  && (
+          <PostEditableList
+            initialItems={[{ id: Date.now(), keyProp: uniqueKey, valueProp }]}
+          />
+        )}
+      </>
+    );
   }
 
   let strValue: string = _.toString(valueProp);
@@ -120,7 +136,7 @@ const RenderField = ({
 
   //adding extra renders to it.
   if (POST_LIMIT_DROPDOWN_DATA.has(strValue)) {
-    const keyValues = renamingData[lastKey] as {
+    const keyValues = RENAMING_DATA[lastKey] as {
       [key: string]: string;
     };
 
@@ -131,7 +147,7 @@ const RenderField = ({
     return <>{startCase(strValue)}</>;
   }
 
-  const uniValue = renamingData[uniqueKey];
+  const uniValue = RENAMING_DATA[uniqueKey];
   if (typeof uniValue === "string") {
     return <>{strValue + " " + uniValue}</>;
   }

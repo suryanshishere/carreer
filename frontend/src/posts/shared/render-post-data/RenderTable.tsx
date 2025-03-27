@@ -1,9 +1,9 @@
 import React from "react";
 import { startCase } from "lodash";
-import { excludedKeys } from "posts/db/renders";
-import renderPostData from "posts/shared/render-post-data";
+import { excludedKeys } from "posts/db/renders"; 
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import RenderPostData from "posts/shared/render-post-data";
 
 const bgColors = ["bg-custom_pale_yellow", "bg-custom_white"];
 
@@ -57,7 +57,10 @@ const RenderTable: React.FC<RenderTableProps> = ({
                         key={header}
                         className={`border-2 border-custom_gray px-2 py-1 ${randomBgColor}`}
                       >
-                        {renderPostData(fullKey, item[header])}
+                        <RenderPostData
+                          keyProp={fullKey}
+                          valueProp={item[header]}
+                        />
                       </td>
                     );
                   })}
@@ -75,8 +78,8 @@ const RenderTable: React.FC<RenderTableProps> = ({
                   </td>
                   <td
                     className={`border-2 border-custom_gray px-2 py-1 max-w-2/5 ${randomBgColor}`}
-                  >
-                    {renderPostData(fullKey, subValue)}
+                  > 
+                    <RenderPostData keyProp={fullKey} valueProp={subValue} />
                   </td>
                 </tr>
               );

@@ -7,7 +7,7 @@ import { RootState } from "shared/store";
 import PostLinkItem from "./PostLinkItem";
 import { ICommonListData } from "posts/db/interfaces";
 import { ISectionKey } from "posts/db";
-import { excludedKeys, renamingData } from "posts/db/renders";
+import { excludedKeys, RENAMING_DATA } from "posts/db/renders";
 
 interface ListProps {
   data: ICommonListData[];
@@ -34,7 +34,7 @@ const PostList: React.FC<ListProps> = ({ data, section }) => {
           return (
             <span key={key} className="ml-1">
               <span>
-                {(renamingData?.[key] as string) || _.startCase(key)}:
+                {(RENAMING_DATA?.[key] as string) || _.startCase(key)}:
               </span>
               {dateCheck ? (
                 <span>

@@ -1,49 +1,67 @@
-import { collapsible, tableRequired } from "posts/db/renders";
+import { collapsible, TABLE_REQUIRED } from "posts/db/renders";
 import RenderTable from "./RenderTable";
 import RenderObject from "./RenderObject";
 import RenderField from "posts/shared/render-post-data/RenderField";
-import PostEditable from "../post-editable";
+import PostEditableList from "../post-editable/PostEditableList";
+import { useSelector } from "react-redux";
+import { RootState } from "shared/store";
 
 const renderStrategies = {
   isNullOrUndefined: (value: any) => value === null || value === undefined,
-  isArrayOrObjectWithTable: (key: string, value: any) =>
+  isArrayOrObjectWithTable: (keyProp: string, value: any) =>
     (Array.isArray(value) &&
       value.length > 0 &&
       typeof value[0] === "object") ||
-    (typeof value === "object" && tableRequired[key]),
+    (typeof value === "object" && TABLE_REQUIRED[keyProp]),
   isPlainObject: (value: any) => typeof value === "object",
 };
 
-const renderPostData = (key: string, value: any) => {
-  if (renderStrategies.isNullOrUndefined(value)) return null;
+type RenderPostDataProps = {
+  keyProp: string;
+  valueProp: any;
+};
 
-  if (renderStrategies.isArrayOrObjectWithTable(key, value))
+const RenderPostData: React.FC<RenderPostDataProps> = ({
+  keyProp,
+  valueProp,
+}) => {
+  const { isEditPostClicked } = useSelector((state: RootState) => state.post);
+
+  if (renderStrategies.isNullOrUndefined(valueProp)) return null;
+
+  if (renderStrategies.isArrayOrObjectWithTable(keyProp, valueProp))
     return (
       <>
         <RenderTable
-          value={value}
-          tableKey={key}
-          isCollapsible={collapsible[key]}
+          value={valueProp}
+          tableKey={keyProp}
+          isCollapsible={collapsible[keyProp]}
         />
-        <PostEditable valueProp={value} keyProp={key} genKey={true} />
+        {isEditPostClicked && (
+          <PostEditableList
+            initialItems={[{ id: Date.now(), keyProp, valueProp }]}
+          />
+        )}
       </>
     );
 
-  if (renderStrategies.isPlainObject(value)) {
-    if (value?.current_year || value?.previous_year) {
-      const yearData = value.current_year || value.previous_year;
+  if (renderStrategies.isPlainObject(valueProp)) {
+    if (valueProp?.current_year || valueProp?.previous_year) {
+      const yearData = valueProp.current_year || valueProp.previous_year;
       return (
-        <RenderField valueProp={yearData} uniqueKey={`${key}.current_year`} />
+        <RenderField
+          valueProp={yearData}
+          uniqueKey={`${keyProp}.current_year`}
+        />
       );
     }
     return (
-      <> 
-        <RenderObject value={value} parentKey={key} /> 
-        <PostEditable valueProp={value} keyProp={key} genKey={true} />
+      <>
+        <RenderObject value={valueProp} parentKey={keyProp} />
       </>
     );
   }
-  return <RenderField valueProp={value} uniqueKey={key} />;
+  return <RenderField valueProp={valueProp} uniqueKey={keyProp} />;
 };
 
-export default renderPostData;
+export default RenderPostData;
