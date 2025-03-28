@@ -96,7 +96,6 @@ const findParent = (
   orderedResult: Record<string, any>,
   intactKey: string
 ): { parent: any; container: any; key: string } | null => {
-  // Direct lookup using dot notation.
   if (_.has(orderedResult, intactKey)) {
     const parts = intactKey.split(".");
     return {
@@ -105,12 +104,9 @@ const findParent = (
       key: parts[parts.length - 1],
     };
   }
-
-  // Otherwise, scan the top-level keys.
   for (const topKey in orderedResult) {
     if (intactKey.startsWith(topKey + ".")) {
-      // Remainder of the path.
-      const remainder = intactKey.slice(topKey.length + 1); // +1 to skip the dot
+      const remainder = intactKey.slice(topKey.length + 1);
       const candidate = _.get(orderedResult[topKey], remainder);
       if (candidate !== undefined) {
         const remParts = remainder.split(".");
@@ -126,63 +122,50 @@ const findParent = (
 };
 
 /**
- * Insert dynamic fields into the ordered result.
+ * Inserts dynamic fields into the final object.
  *
- * For each dynamic key (e.g. "result_ref_1_name_of_the_post_1_cool_1"), we:
- *   1. Split the key by "_1_" into segments.
- *   2. Consider the intact parent as all segments except the last.
- *   3. Use findParent() to locate that parent.
- *   4. If the parent is found:
- *       - If its value is an object, insert the dynamic property inside it.
- *       - If not, add a sibling key (using the parent's key concatenated with "_" and the dynamic property).
- *   5. If no parent is found (even after dropping segments), then insert the dynamic key at the top level.
+ * For each dynamic key (e.g. "result_ref_1_result_1_current_year_1_cool_2"):
+ * 1. Split the key into segments using "_1_" and compute:
+ *    - intactParent: all segments except the last joined by "."
+ *    - dynamicProp: the last segment.
+ * 2. Use findParent() to locate intactParent.
+ *    - If found and the parent's value is an object, insert inside that object:
+ *         parent[dynamicProp] = dynValue.
+ *    - Otherwise, record this dynamic field (keeping its original key) for immediate-sibling insertion.
+ * 3. If no parent is found (even after dropping segments), add the dynamic field at the top level.
+ *
+ * Returns an object mapping parent keys to an array of dynamic entries that need
+ * to be inserted as immediate siblings.
  */
 const insertDynamicFields = (
   orderedResult: Record<string, any>,
   dynamicField: Map<string, string>
-): Record<string, any> => {
-  for (const [dynKey, dynValue] of dynamicField.entries()) {
-    // Ensure key and value are strings.
-    if (typeof dynKey !== "string" || typeof dynValue !== "string") continue;
+): Record<string, Array<{ key: string; value: string }>> => {
+  const immediateSiblingMapping: Record<string, Array<{ key: string; value: string }>> = {};
 
-    // Split using '_1_' as a delimiter.
+  for (const [dynKey, dynValue] of dynamicField.entries()) {
+    if (typeof dynKey !== "string" || typeof dynValue !== "string") continue;
     const segments = dynKey.split("_1_").filter(Boolean);
     if (segments.length < 2) {
       orderedResult[dynKey] = dynValue;
       continue;
     }
-    // The dynamic property to add is the last segment.
+    const intactKey = segments.slice(0, segments.length - 1).join(".");
     const dynamicProp = segments[segments.length - 1];
 
-    // Build the intact parent key (all segments except the last).
-    const intactKey = segments.slice(0, segments.length - 1).join(".");
-
-    // First, try a direct lookup or nested search.
     const found = findParent(orderedResult, intactKey);
-
     if (found) {
       const { parent, container, key } = found;
-      if (
-        parent !== null &&
-        typeof parent === "object" &&
-        !Array.isArray(parent)
-      ) {
-        // If the parent is an object, insert directly inside it.
+      if (parent !== null && typeof parent === "object" && !Array.isArray(parent)) {
+        // Insert _inside_ the object using dynamicProp as the property name.
         parent[dynamicProp] = dynValue;
       } else {
-        // The intact key exists but its value is not an object.
-        // Insert as a sibling key next to the intact key.
-        // Here, we build the sibling key name as "<intactKey>_<dynamicProp>"
-        // For nested cases, container holds the object and key is the last segment.
-        if (container && typeof container === "object") {
-          container[`${key}_${dynamicProp}`] = dynValue;
-        } else {
-          // Fallback to top level if container is not an object.
-          orderedResult[`${intactKey}_${dynamicProp}`] = dynValue;
-        }
+        // Record for immediate sibling insertion.
+        immediateSiblingMapping[intactKey] = immediateSiblingMapping[intactKey] || [];
+        immediateSiblingMapping[intactKey].push({ key: dynKey, value: dynValue });
       }
     } else {
-      // If no intact key is found, try dropping segments from the right.
+      // Try dropping segments one by one.
       let segmentsCopy = segments.slice(0, segments.length - 1);
       let inserted = false;
       while (segmentsCopy.length > 0 && !inserted) {
@@ -190,43 +173,71 @@ const insertDynamicFields = (
         const candidate = findParent(orderedResult, candidateKey);
         if (candidate) {
           const { parent, container, key } = candidate;
-          if (
-            parent !== null &&
-            typeof parent === "object" &&
-            !Array.isArray(parent)
-          ) {
+          if (parent !== null && typeof parent === "object" && !Array.isArray(parent)) {
             parent[dynamicProp] = dynValue;
           } else {
-            if (container && typeof container === "object") {
-              container[`${key}_${dynamicProp}`] = dynValue;
-            } else {
-              orderedResult[`${candidateKey}_${dynamicProp}`] = dynValue;
-            }
+            immediateSiblingMapping[candidateKey] = immediateSiblingMapping[candidateKey] || [];
+            immediateSiblingMapping[candidateKey].push({ key: dynKey, value: dynValue });
           }
           inserted = true;
         } else {
           segmentsCopy.pop();
         }
       }
-      // If still not inserted, add at top level.
       if (!inserted) {
+        // If still not inserted, add at top level.
         orderedResult[dynKey] = dynValue;
       }
     }
   }
-  return orderedResult;
+  return immediateSiblingMapping;
 };
 
+/**
+ * Reorders the top-level keys of orderedResult so that for each recorded dynamic field
+ * (that was not inserted inside an object) the dynamic field appears immediately after
+ * its intact parent key.
+ */
+const reorderDynamicFields = (
+  orderedResult: Record<string, any>,
+  immediateSiblingMapping: Record<string, Array<{ key: string; value: string }>>
+): Record<string, any> => {
+  const newOrdered: Record<string, any> = {};
+  const keys = Object.keys(orderedResult);
+  for (const key of keys) {
+    newOrdered[key] = orderedResult[key];
+    if (immediateSiblingMapping[key]) {
+      for (const entry of immediateSiblingMapping[key]) {
+        newOrdered[entry.key] = entry.value;
+      }
+      delete immediateSiblingMapping[key];
+    }
+  }
+  // Append any remaining dynamic fields.
+  Object.keys(immediateSiblingMapping).forEach((remainingKey) => {
+    for (const entry of immediateSiblingMapping[remainingKey]) {
+      newOrdered[entry.key] = entry.value;
+    }
+  });
+  return newOrdered;
+};
+
+/**
+ * Processes post details by priority:
+ * 1. Flattens data and extracts priority keys.
+ * 2. Merges any remaining data.
+ * 3. Inserts dynamic fields (either inside object values if possible or recorded for immediate-sibling insertion).
+ * 4. Reorders the final object so that immediate-sibling dynamic fields appear right after their parent's key.
+ */
 const postDetailByPriority = (
   data: Record<string, any>,
   section: ISectionKey,
   dynamicField?: Map<string, string>
-) => {
+): Record<string, any> => {
   const priorityKeys = POST_DETAILS_PRIORITY[section];
   const flatData = flattenAndPreserveUpdatedAt(data);
   const orderedResult: Record<string, any> = {};
 
-  // Process priority keys from flatData/nested data.
   for (const key of priorityKeys) {
     const flatValue = flatData[key];
     const nestedValue = _.get(data, key);
@@ -236,25 +247,24 @@ const postDetailByPriority = (
         : nestedValue !== undefined
         ? nestedValue
         : "";
-
-    // Correctly format the dates view.
     if (key === "date_ref" && typeof value === "object" && value !== null) {
       value = formattedDateRefView(value);
     }
-
     orderedResult[key] = value;
     _.unset(data, key);
   }
 
-  let finalResult = { ...orderedResult, ...data };
+  // Merge any remaining keys from data.
+  let finalResult: Record<string, any> = { ...orderedResult, ...data };
 
-  // Insert dynamic keys according to your rule.
+  // Process dynamic fields.
   if (dynamicField && dynamicField instanceof Map) {
-    finalResult = insertDynamicFields(finalResult, dynamicField);
+    const immediateSiblingMapping = insertDynamicFields(finalResult, dynamicField);
+    finalResult = reorderDynamicFields(finalResult, immediateSiblingMapping);
   }
 
   console.log(finalResult);
-  // Finally, merge any remaining keys from data.
   return finalResult;
 };
+
 export default postDetailByPriority;
