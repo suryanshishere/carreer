@@ -45,12 +45,13 @@ const PostEditable: React.FC<PostEditableProps> = ({
   const effectiveKey = genKey && state.customKey ? state.customKey : keyProp;
   const lastName = effectiveKey.split(".").pop() || "";
   const validationConfig = getFieldValidation(lastName);
-  const inputType =
-    typeof valueProp === "number"
-      ? "number"
-      : validationConfig?.type === "date"
-      ? "date"
-      : "text";
+  const inputType = genKey
+    ? "text"
+    : typeof valueProp === "number"
+    ? "number"
+    : validationConfig?.type === "date"
+    ? "date"
+    : "text";
 
   const { isValid, error } = validateFieldValue(
     state.inputValue,
@@ -63,7 +64,7 @@ const PostEditable: React.FC<PostEditableProps> = ({
     >
   ) => {
     let newValue: string | number = e.target.value;
-    if (typeof valueProp === "number") {
+    if (inputType === "number") {
       newValue = +e.target.value;
     } else if (inputType === "date") {
       newValue = e.target.value;

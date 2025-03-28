@@ -105,37 +105,72 @@ const postDetailByPriority = (
   }
 
   // Prepare dynamic field grouping:
-  // Map a base key (all segments except the last) to its dynamic entries,
-  // storing only the last segment as key.
+  // Group by a base key (all segments except the last) using dot notation for lookup,
+  // but keep the original _1_ notation for final output.
   const dynamicFieldsByBase: Record<string, Record<string, string>> = {};
+  const originalKeysMap: Record<string, string> = {};
+
   if (dynamicField) {
     for (const [dKey, dValue] of dynamicField.entries()) {
-      // Replace _1_ with a dot.
+      // Convert _1_ notation to dot notation for lookup.
       const dotKey = dKey.replace(/_1_/g, ".");
       const parts = dotKey.split(".");
-      if (parts.length < 2) continue; // Skip if we cannot determine a base key.
-      // Base key is everything except the last segment.
+      if (parts.length < 2) continue;
       const baseKey = parts.slice(0, parts.length - 1).join(".");
-      const lastSegment = parts[parts.length - 1];
-
       if (!dynamicFieldsByBase[baseKey]) {
         dynamicFieldsByBase[baseKey] = {};
       }
-      // Only add the last segment as the key.
-      dynamicFieldsByBase[baseKey][lastSegment] = dValue;
+      originalKeysMap[dotKey] = dKey;
+      dynamicFieldsByBase[baseKey][dotKey] = dValue;
     }
   }
 
-  // Build final result: insert each priority key, then immediately insert
-  // any dynamic fields whose base matches the priority key.
+  // Build final result by iterating over each priority key.
   const finalResult: Record<string, any> = {};
-
   for (const pKey of priorityKeys) {
     if (pKey in orderedResult) {
       finalResult[pKey] = orderedResult[pKey];
+
+      // (A) Merge dynamic fields whose base key exactly matches pKey.
       if (dynamicFieldsByBase[pKey]) {
-        for (const dynLastKey in dynamicFieldsByBase[pKey]) {
-          finalResult[dynLastKey] = dynamicFieldsByBase[pKey][dynLastKey];
+        for (const dynDotKey in dynamicFieldsByBase[pKey]) {
+          const originalKey = originalKeysMap[dynDotKey] || dynDotKey;
+          const displayKey = originalKey.split(/\.|_1_/).pop() || originalKey;
+          if (
+            typeof finalResult[pKey] === "object" &&
+            finalResult[pKey] !== null
+          ) {
+            _.set(
+              finalResult[pKey],
+              displayKey,
+              dynamicFieldsByBase[pKey][dynDotKey]
+            );
+          } else {
+            finalResult[originalKey] = dynamicFieldsByBase[pKey][dynDotKey];
+          }
+        }
+      }
+
+      // (B) Merge dynamic fields whose base key starts with pKey + "."
+      // i.e. nested dynamic fields.
+      for (const baseKey in dynamicFieldsByBase) {
+        if (baseKey.startsWith(pKey + ".") && baseKey !== pKey) {
+          // Compute the nested path relative to pKey.
+          const nestedPath = baseKey.substring(pKey.length + 1); // skip the dot
+          for (const dynDotKey in dynamicFieldsByBase[baseKey]) {
+            const originalKey = originalKeysMap[dynDotKey] || dynDotKey;
+            const displayKey = originalKey.split(/\.|_1_/).pop() || originalKey;
+            if (
+              typeof finalResult[pKey] === "object" &&
+              finalResult[pKey] !== null
+            ) {
+              _.set(
+                finalResult[pKey],
+                `${nestedPath}.${displayKey}`,
+                dynamicFieldsByBase[baseKey][dynDotKey]
+              );
+            }
+          }
         }
       }
     }
@@ -148,10 +183,9 @@ const postDetailByPriority = (
     }
   }
 
+  console.log(dynamicField, data, finalResult);
+
   // Finally, merge any remaining keys from data.
   return { ...finalResult, ...data };
 };
-
 export default postDetailByPriority;
-
-

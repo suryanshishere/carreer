@@ -10,7 +10,9 @@ type ItemComponentProps = {
 
 const Item: React.FC<ItemComponentProps> = ({ k, v }) => {
   // Use only the part after the dot if present
-  const displayKey = k.includes(".") ? k.split(".")[1] : k;
+  const displayKey =
+    k.includes(".") || k.includes("_1_") ? k.split(/\.|_1_/).pop() : k;
+
   const renderKey = ["date_ref", "link_ref", "fee_ref", "common_ref"].includes(
     k
   )
