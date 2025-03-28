@@ -128,7 +128,7 @@ const recursiveInsert = (
  * @param targetKey The normalized target key in dot notation.
  * @param dynKey The original dynamic key.
  * @param dynValue The dynamic field's value.
- * @returns true if insertion occurred.
+ * @returns true if insertion occurred, false otherwise.
  */
 const candidateInsert = (
   finalResult: Record<string, any>,
@@ -161,7 +161,7 @@ const candidateInsert = (
  *      a. If its value is an object, insert the dynamic field inside that object.
  *      b. Otherwise, insert the dynamic field as the immediate sibling.
  * - If an exact key isn’t found, a candidate search is performed on the nested structure.
- * - If no candidate is found, the dynamic field is appended at the end.
+ * - If no candidate is found, the dynamic field is skipped.
  */
 const insertDynamicFields = (
   finalResult: Record<string, any>,
@@ -211,11 +211,8 @@ const insertDynamicFields = (
     if (inserted.has(dm.dynKey)) continue;
     if (candidateInsert(newFinalResult, dm.targetKey, dm.dynKey, dm.dynValue)) {
       inserted.add(dm.dynKey);
-    } else {
-      // If still not inserted, append at the end.
-      newFinalResult[dm.dynKey] = dm.dynValue;
-      inserted.add(dm.dynKey);
     }
+    // If candidateInsert returns false, do not add the dynamic field.
   }
 
   return newFinalResult;
@@ -259,6 +256,7 @@ const postDetailByPriority = (
 };
 
 export default postDetailByPriority;
+
 
 
 
