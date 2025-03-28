@@ -132,7 +132,7 @@ const findParent = (
  *    - If found and the parent's value is an object, insert inside that object:
  *         parent[dynamicProp] = dynValue.
  *    - Otherwise, record this dynamic field (keeping its original key) for immediate-sibling insertion.
- * 3. If no parent is found (even after dropping segments), add the dynamic field at the top level.
+ * 3. If no parent is found (even after dropping segments), skip it.
  *
  * Returns an object mapping parent keys to an array of dynamic entries that need
  * to be inserted as immediate siblings.
@@ -147,7 +147,7 @@ const insertDynamicFields = (
     if (typeof dynKey !== "string" || typeof dynValue !== "string") continue;
     const segments = dynKey.split("_1_").filter(Boolean);
     if (segments.length < 2) {
-      orderedResult[dynKey] = dynValue;
+      // Skip keys that don't match expected pattern.
       continue;
     }
     const intactKey = segments.slice(0, segments.length - 1).join(".");
@@ -157,10 +157,9 @@ const insertDynamicFields = (
     if (found) {
       const { parent, container, key } = found;
       if (parent !== null && typeof parent === "object" && !Array.isArray(parent)) {
-        // Insert _inside_ the object using dynamicProp as the property name.
+        // Insert inside the object using dynamicProp as the property name.
         parent[dynamicProp] = dynValue;
       } else {
-        // Record for immediate sibling insertion.
         immediateSiblingMapping[intactKey] = immediateSiblingMapping[intactKey] || [];
         immediateSiblingMapping[intactKey].push({ key: dynKey, value: dynValue });
       }
@@ -184,10 +183,7 @@ const insertDynamicFields = (
           segmentsCopy.pop();
         }
       }
-      if (!inserted) {
-        // If still not inserted, add at top level.
-        orderedResult[dynKey] = dynValue;
-      }
+      // If still not inserted, skip it.
     }
   }
   return immediateSiblingMapping;
@@ -213,12 +209,7 @@ const reorderDynamicFields = (
       delete immediateSiblingMapping[key];
     }
   }
-  // Append any remaining dynamic fields.
-  Object.keys(immediateSiblingMapping).forEach((remainingKey) => {
-    for (const entry of immediateSiblingMapping[remainingKey]) {
-      newOrdered[entry.key] = entry.value;
-    }
-  });
+  // (Skip appending any remaining dynamic fields)
   return newOrdered;
 };
 
@@ -254,10 +245,8 @@ const postDetailByPriority = (
     _.unset(data, key);
   }
 
-  // Merge any remaining keys from data.
   let finalResult: Record<string, any> = { ...orderedResult, ...data };
 
-  // Process dynamic fields.
   if (dynamicField && dynamicField instanceof Map) {
     const immediateSiblingMapping = insertDynamicFields(finalResult, dynamicField);
     finalResult = reorderDynamicFields(finalResult, immediateSiblingMapping);
