@@ -126,11 +126,11 @@ const findParent = (
  *
  * For each dynamic key (e.g. "result_ref_1_result_1_current_year_1_cool_2"):
  * 1. Split the key into segments using "_1_" and compute:
- *    - intactParent: all segments except the last joined by "."
- *    - dynamicProp: the last segment.
- * 2. Use findParent() to locate intactParent.
- *    - If found and the parent's value is an object, insert inside that object:
- *         parent[dynamicProp] = dynValue.
+ *    - intactKey: all segments except the last joined by "."
+ *    - dynamicProp: the last segment (used only when necessary).
+ * 2. Use findParent() to locate intactKey.
+ *    - If found and the parent's value is an object, insert inside that object
+ *      using the full original dynamic key as the property name.
  *    - Otherwise, record this dynamic field (keeping its original key) for immediate-sibling insertion.
  * 3. If no parent is found (even after dropping segments), skip it.
  *
@@ -151,14 +151,15 @@ const insertDynamicFields = (
       continue;
     }
     const intactKey = segments.slice(0, segments.length - 1).join(".");
+    // dynamicProp is available if needed but we now preserve the full dynKey.
     const dynamicProp = segments[segments.length - 1];
 
     const found = findParent(orderedResult, intactKey);
     if (found) {
       const { parent, container, key } = found;
       if (parent !== null && typeof parent === "object" && !Array.isArray(parent)) {
-        // Insert inside the object using dynamicProp as the property name.
-        parent[dynamicProp] = dynValue;
+        // Insert inside the object using the original dynamic key.
+        parent[dynKey] = dynValue;
       } else {
         immediateSiblingMapping[intactKey] = immediateSiblingMapping[intactKey] || [];
         immediateSiblingMapping[intactKey].push({ key: dynKey, value: dynValue });
@@ -173,7 +174,7 @@ const insertDynamicFields = (
         if (candidate) {
           const { parent, container, key } = candidate;
           if (parent !== null && typeof parent === "object" && !Array.isArray(parent)) {
-            parent[dynamicProp] = dynValue;
+            parent[dynKey] = dynValue;
           } else {
             immediateSiblingMapping[candidateKey] = immediateSiblingMapping[candidateKey] || [];
             immediateSiblingMapping[candidateKey].push({ key: dynKey, value: dynValue });
@@ -209,7 +210,7 @@ const reorderDynamicFields = (
       delete immediateSiblingMapping[key];
     }
   }
-  // (Skip appending any remaining dynamic fields)
+  // Do not append any remaining dynamic fields.
   return newOrdered;
 };
 
