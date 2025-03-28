@@ -9,7 +9,7 @@ import {
 } from "shared/store/thunks/response-thunk";
 import { ISectionKey } from "posts/db";
 import { closeAllDropdowns } from "shared/store/dropdownSlice";
-import { closeSpecificModal } from "shared/store/modalSlice";
+import { closeSpecificModal, toggleModalState } from "shared/store/modalSlice";
 
 const useContributeMutation = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -50,6 +50,7 @@ const useContributeMutation = () => {
       dispatch(
         setEditContribute({ clicked: false, section: "", postCode: "" })
       );
+      dispatch(toggleModalState({ id: "confirmSubmit", bool: false }));
       dispatch(closeAllDropdowns());
     },
     onError: (error: any) => {

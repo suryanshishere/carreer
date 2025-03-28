@@ -115,36 +115,34 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
         </Button>
       </div>
 
-      {showModal &&
+      {showModal && (
         <Modal
           onClose={closeDeleteModalHandler}
           header="Confirm Deletion"
-          footer={
-            <div className="flex justify-end gap-2">
-              <Button onClick={closeDeleteModalHandler}>Cancel</Button>
-              <Button
-                authButtonType
-                onClick={() => {
-                  deleteContributeMutation.mutate({
-                    post_code: postCode,
-                    version,
-                    section,
-                  });
-                }}
-              >
-                {deleteContributeMutation.isPending
-                  ? "Confirming..."
-                  : "Confirm"}
-              </Button>
-            </div>
+          onCancel 
+          confirmButton={
+            <Button
+              authButtonType
+              onClick={() => {
+                deleteContributeMutation.mutate({
+                  post_code: postCode,
+                  version,
+                  section,
+                });
+              }}
+              className="flex-1"
+              disabled={deleteContributeMutation.isPending}
+            >
+              {deleteContributeMutation.isPending ? "Deleting..." : "Delete"}
+            </Button>
           }
         >
           <p>Are you sure you want to delete this contribution?</p>
-          <mark>
+          <mark className="font-semibold">
             {postCode} / {section}
           </mark>
         </Modal>
-      }
+      )}
     </div>
   );
 };

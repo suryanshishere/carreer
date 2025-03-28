@@ -43,14 +43,17 @@ export const updatePost = async (
 
   // Update post data (in-memory modification)
   Object.keys(data).forEach((key) => {
-    if (_.has(post, key)) {
+    if (_.get(post, key) !== undefined) {
+      // Directly update using _.set, ensuring nested structures are handled
       _.set(post, key, data[key]);
     } else {
-      let dynamicKey = key.includes(".") ? key.replace(/\./g, "_1_") : key;
+      // Convert dot notation key to avoid conflicts
+      let dynamicKey = key.replace(/\./g, "_1_");
 
       if (!post.dynamic_field) {
         post.dynamic_field = new Map<string, string>();
       }
+
       post.dynamic_field.set(dynamicKey, data[key]);
       post.markModified("dynamic_field");
     }
@@ -64,7 +67,7 @@ export const updatePost = async (
   if (!post[contributorsField].includes(contributor_id)) {
     post[contributorsField].push(contributor_id);
   }
-
+  console.log(post);
   return post;
 };
 

@@ -20,11 +20,13 @@ const renderStrategies = {
 type RenderPostDataProps = {
   keyProp: string;
   valueProp: any;
+  isPostEditable?:boolean
 };
 
 const RenderPostData: React.FC<RenderPostDataProps> = ({
   keyProp,
   valueProp,
+  isPostEditable=true
 }) => {
   const { isEditPostClicked } = useSelector((state: RootState) => state.post);
   const location = useLocation();
@@ -40,7 +42,7 @@ const RenderPostData: React.FC<RenderPostDataProps> = ({
           tableKey={keyProp}
           isCollapsible={collapsible[keyProp]}
         />
-        {isEditPostClicked && /^\/sections\/[^/]+\/[^/]+/.test(urlPath) && (
+        {isEditPostClicked && isPostEditable&& /^\/sections\/[^/]+\/[^/]+/.test(urlPath) && (
           <PostEditableList
             initialItems={[{ id: Date.now(), keyProp, valueProp }]}
           />
@@ -60,7 +62,7 @@ const RenderPostData: React.FC<RenderPostDataProps> = ({
     }
     return <RenderObject value={valueProp} parentKey={keyProp} />;
   }
-  return <RenderField valueProp={valueProp} uniqueKey={keyProp} />;
+  return <RenderField valueProp={valueProp} uniqueKey={keyProp} isPostEditable={isPostEditable}/>;
 };
 
 export default RenderPostData;

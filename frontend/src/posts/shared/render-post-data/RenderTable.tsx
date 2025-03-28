@@ -12,12 +12,14 @@ interface RenderTableProps {
   value: any[] | Record<string, any>;
   tableKey: string;
   isCollapsible?: boolean;
+  isPostEditable?: boolean;
 }
 
 const RenderTable: React.FC<RenderTableProps> = ({
   value,
   tableKey,
   isCollapsible = false,
+  isPostEditable
 }) => {
   if (!value || typeof value !== "object" || excludedKeys[tableKey])
     return null;
@@ -61,6 +63,7 @@ const RenderTable: React.FC<RenderTableProps> = ({
                         <RenderPostData
                           keyProp={fullKey}
                           valueProp={item[header]}
+                          isPostEditable={isPostEditable}
                         />
                       </td>
                     );
@@ -80,7 +83,7 @@ const RenderTable: React.FC<RenderTableProps> = ({
                   <td
                     className={`border-2 border-custom_gray px-2 py-1 max-w-2/5 ${randomBgColor}`}
                   > 
-                    <RenderPostData keyProp={fullKey} valueProp={subValue} />
+                    <RenderPostData keyProp={fullKey} valueProp={subValue} isPostEditable={isPostEditable}/>
                   </td>
                 </tr>
               );

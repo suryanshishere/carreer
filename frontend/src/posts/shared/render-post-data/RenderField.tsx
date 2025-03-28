@@ -13,16 +13,22 @@ const RenderField = ({
   valueProp,
   uniqueKey,
   noLinkClassProp,
+  isPostEditable = true,
 }: {
   valueProp: any;
   uniqueKey: string;
   noLinkClassProp?: boolean;
+  isPostEditable?: boolean;
 }) => {
   const { isEditPostClicked } = useSelector((state: RootState) => state.post);
   const location = useLocation();
   const urlPath = location.pathname;
   //if editpostclicked is true, then render editable post (other factor can be added to more precise)
-  if (isEditPostClicked && /^\/sections\/[^/]+\/[^/]+/.test(urlPath)) {
+  if (
+    isEditPostClicked &&
+    isPostEditable &&
+    /^\/sections\/[^/]+\/[^/]+/.test(urlPath)
+  ) {
     if (uniqueKey === "last_updated")
       return (
         <span className="text-custom_less_gray">
