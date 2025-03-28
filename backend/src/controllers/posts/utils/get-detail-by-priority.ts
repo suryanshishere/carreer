@@ -168,12 +168,15 @@ const insertDynamicFields = (
   dynamicField: Map<string, string>
 ): Record<string, any> => {
   // Build mapping: for each dynamic key, drop the last segment (if there are more than one) to create a target key.
-  const dynamicMapping = Array.from(dynamicField.entries()).map(([dynKey, dynValue]) => {
-    const parts = dynKey.split("_1_").filter((p) => p);
-    // If more than one segment exists, drop the last one for a direct match.
-    const targetKey = parts.length > 1 ? parts.slice(0, -1).join(".") : parts.join(".");
-    return { dynKey, dynValue, targetKey };
-  });
+  const dynamicMapping = Array.from(dynamicField.entries()).map(
+    ([dynKey, dynValue]) => {
+      const parts = dynKey.split("_1_").filter((p) => p);
+      // If more than one segment exists, drop the last one for a direct match.
+      const targetKey =
+        parts.length > 1 ? parts.slice(0, -1).join(".") : parts.join(".");
+      return { dynKey, dynValue, targetKey };
+    }
+  );
 
   // Convert finalResult into an ordered array of entries.
   const orderedEntries = Object.entries(finalResult);
@@ -188,7 +191,11 @@ const insertDynamicFields = (
     const matches = dynamicMapping.filter((dm) => dm.targetKey === key);
     for (const dm of matches) {
       if (inserted.has(dm.dynKey)) continue; // already processed
-      if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+      if (
+        typeof value === "object" &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
         // If value is an object, insert the dynamic field inside.
         value[dm.dynKey] = dm.dynValue;
         inserted.add(dm.dynKey);
@@ -250,15 +257,10 @@ const postDetailByPriority = (
   if (dynamicField) {
     finalResult = insertDynamicFields(finalResult, dynamicField);
   }
-
-  console.log(finalResult, dynamicField);
   return finalResult;
 };
 
 export default postDetailByPriority;
-
-
-
 
 const filterFinalResult = (data: Record<string, any>): Record<string, any> => {
   // Filter out unwanted entries
