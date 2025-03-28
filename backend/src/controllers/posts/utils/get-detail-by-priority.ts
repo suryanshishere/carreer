@@ -75,6 +75,148 @@ const flattenAndPreserveUpdatedAt = (
   return flatObj;
 };
 
+/**
+ * Attempts to find the parent value given an intact key.
+ *
+ * First, it tries a direct lookup in orderedResult. If not found, it then scans
+ * the top-level keys for one that is a prefix of the intact key and uses the remainder
+ * to retrieve the nested value.
+ *
+ * @param orderedResult The final result object.
+ * @param intactKey The intact key built from the dynamic key segments (e.g. "result_ref.result.current_year").
+ *
+ * @returns An object with:
+ *    - parent: the value found (could be object or other type),
+ *    - container: the object that directly holds the property (if found via nesting),
+ *    - key: the property name within the container.
+ *
+ * If nothing is found, returns null.
+ */
+const findParent = (
+  orderedResult: Record<string, any>,
+  intactKey: string
+): { parent: any; container: any; key: string } | null => {
+  // Direct lookup using dot notation.
+  if (_.has(orderedResult, intactKey)) {
+    const parts = intactKey.split(".");
+    return {
+      parent: _.get(orderedResult, intactKey),
+      container: orderedResult,
+      key: parts[parts.length - 1],
+    };
+  }
+
+  // Otherwise, scan the top-level keys.
+  for (const topKey in orderedResult) {
+    if (intactKey.startsWith(topKey + ".")) {
+      // Remainder of the path.
+      const remainder = intactKey.slice(topKey.length + 1); // +1 to skip the dot
+      const candidate = _.get(orderedResult[topKey], remainder);
+      if (candidate !== undefined) {
+        const remParts = remainder.split(".");
+        return {
+          parent: candidate,
+          container: _.get(orderedResult, topKey),
+          key: remParts[remParts.length - 1],
+        };
+      }
+    }
+  }
+  return null;
+};
+
+/**
+ * Insert dynamic fields into the ordered result.
+ *
+ * For each dynamic key (e.g. "result_ref_1_name_of_the_post_1_cool_1"), we:
+ *   1. Split the key by "_1_" into segments.
+ *   2. Consider the intact parent as all segments except the last.
+ *   3. Use findParent() to locate that parent.
+ *   4. If the parent is found:
+ *       - If its value is an object, insert the dynamic property inside it.
+ *       - If not, add a sibling key (using the parent's key concatenated with "_" and the dynamic property).
+ *   5. If no parent is found (even after dropping segments), then insert the dynamic key at the top level.
+ */
+const insertDynamicFields = (
+  orderedResult: Record<string, any>,
+  dynamicField: Map<string, string>
+): Record<string, any> => {
+  for (const [dynKey, dynValue] of dynamicField.entries()) {
+    // Ensure key and value are strings.
+    if (typeof dynKey !== "string" || typeof dynValue !== "string") continue;
+
+    // Split using '_1_' as a delimiter.
+    const segments = dynKey.split("_1_").filter(Boolean);
+    if (segments.length < 2) {
+      orderedResult[dynKey] = dynValue;
+      continue;
+    }
+    // The dynamic property to add is the last segment.
+    const dynamicProp = segments[segments.length - 1];
+
+    // Build the intact parent key (all segments except the last).
+    const intactKey = segments.slice(0, segments.length - 1).join(".");
+
+    // First, try a direct lookup or nested search.
+    const found = findParent(orderedResult, intactKey);
+
+    if (found) {
+      const { parent, container, key } = found;
+      if (
+        parent !== null &&
+        typeof parent === "object" &&
+        !Array.isArray(parent)
+      ) {
+        // If the parent is an object, insert directly inside it.
+        parent[dynamicProp] = dynValue;
+      } else {
+        // The intact key exists but its value is not an object.
+        // Insert as a sibling key next to the intact key.
+        // Here, we build the sibling key name as "<intactKey>_<dynamicProp>"
+        // For nested cases, container holds the object and key is the last segment.
+        if (container && typeof container === "object") {
+          container[`${key}_${dynamicProp}`] = dynValue;
+        } else {
+          // Fallback to top level if container is not an object.
+          orderedResult[`${intactKey}_${dynamicProp}`] = dynValue;
+        }
+      }
+    } else {
+      // If no intact key is found, try dropping segments from the right.
+      let segmentsCopy = segments.slice(0, segments.length - 1);
+      let inserted = false;
+      while (segmentsCopy.length > 0 && !inserted) {
+        const candidateKey = segmentsCopy.join(".");
+        const candidate = findParent(orderedResult, candidateKey);
+        if (candidate) {
+          const { parent, container, key } = candidate;
+          if (
+            parent !== null &&
+            typeof parent === "object" &&
+            !Array.isArray(parent)
+          ) {
+            parent[dynamicProp] = dynValue;
+          } else {
+            if (container && typeof container === "object") {
+              container[`${key}_${dynamicProp}`] = dynValue;
+            } else {
+              orderedResult[`${candidateKey}_${dynamicProp}`] = dynValue;
+            }
+          }
+          inserted = true;
+        } else {
+          segmentsCopy.pop();
+        }
+      }
+      // If still not inserted, add at top level.
+      if (!inserted) {
+        orderedResult[dynKey] = dynValue;
+      }
+    }
+  }
+  return orderedResult;
+};
+
 const postDetailByPriority = (
   data: Record<string, any>,
   section: ISectionKey,
@@ -104,88 +246,15 @@ const postDetailByPriority = (
     _.unset(data, key);
   }
 
-  // Prepare dynamic field grouping:
-  // Group by a base key (all segments except the last) using dot notation for lookup,
-  // but keep the original _1_ notation for final output.
-  const dynamicFieldsByBase: Record<string, Record<string, string>> = {};
-  const originalKeysMap: Record<string, string> = {};
+  let finalResult = { ...orderedResult, ...data };
 
-  if (dynamicField) {
-    for (const [dKey, dValue] of dynamicField.entries()) {
-      // Convert _1_ notation to dot notation for lookup.
-      const dotKey = dKey.replace(/_1_/g, ".");
-      const parts = dotKey.split(".");
-      if (parts.length < 2) continue;
-      const baseKey = parts.slice(0, parts.length - 1).join(".");
-      if (!dynamicFieldsByBase[baseKey]) {
-        dynamicFieldsByBase[baseKey] = {};
-      }
-      originalKeysMap[dotKey] = dKey;
-      dynamicFieldsByBase[baseKey][dotKey] = dValue;
-    }
+  // Insert dynamic keys according to your rule.
+  if (dynamicField && dynamicField instanceof Map) {
+    finalResult = insertDynamicFields(finalResult, dynamicField);
   }
 
-  // Build final result by iterating over each priority key.
-  const finalResult: Record<string, any> = {};
-  for (const pKey of priorityKeys) {
-    if (pKey in orderedResult) {
-      finalResult[pKey] = orderedResult[pKey];
-
-      // (A) Merge dynamic fields whose base key exactly matches pKey.
-      if (dynamicFieldsByBase[pKey]) {
-        for (const dynDotKey in dynamicFieldsByBase[pKey]) {
-          const originalKey = originalKeysMap[dynDotKey] || dynDotKey;
-          const displayKey = originalKey.split(/\.|_1_/).pop() || originalKey;
-          if (
-            typeof finalResult[pKey] === "object" &&
-            finalResult[pKey] !== null
-          ) {
-            _.set(
-              finalResult[pKey],
-              displayKey,
-              dynamicFieldsByBase[pKey][dynDotKey]
-            );
-          } else {
-            finalResult[originalKey] = dynamicFieldsByBase[pKey][dynDotKey];
-          }
-        }
-      }
-
-      // (B) Merge dynamic fields whose base key starts with pKey + "."
-      // i.e. nested dynamic fields.
-      for (const baseKey in dynamicFieldsByBase) {
-        if (baseKey.startsWith(pKey + ".") && baseKey !== pKey) {
-          // Compute the nested path relative to pKey.
-          const nestedPath = baseKey.substring(pKey.length + 1); // skip the dot
-          for (const dynDotKey in dynamicFieldsByBase[baseKey]) {
-            const originalKey = originalKeysMap[dynDotKey] || dynDotKey;
-            const displayKey = originalKey.split(/\.|_1_/).pop() || originalKey;
-            if (
-              typeof finalResult[pKey] === "object" &&
-              finalResult[pKey] !== null
-            ) {
-              _.set(
-                finalResult[pKey],
-                `${nestedPath}.${displayKey}`,
-                dynamicFieldsByBase[baseKey][dynDotKey]
-              );
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // Merge any remaining keys from orderedResult that weren't in the priority.
-  for (const key in orderedResult) {
-    if (!(key in finalResult)) {
-      finalResult[key] = orderedResult[key];
-    }
-  }
-
-  console.log(dynamicField, data, finalResult);
-
+  console.log(finalResult);
   // Finally, merge any remaining keys from data.
-  return { ...finalResult, ...data };
+  return finalResult;
 };
 export default postDetailByPriority;
