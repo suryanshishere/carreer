@@ -4,6 +4,7 @@ import { excludedKeys } from "posts/db/renders";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RenderPostData from "posts/shared/render-post-data";
+import { getDisplayKey } from "posts/utils";
 
 const bgColors = ["bg-custom_pale_yellow", "bg-custom_white"];
 
@@ -74,7 +75,7 @@ const RenderTable: React.FC<RenderTableProps> = ({
               return (
                 <tr key={subKey}>
                   <td className="border-2 border-custom_gray px-2 py-1 font-bold">
-                    {startCase(subKey)}
+                    {startCase(getDisplayKey(subKey))}
                   </td>
                   <td
                     className={`border-2 border-custom_gray px-2 py-1 max-w-2/5 ${randomBgColor}`}

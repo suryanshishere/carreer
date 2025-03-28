@@ -42,7 +42,7 @@ const PostEditable: React.FC<PostEditableProps> = ({
   });
 
   // effective key is the custom key if one exists (when genKey is true and a custom key is provided)
-  const effectiveKey = genKey && state.customKey ? state.customKey : keyProp;
+  const effectiveKey = genKey && state.customKey ?  state.customKey : keyProp;
   const lastName = effectiveKey.split(".").pop() || "";
   const validationConfig = getFieldValidation(lastName);
   const inputType = genKey

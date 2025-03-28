@@ -2,16 +2,14 @@ import React from "react";
 import _ from "lodash";
 import RenderPostData from "posts/shared/render-post-data";
 import { RENAMING_DATA } from "posts/db/renders";
+import { getDisplayKey } from "posts/utils";
 
 type ItemComponentProps = {
   k: string;
   v: any;
 };
 
-const Item: React.FC<ItemComponentProps> = ({ k, v }) => {
-  // Use only the part after the dot if present
-  const displayKey =
-    k.includes(".") || k.includes("_1_") ? k.split(/\.|_1_/).pop() : k;
+const Item: React.FC<ItemComponentProps> = ({ k, v }) => { 
 
   const renderKey = ["date_ref", "link_ref", "fee_ref", "common_ref"].includes(
     k
@@ -24,7 +22,7 @@ const Item: React.FC<ItemComponentProps> = ({ k, v }) => {
       <h2 className="whitespace-nowrap text-custom_red">
         {renderKey
           ? (RENAMING_DATA?.[renderKey] as string)
-          : _.startCase(displayKey)}
+          : _.startCase(getDisplayKey(k))}
       </h2>
       <div className="flex flex-col">
         <RenderPostData keyProp={k} valueProp={v} />
