@@ -105,30 +105,30 @@ const recursiveInsert = (
     if (typeof obj[first] === "object" && obj[first] !== null) {
       return recursiveInsert(obj[first], parts.slice(1), dynKey, dynValue);
     } else {
-      // If not an object, insert dynamic field as a sibling in the current object.
+      // Found the segment but it isn't an object; insert here as a sibling.
       obj[dynKey] = dynValue;
       return true;
     }
   } else {
-    // If property doesn't exist, insert dynamic field here.
+    // If the property doesn't exist, insert dynamic field here.
     obj[dynKey] = dynValue;
     return true;
   }
 };
 
 /**
- * Attempts to insert the dynamic field into a nested object by searching for a matching
- * top-level key prefix. The normalized target key (dot notation) is split into parts.
+ * Attempts to insert the dynamic field into a nested object by searching for the longest
+ * matching top‑level key prefix. The normalized target key (dot notation) is split into parts.
  *
- * For example, for "result_ref.result.current_year.cool_2", it will first check for the longest
- * prefix present as a key. If "result_ref.result" exists, then the remaining parts ["current_year", "cool_2"]
- * are used to recursively insert into that object.
+ * For example, for "result_ref.result.current_year.cool_2", if the top‑level key
+ * "result_ref.result" exists, then the remaining parts ["current_year", "cool_2"] are used to
+ * recursively insert into that object.
  *
  * @param finalResult The final result object.
  * @param targetKey The normalized target key in dot notation.
  * @param dynKey The original dynamic key.
- * @param dynValue The dynamic value.
- * @returns true if insertion occurred, false otherwise.
+ * @param dynValue The dynamic field's value.
+ * @returns true if insertion occurred.
  */
 const candidateInsert = (
   finalResult: Record<string, any>,
@@ -155,21 +155,23 @@ const candidateInsert = (
 };
 
 /**
- * Inserts dynamic fields into finalResult such that if an exact target key is found:
- * - When the value is an object, the dynamic key is inserted inside it.
- * - Otherwise, the dynamic key–value pair is inserted immediately after the matched key.
- *
- * If the exact key isn’t found, it tries finding a matching top-level prefix and then recursively
- * traverses the nested object. If no candidate is found, the dynamic field is skipped.
+ * Inserts dynamic fields into finalResult such that:
+ * - For direct matches: the dynamic field’s target key is derived by removing the last segment.
+ *   - If an exact top-level key is found:
+ *      a. If its value is an object, insert the dynamic field inside that object.
+ *      b. Otherwise, insert the dynamic field as the immediate sibling.
+ * - If an exact key isn’t found, a candidate search is performed on the nested structure.
+ * - If no candidate is found, the dynamic field is appended at the end.
  */
 const insertDynamicFields = (
   finalResult: Record<string, any>,
   dynamicField: Map<string, string>
 ): Record<string, any> => {
-  // Build mapping by splitting on "_1_" and joining the parts with dot notation.
+  // Build mapping: for each dynamic key, drop the last segment (if there are more than one) to create a target key.
   const dynamicMapping = Array.from(dynamicField.entries()).map(([dynKey, dynValue]) => {
     const parts = dynKey.split("_1_").filter((p) => p);
-    const targetKey = parts.join(".");
+    // If more than one segment exists, drop the last one for a direct match.
+    const targetKey = parts.length > 1 ? parts.slice(0, -1).join(".") : parts.join(".");
     return { dynKey, dynValue, targetKey };
   });
 
@@ -178,28 +180,20 @@ const insertDynamicFields = (
   const newOrderedEntries: [string, any][] = [];
   const inserted = new Set<string>();
 
-  // Helper: insert as an immediate sibling of a given key.
-  const insertAfterKey = (keyToMatch: string, dm: { dynKey: string; dynValue: string }) => {
-    const idx = newOrderedEntries.findIndex(([k]) => k === keyToMatch);
-    if (idx >= 0) {
-      newOrderedEntries.splice(idx + 1, 0, [dm.dynKey, dm.dynValue]);
-      inserted.add(dm.dynKey);
-    } else {
-      newOrderedEntries.push([dm.dynKey, dm.dynValue]);
-      inserted.add(dm.dynKey);
-    }
-  };
-
-  // Process exact top-level matches.
-  for (const [key, value] of orderedEntries) {
+  // Process exact top-level matches using index iteration.
+  for (let i = 0; i < orderedEntries.length; i++) {
+    const [key, value] = orderedEntries[i];
     newOrderedEntries.push([key, value]);
+    // Look for dynamic fields that exactly target this key.
     const matches = dynamicMapping.filter((dm) => dm.targetKey === key);
     for (const dm of matches) {
-      if (inserted.has(dm.dynKey)) continue;
+      if (inserted.has(dm.dynKey)) continue; // already processed
       if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+        // If value is an object, insert the dynamic field inside.
         value[dm.dynKey] = dm.dynValue;
         inserted.add(dm.dynKey);
       } else {
+        // Otherwise, insert as immediate sibling (right after the key).
         newOrderedEntries.push([dm.dynKey, dm.dynValue]);
         inserted.add(dm.dynKey);
       }
@@ -207,16 +201,19 @@ const insertDynamicFields = (
   }
 
   // Rebuild newFinalResult from ordered entries.
-  const newFinalResult: Record<string, any> = {};
+  let newFinalResult: Record<string, any> = {};
   for (const [k, v] of newOrderedEntries) {
     newFinalResult[k] = v;
   }
 
-  // Process dynamic fields not inserted at top level.
+  // Process dynamic fields that weren't inserted at the top level.
   for (const dm of dynamicMapping) {
     if (inserted.has(dm.dynKey)) continue;
-    const insertedCandidate = candidateInsert(newFinalResult, dm.targetKey, dm.dynKey, dm.dynValue);
-    if (insertedCandidate) {
+    if (candidateInsert(newFinalResult, dm.targetKey, dm.dynKey, dm.dynValue)) {
+      inserted.add(dm.dynKey);
+    } else {
+      // If still not inserted, append at the end.
+      newFinalResult[dm.dynKey] = dm.dynValue;
       inserted.add(dm.dynKey);
     }
   }
@@ -262,6 +259,7 @@ const postDetailByPriority = (
 };
 
 export default postDetailByPriority;
+
 
 
 const filterFinalResult = (data: Record<string, any>): Record<string, any> => {
