@@ -42,7 +42,7 @@ const PostEditable: React.FC<PostEditableProps> = ({
   });
 
   // effective key is the custom key if one exists (when genKey is true and a custom key is provided)
-  const effectiveKey = genKey && state.customKey ?  state.customKey : keyProp;
+  const effectiveKey = genKey && state.customKey ? state.customKey : keyProp;
   const lastName = effectiveKey.split(".").pop() || "";
   const validationConfig = getFieldValidation(lastName);
   const inputType = genKey
@@ -69,6 +69,7 @@ const PostEditable: React.FC<PostEditableProps> = ({
     } else if (inputType === "date") {
       newValue = e.target.value;
     }
+ 
     setState((prev) => ({
       ...prev,
       inputValue: newValue,
@@ -86,14 +87,13 @@ const PostEditable: React.FC<PostEditableProps> = ({
   };
 
   const handleSave = () => {
-    const parsedValue =
-      typeof valueProp === "number"
-        ? +state.inputValue
-        : validationConfig?.type === "date"
-        ? state.inputValue.toString()
-        : state.inputValue.toString();
+    const parsedValue = inputType ==="number"
+      ? +state.inputValue
+      : validationConfig?.type === "date"
+      ? state.inputValue.toString()
+      : state.inputValue.toString(); 
 
-    if (parsedValue === valueProp) {
+    if (typeof valueProp === "string" && parsedValue === valueProp.trim() || valueProp === parsedValue) {
       // If the value is the same as before, remove it instead of saving again
       handleDelete();
       return;
