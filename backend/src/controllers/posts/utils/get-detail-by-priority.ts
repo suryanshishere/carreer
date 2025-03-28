@@ -126,6 +126,8 @@ const insertDynamicFields = (
     }
     // Build the intact key from all segments except the last.
     const intactKey = segments.slice(0, segments.length - 1).join(".");
+    // This is the immediate sibling key we want.
+    const immediateSiblingKey = intactKey;
     // dynamicProp is available if needed but we now preserve the full dynKey.
     const dynamicProp = segments[segments.length - 1];
 
@@ -139,16 +141,35 @@ const insertDynamicFields = (
         !Array.isArray(parent)
       ) {
         parent[dynKey] = dynValue;
+        // Record as immediate sibling unless the key is link_ref or date_ref.
+        if (immediateSiblingKey !== "link_ref" && immediateSiblingKey !== "date_ref") {
+          immediateSiblingMapping[immediateSiblingKey] =
+            immediateSiblingMapping[immediateSiblingKey] || [];
+          immediateSiblingMapping[immediateSiblingKey].push({
+            key: dynKey,
+            value: dynValue,
+          });
+        }
       } else if (
         container !== null &&
         typeof container === "object" &&
         !Array.isArray(container)
       ) {
         container[dynKey] = dynValue;
+        if (immediateSiblingKey !== "link_ref" && immediateSiblingKey !== "date_ref") {
+          immediateSiblingMapping[immediateSiblingKey] =
+            immediateSiblingMapping[immediateSiblingKey] || [];
+          immediateSiblingMapping[immediateSiblingKey].push({
+            key: dynKey,
+            value: dynValue,
+          });
+        }
       } else {
-        immediateSiblingMapping[intactKey] =
-          immediateSiblingMapping[intactKey] || [];
-        immediateSiblingMapping[intactKey].push({ key: dynKey, value: dynValue });
+        if (immediateSiblingKey !== "link_ref" && immediateSiblingKey !== "date_ref") {
+          immediateSiblingMapping[immediateSiblingKey] =
+            immediateSiblingMapping[immediateSiblingKey] || [];
+          immediateSiblingMapping[immediateSiblingKey].push({ key: dynKey, value: dynValue });
+        }
       }
       continue;
     }
@@ -175,21 +196,29 @@ const insertDynamicFields = (
             typeof nested === "object" &&
             !Array.isArray(nested)
           ) {
-            // If the nested value is an object, insert the dynamic field there.
             nested[dynKey] = dynValue;
+            if (candidateKey !== "link_ref" && candidateKey !== "date_ref") {
+              immediateSiblingMapping[candidateKey] =
+                immediateSiblingMapping[candidateKey] || [];
+              immediateSiblingMapping[candidateKey].push({
+                key: dynKey,
+                value: dynValue,
+              });
+            }
           } else {
-            // Otherwise, insert directly into the candidate parent.
-            parent[dynKey] = dynValue;
+            // If no nested key (or it's not an object), skip insertion.
           }
           inserted = true;
           break;
         } else {
-          immediateSiblingMapping[candidateKey] =
-            immediateSiblingMapping[candidateKey] || [];
-          immediateSiblingMapping[candidateKey].push({
-            key: dynKey,
-            value: dynValue,
-          });
+          if (candidateKey !== "link_ref" && candidateKey !== "date_ref") {
+            immediateSiblingMapping[candidateKey] =
+              immediateSiblingMapping[candidateKey] || [];
+            immediateSiblingMapping[candidateKey].push({
+              key: dynKey,
+              value: dynValue,
+            });
+          }
           inserted = true;
           break;
         }
@@ -258,7 +287,6 @@ const postDetailByPriority = (
 };
 
 export default postDetailByPriority;
-
 
 const filterFinalResult = (data: Record<string, any>): Record<string, any> => {
   // Filter out unwanted entries
