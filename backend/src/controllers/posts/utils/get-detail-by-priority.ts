@@ -1,4 +1,8 @@
-import { ISectionKey, POST_DETAILS_PRIORITY } from "@models/posts/db";
+import {
+  EXCLUDED_KEYS,
+  ISectionKey,
+  POST_DETAILS_PRIORITY,
+} from "@models/posts/db";
 import _ from "lodash";
 import { formattedDateRefView } from "./calculate-date";
 
@@ -141,7 +145,10 @@ const insertDynamicFields = (
   orderedResult: Record<string, any>,
   dynamicField: Map<string, string>
 ): Record<string, Array<{ key: string; value: string }>> => {
-  const immediateSiblingMapping: Record<string, Array<{ key: string; value: string }>> = {};
+  const immediateSiblingMapping: Record<
+    string,
+    Array<{ key: string; value: string }>
+  > = {};
 
   for (const [dynKey, dynValue] of dynamicField.entries()) {
     if (typeof dynKey !== "string" || typeof dynValue !== "string") continue;
@@ -157,12 +164,20 @@ const insertDynamicFields = (
     const found = findParent(orderedResult, intactKey);
     if (found) {
       const { parent, container, key } = found;
-      if (parent !== null && typeof parent === "object" && !Array.isArray(parent)) {
+      if (
+        parent !== null &&
+        typeof parent === "object" &&
+        !Array.isArray(parent)
+      ) {
         // Insert inside the object using the original dynamic key.
         parent[dynKey] = dynValue;
       } else {
-        immediateSiblingMapping[intactKey] = immediateSiblingMapping[intactKey] || [];
-        immediateSiblingMapping[intactKey].push({ key: dynKey, value: dynValue });
+        immediateSiblingMapping[intactKey] =
+          immediateSiblingMapping[intactKey] || [];
+        immediateSiblingMapping[intactKey].push({
+          key: dynKey,
+          value: dynValue,
+        });
       }
     } else {
       // Try dropping segments one by one.
@@ -173,11 +188,19 @@ const insertDynamicFields = (
         const candidate = findParent(orderedResult, candidateKey);
         if (candidate) {
           const { parent, container, key } = candidate;
-          if (parent !== null && typeof parent === "object" && !Array.isArray(parent)) {
+          if (
+            parent !== null &&
+            typeof parent === "object" &&
+            !Array.isArray(parent)
+          ) {
             parent[dynKey] = dynValue;
           } else {
-            immediateSiblingMapping[candidateKey] = immediateSiblingMapping[candidateKey] || [];
-            immediateSiblingMapping[candidateKey].push({ key: dynKey, value: dynValue });
+            immediateSiblingMapping[candidateKey] =
+              immediateSiblingMapping[candidateKey] || [];
+            immediateSiblingMapping[candidateKey].push({
+              key: dynKey,
+              value: dynValue,
+            });
           }
           inserted = true;
         } else {
@@ -249,12 +272,42 @@ const postDetailByPriority = (
   let finalResult: Record<string, any> = { ...orderedResult, ...data };
 
   if (dynamicField && dynamicField instanceof Map) {
-    const immediateSiblingMapping = insertDynamicFields(finalResult, dynamicField);
+    const immediateSiblingMapping = insertDynamicFields(
+      finalResult,
+      dynamicField
+    );
     finalResult = reorderDynamicFields(finalResult, immediateSiblingMapping);
   }
+
+  finalResult = filterFinalResult(finalResult);
 
   console.log(finalResult);
   return finalResult;
 };
 
 export default postDetailByPriority;
+
+const filterFinalResult = (data: Record<string, any>): Record<string, any> => {
+  // Filter out unwanted entries
+  const filteredEntries = Object.entries(data).filter(([key, value]) => {
+    return !(
+      EXCLUDED_KEYS[key] || // Exclude predefined keys
+      value === null ||
+      value === "" ||
+      value === undefined ||
+      (typeof value === "object" && Object.keys(value).length === 0) ||
+      (typeof value === "object" &&
+        Object.keys(value).length === 1 &&
+        "_id" in value) ||
+      (typeof value === "object" &&
+        Object.keys(value).length === 4 &&
+        "_id" in value &&
+        "createdAt" in value &&
+        "updatedAt" in value &&
+        "__v" in value)
+    );
+  });
+
+  // Convert back to an object
+  return Object.fromEntries(filteredEntries);
+};

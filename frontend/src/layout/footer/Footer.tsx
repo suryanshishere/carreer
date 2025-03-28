@@ -33,14 +33,14 @@ const Footer: React.FC = () => {
     },
   });
 
-  const footerLinkClassName = "hover:underline lg:text-start w-fit";
+  const footerLinkClassName = "hover:underline large_mobile:text-start w-fit";
 
   return (
-    <footer className="lg:px-page px-page_small bottom-0 min-mt-screen bg-custom_pale_yellow py-4 flex flex-col-reverse lg:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
-      <div className="select-none self-center text-center">
+    <footer className="large_mobile:px-page bottom-0 min-mt-screen bg-custom_pale_yellow py-4 flex flex-col-reverse large_mobile:flex-row justify-center items-center w-full gap-4 text-base text-gray-600">
+      <div className="select-none self-center text-center large_mobile:text-base text-sm">
         Copyright &copy; 2024 All Rights Reserved by <b>{LOGO}</b>
       </div>
-      <hr className="lg:hidden" />
+      <hr className="large_mobile:hidden min-w-fit" />
       <div className="grid grid-cols-2 gap-x-3 text-sm text-custom_red text-center">
         <Link to="/about" className={footerLinkClassName}>
           About
