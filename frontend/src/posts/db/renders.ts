@@ -123,13 +123,16 @@ export const RENAMING_DATA: {
   "common_ref.vacancy.category_wise.ews": "vacancies",
 };
 
-export const QUICK_ACCESS_RENDER: Record<ISectionKey, null | [number,number]> = {
-  result: [ 5, 10 ],
-  admit_card: [ 5, 10 ],
+export const QUICK_ACCESS_RENDER: Record<
+  ISectionKey,
+  null | Record<string, boolean>
+> = {
+  result: { "result_ref.result": true, "common_ref.applicants": true },
+  admit_card: { "common_ref.job_type": true, "common_ref.applicants": true },
   certificate_verification: null,
-  admission: [ 5, 7 ],
-  latest_job: [ 5, 13 ],
-  answer_key: [ 5, 7 ],
-  syllabus: [ 5, 8 ],
+  admission: null,
+  latest_job: { "common_ref.eligibility": true, "fee_ref": true },
+  answer_key: { "common_ref.post_exam_mode": true, "common_ref.applicants": true },
+  syllabus: { "syllabus_ref.syllabus": true, "common_ref.applicants": true },
   important: null,
 };

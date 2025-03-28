@@ -281,7 +281,7 @@ const postDetailByPriority = (
 
   finalResult = filterFinalResult(finalResult);
 
-  console.log(finalResult);
+  console.log(finalResult,dynamicField);
   return finalResult;
 };
 

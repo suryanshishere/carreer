@@ -61,9 +61,10 @@ export const POST_DB: IPostEnvData = {
         select:
           "application_start_date application_end_date exam_date additional_resources createdAt updatedAt",
       },
-      { path: "link_ref", select: "official_website createdAt updatedAt" },
+      { path: "link_ref", select: "apply_online register_now official_website download_sample_papers additional_resources createdAt updatedAt", },
       { path: "common_ref", select: "" },
       { path: "syllabus_ref" },
+      { path: "fee_ref", select: "" },
     ],
     answer_key: [
       { path: "common_ref", select: "-eligibility" },
