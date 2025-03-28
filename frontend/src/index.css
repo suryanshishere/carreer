@@ -29,17 +29,27 @@
     .custom_ul li::before {
       content: "";
       display: inline-block;
-      @apply min-w-2 min-h-2 max-w-2 max-h-2 whitespace-nowrap bg-custom_gray rounded-sm mt-[10px] mr-2;
+      width: 0.5em;
+      height: 0.5em;
+      min-width: 0.45rem;
+      min-height: 0.45rem;
+      @apply bg-custom_gray rounded-sm;
+      border-radius: 0.125rem; 
+      margin-top: 0.625em; 
+      margin-right: 0.5em;
       vertical-align: top;
     }
-
+    
     .custom_ul {
-      @apply list-none pl-0;
+      list-style: none;
+      padding-left: 0;
     }
-
+    
     .custom_ul li {
-      @apply flex items-start;
+      display: flex;
+      align-items: flex-start;
     }
+    
   }
 
   .page_padding {

@@ -7,6 +7,7 @@ import PostEditable from "../post-editable";
 import { POST_LIMIT_DROPDOWN_DATA } from "posts/db";
 import { RENAMING_DATA, TABLE_REQUIRED } from "posts/db/renders";
 import PostEditableList from "../post-editable/PostEditableList";
+import { getDisplayKey } from "posts/utils";
 
 const RenderField = ({
   valueProp,
@@ -28,24 +29,32 @@ const RenderField = ({
           This can't be contributed.
         </span>
       );
-    const parts = uniqueKey.split("."); 
+    const parts = uniqueKey.split(".");
     const onePartKey = parts[0];
     const twoPartKey = parts.slice(0, 2).join(".");
     const threePartKey = parts.slice(0, 3).join(".");
     return (
       <>
         <PostEditable valueProp={valueProp} keyProp={uniqueKey} />
-        {( !TABLE_REQUIRED[onePartKey]  &&  !TABLE_REQUIRED[twoPartKey] && !TABLE_REQUIRED[threePartKey])  && (
-          <PostEditableList
-            initialItems={[{ id: Date.now(), keyProp: uniqueKey, valueProp }]}
-          />
-        )}
+        {
+          // Render the editable list only if the key does NOT include an array index and the TABLE_REQUIRED condition holds
+          !/\[\d+\]/.test(uniqueKey) &&
+            !TABLE_REQUIRED[onePartKey] &&
+            !TABLE_REQUIRED[twoPartKey] &&
+            !TABLE_REQUIRED[threePartKey] && (
+              <PostEditableList
+                initialItems={[
+                  { id: Date.now(), keyProp: uniqueKey, valueProp },
+                ]}
+              />
+            )
+        }
       </>
     );
   }
 
   let strValue: string = _.toString(valueProp);
-  const lastKey: string = uniqueKey?.split(".").pop() || uniqueKey;
+  const lastKey: string = getDisplayKey(strValue) || uniqueKey;
 
   if (strValue.startsWith("https://")) {
     return (

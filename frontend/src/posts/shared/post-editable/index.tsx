@@ -162,9 +162,9 @@ const PostEditable: React.FC<PostEditableProps> = ({
       {genKey && state.mode === "idle" && (
         <button
           onClick={handleAdd}
-          className="self-end flex gap-1 items-center outline p-1 rounded px-2 text-custom_gray outline-custom_gray"
+          className="self-end flex justify-center items-center outline p-1 rounded-full text-custom_gray outline-custom_less_gray"
         >
-          <AddIcon /> Add New Information
+          <AddIcon /> 
         </button>
       )}
 

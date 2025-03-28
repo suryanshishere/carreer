@@ -48,6 +48,7 @@ export const TABLE_REQUIRED: Record<string, boolean> = {
   "link_ref.additional_resources": true,
   "result_ref.result.current_year": true,
   "result_ref.result.previous_year": true,
+  "syllabus_ref.syllabus": true,
 };
 
 //content which you want to be expandable but at first collapse to make it interactive and clutter free.
