@@ -1,6 +1,6 @@
 import { fetchPostDetail } from "@controllers/posts/utils";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
-import POST_DB from "@models/posts/db";
+import POST_DB, { NON_REQUIRED_FIELD } from "@models/posts/db";
 import { IPost } from "@models/posts/Post";
 import Contribution, { IContribution } from "@models/users/Contribution";
 import HttpError from "@utils/http-errors";
@@ -43,15 +43,17 @@ export const updatePost = async (
 
   Object.keys(data).forEach((key) => {
     const value = data[key];
+    //validation as well trigger for deletion
     const isDeleted =
-      (typeof value === "string" && value.toLowerCase() === "deleted") ||
-      (typeof value === "number" && isNaN(value));
+      NON_REQUIRED_FIELD[key] &&
+      ((typeof value === "string" && value.toLowerCase() === "deleted") ||
+        (typeof value === "number" && isNaN(value)));
 
     if (_.get(post, key) !== undefined) {
       // For existing keys in the post object
       if (isDeleted) {
         // Remove the key entirely
-        _.unset(post, key);
+        _.set(post,key, undefined);
       } else {
         _.set(post, key, value);
       }
