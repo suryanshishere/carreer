@@ -13,7 +13,7 @@ const resultCategorySchema = new Schema<IResultCategory>(
       type: Number,
       min: non_negative_num.min,
       max: non_negative_num.max,
-      required: true,
+      required: false,
     },
     obc: {
       type: Number,

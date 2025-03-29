@@ -1,4 +1,5 @@
 import { fetchPostDetail } from "@controllers/posts/utils";
+import { getDisplayKey } from "@controllers/utils";
 import { generatePostCodeVersion } from "@controllers/utils/contribute-utils";
 import POST_DB, { NON_REQUIRED_FIELD } from "@models/posts/db";
 import { IPost } from "@models/posts/Post";
@@ -33,7 +34,7 @@ export const updatePost = async (
 ): Promise<IPost | void> => {
   const { post_code, version, data, contributor_id, section } = req.body;
 
-  //for fetch post detail to work
+  // For fetch post detail to work
   req.params.postIdOrCode = post_code;
   req.params.version = version;
   req.params.section = section;
@@ -41,13 +42,20 @@ export const updatePost = async (
   const post = await fetchPostDetail(req, next);
   if (!post) return;
 
-  Object.keys(data).forEach((key) => {
+  // Use for...of loop to be able to exit early on error
+  for (const key of Object.keys(data)) {
     const value = data[key];
-    //validation as well trigger for deletion
+    // Validation that triggers deletion
     const isDeleted =
-      NON_REQUIRED_FIELD[key] &&
-      ((typeof value === "string" && value.toLowerCase() === "deleted") ||
-        (typeof value === "number" && isNaN(value)));
+      (typeof value === "string" && value.toLowerCase() === "deleted") ||
+      (typeof value === "number" && isNaN(value));
+
+    // If field should be deleted but is not allowed to be, trigger an error and exit immediately.
+    if (isDeleted && !NON_REQUIRED_FIELD[key]) {
+      return next(
+        new HttpError(`Validation failed for field: ${getDisplayKey(key)}`, 400)
+      );
+    }
 
     if (_.get(post, key) !== undefined) {
       // For existing keys in the post object
@@ -58,26 +66,18 @@ export const updatePost = async (
         _.set(post, key, value);
       }
     } else {
-      // Convert the dot notation key to the map key format
+      // Handle dynamic fields
       const dynamicKey = key.replace(/\./g, "_1_");
-
-      // Convert the Map to a plain object
       const dynamicObj = post.dynamic_field
         ? Object.fromEntries(post.dynamic_field)
         : { ...(post.dynamic_field ?? {}) };
 
-      // If the incoming value indicates deletion, remove the key from the object
-      if (
-        typeof data[key] === "string" &&
-        data[key].toLowerCase() === "deleted"
-      ) {
+      if (typeof value === "string" && value.toLowerCase() === "deleted") {
         delete dynamicObj[dynamicKey];
       } else {
-        // Otherwise, update the value
-        dynamicObj[dynamicKey] = data[key];
+        dynamicObj[dynamicKey] = value;
       }
 
-      // Update the dynamic_field Map: if the plain object is empty, remove it entirely; otherwise, set it back.
       if (Object.keys(dynamicObj).length === 0) {
         post.dynamic_field = undefined;
       } else {
@@ -85,7 +85,7 @@ export const updatePost = async (
       }
       post.markModified("dynamic_field");
     }
-  });
+  }
 
   // Update contributors list
   const contributorsField = `${section}_contributors`;
