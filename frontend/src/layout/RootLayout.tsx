@@ -11,7 +11,7 @@ const RootLayout: React.FC = () => {
       <NavBar />
       <Response />
       <AuthChecker />
-      <div className="flex-grow page_padding mt-8 mb-20 transition-transform ease-in-out duration-300">
+      <div className="flex-grow page_padding mt-8 mb-20">
         <Outlet />
       </div>
       <Footer />

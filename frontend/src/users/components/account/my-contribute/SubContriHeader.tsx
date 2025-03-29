@@ -42,8 +42,9 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <div className="flex items-center gap-1 justify-center">
-        <h2 className="pl-0">{startCase(section)}</h2>
+      <h2>{startCase(section)}</h2>
+
+      <div className="flex items-center gap-4">
         <Link
           to={`/sections/${section}/${postCode}/${version}`}
           className="text-custom_red hover:text-custom_blue flex items-center justify-center p-1"
@@ -52,8 +53,6 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
         >
           <OpenInNewOutlinedIcon fontSize="small" />
         </Link>
-      </div>
-      <div className="flex items-center gap-2">
         {isEditContribute.clicked && isEditing ? (
           <Button
             basicButton
@@ -67,7 +66,6 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
                 })
               );
             }}
-            className="text-sm"
           >
             Undo
           </Button>
@@ -109,7 +107,6 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
           onClick={() =>
             dispatch(toggleModalState({ id: "delete_contribute", bool: true }))
           }
-          className="ml-4"
         >
           <DeleteOutlineIcon fontSize="small" />
         </Button>
@@ -119,7 +116,7 @@ const SubContriHeader: React.FC<SubContriHeaderProps> = ({
         <Modal
           onClose={closeDeleteModalHandler}
           header="Confirm Deletion"
-          onCancel 
+          onCancel
           confirmButton={
             <Button
               authButtonType
