@@ -31,7 +31,7 @@ const RenderField = ({
   ) {
     if (uniqueKey === "last_updated")
       return (
-        <span className="text-custom_less_gray">
+        <span className="text-custom_less_gray cursor-not-allowed">
           This can't be contributed.
         </span>
       );

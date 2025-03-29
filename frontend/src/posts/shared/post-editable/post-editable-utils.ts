@@ -19,7 +19,7 @@ export type IValidationConfig =
 
 export const getFieldValidation = (
   fieldName: string
-): IValidationConfig   => {
+): IValidationConfig => {
   const fieldType = Object.entries(limit_keys_division).find(([_, values]) =>
     values.includes(fieldName)
   )?.[0];
@@ -67,10 +67,20 @@ export const getFieldValidation = (
   }
 };
 
+interface ValidationOptions {
+  skipValidation?: boolean;
+}
+
 export const validateFieldValue = (
-  value: string | number,
-  validationConfig: IValidationConfig
+  value: string | number | null,
+  validationConfig: IValidationConfig,
+  options?: ValidationOptions
 ): { isValid: boolean; error?: string } => {
+  // If skipValidation is enabled or the value is null (e.g. on delete), we return valid.
+  if (options?.skipValidation || value === null) {
+    return { isValid: true, error: undefined };
+  }
+
   if (!validationConfig) {
     return { isValid: true, error: undefined };
   }
@@ -89,16 +99,14 @@ export const validateFieldValue = (
 
   // Handle date type validation (if needed)
   if (validationConfig.type === "date") {
-    // const date = new Date(value);
-    // const isValid = !isNaN(date.getTime());
-
+    // You can add date-specific checks here if required.
     return {
       isValid: true,
       error: undefined,
     };
   }
 
-  // For string/numeric validation, ensure value type matches config type
+  // For string/numeric validation, ensure the value's type matches config type.
   const isStringType = validationConfig.type === "string";
   if (typeof value !== (isStringType ? "string" : "number")) {
     return {
@@ -107,12 +115,12 @@ export const validateFieldValue = (
     };
   }
 
-  // Get value to check (string length or numeric value)
+  // Get the value length or numeric value to check.
   const valueToCheck = isStringType
     ? (value as string).length
     : (value as number);
 
-  // Perform range validation
+  // Perform range validation.
   if (
     valueToCheck < validationConfig.min ||
     valueToCheck > validationConfig.max

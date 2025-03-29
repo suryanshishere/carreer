@@ -41,20 +41,46 @@ export const updatePost = async (
   const post = await fetchPostDetail(req, next);
   if (!post) return;
 
-  // Update post data (in-memory modification)
   Object.keys(data).forEach((key) => {
-    if (_.get(post, key) !== undefined) {
-      // Directly update using _.set, ensuring nested structures are handled
-      _.set(post, key, data[key]);
-    } else {
-      // Convert dot notation key to avoid conflicts
-      let dynamicKey = key.replace(/\./g, "_1_");
+    const value = data[key];
+    const isDeleted =
+      (typeof value === "string" && value.toLowerCase() === "deleted") ||
+      (typeof value === "number" && isNaN(value));
 
-      if (!post.dynamic_field) {
-        post.dynamic_field = new Map<string, string>();
+    if (_.get(post, key) !== undefined) {
+      // For existing keys in the post object
+      if (isDeleted) {
+        // Remove the key entirely
+        _.unset(post, key);
+      } else {
+        _.set(post, key, value);
+      }
+    } else {
+      // Convert the dot notation key to the map key format
+      const dynamicKey = key.replace(/\./g, "_1_");
+
+      // Convert the Map to a plain object
+      const dynamicObj = post.dynamic_field
+        ? Object.fromEntries(post.dynamic_field)
+        : { ...(post.dynamic_field ?? {}) };
+
+      // If the incoming value indicates deletion, remove the key from the object
+      if (
+        typeof data[key] === "string" &&
+        data[key].toLowerCase() === "deleted"
+      ) {
+        delete dynamicObj[dynamicKey];
+      } else {
+        // Otherwise, update the value
+        dynamicObj[dynamicKey] = data[key];
       }
 
-      post.dynamic_field.set(dynamicKey, data[key]);
+      // Update the dynamic_field Map: if the plain object is empty, remove it entirely; otherwise, set it back.
+      if (Object.keys(dynamicObj).length === 0) {
+        post.dynamic_field = undefined;
+      } else {
+        post.dynamic_field = new Map(Object.entries(dynamicObj));
+      }
       post.markModified("dynamic_field");
     }
   });
@@ -67,7 +93,6 @@ export const updatePost = async (
   if (!post[contributorsField].includes(contributor_id)) {
     post[contributorsField].push(contributor_id);
   }
-  console.log(post);
   return post;
 };
 

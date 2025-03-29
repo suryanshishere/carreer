@@ -27,7 +27,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return ReactDOM.createPortal(
     <div className="fixed page_padding inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-custom_white rounded shadow-lg mobile:max-w-2xl min-w-40 p-2 relative flex flex-col gap-1">
+      <div className="bg-custom_white rounded shadow-lg mobile:max-w-2xl min-w-full mobile:min-w-96 p-2 relative flex flex-col gap-1">
         {/* Close Icon */}
         {onClose && (
           <Button

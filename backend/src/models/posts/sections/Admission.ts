@@ -1,5 +1,5 @@
 import { Model, model, Schema } from "mongoose";
-import commonDataSchema, { ICommonDetailData } from "./post-model-section-utils";
+import commonDataSchema, { ICommonDetailData } from "./common-section-data";
 
 const admissionSchema = new Schema<IAdmission>({});
 

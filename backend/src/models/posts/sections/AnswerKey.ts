@@ -1,7 +1,7 @@
 import { Types, Schema, model, Model } from "mongoose";
 import commonDataSchema, {
   ICommonDetailData,
-} from "./post-model-section-utils";
+} from "./common-section-data";
 import { ISyllabus } from "./Syllabus";
 import { POST_LIMITS_DB } from "@models/posts/db";
 

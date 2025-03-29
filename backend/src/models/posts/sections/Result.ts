@@ -1,7 +1,7 @@
 import { Model, Schema, model } from "mongoose";
 import commonDataSchema, {
   ICommonDetailData,
-} from "./post-model-section-utils";
+} from "./common-section-data";
 import { POST_LIMITS_DB } from "@models/posts/db";
 
 const { non_negative_num, short_char_limit, long_char_limit } = POST_LIMITS_DB;
@@ -67,7 +67,7 @@ const resultSchema = new Schema<IResult>({
     type: new Schema(
       {
         current_year: { type: resultCategorySchema, required: false },
-        previous_year: { type: resultCategorySchema, required: false },
+        previous_year: { type: resultCategorySchema, required: true },
       },
       { _id: false }
     ),

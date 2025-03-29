@@ -8,6 +8,7 @@ import ActionButtons from "./ActionButtons";
 import { Input } from "shared/utils/form/Input";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { NON_REQUIRED_FIELD } from "posts/db/renders";
 
 type Mode = "idle" | "editing" | "saved";
 
@@ -28,22 +29,33 @@ const PostEditable: React.FC<PostEditableProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const initialInputValue = !genKey ? valueProp : "";
+  // For normal fields (not genKey) the initial input value remains valueProp.
+  const initialInputValue = !genKey
+    ? valueProp === "Deleted"
+      ? "Deleted!"
+      : valueProp
+    : "";
   const [state, setState] = useState<{
     mode: Mode;
     customKey: string;
     inputValue: string | number;
     isChanged: boolean;
   }>({
-    mode: "idle", // no custom key active yet
+    mode: "idle",
     customKey: "",
     inputValue: initialInputValue,
     isChanged: false,
   });
 
-  // effective key is the custom key if one exists (when genKey is true and a custom key is provided)
-  const effectiveKey = genKey && state.customKey ? state.customKey : keyProp;
-  const lastName = effectiveKey.split(".").pop() || "";
+  const isDyanmicKey = keyProp.includes("_1_") ? true : false;
+  // effective key is the custom key if provided (when genKey is true), otherwise keyProp (checking dynamic key, since it's needed some processing)
+  const lastName = keyProp.split(".").pop() || "";
+  const effectiveKey =
+    state.customKey && genKey
+      ? `${keyProp}.${state.customKey.replace(/\s+/g, "_").toLowerCase()}`
+      : isDyanmicKey
+      ? lastName
+      : keyProp;
   const validationConfig = getFieldValidation(lastName);
   const inputType = genKey
     ? "text"
@@ -54,8 +66,9 @@ const PostEditable: React.FC<PostEditableProps> = ({
     : "text";
 
   const { isValid, error } = validateFieldValue(
-    state.inputValue,
-    validationConfig
+    state.inputValue ?? "",
+    validationConfig,
+    { skipValidation: state.inputValue === "Deleted" }
   );
 
   const handleInputChange = (
@@ -65,16 +78,30 @@ const PostEditable: React.FC<PostEditableProps> = ({
   ) => {
     let newValue: string | number = e.target.value;
     if (inputType === "number") {
-      newValue = +e.target.value;
+      // Keep it as string if empty so that "" is not converted to 0.
+      newValue = e.target.value === "" ? "" : +e.target.value;
     } else if (inputType === "date") {
       newValue = e.target.value;
     }
- 
-    setState((prev) => ({
-      ...prev,
-      inputValue: newValue,
-      isChanged: newValue.toString().length > 0,
-    }));
+
+    // If the value hasn't changed
+    if (
+      (typeof valueProp === "string" && newValue === valueProp.trim()) ||
+      valueProp === newValue
+    ) {
+      setState((prev) => ({
+        ...prev,
+        inputValue: newValue,
+        isChanged: false,
+      }));
+      return;
+    } else {
+      setState((prev) => ({
+        ...prev,
+        inputValue: newValue,
+        isChanged: newValue.toString().length > 0,
+      }));
+    }
   };
 
   const handleCustomKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,28 +109,32 @@ const PostEditable: React.FC<PostEditableProps> = ({
   };
 
   const handleAdd = () => {
-    // when Add is clicked, switch mode to editing so the custom key input appears
+    // When Add is clicked, switch mode to editing so the custom key input appears.
     setState((prev) => ({ ...prev, mode: "editing" }));
   };
 
   const handleSave = () => {
-    const parsedValue = inputType ==="number"
-      ? +state.inputValue
-      : validationConfig?.type === "date"
-      ? state.inputValue.toString()
-      : state.inputValue.toString(); 
+    // When the input shows deletion, save null.
+    const parsedValue =
+      inputType === "number" &&
+      initialInputValue !== "Deleted" &&
+      state.inputValue !== "Deleted"
+        ? +state.inputValue!
+        : validationConfig?.type === "date"
+        ? state.inputValue!.toString()
+        : state.inputValue!.toString();
 
-    if (typeof valueProp === "string" && parsedValue === valueProp.trim() || valueProp === parsedValue) {
-      // If the value is the same as before, remove it instead of saving again
-      handleDelete();
+    // If the value hasn't changed
+    if (
+      typeof initialInputValue === "string" &&
+      parsedValue === initialInputValue.trim()
+    ) {
       return;
     }
 
     dispatch(
       setKeyValuePair({
-        key: genKey
-          ? `${keyProp}.${effectiveKey.replace(/\s+/g, "_").toLowerCase()}`
-          : keyProp,
+        key: effectiveKey,
         value: parsedValue,
       })
     );
@@ -114,15 +145,14 @@ const PostEditable: React.FC<PostEditableProps> = ({
       mode: "saved",
     }));
 
-    // notify parent that this field has been saved
     if (onSaved) onSaved();
   };
 
   const handleUndo = () => {
-    // reset input value to its initial value
+    // Reset input value to its initial value (which might be a valid number/string, not null)
     setState((prev) => ({
       ...prev,
-      inputValue: valueProp,
+      inputValue: initialInputValue,
       isChanged: false,
       mode: "editing",
     }));
@@ -130,26 +160,33 @@ const PostEditable: React.FC<PostEditableProps> = ({
   };
 
   const handleDelete = () => {
-    if (state.mode !== "saved") {
-      // If not yet saved, simply reset the field to its initial state
-      setState({
-        mode: "idle",
-        customKey: "",
-        inputValue: initialInputValue,
-        isChanged: false,
-      });
-      // Also remove any potential value from redux store
-      dispatch(removeKeyValuePair(effectiveKey));
+    if (!genKey) {
+      // For normal fields, mark the key as deleted by setting inputValue to null.
+      setState((prev) => ({
+        ...prev,
+        inputValue: "Deleted",
+        isChanged: true,
+        mode: "saved", // Mark as saved so that when Save is clicked, null is dispatched.
+      }));
     } else {
-      // If already saved, remove from the parent's list
-      dispatch(removeKeyValuePair(effectiveKey));
-      setState({
-        mode: "idle",
-        customKey: "",
-        inputValue: initialInputValue,
-        isChanged: false,
-      });
-      if (onRemove) onRemove();
+      if (state.mode !== "saved") {
+        setState({
+          mode: "idle",
+          customKey: "",
+          inputValue: initialInputValue,
+          isChanged: false,
+        });
+        dispatch(removeKeyValuePair(effectiveKey));
+      } else {
+        dispatch(removeKeyValuePair(effectiveKey));
+        setState({
+          mode: "idle",
+          customKey: "",
+          inputValue: initialInputValue,
+          isChanged: false,
+        });
+        if (onRemove) onRemove();
+      }
     }
   };
 
@@ -164,7 +201,7 @@ const PostEditable: React.FC<PostEditableProps> = ({
           onClick={handleAdd}
           className="self-end flex justify-center items-center outline p-1 rounded-full text-custom_gray outline-custom_less_gray"
         >
-          <AddIcon /> 
+          <AddIcon />
         </button>
       )}
 
@@ -184,38 +221,57 @@ const PostEditable: React.FC<PostEditableProps> = ({
               />
             )}
 
-            {(!genKey || (genKey && state.customKey)) && (
-              <InputField
-                keyProp={effectiveKey}
-                valueProp={valueProp}
-                inputValue={state.inputValue}
-                inputType={inputType}
-                isValid={isValid}
-                error={error}
-                handleInputChange={handleInputChange}
-                validationConfig={validationConfig}
-                lastName={lastName}
-                className="w-full"
-              />
+            {state.inputValue === "Deleted" ? (
+              <span className="text-custom_gray cursor-not-allowed">
+                Deleted
+              </span>
+            ) : (
+              (!genKey || (genKey && state.customKey)) && (
+                <InputField
+                  keyProp={effectiveKey}
+                  valueProp={valueProp}
+                  inputValue={state.inputValue}
+                  inputType={inputType}
+                  isValid={isValid}
+                  error={error}
+                  handleInputChange={handleInputChange}
+                  validationConfig={validationConfig}
+                  lastName={lastName}
+                  className="w-full"
+                />
+              )
             )}
           </div>
-          {(state.mode === "saved" || state.mode === "editing") && genKey && (
+          {genKey ? (
+            // For genKey fields, always show the delete button.
             <button
               onClick={handleDelete}
               className="flex-shrink-0 text-custom_gray"
             >
               <DeleteOutlineIcon />
             </button>
+          ) : (
+            (NON_REQUIRED_FIELD[keyProp] || isDyanmicKey) &&
+            state.inputValue !== "Deleted" && (
+              <button
+                onClick={handleDelete}
+                className="flex-shrink-0 text-custom_gray"
+              >
+                <DeleteOutlineIcon />
+              </button>
+            )
           )}
         </div>
       )}
-      <ActionButtons
-        isSaved={state.mode === "saved"}
-        isChanged={state.isChanged}
-        isValid={isValid}
-        onSave={handleSave}
-        onUndo={handleUndo}
-      />
+      {(state.isChanged || state.mode === "saved") && (
+        <ActionButtons
+          isSaved={state.mode === "saved"}
+          isChanged={state.isChanged}
+          isValid={isValid}
+          onSave={handleSave}
+          onUndo={handleUndo}
+        />
+      )}
     </div>
   );
 };

@@ -10,9 +10,7 @@ import useContributeMutation from "posts/shared/useContributionMutation";
 import { RESPONSE_DB } from "shared/db";
 import { ISectionKey } from "posts/db";
 import { toggleModalState } from "shared/store/modalSlice";
-import Modal from "shared/ui/Modal";
-import { getDisplayKey } from "posts/utils";
-import { startCase } from "lodash";
+import Modal from "shared/ui/Modal"; 
 import RenderTable from "posts/shared/render-post-data/RenderTable";
 
 const ContributeToPost: React.FC<{
@@ -25,8 +23,7 @@ const ContributeToPost: React.FC<{
     useSelector((state: RootState) => state.post);
 
   const { token, role } = useSelector((state: RootState) => state.user);
-  const { modalStates } = useSelector((state: RootState) => state.modal);
-  const [isPostEditable, setIsPostEditable] = useState(false);
+  const { modalStates } = useSelector((state: RootState) => state.modal); 
 
   useEffect(() => {
     if (section && postCode) {
@@ -118,7 +115,7 @@ const ContributeToPost: React.FC<{
           <RenderTable
             value={keyValuePairs}
             tableKey=""
-            isPostEditable={isPostEditable}
+            isPostEditable={false}
           />
         </Modal>
       )}

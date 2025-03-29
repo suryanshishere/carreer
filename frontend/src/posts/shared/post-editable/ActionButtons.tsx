@@ -18,7 +18,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 }) => {
   return (
     <>
-      {isSaved && (
+      {(isSaved || isChanged) && (
         <Button
           onClick={onUndo}
           className="py-2 bg-custom_white font-medium transform ease-linear duration-200"
